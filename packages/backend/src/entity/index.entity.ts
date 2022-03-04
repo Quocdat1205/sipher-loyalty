@@ -1,2 +1,2 @@
-export * from './program.entity';
-export * from './client.entity';
+export * from "./program.entity"
+export * from "./client.entity"

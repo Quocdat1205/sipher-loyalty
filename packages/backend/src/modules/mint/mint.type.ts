@@ -1,5 +1,5 @@
 export interface MintInput {
-  userAddress: string;
-  mintType: string;
-  quantity: number;
+  userAddress: string
+  mintType: string
+  quantity: number
 }

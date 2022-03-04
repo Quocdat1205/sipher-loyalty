@@ -1,24 +1,19 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from "typeorm"
 
 @Entity()
 export class Program {
-  @PrimaryGeneratedColumn('uuid')
-  id_program: string;
+  @PrimaryGeneratedColumn("uuid")
+  id_program: string
 
   @Column({ nullable: true })
-  content: string;
+  content: string
 
   @CreateDateColumn({ default: new Date() })
-  createdAt: Date;
+  createdAt: Date
 
   @Column()
-  publishedAt: Date;
+  publishedAt: Date
 
   @Column()
-  expired: Date;
+  expired: Date
 }

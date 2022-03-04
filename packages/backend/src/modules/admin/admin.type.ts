@@ -1,9 +1,9 @@
 export interface logInAdmin {
-  username: string;
-  password: string;
+  username: string
+  password: string
 }
 
 export interface sculptureOrder {
-  max: number;
-  min: number;
+  max: number
+  min: number
 }

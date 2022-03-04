@@ -1,83 +1,83 @@
-import { Transform } from 'class-transformer';
-import { IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { Transform } from "class-transformer"
+import { IsEnum, IsNumber, IsOptional, IsString, Min } from "class-validator"
 
 export class NftItemAttributeFilterDto {
   @IsString()
-  traitType: string;
+  traitType: string
 
   @IsString({ each: true })
-  values: string[];
+  values: string[]
 }
 
 export enum NftItemListingType {
-  BuyNow = 'BuyNow',
-  Auction = 'Auction',
-  HasOffer = 'HasOffer',
-  HasBid = 'HasBid',
+  BuyNow = "BuyNow",
+  Auction = "Auction",
+  HasOffer = "HasOffer",
+  HasBid = "HasBid",
 }
 
 export enum NftItemFilterOrderBy {
-  MostViewed = 'MostViewed',
-  MostFavorited = 'MostFavorited',
-  PriceAsc = 'PriceAsc',
-  PriceDesc = 'PriceDesc',
-  RarityAsc = 'RarityAsc',
-  RarityDesc = 'RarityDesc',
-  RecentlyListed = 'RecentlyListed',
-  EndingSoon = 'EndingSoon',
+  MostViewed = "MostViewed",
+  MostFavorited = "MostFavorited",
+  PriceAsc = "PriceAsc",
+  PriceDesc = "PriceDesc",
+  RarityAsc = "RarityAsc",
+  RarityDesc = "RarityDesc",
+  RecentlyListed = "RecentlyListed",
+  EndingSoon = "EndingSoon",
 }
 
 export class NftItemFilterDto {
   @Transform(({ value }) => value && value.toLowerCase())
   @IsString()
   @IsOptional()
-  owner?: string;
+  owner?: string
 
   @IsString({ each: true })
   @IsOptional()
-  collections?: string[];
+  collections?: string[]
 
   @IsEnum(NftItemListingType, { each: true })
   @IsOptional()
-  listingTypes?: NftItemListingType[];
+  listingTypes?: NftItemListingType[]
 
   @IsString({ each: true })
   @IsOptional()
-  rarities?: string[];
+  rarities?: string[]
 
   @Min(0)
   @IsNumber()
   @IsOptional()
-  priceFrom?: number;
+  priceFrom?: number
 
   @Min(0)
   @IsNumber()
   @IsOptional()
-  priceTo?: number;
+  priceTo?: number
 
-  attributes?: NftItemAttributeFilterDto[];
+  attributes?: NftItemAttributeFilterDto[]
 
   @IsEnum(NftItemFilterOrderBy)
   @IsOptional()
-  orderBy?: NftItemFilterOrderBy;
+  orderBy?: NftItemFilterOrderBy
 }
 
 export class GetNftItemReqDto {
   @IsString()
   @IsOptional()
-  collectionId?: string;
+  collectionId?: string
 
-  @Transform((value) => value && value.toString().toLowerCase())
+  @Transform(value => value && value.toString().toLowerCase())
   @IsString()
   @IsOptional()
-  owner?: string;
+  owner?: string
 }
 
 export class LikeNftItemReqDto {
-  @Transform((value) => value && value.toString().toLowerCase())
+  @Transform(value => value && value.toString().toLowerCase())
   @IsString()
-  owner: string;
+  owner: string
 
   @IsString()
-  itemId: string;
+  itemId: string
 }

@@ -8,121 +8,121 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
+} from "typeorm"
 
 @Entity()
 export class NftCurrentEmotion {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column({ nullable: false })
-  nftId: number;
+  nftId: number
 
   @Column({ nullable: false })
-  race: string;
+  race: string
 
   @Column({ nullable: false })
-  emotion: string;
+  emotion: string
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date
 }
 
 @Entity()
 export class NftProperty {
   @PrimaryColumn()
-  name: string;
+  name: string
 
   @Column({ nullable: false })
-  nftId: number;
+  nftId: number
 
   @Column()
-  origin: string;
+  origin: string
 
   @Column()
-  race: string;
+  race: string
 
   @Column()
-  score: number;
+  score: number
 
   @Column()
-  rank: number;
+  rank: number
 
   @Column()
-  image: string;
+  image: string
 
-  @OneToMany(() => NftAttribute, (attr) => attr.nftProp)
-  attributes: NftAttribute[];
+  @OneToMany(() => NftAttribute, attr => attr.nftProp)
+  attributes: NftAttribute[]
 
-  @OneToMany(() => NftEmotion, (emo) => emo.nftProp)
-  emotions: NftEmotion[];
+  @OneToMany(() => NftEmotion, emo => emo.nftProp)
+  emotions: NftEmotion[]
 
-  @OneToMany(() => NftProof, (proof) => proof.nftProp)
-  proofs: NftProof[];
+  @OneToMany(() => NftProof, proof => proof.nftProp)
+  proofs: NftProof[]
 }
 
 @Entity()
 export class NftAttribute {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  traitType: string;
+  traitType: string
 
   @Column()
-  value: string;
+  value: string
 
-  @ManyToOne(() => NftProperty, (nft) => nft.attributes)
+  @ManyToOne(() => NftProperty, nft => nft.attributes)
   @Index()
-  nftProp: NftProperty;
+  nftProp: NftProperty
 }
 
 @Entity()
 export class NftEmotion {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  emotion: string;
+  emotion: string
 
   @Column()
-  image: string;
+  image: string
 
-  @ManyToOne(() => NftProperty, (nft) => nft.emotions)
+  @ManyToOne(() => NftProperty, nft => nft.emotions)
   @Index()
-  nftProp: NftProperty;
+  nftProp: NftProperty
 }
 
 @Entity()
 export class NftAttributeRarity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  race: string;
+  race: string
 
   @Column()
-  traitType: string;
+  traitType: string
 
   @Column()
-  value: string;
+  value: string
 
   @Column()
-  total: number;
+  total: number
 }
 
 @Entity()
 export class NftProof {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  value: string;
+  value: string
 
-  @ManyToOne(() => NftProperty, (nft) => nft.proofs)
+  @ManyToOne(() => NftProperty, nft => nft.proofs)
   @Index()
-  nftProp: NftProperty;
+  nftProp: NftProperty
 }
