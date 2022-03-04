@@ -1,6 +1,8 @@
-import { Controller, Post, Body, Session, Get } from "@nestjs/common"
+import { Body, Controller, Get, Post, Session } from "@nestjs/common"
+
+import { sessionType } from "@modules/auth/auth.type"
+
 import { logInDto } from "./admin.dto"
-import { sessionType } from "@module/auth/auth.type"
 import { AdminService } from "./admin.service"
 
 @Controller("admin")

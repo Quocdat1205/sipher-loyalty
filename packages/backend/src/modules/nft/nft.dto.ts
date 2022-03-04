@@ -12,49 +12,49 @@ export class NftItem {
   id: string
 
   @IsString()
-  collectionId: String
+  collectionId: string
 
   @IsString()
-  owner: String
+  owner: string
 
   @IsString()
-  tokenId: String
+  tokenId: string
 
   @IsNumber()
   chainId: number
 
   @IsString()
-  name: String
+  name: string
 
   @IsString()
-  creator: String
+  creator: string
 
   @IsString()
-  auctionId?: String
+  auctionId?: string
 
   @IsString()
-  lastListingId?: String
+  lastListingId?: string
 
   @IsNumber()
   price?: number
 
   @IsString()
-  currency?: String
+  currency?: string
 
   @IsNumber()
   lastPrice?: number
 
   @IsString()
-  lastCurrency?: String
+  lastCurrency?: string
 
   @IsString()
-  tokenUri: String
+  tokenUri: string
 
   @IsString()
-  imageUrl: String
+  imageUrl: string
 
   @IsString()
-  imageThumbnailUrl: String
+  imageThumbnailUrl: string
 
   attributes: NftItemAttribute[]
 

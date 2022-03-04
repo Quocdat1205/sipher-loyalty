@@ -1,5 +1,6 @@
-import { sessionType } from "@module/auth/auth.type"
 import { Body, Controller, Get, Post, Query, Session } from "@nestjs/common"
+
+import { sessionType } from "@modules/auth/auth.type"
 
 import { addressDto, connectDiscordDto, signWalletDto, updateAccountDto } from "./user.dto"
 import { UserService } from "./user.service"

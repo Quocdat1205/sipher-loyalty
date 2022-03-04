@@ -1,7 +1,8 @@
 import { ActivityLogs, Address, TransactionLogs, User } from "@entity"
-import { AuthModule } from "@module/auth/auth.module"
 import { Module } from "@nestjs/common"
 import { TypeOrmModule } from "@nestjs/typeorm"
+
+import { AuthModule } from "@modules/auth/auth.module"
 
 import { UserController } from "./user.controller"
 import { UserService } from "./user.service"

@@ -1,9 +1,12 @@
+import dotenv from "dotenv"
 import { omit } from "lodash"
 import { Injectable } from "@nestjs/common"
+import { ElasticsearchService } from "@nestjs/elasticsearch"
+
+import { LoggerService } from "../logger/logger.service"
+
 import { NftItem } from "./nft.dto"
 import { NftItemAttributeFilterDto, NftItemFilterDto, NftItemFilterOrderBy } from "./nft-item.dto"
-import { ElasticsearchService } from "@nestjs/elasticsearch"
-import dotenv from "dotenv"
 
 dotenv.config()
 
@@ -30,13 +33,13 @@ export class NftItemService {
         filter.push({ terms: { collectionId: collections } })
       }
       if (Array.isArray(listingTypes)) {
-        console.log("filter by listingTypes is not implemented yet")
+        LoggerService.log("filter by listingTypes is not implemented yet")
       }
       if (Array.isArray(rarities)) {
-        console.log("filter by rarities is not implemented yet")
+        LoggerService.log("filter by rarities is not implemented yet")
       }
       if (priceFrom || priceTo) {
-        console.log("filter by price is not implemented yet")
+        LoggerService.log("filter by price is not implemented yet")
       }
       if (Array.isArray(attributes)) {
         filter.push(this.buildAttributeSearchOptions(attributes))
@@ -56,7 +59,7 @@ export class NftItemService {
             sort.push({ rarityRank: { order: "desc" } })
             break
           default:
-            console.log(`order by ${orderBy} is not implemented yet`)
+            LoggerService.log(`order by ${orderBy} is not implemented yet`)
             break
         }
       }
@@ -65,10 +68,9 @@ export class NftItemService {
         index: process.env.ELASTICSEARCH_INDEX,
         body: { from, size: take, query, sort },
       })
-
       return res.body.hits?.hits?.map((item: { _source: any }) => omit(item._source, ["_entity"])) ?? []
     } catch (error) {
-      console.log(error)
+      LoggerService.log(error)
     }
   }
 

@@ -1,27 +1,33 @@
 // import library
 import fs from "fs"
-import { Injectable } from "@nestjs/common"
+
 import { Repository } from "typeorm"
-import { InjectRepository } from "@nestjs/typeorm"
+import { Lootbox } from "@entity"
+import { Injectable } from "@nestjs/common"
 import { Cron } from "@nestjs/schedule"
+import { InjectRepository } from "@nestjs/typeorm"
+import constant from "@setting/constant"
+
+import { NftContract } from "../contract/contract.module"
 // import module
 import { LoggerService } from "../logger/logger.service"
-import { NftContract } from "../contract/contract.module"
-import constant from "@setting/constant"
-import { Lootbox } from "@entity"
 
 @Injectable()
 export class LootBoxService {
-  private INU_ABI = JSON.parse(fs.readFileSync("./src/data/INU/abi.json").toString())
-  private NEKO_ABI = JSON.parse(fs.readFileSync("./src/data/NEKO/abi.json").toString())
+  private abiINU = JSON.parse(fs.readFileSync("./src/data/INU/abi.json").toString())
+
+  private abiNEKO = JSON.parse(fs.readFileSync("./src/data/NEKO/abi.json").toString())
+
   private InuContract = new NftContract({
-    abi: this.NEKO_ABI,
+    abi: this.abiINU,
     contract: constant.SC_NFT_INU,
   })
+
   private NekoContract = new NftContract({
-    abi: this.INU_ABI,
+    abi: this.abiNEKO,
     contract: constant.SC_NFT_NEKO,
   })
+
   constructor(@InjectRepository(Lootbox) private LootboxRepo: Repository<Lootbox>) {}
 
   @Cron("0 0 0 * * 0")
@@ -48,7 +54,7 @@ export class LootBoxService {
       }
       await this.LootboxRepo.save(lootbox)
     } catch (err) {
-      console.log("err at ", i)
+      LoggerService.log("err at ", i)
     }
   }
 

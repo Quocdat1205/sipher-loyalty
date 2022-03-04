@@ -3,8 +3,11 @@ import constant from "@setting/constant"
 
 export class NftContract {
   web3: Web3
+
   contract: any
+
   randomizedIndex: number
+
   constructor({ abi, contract }: { abi: any; contract: string }) {
     this.web3 = new Web3(new Web3.providers.HttpProvider(constant.SC_INFURA))
     this.contract = new this.web3.eth.Contract(abi, contract)
@@ -23,19 +26,19 @@ export class NftContract {
   }
 
   async setRandomizedStartIndex() {
-    this.randomizedIndex = parseInt(await this.contract.methods.randomizedStartIndex().call())
+    this.randomizedIndex = parseInt(await this.contract.methods.randomizedStartIndex().call(), 10)
   }
 
   async ownerOf(id: number): Promise<string> {
-    return await this.contract.methods.ownerOf(id).call()
+    return (await this.contract.methods.ownerOf(id).call()).toString()
   }
 
   async balanceOf(address: string) {
-    return parseInt(await this.contract.methods.balanceOf(address).call())
+    return parseInt(await this.contract.methods.balanceOf(address).call(), 10)
   }
 
   async _tokenOfOwnerByIndex(address: string, index: number) {
-    return parseInt(await this.contract.methods.tokenOfOwnerByIndex(address, index).call())
+    return parseInt(await this.contract.methods.tokenOfOwnerByIndex(address, index).call(), 10)
   }
 
   async getNFTId(address: string, index: number) {
@@ -53,6 +56,6 @@ export class NftContract {
   }
 
   async getOwnerOf(index: number) {
-    return await this.contract.methods.ownerOf(index).call()
+    return (await this.contract.methods.ownerOf(index).call()).toString()
   }
 }

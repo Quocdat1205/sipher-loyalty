@@ -19,12 +19,6 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "esModuleInterop": true,
-    "paths": {
-      "@module/*": ["packages/backend/src/modules/*"],
-      "@entity": ["packages/backend/src/entity/index.entity"],
-      "@middleware": ["packages/backend/src/middleware/index.middleware"],
-      "@setting/*": ["packages/backend/src/setting/*"]
-    },
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,

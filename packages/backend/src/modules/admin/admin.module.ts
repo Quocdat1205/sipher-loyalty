@@ -1,9 +1,10 @@
-import { AdminController } from "./admin.controller"
+import { NftOrder, SculpturesOrder } from "@entity"
+import { AuthModule } from "@modules/auth/auth.module"
 import { Module } from "@nestjs/common"
 import { TypeOrmModule } from "@nestjs/typeorm"
+
+import { AdminController } from "./admin.controller"
 import { AdminService } from "./admin.service"
-import { AuthModule } from "@module/auth/auth.module"
-import { SculpturesOrder, NftOrder } from "@entity"
 
 @Module({
   imports: [TypeOrmModule.forFeature([SculpturesOrder, NftOrder]), AuthModule],

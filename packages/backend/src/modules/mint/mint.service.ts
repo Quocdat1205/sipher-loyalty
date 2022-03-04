@@ -1,15 +1,12 @@
 // import library
-import { Injectable, HttpException, HttpStatus } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
-import { recoverPersonalSignature } from "eth-sig-util"
-import { bufferToHex } from "ethereumjs-util"
 import { ethers } from "ethers"
+import { Injectable } from "@nestjs/common"
+
+import { AuthService } from "../auth/auth.service"
+import { LoggerService } from "../logger/logger.service"
 
 // import module
 import { MintInput } from "./mint.type"
-import { LoggerService } from "../logger/logger.service"
-import { AuthService } from "../auth/auth.service"
 
 @Injectable()
 export class MintService {
@@ -19,7 +16,7 @@ export class MintService {
     const { userAddress, mintType, quantity } = mintInput
     LoggerService.log(`sign mint data for ${userAddress}`)
 
-    let signer = new ethers.Wallet(process.env.PRIVATE_KEY)
+    const signer = new ethers.Wallet(process.env.PRIVATE_KEY)
 
     const domain = {
       name: "My App",
@@ -38,7 +35,7 @@ export class MintService {
 
     const mintTypedData = {
       id: mintType,
-      quantity: quantity,
+      quantity,
       to: userAddress,
     }
 
@@ -46,6 +43,6 @@ export class MintService {
 
     const expectedSignerAddress = signer.address
     const recoveredAddress = ethers.utils.verifyTypedData(domain, types, mintTypedData, signature)
-    console.log(recoveredAddress === expectedSignerAddress)
+    LoggerService.log(recoveredAddress === expectedSignerAddress)
   }
 }

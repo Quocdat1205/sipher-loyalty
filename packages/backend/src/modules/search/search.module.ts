@@ -9,8 +9,8 @@ import constant from "@setting/constant"
     ElasticsearchModule.registerAsync({
       useFactory: async () => {
         const awsCredentials = await awsGetCredentials()
-
         const connectionOptions = createAWSConnection(awsCredentials)
+
         return {
           ...connectionOptions,
           node: constant.ELASTICSEARCH_ENDPOINT,

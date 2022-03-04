@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post, Query, Session } from "@nestjs/common"
-import { sessionType } from "../auth/auth.type"
+import { Body, Controller, Get } from "@nestjs/common"
+
+// import { sessionType } from "../auth/auth.type"
 import { MintService } from "./mint.service"
 
 @Controller("mint")

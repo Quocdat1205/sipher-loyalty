@@ -2,6 +2,8 @@ import connectRedis from "connect-redis"
 import session from "express-session"
 import Redis from "ioredis"
 
+import { LoggerService } from "../modules/logger/logger.service"
+
 import constant from "./constant"
 
 const RedisStore = connectRedis(session)
@@ -10,7 +12,7 @@ const RedisStore = connectRedis(session)
 const redisClient = new Redis(parseInt(constant.SESSION_PORT, 10), constant.SESSION_HOST)
 
 redisClient.on("error", (err: Error) => {
-  console.log(`Could not establish a connection with redis. ${err}`)
+  LoggerService.log(`Could not establish a connection with redis. ${err}`)
 })
 
 const appSession = session({

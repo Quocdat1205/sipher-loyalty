@@ -1,11 +1,11 @@
 import {
-  Entity,
   Column,
-  PrimaryColumn,
   CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryGeneratedColumn,
+  Entity,
   OneToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm"
 
 @Entity()
@@ -140,7 +140,7 @@ export class ActivityLogs {
 @Entity()
 export class NftOrder {
   @PrimaryGeneratedColumn("increment")
-  id: Number
+  id: number
 
   @Column()
   id_sculpture: string
@@ -190,8 +190,8 @@ export class SculpturesOrder {
   @Column()
   status: string
 
-  @OneToMany(type => NftOrder, nft => nft.id_sculpture)
-  nft: NftOrder[]
+  // @OneToMany(type => NftOrder, nft => nft.id_sculpture)
+  // nft: NftOrder[]
 
   @CreateDateColumn()
   createdAt: Date

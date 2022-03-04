@@ -1,15 +1,16 @@
 // import library
-import { Injectable, HttpException, HttpStatus } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import { Repository } from "typeorm"
 import { recoverPersonalSignature } from "eth-sig-util"
 import { bufferToHex } from "ethereumjs-util"
-
+import { Repository } from "typeorm"
 // import module
-import { User, Address, TransactionLogs, ActivityLogs } from "@entity"
-import { updateAccount, newAddress, publicAddressType } from "./user.type"
-import { LoggerService } from "../logger/logger.service"
+import { ActivityLogs, Address, TransactionLogs, User } from "@entity"
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common"
+import { InjectRepository } from "@nestjs/typeorm"
+
 import { AuthService } from "../auth/auth.service"
+import { LoggerService } from "../logger/logger.service"
+
+import { newAddress, publicAddressType, updateAccount } from "./user.type"
 
 @Injectable()
 export class UserService {
@@ -79,7 +80,7 @@ export class UserService {
       const payload = { publicAddress, nonce: new_nonce }
       const accessToken = this.authService.getTokenUser(payload)
 
-      return accessToken
+      return await accessToken
     } catch (error) {
       LoggerService.error(error)
 

@@ -1,24 +1,26 @@
 // import library
 import Joi from "joi"
+import { NftOrder, Program, SculpturesOrder, User } from "@entity"
+import { AuthMiddleware } from "@middleware"
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common"
-import { TypeOrmModule } from "@nestjs/typeorm"
 import { ConfigModule } from "@nestjs/config"
+import { TypeOrmModule } from "@nestjs/typeorm"
+import { configService } from "@setting/config.typeorm"
+import validation from "@setting/validationSchema"
+
+import { AdminModule } from "@modules/admin/admin.module"
+import { AuthModule } from "@modules/auth/auth.module"
+import { LoggerModule } from "@modules/logger/logger.module"
+import { NftItemModule } from "@modules/nft/nftItem.module"
+import { SearchModule } from "@modules/search/search.module"
+import { UserModule } from "@modules/user/user.module"
+
+import { LootBoxModule } from "../lootbox/lootbox.module"
+import { MintModule } from "../mint/mint.module"
 
 // import module
 import { AppController } from "./app.controller"
 import { AppService } from "./app.service"
-import { User, Program, SculpturesOrder, NftOrder } from "@entity"
-import validation from "@setting/validationSchema"
-import { AuthMiddleware } from "@middleware"
-import { NftItemModule } from "@module/nft/nftItem.module"
-import { SearchModule } from "@module/search/search.module"
-import { configService } from "@setting/config.typeorm"
-import { UserModule } from "@module/user/user.module"
-import { AuthModule } from "@module/auth/auth.module"
-import { LoggerModule } from "@module/logger/logger.module"
-import { AdminModule } from "@module/admin/admin.module"
-import { MintModule } from "../mint/mint.module"
-import { LootBoxModule } from "../lootbox/lootbox.module"
 
 @Module({
   imports: [

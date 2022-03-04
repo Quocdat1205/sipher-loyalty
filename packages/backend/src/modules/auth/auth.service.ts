@@ -1,6 +1,9 @@
 import { Injectable } from "@nestjs/common"
-import { signUser, signAdmin } from "./auth.type"
 import { JwtService } from "@nestjs/jwt"
+
+import { LoggerService } from "../logger/logger.service"
+
+import { signAdmin, signUser } from "./auth.type"
 
 @Injectable()
 export class AuthService {
@@ -18,7 +21,7 @@ export class AuthService {
     const payload = { username: admin.username }
 
     const token = this.jwtService.sign(payload)
-    console.log(token)
+    LoggerService.log(token)
 
     return token
   }
