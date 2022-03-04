@@ -1,10 +1,19 @@
+// library
+import { urlencoded } from "express"
+import helmet from "helmet"
+import { ValidationPipe } from "@nestjs/common"
+import { ConfigService } from "@nestjs/config"
 import { NestFactory } from "@nestjs/core"
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger"
+import cors from "@setting/cors"
+import appSession from "@setting/session"
 
-import { AppModule } from "./app.module"
+import { AppModule } from "./modules/app/app.module"
+import { LoggerService } from "./modules/logger/logger.service"
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create(AppModule, { bufferLogs: true })
+  const configService = app.get(ConfigService)
 
   const config = new DocumentBuilder()
     .setTitle("Sipher Loyalty")
@@ -14,6 +23,20 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup("api", app, document)
 
-  await app.listen(4000)
+  app.setGlobalPrefix("api/sipher/loyalty")
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      enableDebugMessages: true,
+      disableErrorMessages: false,
+    }),
+  )
+  app.use(helmet(), appSession)
+  app.enableCors(cors)
+  app.use(urlencoded({ extended: true, limit: "10mb" }))
+
+  await app.listen(configService.get("PORT"), () => {
+    LoggerService.log(`Server running port ${configService.get("PORT")}`)
+  })
 }
 bootstrap()
