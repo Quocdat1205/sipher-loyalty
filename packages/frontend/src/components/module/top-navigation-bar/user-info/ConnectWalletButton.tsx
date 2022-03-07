@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { FaWallet } from "react-icons/fa"
 import { Avatar, Box, Flex, Text, useOutsideClick } from "@sipher.dev/sipher-ui"
+import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
 import { shortenAddress } from "@utils"
@@ -13,34 +14,32 @@ interface ConnectWalletButtonProps {
 
 export const ConnectWalletButton = ({ setOpenSetting }: ConnectWalletButtonProps) => {
   const wallet = useWalletContext()
-  const boxRef = useRef<HTMLDivElement>(null)
-  const [walletModal, setWalletModal] = useState(false)
+  const popRef = useRef<HTMLDivElement>(null)
   const [infoPopup, setInfoPopup] = useState(false)
 
+  const { isWalletModalOpen, toggleWalletModal } = useStore(s => ({
+    isWalletModalOpen: s.isWalletModalOpen,
+    toggleWalletModal: s.toggleWalletModal,
+  }))
+
   useOutsideClick({
-    ref: boxRef,
+    ref: popRef,
     handler: () => setInfoPopup(false),
   })
 
   useEffect(() => {
-    if (wallet.isActive) setWalletModal(false)
+    if (wallet.isActive) toggleWalletModal(false)
   }, [wallet.isActive])
 
   return (
-    <>
-      <Box ref={boxRef} pos="relative" zIndex={"modal"}>
+    <Box>
+      <Box minW="6rem" ref={popRef} pos="relative" zIndex={"modal"}>
         <Flex
-          bg={
-            !wallet.isActive
-              ? "linear-gradient(180deg, rgba(255, 255, 255, 0.2) 52.63%, rgba(255, 255, 255, 0) 52.64%), linear-gradient(276.29deg, #FCD11F -4.75%, #DF6767 30.04%, #200B9F 101.81%)"
-              : "transparent"
-          }
+          bg={!wallet.isActive ? "accent.500" : "transparent"}
           rounded="md"
           align="center"
           transform={"auto"}
-          skewX={"-5deg"}
           boxShadow={"base"}
-          w={["2rem", "10rem"]}
         >
           {!wallet.isActive ? (
             <Flex
@@ -50,14 +49,13 @@ export const ConnectWalletButton = ({ setOpenSetting }: ConnectWalletButtonProps
               justify="center"
               w="full"
               cursor="pointer"
-              onClick={() => setWalletModal(true)}
+              onClick={() => toggleWalletModal(true)}
               transform={"auto"}
-              skewX={"5deg"}
             >
-              <Text display={["none", "block"]} fontWeight={600} mr={2}>
-                Link wallet
+              <Text color="neutral.900" display={["none", "block"]} fontWeight={600}>
+                SIGN IN
               </Text>
-              <Box>
+              <Box ml={2} display={["block", "none"]}>
                 <FaWallet />
               </Box>
             </Flex>
@@ -91,7 +89,7 @@ export const ConnectWalletButton = ({ setOpenSetting }: ConnectWalletButtonProps
           )}
         </Box>
       </Box>
-      <ConnectWalletModal isOpen={walletModal} onClose={() => setWalletModal(false)} />
-    </>
+      <ConnectWalletModal isOpen={isWalletModalOpen} onClose={() => toggleWalletModal(false)} />
+    </Box>
   )
 }

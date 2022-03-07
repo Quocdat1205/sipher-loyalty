@@ -1,12 +1,18 @@
 import React from "react"
 import { Box, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
 
-export const Banner = ({ title, description }: { title: string; description: string }) => {
+interface BannerProps {
+  title: string
+  description: string
+  srcBg?: string
+}
+
+export const Banner = ({ srcBg = "/images/portfolio/banner.png", title, description }: BannerProps) => {
   return (
     <Flex
       w="full"
       justify="center"
-      bg="url(/images/portfolio/banner.png)"
+      bg={`url(${srcBg})`}
       h="20rem"
       bgRepeat="no-repeat"
       bgSize="100%"
@@ -16,7 +22,9 @@ export const Banner = ({ title, description }: { title: string; description: str
         <Heading mb={2} fontWeight={600}>
           {title}
         </Heading>
-        <Text maxW="25rem">{description}</Text>
+        <Text color="whiteAlpha.800" fontWeight={600} maxW="25rem">
+          {description}
+        </Text>
       </Box>
     </Flex>
   )

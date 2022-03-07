@@ -13,10 +13,11 @@ interface TopNavigationBarProps {
 
 const menus = [
   { path: "/", label: "DASHBOARD" },
+  { path: "/spaceship", label: "SPACESHIP" },
   { path: "/portfolio", label: "PORTFOLIO" },
   { path: "/airdrop", label: "AIRDROP" },
-  { path: "/quest", label: "QUEST" },
-  { path: "/rewards", label: "REWARD" },
+  // { path: "/quest", label: "QUEST" },
+  // { path: "/rewards", label: "REWARD" },
 ]
 
 export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) => {

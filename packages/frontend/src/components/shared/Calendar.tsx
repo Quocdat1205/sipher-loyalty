@@ -82,44 +82,24 @@ const useCalendar = ({ value, onChange }: ICalendar) => {
     date.current.getMonth() === new Date(tempValue).getMonth()
 
   const isDateCurrent = (day: IDateItem) =>
-    day.value === new Date().getDate() &&
-    day.month === "current" &&
-    date.current.getMonth() === new Date().getMonth()
+    day.value === new Date().getDate() && day.month === "current" && date.current.getMonth() === new Date().getMonth()
 
-  const getMonthName = (id) => months.find((month) => month.id === id)!.name
+  const getMonthName = id => months.find(month => month.id === id)!.name
   const [yearState, setYearState] = useState(date.current.getFullYear())
   const [firstYear, setFirstYear] = useState(yearState - (yearState % 10))
   const getDaysInMonth = (m, y) => {
     m += 1
-    return /8|3|5|10/.test((--m).toString())
-      ? 30
-      : m === 1
-      ? (!(y % 4) && y % 100) || !(y % 400)
-        ? 29
-        : 28
-      : 31
+    return /8|3|5|10/.test((--m).toString()) ? 30 : m === 1 ? ((!(y % 4) && y % 100) || !(y % 400) ? 29 : 28) : 31
   }
-  const [dataPicker, setDataPicker] = useState([
-    date.current.getMonth(),
-    date.current.getFullYear(),
-  ])
+  const [dataPicker, setDataPicker] = useState([date.current.getMonth(), date.current.getFullYear()])
   const updateCalendarTable = () => {
     const dayofmonth: IDateItem[] = []
     let id = 0
-    const previousNumDate = getDaysInMonth(
-      date.current.getMonth() - 1,
-      date.current.getFullYear()
-    )
+    const previousNumDate = getDaysInMonth(date.current.getMonth() - 1, date.current.getFullYear())
     //get day of week of the first day of the month
-    const x = new Date(
-      `${date.current.getFullYear()}-${date.current.getMonth() + 1}-01`
-    ).getDay()
+    const x = new Date(`${date.current.getFullYear()}-${date.current.getMonth() + 1}-01`).getDay()
 
-    for (
-      let i = 1 - ((x + 6) % 7);
-      i <= getDaysInMonth(date.current.getMonth(), date.current.getFullYear());
-      i++
-    ) {
+    for (let i = 1 - ((x + 6) % 7); i <= getDaysInMonth(date.current.getMonth(), date.current.getFullYear()); i++) {
       if (i <= 0) {
         dayofmonth.push({
           id: id,
@@ -140,38 +120,27 @@ const useCalendar = ({ value, onChange }: ICalendar) => {
   // calendar table
   const [calendar, setCalendar] = useState(updateCalendarTable())
 
-  const swipe = (type) => {
-    date.current.setMonth(
-      date.current.getMonth() + (type === "next" ? 1 : -1),
-      1
-    )
-    if (
-      (type === "next" && date.current.getMonth() === 0) ||
-      (type === "prev" && date.current.getMonth() === 11)
-    )
+  const swipe = type => {
+    date.current.setMonth(date.current.getMonth() + (type === "next" ? 1 : -1), 1)
+    if ((type === "next" && date.current.getMonth() === 0) || (type === "prev" && date.current.getMonth() === 11))
       setYearState(date.current.getFullYear())
     setCalendar(updateCalendarTable())
   }
-  const updateMonth = (month) => {
+  const updateMonth = month => {
     date.current.setMonth(month)
     date.current.setFullYear(yearState)
     setCalendar(updateCalendarTable())
   }
-  const swipeYear = (type) => {
-    date.current.setFullYear(
-      date.current.getFullYear() + (type === "next" ? 1 : -1)
-    )
+  const swipeYear = type => {
+    date.current.setFullYear(date.current.getFullYear() + (type === "next" ? 1 : -1))
     setYearState(yearState + (type === "next" ? 1 : -1))
     setCalendar(updateCalendarTable())
   }
-  const swipe12 = (type) => {
+  const swipe12 = type => {
     setFirstYear(firstYear + (type === "next" ? 12 : -12))
   }
-  const selectDate = (day) => {
-    date.current.setMonth(
-      date.current.getMonth() +
-        (day.month === "previous" ? -1 : day.month === "next" ? 1 : 0)
-    )
+  const selectDate = day => {
+    date.current.setMonth(date.current.getMonth() + (day.month === "previous" ? -1 : day.month === "next" ? 1 : 0))
     date.current.setDate(day.value)
     date.current.setHours(17, 30)
     // onChange(date.current.toISOString());
@@ -214,7 +183,7 @@ const useCalendar = ({ value, onChange }: ICalendar) => {
       arr.push(
         <Picker.Item key={i} value={i}>
           {i}
-        </Picker.Item>
+        </Picker.Item>,
       )
     }
     return arr
@@ -277,15 +246,7 @@ const Displayer = ({
     <Flex flexDir="column" flex={1} w="full">
       <Flex h="32px" px={2} align="center" userSelect="none" mb={2}>
         <SpCalendar color="#F4B433" />
-        <Text
-          whiteSpace="nowrap"
-          isTruncated
-          w="9rem"
-          ml={2}
-          fontWeight={600}
-          cursor="pointer"
-          onClick={onTitleClick}
-        >
+        <Text whiteSpace="nowrap" isTruncated w="9rem" ml={2} fontWeight={600} cursor="pointer" onClick={onTitleClick}>
           {title}
         </Text>
         {!isDisableChevron && (
@@ -344,12 +305,7 @@ export const Calendar = ({ value, onChange }: ICalendar) => {
 
   return (
     <Box w="full" pos="relative" ref={ref}>
-      <Flex
-        onClick={clickIcon}
-        cursor="pointer"
-        align="center"
-        userSelect="none"
-      >
+      <Flex onClick={clickIcon} cursor="pointer" align="center" userSelect="none">
         <Input
           pl={10}
           border="none"
@@ -361,9 +317,7 @@ export const Calendar = ({ value, onChange }: ICalendar) => {
             value
               ? format(new Date(value), "MMM") +
                 " " +
-                new Date(value)
-                  .getDate()
-                  .toLocaleString(undefined, { minimumIntegerDigits: 2 }) +
+                new Date(value).getDate().toLocaleString(undefined, { minimumIntegerDigits: 2 }) +
                 ", " +
                 new Date(value).getFullYear()
               : "MMM DD, YYYY"
@@ -380,29 +334,13 @@ export const Calendar = ({ value, onChange }: ICalendar) => {
           />
         </Box>
       </Flex>
-      <Box
-        pos="absolute"
-        overflow="visible"
-        zIndex={3}
-        top={"100%"}
-        left={0}
-        transform={"translateY(0.5rem);"}
-      >
+      <Box pos="absolute" overflow="visible" zIndex={3} top={"100%"} left={0} transform={"translateY(0.5rem);"}>
         <Collapse in={popup} animateOpacity unmountOnExit>
           <Stack spacing={6} direction={["column", "row"]} zIndex="3">
-            <Box
-              w="300px"
-              bg="neutral.700"
-              boxShadow={"0px 34px 60px 0px #00000099"}
-              rounded="lg"
-            >
+            <Box w="300px" bg="neutral.700" boxShadow={"0px 34px 60px 0px #00000099"} rounded="lg">
               <Flex p={2} align="center" userSelect="none" w="full">
                 <Displayer
-                  title={
-                    getMonthName(date.current.getMonth()) +
-                    " " +
-                    date.current.getFullYear()
-                  }
+                  title={getMonthName(date.current.getMonth()) + " " + date.current.getFullYear()}
                   onPrevClick={() => swipe("prev")}
                   onNextClick={() => swipe("next")}
                   onTitleClick={() => {
@@ -410,13 +348,8 @@ export const Calendar = ({ value, onChange }: ICalendar) => {
                   }}
                 >
                   <Flex flexDir="row" w="full" userSelect="none">
-                    {dayName.map((day) => (
-                      <Flex
-                        key={day}
-                        boxSize="2.5rem"
-                        align="center"
-                        justify="center"
-                      >
+                    {dayName.map(day => (
+                      <Flex key={day} boxSize="2.5rem" align="center" justify="center">
                         <Text
                           fontSize="xs"
                           color="neutral.400"
@@ -431,7 +364,7 @@ export const Calendar = ({ value, onChange }: ICalendar) => {
                     ))}
                   </Flex>
                   <Flex w="full" wrap="wrap" userSelect="none">
-                    {calendar.map((day) => (
+                    {calendar.map(day => (
                       <Flex
                         role="group"
                         _hover={{ bg: "accent.500" }}
@@ -496,36 +429,25 @@ export const Calendar = ({ value, onChange }: ICalendar) => {
                 p={2}
               >
                 <Displayer
-                  title={
-                    getMonthName(date.current.getMonth()) +
-                    " " +
-                    date.current.getFullYear()
-                  }
+                  title={getMonthName(date.current.getMonth()) + " " + date.current.getFullYear()}
                   isDisableChevron
                 >
                   <Flex flexDir="column" flex={1} w="full">
                     <Flex flexDir="column" flex={1} px={4} py={4}>
-                      <MultiPicker
-                        selectedValue={dataPicker}
-                        onValueChange={(v) => updatePicker(v[0], v[1])}
-                      >
+                      <MultiPicker selectedValue={dataPicker} onValueChange={v => updatePicker(v[0], v[1])}>
                         <Picker indicatorStyle={{ borderLeftRadius: "base" }}>
-                          {months.map((month) => (
+                          {months.map(month => (
                             <Picker.Item key={month.id} value={month.id}>
                               {month.name}
                             </Picker.Item>
                           ))}
                         </Picker>
-                        <Picker indicatorStyle={{ borderRightRadius: "base" }}>
-                          {render24Year()}
-                        </Picker>
+                        <Picker indicatorStyle={{ borderRightRadius: "base" }}>{render24Year()}</Picker>
                       </MultiPicker>
                       <Box px={4}>
                         <Divider mb={4} />
                         <Flex align="center" justify="flex-end">
-                          <Button onClick={() => setOpenMonth(false)}>
-                            Done
-                          </Button>
+                          <Button onClick={() => setOpenMonth(false)}>Done</Button>
                         </Flex>
                       </Box>
                     </Flex>

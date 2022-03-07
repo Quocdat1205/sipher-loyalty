@@ -1,9 +1,10 @@
-import { ReactNode } from "react"
-import { Box, Flex } from "@sipher.dev/sipher-ui"
+import { Fragment, ReactNode, useEffect, useState } from "react"
+import { Flex } from "@sipher.dev/sipher-ui"
+import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
+import { OnBoardModal } from "../modal"
 import { TopNavigationBar } from "../top-navigation-bar"
-import { ConnectWalletUI } from "../top-navigation-bar/user-info"
 
 import { GradientBox } from "."
 
@@ -13,6 +14,18 @@ interface StoreFrontLayoutProps {
 
 export const Layout = ({ children }: StoreFrontLayoutProps) => {
   const { account } = useWalletContext()
+  const [modal, setModal] = useState(false)
+  const { toggleWalletModal } = useStore(s => ({
+    toggleWalletModal: s.toggleWalletModal,
+  }))
+
+  useEffect(() => {
+    if (!account) {
+      toggleWalletModal(true)
+    } else {
+      setModal(true)
+    }
+  }, [account])
 
   return (
     <Flex
@@ -28,14 +41,11 @@ export const Layout = ({ children }: StoreFrontLayoutProps) => {
       <TopNavigationBar />
       <Flex flexDir="column" zIndex={2} overflow={"hidden"} flex={1}>
         {account ? (
-          children
-        ) : (
-          <Flex flex={1} pt={16} w="full" justify="center">
-            <Box w="full" maxW="36rem">
-              <ConnectWalletUI />
-            </Box>
-          </Flex>
-        )}
+          <Fragment>
+            {children}
+            <OnBoardModal isOpen={modal} onClose={() => setModal(false)} />
+          </Fragment>
+        ) : null}
       </Flex>
     </Flex>
   )

@@ -2,6 +2,7 @@ import React from "react"
 import { Box, BoxProps } from "@sipher.dev/sipher-ui"
 
 import { useChakraToast } from "@hooks"
+
 import { SpCopy } from "./icons"
 
 interface ClipboardProps extends BoxProps {
@@ -9,11 +10,7 @@ interface ClipboardProps extends BoxProps {
   color?: string
 }
 
-export const ClipboardCopy = ({
-  text = "",
-  color,
-  ...rest
-}: ClipboardProps) => {
+export const ClipboardCopy = ({ text = "", color, ...rest }: ClipboardProps) => {
   const toast = useChakraToast()
 
   const handleClick = () => {
@@ -26,12 +23,7 @@ export const ClipboardCopy = ({
   }
 
   return (
-    <Box
-      cursor="pointer"
-      color="neutral.400"
-      onClick={() => handleClick()}
-      {...rest}
-    >
+    <Box cursor="pointer" color="neutral.400" onClick={() => handleClick()} {...rest}>
       <SpCopy size="1.2rem" color={color} />
     </Box>
   )

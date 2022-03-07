@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react"
 
-type Props = React.DetailedHTMLProps<React.FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>;
+type Props = React.DetailedHTMLProps<React.FormHTMLAttributes<HTMLFormElement>, HTMLFormElement>
 
 export const Form = (props: Props) => {
-  return <form {...props} />;
-};
+  return <form {...props} />
+}

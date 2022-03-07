@@ -4,6 +4,7 @@ import { wrap } from "popmotion"
 import { Box, HStack } from "@sipher.dev/sipher-ui"
 
 interface SlideshowProps {
+  isAuto?: boolean
   deplay?: number
   slideData: React.ReactNode[]
 }
@@ -34,10 +35,7 @@ const swipePower = (offset: number, velocity: number) => {
   return Math.abs(offset) * velocity
 }
 
-export const SlideComponent = ({
-  deplay = 5000,
-  slideData,
-}: SlideshowProps) => {
+export const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: SlideshowProps) => {
   const [[page, direction], setPage] = useState([0, 0])
   const index = wrap(0, slideData.length, page)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -53,11 +51,13 @@ export const SlideComponent = ({
   }
 
   useEffect(() => {
-    resetTimeout()
-    timeoutRef.current = setTimeout(() => paginate(1), deplay)
-
-    return () => {
+    if (isAuto) {
       resetTimeout()
+      timeoutRef.current = setTimeout(() => paginate(1), deplay)
+
+      return () => {
+        resetTimeout()
+      }
     }
   }, [index])
 
@@ -66,13 +66,7 @@ export const SlideComponent = ({
   }
 
   return (
-    <Box
-      pos="relative"
-      h={["20rem", "22.5rem"]}
-      w="full"
-      overflow="hidden"
-      bg="#151515"
-    >
+    <Box pos="relative" h={["20rem", "22.5rem"]} w="full" overflow="hidden" bg="#151515">
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={page}
@@ -103,13 +97,7 @@ export const SlideComponent = ({
           </Box>
         </motion.div>
       </AnimatePresence>
-      <HStack
-        pos="absolute"
-        bottom={0}
-        left="50%"
-        transform="translate(-50%, -1rem)"
-        align="center"
-      >
+      <HStack pos="absolute" bottom={0} left="50%" transform="translate(-50%, -1rem)" align="center">
         {slideData.map((_, idx) => (
           <Box
             cursor="pointer"

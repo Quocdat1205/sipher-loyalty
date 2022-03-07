@@ -1,8 +1,8 @@
-import Head from 'next/head';
+import Head from "next/head"
 
 interface MetadataProps {
-  title: string;
-  description: string;
+  title: string
+  description: string
 }
 
 export function Metadata({ title, description }: MetadataProps) {
@@ -23,5 +23,5 @@ export function Metadata({ title, description }: MetadataProps) {
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content="/images/pc/home/NEKO_3D.png" />
     </Head>
-  );
+  )
 }

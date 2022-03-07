@@ -1,9 +1,9 @@
-import React, { RefObject } from 'react';
-import { BiUpArrowAlt } from 'react-icons/bi';
-import { IconButton } from '@sipher.dev/sipher-ui';
+import React, { RefObject } from "react"
+import { BiUpArrowAlt } from "react-icons/bi"
+import { IconButton } from "@sipher.dev/sipher-ui"
 
 interface ScrollTopButtonProps {
-  bodyRef: RefObject<HTMLInputElement> | null;
+  bodyRef: RefObject<HTMLInputElement> | null
 }
 
 const ScrollTopButton = ({ bodyRef }: ScrollTopButtonProps) => {
@@ -11,10 +11,10 @@ const ScrollTopButton = ({ bodyRef }: ScrollTopButtonProps) => {
     if (bodyRef && bodyRef.current) {
       bodyRef.current.scrollTo({
         top: 0,
-        behavior: 'smooth',
-      });
+        behavior: "smooth",
+      })
     }
-  };
+  }
 
   return (
     <IconButton
@@ -26,9 +26,9 @@ const ScrollTopButton = ({ bodyRef }: ScrollTopButtonProps) => {
       bg="accent.600"
       color="neutral.700"
       icon={<BiUpArrowAlt size="1.4rem" />}
-      _focus={{ boxShadow: 'none' }}
+      _focus={{ boxShadow: "none" }}
     />
-  );
-};
+  )
+}
 
-export default ScrollTopButton;
+export default ScrollTopButton
