@@ -1,5 +1,4 @@
 export * from "./Banner"
-export * from "./Calendar"
 export * from "./ChakraModal"
 export * from "./ClipboardCopy"
 export * from "./CustomCheckbox"
