@@ -9,10 +9,6 @@ export class MintController {
 
   @Get("test")
   async test() {
-    return this.mintService.test({
-      userAddress: "",
-      mintType: "0",
-      quantity: 1,
-    })
+    return this.mintService.test()
   }
 }

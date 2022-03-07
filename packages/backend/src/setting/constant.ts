@@ -28,7 +28,7 @@ define("AWS_REGION_S3", process.env.AWS_REGION_S3)
 define("AWS_ACCESS_KEY_ID_S3", process.env.AWS_ACCESS_KEY_ID_S3)
 
 define("PRIVATE_KEY", process.env.PRIVATE_KEY)
-define("CHAIN_ID", parseInt(process.env.CHAIN_ID))
+define("CHAIN_ID", parseInt(process.env.CHAIN_ID, 10))
 
 function define(key: string, value: any) {
   Object.defineProperty(constant, key, {

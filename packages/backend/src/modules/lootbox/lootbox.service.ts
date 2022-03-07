@@ -1,6 +1,7 @@
 // import library
 import fs from "fs"
 
+import { toChecksumAddress } from "ethereumjs-util"
 import { Repository } from "typeorm"
 import { Lootbox } from "@entity"
 import { Injectable } from "@nestjs/common"
@@ -8,9 +9,13 @@ import { Cron } from "@nestjs/schedule"
 import { InjectRepository } from "@nestjs/typeorm"
 import constant from "@setting/constant"
 
+import { MintService } from "@modules/mint/mint.service"
+
 import { NftContract } from "../contract/contract.module"
 // import module
 import { LoggerService } from "../logger/logger.service"
+
+import { MintLootboxInput } from "./lootbox.type"
 
 @Injectable()
 export class LootBoxService {
@@ -28,30 +33,31 @@ export class LootBoxService {
     contract: constant.SC_NFT_NEKO,
   })
 
-  constructor(@InjectRepository(Lootbox) private LootboxRepo: Repository<Lootbox>) {}
+  constructor(@InjectRepository(Lootbox) private LootboxRepo: Repository<Lootbox>, private mintService: MintService) {}
 
   @Cron("0 0 0 * * 0")
   async handleCron() {
-    LoggerService.log("check balance holder Sipher nft")
+    LoggerService.log("check balance holder Sipher nft and distribute")
     await this.distributeLootboxWeeklyForHolder()
-    LoggerService.log("distribute lootbox")
+    LoggerService.log("distribute lootbox finished! ")
   }
 
-  private distributeLootbox = async (nftContract: NftContract, i: number, typeId: number) => {
+  private distributeLootbox = async (nftContract: NftContract, i: number, tokenId: number) => {
     try {
       const publicAddress: string = await nftContract.getOwnerOf(i)
       let lootbox = await this.LootboxRepo.findOne({
-        where: { publicAddress, typeId },
+        where: { publicAddress, tokenId },
       })
       if (!lootbox) {
-        lootbox = await this.LootboxRepo.create({
+        lootbox = this.LootboxRepo.create({
           publicAddress,
-          typeId,
+          tokenId,
           quantity: 1,
         })
       } else {
         lootbox.quantity++
       }
+      LoggerService.log("save lootbox to ", publicAddress)
       await this.LootboxRepo.save(lootbox)
     } catch (err) {
       LoggerService.log("err at ", i)
@@ -67,23 +73,61 @@ export class LootBoxService {
     await Promise.all(promises)
   }
 
-  distributeLootboxWeeklyForHolder = async () => {
-    const typeId = Math.floor(new Date().getTime() / 86400) % 7
-    await this.distributeLootboxForContract(this.InuContract, typeId)
+  private distributeLootboxWeeklyForHolder = async () => {
+    const typeId = Math.floor(new Date().getTime() / (86400 * 7)) % 7
+    // await this.distributeLootboxForContract(this.InuContract, typeId)
     await this.distributeLootboxForContract(this.NekoContract, typeId)
   }
 
   getLootboxFromWallet = async (publicAddress: string) => {
     const lootboxs = await this.LootboxRepo.find({
-      where: [{ publicAddress }, { publicAddress: publicAddress.toLowerCase() }],
+      where: [{ publicAddress: toChecksumAddress(publicAddress) }, { publicAddress: publicAddress.toLowerCase() }],
     })
     return lootboxs
   }
 
-  getLootboxFromUserID = async (userID: string) => {
-    const lootboxs = await this.LootboxRepo.find({
-      where: { user: { userID } },
+  getLootboxFromWalletAndTokenID = async (publicAddress: string, tokenId: number) => {
+    const lootboxs = await this.LootboxRepo.findOne({
+      where: [
+        { publicAddress: toChecksumAddress(publicAddress), tokenId },
+        { publicAddress: publicAddress.toLowerCase(), tokenId },
+      ],
     })
     return lootboxs
+  }
+
+  getLootboxFromUserID = async (userId: string) => {
+    LoggerService.log("userId", userId)
+    // get list wallet address from Sipher User ID
+    const walletAddressList = [
+      "0x83629905189464CC16F5E7c12D54dD5e87459B33",
+      "0xE5B8CbFf1768E8559E0F002ac01fA5D070551b4D",
+    ]
+    const promises = []
+    walletAddressList.forEach(walletAddress => {
+      promises.push(this.getLootboxFromWallet(walletAddress))
+    })
+    const lootboxs = (await Promise.all(promises)).flat(1)
+    const flattern_lootbox = []
+    lootboxs.forEach((lootbox: Lootbox) => {
+      const index = flattern_lootbox.findIndex(
+        (lb: Lootbox) => lb.publicAddress === lootbox.publicAddress && lb.tokenId === lootbox.tokenId,
+      )
+      if (index !== -1) flattern_lootbox[index].quantity += lootbox.quantity
+      else flattern_lootbox.push(lootbox)
+    })
+    return flattern_lootbox
+  }
+
+  mintLootbox = async (mintLootboxInput: MintLootboxInput) => {
+    const { walletAddress, batchID, amount } = mintLootboxInput
+
+    const lootbox = await this.getLootboxFromWalletAndTokenID(walletAddress, batchID)
+    if (!lootbox) return { signanture: "", success: false, message: "not found", data: {} }
+    if (lootbox.quantity - lootbox.pending < amount)
+      return { signanture: "", success: false, message: "not enough balance", data: lootbox }
+    lootbox.pending += amount
+    await this.LootboxRepo.save(lootbox)
+    return { signanture: await this.mintService.mint(mintLootboxInput), success: true, message: "", data: lootbox }
   }
 }

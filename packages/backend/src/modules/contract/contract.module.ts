@@ -6,27 +6,14 @@ export class NftContract {
 
   contract: any
 
-  randomizedIndex: number
-
   constructor({ abi, contract }: { abi: any; contract: string }) {
     this.web3 = new Web3(new Web3.providers.HttpProvider(constant.SC_INFURA))
     this.contract = new this.web3.eth.Contract(abi, contract)
-    this.contract.methods
-      .randomizedStartIndex()
-      .call()
-      .then((res: string) => parseInt(res))
-      .then((index: number) => {
-        this.randomizedIndex = index
-      })
   }
 
   addAccountByPrivateKey(privateKey: string) {
     const account = this.web3.eth.accounts.privateKeyToAccount(privateKey)
     this.web3.eth.accounts.wallet.add(account)
-  }
-
-  async setRandomizedStartIndex() {
-    this.randomizedIndex = parseInt(await this.contract.methods.randomizedStartIndex().call(), 10)
   }
 
   async ownerOf(id: number): Promise<string> {
@@ -39,20 +26,6 @@ export class NftContract {
 
   async _tokenOfOwnerByIndex(address: string, index: number) {
     return parseInt(await this.contract.methods.tokenOfOwnerByIndex(address, index).call(), 10)
-  }
-
-  async getNFTId(address: string, index: number) {
-    const tokenId = await this._tokenOfOwnerByIndex(address, index)
-    const NFTId = ((tokenId + this.randomizedIndex - 2 + 10000) % 10000) + 1
-    return NFTId
-  }
-
-  getIndexFromId(id: number) {
-    return (id - this.randomizedIndex + 1 + 10000) % 10000
-  }
-
-  getNftIdFromTokenId(tokenId: number) {
-    return ((tokenId - 2 + this.randomizedIndex) % 10000) + 1
   }
 
   async getOwnerOf(index: number) {

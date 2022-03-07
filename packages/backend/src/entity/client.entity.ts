@@ -20,7 +20,34 @@ export class Lootbox {
   quantity: number
 
   @Column({ nullable: false })
-  typeId: number
+  tokenId: number
+
+  @Column({ default: 0 })
+  pending: number
+
+  @CreateDateColumn({ default: new Date() })
+  createdAt: Date
+}
+
+@Entity()
+export class PendingMint {
+  @PrimaryGeneratedColumn()
+  id: string
+
+  @Column({ nullable: false })
+  to: string
+
+  @Column({ nullable: false })
+  batchID: number
+
+  @Column({ nullable: false })
+  amount: number
+
+  @Column({ nullable: false })
+  salt: string
+
+  @Column({ nullable: false })
+  signature: string
 
   @CreateDateColumn({ default: new Date() })
   createdAt: Date
@@ -190,8 +217,9 @@ export class SculpturesOrder {
   @Column()
   status: string
 
-  // @OneToMany(type => NftOrder, nft => nft.id_sculpture)
-  // nft: NftOrder[]
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @OneToMany(() => NftOrder, nft => nft.id_sculpture)
+  nft: NftOrder[]
 
   @CreateDateColumn()
   createdAt: Date
