@@ -56,7 +56,7 @@ export const VerifyAccount = ({ isComplete, setIsComplete, changeForm, setChange
         <Divider pos="absolute" left="0" w="full" borderColor="whiteAlpha.100" />
       </Box>
       <Button onClick={handleChangeForm} fontSize="md" py={6} fontWeight={600}>
-        COMPLETE
+        {changeForm.status === "FORGOT" ? "CONTINUE" : "COMPLETE"}
       </Button>
     </Stack>
   )
