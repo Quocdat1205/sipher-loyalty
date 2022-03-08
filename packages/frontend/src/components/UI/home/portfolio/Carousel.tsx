@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { wrap } from "popmotion"
-import { Box, HStack } from "@sipher.dev/sipher-ui"
+import { Box, HStack, SimpleGrid } from "@sipher.dev/sipher-ui"
+
+import { NFTCard } from "@components/UI/portfolio/nfts"
 
 interface SlideshowProps {
   isAuto?: boolean
   deplay?: number
-  slideData: React.ReactNode[]
+  slideData: Record<string, any>
 }
 
 const variants = {
@@ -35,9 +37,17 @@ const swipePower = (offset: number, velocity: number) => {
   return Math.abs(offset) * velocity
 }
 
-export const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: SlideshowProps) => {
+export const Carousel = ({ deplay = 5000, slideData, isAuto = false }: SlideshowProps) => {
   const [[page, direction], setPage] = useState([0, 0])
-  const index = wrap(0, slideData.length, page)
+  const pageSize = 5
+  const pageNumber =
+    slideData.length > 0
+      ? slideData.length % pageSize > 0
+        ? Math.floor(slideData.length / pageSize) + 1
+        : Math.floor(slideData.length / pageSize)
+      : 0
+
+  const index = wrap(0, pageNumber, page)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const paginate = (newDirection: number) => {
@@ -62,11 +72,11 @@ export const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: Sli
   }, [index])
 
   const handleClick = (idx: number) => {
-    paginate(idx < index ? idx - index + slideData.length : idx - index)
+    paginate(idx < index ? idx - index + pageNumber : idx - index)
   }
 
   return (
-    <Box pos="relative" h={["20rem", "22.5rem"]} w="full" overflow="hidden" bg="#151515">
+    <Box pos="relative" h={["25rem"]} w="full" overflow="hidden">
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={page}
@@ -93,12 +103,23 @@ export const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: Sli
           }}
         >
           <Box pos="absolute" w="full" h="full">
-            {slideData[index]}
+            <SimpleGrid w="full" spacing={4} columns={pageSize}>
+              {slideData.slice(index * pageSize, (index + 1) * pageSize).map(item => (
+                <NFTCard
+                  key={item}
+                  liked={1}
+                  tokenId={"1"}
+                  name="Sipher Inu #2173"
+                  collectionId="0x4d91fa57abfead5fbc8445e45b906b85bbd9744c"
+                  imageUrl="/images/nft/sipher3.png"
+                />
+              ))}
+            </SimpleGrid>
           </Box>
         </motion.div>
       </AnimatePresence>
       <HStack pos="absolute" bottom={0} left="50%" transform="translate(-50%, -1rem)" align="center">
-        {slideData.map((_, idx) => (
+        {Array.from(Array(pageNumber).keys()).map((_, idx) => (
           <Box
             cursor="pointer"
             onClick={() => handleClick(idx)}

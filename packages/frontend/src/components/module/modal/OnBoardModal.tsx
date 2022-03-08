@@ -68,7 +68,7 @@ export const OnBoardModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
         </Heading>
         <HStack mb={8} w="full" justify="space-between" spacing={6}>
           {imageData.map(item => (
-            <Box w="full" h="full" key={item.title1}>
+            <Box sx={{ img: { rounded: "lg" } }} w="full" h="full" key={item.title1}>
               <Image src={item.image} alt={item.title1} width={320} height={416} />
               <Text mt={4} textAlign="center" textTransform="uppercase" fontSize="sm" fontWeight={600}>
                 {item.title1}

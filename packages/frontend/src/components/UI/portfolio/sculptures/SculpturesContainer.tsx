@@ -25,9 +25,11 @@ export const SculpturesContainer = () => {
 
   return (
     <Box>
-      <Button onClick={openModalShipping} isDisabled={sculptureData.filter(i => i.isChecked).length === 0} mb={4}>
-        REDEEM ALL
-      </Button>
+      {sculptureData.filter(i => i.isChecked).length !== 0 && (
+        <Button onClick={openModalShipping} mb={4}>
+          REDEEM ALL
+        </Button>
+      )}
       <SimpleGrid spacing={6} columns={[1, 2, 3, 4, 5]}>
         {renderNFTs()}
       </SimpleGrid>
