@@ -35,7 +35,7 @@ export const ConnectWalletModal = ({ isOpen, onClose }: ConnectWalletModalProps)
   const completeText = isComplete
     ? changeForm.status === "FORGOT"
       ? "PASSWORD UPDATED"
-      : changeForm.status === "SIGN_UP"
+      : changeForm.status === "SIGN_UP_WALLET"
       ? "ACCOUNT UPDATED"
       : ""
     : ""
