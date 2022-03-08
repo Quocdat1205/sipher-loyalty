@@ -13,6 +13,7 @@ import {
 interface ChakraModalProps extends ModalProps {
   isOpen: boolean
   onClose: () => void
+  isHiddenClose?: boolean
   title: string
   children: React.ReactNode
   titleProps?: HeadingProps
@@ -21,6 +22,7 @@ interface ChakraModalProps extends ModalProps {
 export const ChakraModal = ({
   isOpen,
   onClose,
+  isHiddenClose = false,
   title,
   children,
   size = "xl",
@@ -35,9 +37,13 @@ export const ChakraModal = ({
           <Heading fontWeight={600} {...titleProps}>
             {title}
           </Heading>
-          <ModalCloseButton color="neutral.400" _focus={{ shadow: "none" }} position="static" size="sm" />
+          {!isHiddenClose && (
+            <ModalCloseButton color="neutral.400" _focus={{ shadow: "none" }} position="static" size="sm" />
+          )}
         </Flex>
-        <ModalBody pb={6}>{children}</ModalBody>
+        <ModalBody px={0} pb={6}>
+          {children}
+        </ModalBody>
       </ModalContent>
     </Modal>
   )

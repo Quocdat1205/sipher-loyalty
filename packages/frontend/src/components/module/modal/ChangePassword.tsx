@@ -3,8 +3,8 @@ import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs"
 import {
   Box,
   Button,
+  Divider,
   Flex,
-  FormLabel,
   HStack,
   IconButton,
   InputGroup,
@@ -16,15 +16,16 @@ import {
 import { CustomInput } from "@components/module/modal"
 import { Form, FormControl, FormField } from "@components/shared"
 
+import { ChangeFormProps } from "../top-navigation-bar/user-info"
+
 import { usePasswordValidation } from "./usePasswordValidation"
 
-interface ChangePasswordProps {
-  setChangeForm: (changeForm: string) => void
+interface ChangePasswordProps extends ChangeFormProps {
   isComplete: boolean
   setIsComplete: (isComplete: boolean) => void
 }
 
-export const ChangePassword = ({ setChangeForm, isComplete, setIsComplete }: ChangePasswordProps) => {
+export const ChangePassword = ({ changeForm, setChangeForm, isComplete, setIsComplete }: ChangePasswordProps) => {
   const [show, setShow] = useState({ pass1: false, pass2: false })
   const [password, setPassword] = useState({ firstPass: "", secondPass: "" })
 
@@ -36,14 +37,22 @@ export const ChangePassword = ({ setChangeForm, isComplete, setIsComplete }: Cha
   const handleChangeForm = () => {
     if (isComplete) {
       {
-        setChangeForm("SIGN_IN")
+        setChangeForm({ ...changeForm, form: "SIGN_IN" })
         setIsComplete(false)
       }
     } else setIsComplete(true)
   }
 
+  const handleStrengthText = () => {
+    if (validationPassword.filter(i => i === true).length > 3) return { text: "Excellent", color: "cyan.400" }
+    if (validationPassword.filter(i => i === true).length > 2) return { text: "Good", color: "teal.400" }
+    if (validationPassword.filter(i => i === true).length > 1) return { text: "Fair", color: "orange.400" }
+    if (validationPassword.filter(i => i === true).length > 0) return { text: "Poor", color: "red.400" }
+    return { text: "Password Strength", color: "neutral.500" }
+  }
+
   return (
-    <Stack spacing={4} w="full">
+    <Stack px={6} spacing={4} w="full">
       <Text color="neutral.300">
         {isComplete
           ? "The password of your account has been updated"
@@ -52,16 +61,15 @@ export const ChangePassword = ({ setChangeForm, isComplete, setIsComplete }: Cha
       {!isComplete && (
         <Form>
           <FormControl as="fieldset">
-            <FormLabel fontWeight={400}>Your Password</FormLabel>
             <FormField>
               <InputGroup size="md">
                 <CustomInput
                   onChange={e => setPassword({ ...password, firstPass: e.target.value })}
-                  pr="4.5rem"
+                  pr="2.5rem"
                   type={show.pass1 ? "text" : "password"}
-                  placeholder="Enter password"
+                  placeholder="Your password"
                 />
-                <InputRightElement width="4.5rem">
+                <InputRightElement width="2.5rem">
                   <IconButton
                     variant="ghost"
                     aria-label="eye-icon"
@@ -77,16 +85,8 @@ export const ChangePassword = ({ setChangeForm, isComplete, setIsComplete }: Cha
               </InputGroup>
             </FormField>
             <Flex align="center" justify="space-between">
-              <Text color="neutral.500" fontSize="xs">
-                {validationPassword.filter(i => i === true).length > 0
-                  ? "Poor"
-                  : validationPassword.filter(i => i === true).length > 1
-                  ? "Fair"
-                  : validationPassword.filter(i => i === true).length > 2
-                  ? "Good"
-                  : validationPassword.filter(i => i === true).length > 3
-                  ? "Excellent"
-                  : "Password Strength"}
+              <Text color={handleStrengthText().color} fontWeight={600} fontSize="xs">
+                {handleStrengthText().text}
               </Text>
               <HStack spacing={1}>
                 <Box
@@ -112,17 +112,16 @@ export const ChangePassword = ({ setChangeForm, isComplete, setIsComplete }: Cha
               </HStack>
             </Flex>
           </FormControl>
-          <FormControl as="fieldset">
-            <FormLabel fontWeight={400}>Repeat your Password</FormLabel>
+          <FormControl mb={2} as="fieldset">
             <FormField>
               <InputGroup size="md">
                 <CustomInput
                   onChange={e => setPassword({ ...password, firstPass: e.target.value })}
-                  pr="4.5rem"
+                  pr="2.5rem"
                   type={show.pass2 ? "text" : "password"}
-                  placeholder="Enter password"
+                  placeholder="Repeat your password"
                 />
-                <InputRightElement width="4.5rem">
+                <InputRightElement width="2.5rem">
                   <IconButton
                     variant="ghost"
                     aria-label="eye-icon"
@@ -140,6 +139,9 @@ export const ChangePassword = ({ setChangeForm, isComplete, setIsComplete }: Cha
           </FormControl>
         </Form>
       )}
+      <Box pb={2}>
+        <Divider pos="absolute" left="0" w="full" borderColor="whiteAlpha.100" />
+      </Box>
       <Button onClick={handleChangeForm} fontSize="md" py={6} fontWeight={600}>
         {isComplete ? "SIGN IN" : "COMPLETE"}
       </Button>

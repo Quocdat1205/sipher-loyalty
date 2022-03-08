@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Box, Img, SimpleGrid } from "@sipher.dev/sipher-ui"
+
 import { ChakraModal } from "@components/shared"
 
 interface ChooseAvatarModalProps {
@@ -30,11 +31,7 @@ const ImgCard = ({ active, src, onClick }: CardProps) => {
   )
 }
 
-export const ChooseAvatarModal = ({
-  setChoose,
-  isOpen,
-  onClose,
-}: ChooseAvatarModalProps) => {
+export const ChooseAvatarModal = ({ setChoose, isOpen, onClose }: ChooseAvatarModalProps) => {
   const [selected, setSelected] = useState<number>()
 
   const handleSelected = (index: number) => {
@@ -47,13 +44,7 @@ export const ChooseAvatarModal = ({
   }, [isOpen])
 
   return (
-    <ChakraModal
-      isCentered
-      title={"CHOOSE NFT"}
-      isOpen={isOpen}
-      onClose={onClose}
-      size="xl"
-    >
+    <ChakraModal isCentered title={"CHOOSE NFT"} isOpen={isOpen} onClose={onClose} size="xl">
       <SimpleGrid pb={2} columns={4} spacing={6}>
         {Array.from(Array(6).keys()).map((i, index) => (
           <ImgCard

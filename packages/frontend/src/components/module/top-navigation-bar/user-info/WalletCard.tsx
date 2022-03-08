@@ -14,7 +14,7 @@ export const WalletCard = ({ bg = "neutral.600", src, onClick }: WalletCardProps
       align="center"
       flex={1}
       px={4}
-      py={2}
+      py={3}
       rounded="base"
       bg={bg}
       cursor="pointer"

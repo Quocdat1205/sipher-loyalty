@@ -5,8 +5,8 @@ import {
   Box,
   Button,
   chakra,
+  Divider,
   Flex,
-  FormLabel,
   HStack,
   IconButton,
   InputGroup,
@@ -14,21 +14,17 @@ import {
   Stack,
   Text,
 } from "@sipher.dev/sipher-ui"
-import { useWalletContext } from "@web3"
 
 import { CustomInput } from "@components/module/modal"
 import { CustomPopover, Form, FormControl, FormField } from "@components/shared"
 
+import { ChangeFormProps } from "../top-navigation-bar/user-info"
+
 import { usePasswordValidation } from "./usePasswordValidation"
-import { WalletCard } from "."
 
-interface SignUpProps {
-  onClose: () => void
-  setChangeForm: (changeForm: string) => void
-}
+type CreateEmailModalProps = ChangeFormProps
 
-export const SignUp = ({ setChangeForm, onClose }: SignUpProps) => {
-  const { connect } = useWalletContext()
+export const CreateEmailModal = ({ changeForm, setChangeForm }: CreateEmailModalProps) => {
   const [show, setShow] = useState(false)
   const [password, setPassword] = useState("")
 
@@ -43,7 +39,7 @@ export const SignUp = ({ setChangeForm, onClose }: SignUpProps) => {
   }
 
   const handleChangeForm = () => {
-    setChangeForm("SIGN_IN")
+    setChangeForm({ ...changeForm, form: "VERIFY" })
   }
 
   const handleStrengthText = () => {
@@ -55,28 +51,48 @@ export const SignUp = ({ setChangeForm, onClose }: SignUpProps) => {
   }
 
   return (
-    <Stack spacing={4} w="full">
-      <Text color="neutral.300">
-        Please link crypto-wallet in order to sign in. No funds are neccessary or will be withdrawn.
-      </Text>
+    <Stack pos="relative" px={6} spacing={6} w="full">
+      <Flex display="inline-block" align="center">
+        <Text mr={2} color="neutral.400" fontSize="sm">
+          You will need to fill in your email and password to enable{" "}
+          <chakra.span sx={{ ">div": { display: "inline-block" } }} textDecor="underline" color="cyan.600">
+            Ather Account{" "}
+            <CustomPopover
+              placement="top"
+              label="Crypto-wallet"
+              icon={
+                <Box color="neutral.500">
+                  <MdInfo size="1.2rem" />
+                </Box>
+              }
+            >
+              <Text fontSize="sm" color="neutral.900">
+                Wallets are used to send, receive, and store digital assets like Ether. Wallets come in many forms. For
+                more infomation about wallets, see this{" "}
+                <chakra.span color="cyan.500" textDecor="underline">
+                  explanation
+                </chakra.span>
+              </Text>
+            </CustomPopover>
+          </chakra.span>
+        </Text>
+      </Flex>
       <Form>
         <FormControl as="fieldset">
-          <FormLabel fontWeight={400}>Email address</FormLabel>
           <FormField>
-            <CustomInput />
+            <CustomInput placeholder="Email address" />
           </FormField>
         </FormControl>
-        <FormControl as="fieldset">
-          <FormLabel fontWeight={400}>Password</FormLabel>
+        <FormControl mb={2} as="fieldset">
           <FormField>
             <InputGroup size="md">
               <CustomInput
                 onChange={handleChange}
-                pr="4.5rem"
+                pr="2.5rem"
                 type={show ? "text" : "password"}
-                placeholder="Enter password"
+                placeholder="Password"
               />
-              <InputRightElement width="4.5rem">
+              <InputRightElement width="2.5rem">
                 <IconButton
                   variant="ghost"
                   aria-label="eye-icon"
@@ -92,7 +108,7 @@ export const SignUp = ({ setChangeForm, onClose }: SignUpProps) => {
             </InputGroup>
           </FormField>
           <Flex align="center" justify="space-between">
-            <Text color={handleStrengthText().color} fontSize="xs">
+            <Text color={handleStrengthText().color} fontWeight={600} fontSize="xs">
               {handleStrengthText().text}
             </Text>
             <HStack spacing={1}>
@@ -120,70 +136,12 @@ export const SignUp = ({ setChangeForm, onClose }: SignUpProps) => {
           </Flex>
         </FormControl>
       </Form>
-      <HStack pb={4} spacing={4}>
-        <WalletCard
-          bg="#1677EF"
-          src="/icons/facebook.svg"
-          onClick={() => {
-            onClose()
-          }}
-        />
-        <WalletCard
-          bg="#EA4336"
-          src="/icons/google.svg"
-          onClick={() => {
-            onClose()
-          }}
-        />
-        <Box h="41px" w="1px" bg="neutral.500" />
-        <WalletCard
-          bg="white"
-          src="/icons/wallets/metamask.svg"
-          onClick={() => {
-            connect("injected")
-            onClose()
-          }}
-        />
-        <WalletCard
-          bg="white"
-          src="/icons/wallets/walletconnect.svg"
-          onClick={() => {
-            connect("walletConnect")
-            onClose()
-          }}
-        />
-      </HStack>
-      <Flex pb={4} align="center" justify="flex-end">
-        <Text mr={2} color="neutral.400" fontSize="sm">
-          What's a crypto-wallet?
-        </Text>
-        <CustomPopover
-          placement="top"
-          label="Crypto-wallet"
-          icon={
-            <Box color="neutral.500">
-              <MdInfo size="1.2rem" />
-            </Box>
-          }
-        >
-          <Text fontSize="sm" color="neutral.900">
-            Wallets are used to send, receive, and store digital assets like Ether. Wallets come in many forms. For more
-            infomation about wallets, see this{" "}
-            <chakra.span color="cyan.500" textDecor="underline">
-              explanation
-            </chakra.span>
-          </Text>
-        </CustomPopover>
-      </Flex>
-      <Button fontSize="md" py={6} fontWeight={600}>
-        SIGN UP
+      <Box pb={2}>
+        <Divider pos="absolute" left="0" w="full" borderColor="whiteAlpha.100" />
+      </Box>
+      <Button onClick={handleChangeForm} fontSize="md" py={6} fontWeight={600}>
+        CONTINUE
       </Button>
-      <Text color="neutral.400" pt={4} textAlign="center">
-        Already have an account?{" "}
-        <chakra.span textDecor="underline" cursor="pointer" color="cyan.600" onClick={handleChangeForm}>
-          Sign In
-        </chakra.span>
-      </Text>
     </Stack>
   )
 }

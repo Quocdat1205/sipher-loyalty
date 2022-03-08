@@ -1,59 +1,108 @@
 import { useEffect, useState } from "react"
 import { Box } from "@sipher.dev/sipher-ui"
 
+import {
+  ChangePassword,
+  ConnectWalletFirstModal,
+  CreateEmailModal,
+  ForgotPassword,
+  SignIn,
+  SignUp,
+  VerifyAccount,
+} from "@components/module/modal"
 import { ChakraModal } from "@components/shared"
-
-import { ChangePassword } from "./ChangePassword"
-import { ForgotPassword, SignIn, SignUp, VerifyAccount } from "."
 
 interface ConnectWalletModalProps {
   isOpen: boolean
   onClose: () => void
 }
 
+export interface ChangeFormProps {
+  changeForm: { form: string; status: string }
+  setChangeForm: (changeForm: { form: string; status: string }) => void
+}
+interface initProps {
+  form: string
+  status: string
+}
+
+const initForm: initProps = { form: "SIGN_UP", status: "" }
+
 export const ConnectWalletModal = ({ isOpen, onClose }: ConnectWalletModalProps) => {
-  const [changeForm, setChangeForm] = useState("SIGN_UP")
+  const [changeForm, setChangeForm] = useState(initForm)
   const [isComplete, setIsComplete] = useState(false)
 
+  const completeText = isComplete
+    ? changeForm.status === "FORGOT"
+      ? "PASSWORD UPDATED"
+      : changeForm.status === "SIGN_UP"
+      ? "ACCOUNT UPDATED"
+      : ""
+    : ""
+
   useEffect(() => {
-    setChangeForm("SIGN_UP")
+    setChangeForm(initForm)
     setIsComplete(false)
   }, [isOpen])
 
   return (
     <ChakraModal
-      closeOnOverlayClick={changeForm === "SIGN_IN" || changeForm === "SIGN_UP"}
+      closeOnOverlayClick={changeForm.form === "SIGN_IN" || changeForm.form === "SIGN_UP"}
+      isHiddenClose={
+        changeForm.status === "SIGN_UP" ||
+        changeForm.status === "FORGOT" ||
+        changeForm.status === "SIGN_UP_EMAIL" ||
+        changeForm.status === "SIGN_UP_SOCIAL"
+      }
       isCentered
       title={
         isComplete
-          ? "PASSWORD UPDATED"
-          : changeForm === "SIGN_IN"
+          ? completeText
+          : changeForm.form === "SIGN_IN"
           ? "SIGN IN"
-          : changeForm === "SIGN_UP"
+          : changeForm.form === "SIGN_UP"
           ? "SIGN IN OR CREATE ACCOUNT"
-          : changeForm === "FORGOT"
+          : changeForm.form === "FORGOT"
           ? "FORGOT PASSWORD"
-          : changeForm === "VERIFY"
+          : changeForm.form === "VERIFY"
           ? "VERIFY YOUR ACCOUNT"
-          : changeForm === "CHANGE_PASSWORD"
+          : changeForm.form === "CHANGE_PASSWORD"
           ? "CHANGE YOUR PASSWORD"
+          : changeForm.form === "CREATE_EMAIL"
+          ? "YOU ARE ALMOST THERE"
+          : changeForm.form === "WALLET_FIRST"
+          ? "CONNECT TO A WALLET"
           : ""
       }
       isOpen={isOpen}
       onClose={onClose}
-      size="md"
+      size="lg"
     >
-      <Box pb={4}>
-        {changeForm === "SIGN_UP" ? (
-          <SignUp setChangeForm={setChangeForm} onClose={onClose} />
-        ) : changeForm === "SIGN_IN" ? (
-          <SignIn setChangeForm={setChangeForm} onClose={onClose} />
-        ) : changeForm === "FORGOT" ? (
-          <ForgotPassword setChangeForm={setChangeForm} />
-        ) : changeForm === "VERIFY" ? (
-          <VerifyAccount setChangeForm={setChangeForm} />
-        ) : changeForm === "CHANGE_PASSWORD" ? (
-          <ChangePassword isComplete={isComplete} setIsComplete={setIsComplete} setChangeForm={setChangeForm} />
+      <Box>
+        {changeForm.form === "SIGN_UP" ? (
+          <SignUp changeForm={changeForm} setChangeForm={setChangeForm} />
+        ) : changeForm.form === "SIGN_IN" ? (
+          <SignIn changeForm={changeForm} setChangeForm={setChangeForm} onClose={onClose} />
+        ) : changeForm.form === "FORGOT" ? (
+          <ForgotPassword changeForm={changeForm} setChangeForm={setChangeForm} />
+        ) : changeForm.form === "VERIFY" ? (
+          <VerifyAccount
+            isComplete={isComplete}
+            setIsComplete={setIsComplete}
+            setChangeForm={setChangeForm}
+            changeForm={changeForm}
+          />
+        ) : changeForm.form === "CHANGE_PASSWORD" ? (
+          <ChangePassword
+            changeForm={changeForm}
+            isComplete={isComplete}
+            setIsComplete={setIsComplete}
+            setChangeForm={setChangeForm}
+          />
+        ) : changeForm.form === "CREATE_EMAIL" ? (
+          <CreateEmailModal changeForm={changeForm} setChangeForm={setChangeForm} />
+        ) : changeForm.form === "WALLET_FIRST" ? (
+          <ConnectWalletFirstModal onClose={onClose} />
         ) : (
           ""
         )}
