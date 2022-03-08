@@ -2,6 +2,7 @@
 import fs from "fs"
 
 import { toChecksumAddress } from "ethereumjs-util"
+import { async } from "rxjs"
 import { Repository } from "typeorm"
 import { Lootbox } from "@entity"
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common"
@@ -16,7 +17,6 @@ import { NftContract } from "../contract/contract.module"
 import { LoggerService } from "../logger/logger.service"
 
 import { MintLootboxInput } from "./lootbox.type"
-import { async } from "rxjs"
 
 @Injectable()
 export class LootBoxService {
@@ -74,7 +74,7 @@ export class LootBoxService {
     await Promise.all(promises)
   }
 
-  private distributeLootboxWeeklyForHolder = async () => {
+  distributeLootboxWeeklyForHolder = async () => {
     const typeId = Math.floor(new Date().getTime() / (86400 * 7)) % 7
     // await this.distributeLootboxForContract(this.InuContract, typeId)
     await this.distributeLootboxForContract(this.NekoContract, typeId)

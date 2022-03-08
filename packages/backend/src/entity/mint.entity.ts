@@ -8,10 +8,10 @@ export class PendingMint {
   @Column({ nullable: false })
   to: string
 
-  @Column({ nullable: false, array: true })
+  @Column("int", { array: true })
   batchID: number[]
 
-  @Column({ nullable: false })
+  @Column("int", { array: true })
   amount: number[]
 
   @Column({ nullable: false })
