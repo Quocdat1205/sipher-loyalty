@@ -10,8 +10,8 @@ import {
 
 @Entity()
 export class Lootbox {
-  @PrimaryGeneratedColumn()
-  id: string
+  @PrimaryGeneratedColumn("increment")
+  id: number
 
   @Column({ nullable: false })
   publicAddress: string
@@ -217,7 +217,6 @@ export class SculpturesOrder {
   @Column()
   status: string
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @OneToMany(() => NftOrder, nft => nft.id_sculpture)
   nft: NftOrder[]
 
