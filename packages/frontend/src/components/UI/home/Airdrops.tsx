@@ -1,13 +1,7 @@
-import React from "react";
-import {
-  Box,
-  Button,
-  Heading,
-  Image,
-  SimpleGrid,
-  Text,
-} from "@chakra-ui/react";
-import Card from "./Card";
+import React from "react"
+import { Box, Button, Heading, Image, SimpleGrid, Text } from "@chakra-ui/react"
+
+import Card from "./Card"
 
 const data_fake = [
   {
@@ -65,7 +59,7 @@ const data_fake = [
     image: "/images/nft/sipher4.png",
     description: "This Airdrop is limited and applied for Gold & Diamonđ tiers",
   },
-];
+]
 
 const AirDrops = () => {
   return (
@@ -74,7 +68,7 @@ const AirDrops = () => {
         AirDrops
       </Heading>
       <SimpleGrid display="flex" flexWrap="wrap">
-        {data_fake.map((value) => {
+        {data_fake.map(value => {
           return (
             <Card key={value.id}>
               <Box className="shade">
@@ -99,11 +93,7 @@ const AirDrops = () => {
                   top="5%"
                   left="5%"
                   padding="0.3rem 0.7rem"
-                  color={
-                    value.label === "gold" || value.label === "dimond"
-                      ? "black"
-                      : "text.primary"
-                  }
+                  color={value.label === "gold" || value.label === "dimond" ? "black" : "text.primary"}
                   bg={
                     value.label === "gold"
                       ? "linear-gradient(103.49deg, #FFD337 0%, #FF8F27 100%)"
@@ -127,22 +117,16 @@ const AirDrops = () => {
                 <Box>
                   <Text color="#A0A1B1">{value.description}</Text>
                 </Box>
-                <Button
-                  w="100%"
-                  padding="0.5rem"
-                  bg="#F4B433"
-                  color="text.gray"
-                  marginTop="1rem"
-                >
+                <Button w="100%" padding="0.5rem" bg="#F4B433" color="text.gray" marginTop="1rem">
                   Claim
                 </Button>
               </Box>
             </Card>
-          );
+          )
         })}
       </SimpleGrid>
     </Box>
-  );
-};
+  )
+}
 
-export default AirDrops;
+export default AirDrops

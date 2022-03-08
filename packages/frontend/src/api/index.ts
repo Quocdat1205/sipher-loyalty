@@ -1,6 +1,5 @@
-import { baseURL } from "./config";
-import axios from "axios";
+import axios from "axios"
 
-export const fetcher = axios.create({ baseURL });
+import { baseURL } from "./config"
 
-export * from "./auth";
+export const fetcher = axios.create({ baseURL })

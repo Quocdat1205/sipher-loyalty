@@ -1,7 +1,7 @@
-import React from 'react';
-import { IconBase, IconBaseProps } from 'react-icons';
+import React from "react"
+import { IconBase, IconBaseProps } from "react-icons"
 
-export const SpCopy = ({ color = '#5F6073', ...rest }: IconBaseProps) => {
+export const SpCopy = ({ color = "#5F6073", ...rest }: IconBaseProps) => {
   return (
     <IconBase size="1.1rem" {...rest}>
       <path
@@ -11,5 +11,5 @@ export const SpCopy = ({ color = '#5F6073', ...rest }: IconBaseProps) => {
         fill={color}
       />
     </IconBase>
-  );
-};
+  )
+}

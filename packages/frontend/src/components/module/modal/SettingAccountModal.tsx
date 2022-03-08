@@ -10,18 +10,6 @@ interface SettingAccountModalProps {
   onClose: () => void
 }
 
-type FormValueType = {
-  userName: string
-  email: string
-  bio: string
-}
-
-const initialValues: FormValueType = {
-  userName: "",
-  email: "",
-  bio: "",
-}
-
 export const SettingAccountModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
   const [open, setOpen] = useState(false)
   const [choose, setChoose] = useState("")

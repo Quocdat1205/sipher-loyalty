@@ -1,5 +1,5 @@
-import React from 'react';
-import { IconBase, IconBaseProps } from 'react-icons';
+import React from "react"
+import { IconBase, IconBaseProps } from "react-icons"
 
 export const SpTime = ({ ...rest }: IconBaseProps) => {
   return (
@@ -9,5 +9,5 @@ export const SpTime = ({ ...rest }: IconBaseProps) => {
         fill="#9091A0"
       />
     </IconBase>
-  );
-};
+  )
+}

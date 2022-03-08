@@ -1,8 +1,8 @@
-import { Box } from "@chakra-ui/react";
-import React from "react";
+import React from "react"
+import { Box } from "@chakra-ui/react"
 
 interface Props {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const Card = ({ children }: Props) => {
@@ -18,7 +18,7 @@ const Card = ({ children }: Props) => {
     >
       {children}
     </Box>
-  );
-};
+  )
+}
 
-export default Card;
+export default Card

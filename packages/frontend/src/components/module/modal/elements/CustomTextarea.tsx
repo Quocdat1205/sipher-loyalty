@@ -8,13 +8,7 @@ interface CustomTextareaProps {
   placeholder?: string
   maxLength?: number
 }
-export function CustomTextarea({
-  value,
-  onChange,
-  onFocus,
-  placeholder,
-  maxLength,
-}: CustomTextareaProps) {
+export function CustomTextarea({ value, onChange, onFocus, placeholder, maxLength }: CustomTextareaProps) {
   return (
     <Textarea
       resize="none"
@@ -28,7 +22,7 @@ export function CustomTextarea({
       border="none"
       placeholder={placeholder}
       value={value}
-      onChange={(e) => onChange && onChange(e.target.value)}
+      onChange={e => onChange && onChange(e.target.value)}
       onFocus={onFocus}
       maxLength={maxLength}
     />
