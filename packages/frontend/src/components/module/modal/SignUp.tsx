@@ -170,14 +170,14 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
               bg="white"
               src="/icons/wallets/metamask.svg"
               onClick={() => {
-                setChangeForm({ status: "SIGN_UP", form: "CREATE_EMAIL" })
+                setChangeForm({ status: "SIGN_UP_WALLET", form: "CREATE_EMAIL" })
               }}
             />
             <WalletCard
               bg="white"
               src="/icons/wallets/walletconnect.svg"
               onClick={() => {
-                setChangeForm({ status: "SIGN_UP", form: "CREATE_EMAIL" })
+                setChangeForm({ status: "SIGN_UP_WALLET", form: "CREATE_EMAIL" })
               }}
             />
           </HStack>

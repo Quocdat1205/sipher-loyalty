@@ -24,6 +24,8 @@ export const VerifyAccount = ({ isComplete, setIsComplete, changeForm, setChange
     } else setIsComplete(true)
   }
 
+  console.log(changeForm.status)
+
   return (
     <Stack pos="relative" px={6} spacing={6} w="full">
       <Text color="neutral.300">
@@ -56,7 +58,11 @@ export const VerifyAccount = ({ isComplete, setIsComplete, changeForm, setChange
         <Divider pos="absolute" left="0" w="full" borderColor="whiteAlpha.100" />
       </Box>
       <Button onClick={handleChangeForm} fontSize="md" py={6} fontWeight={600}>
-        {changeForm.status === "FORGOT" ? "CONTINUE" : "COMPLETE"}
+        {changeForm.status === "FORGOT"
+          ? "CONTINUE"
+          : changeForm.status === "SIGN_UP_WALLET" && isComplete
+          ? "SIGN IN"
+          : "COMPLETE"}
       </Button>
     </Stack>
   )
