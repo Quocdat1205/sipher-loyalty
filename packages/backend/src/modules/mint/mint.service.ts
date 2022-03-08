@@ -21,12 +21,12 @@ export class MintService {
   ) {}
 
   async test() {
-    LoggerService.log(`sign mint data for 0x83629905189464CC16F5E7c12D54dD5e87459B33, id : 1 ,amount : 1`)
+    LoggerService.log(`sign mint data for 0x83629905189464CC16F5E7c12D54dD5e87459B33, id : [1] ,amount : [1]`)
 
     const order = {
       to: "0x83629905189464CC16F5E7c12D54dD5e87459B33",
-      batchID: 1,
-      amount: 1,
+      batchID: [1],
+      amount: [1],
       salt: "0x",
     }
     const config = {

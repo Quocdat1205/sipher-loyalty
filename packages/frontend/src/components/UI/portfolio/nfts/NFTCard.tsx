@@ -3,19 +3,17 @@ import { BsHeartFill } from "react-icons/bs"
 import Image from "next/image"
 import { Box, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
-import { EthereumIcon } from "@components/shared"
 import { NftContracts } from "@constant"
 
 interface CardProps {
   name: string
   collectionId: string
-  price: number
   tokenId: string
   liked: number
   imageUrl: string
 }
 
-export const NFTCard = ({ name, collectionId, price, tokenId, liked, imageUrl }: CardProps) => {
+export const NFTCard = ({ name, collectionId, tokenId, liked, imageUrl }: CardProps) => {
   const collectionName = NftContracts.find(property => property.address === collectionId)?.name
 
   const handleClick = () => {
@@ -44,7 +42,7 @@ export const NFTCard = ({ name, collectionId, price, tokenId, liked, imageUrl }:
           onLoad={() => setImageLoaded(true)}
         />
       </Skeleton>
-      <Stack spacing={1} px={3} py={2}>
+      <Stack spacing={1} p={4}>
         <Flex align="center" justify="space-between">
           <Text fontWeight={600}>{name}</Text>
           <Flex align="center" color="neutral.400" py={0.5} rounded="full">
@@ -54,19 +52,7 @@ export const NFTCard = ({ name, collectionId, price, tokenId, liked, imageUrl }:
             <BsHeartFill size="1rem" />
           </Flex>
         </Flex>
-        <Flex align="center" justify="space-between">
-          <Text color="neutral.50">{collectionName}</Text>
-          <Text background="purple.500" color="white" px={1} pt={0.5} fontSize="sm" rounded="sm" fontWeight={600}>
-            #17
-          </Text>
-        </Flex>
-        <Flex align="center">
-          <Text mr={2} color="neutral.400">
-            Price:
-          </Text>
-          <EthereumIcon />
-          <Text color="neutral.50">{price} ETH</Text>
-        </Flex>
+        <Text color="neutral.50">{collectionName}</Text>
       </Stack>
       {/* <Flex
                 align="center"

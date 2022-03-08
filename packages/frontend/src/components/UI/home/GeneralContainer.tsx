@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, Flex, Image, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
+import { Button, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
 import { EthereumIcon, SipherIcon } from "@components/shared"
 import { currency } from "@utils"
@@ -26,7 +26,7 @@ const GeneralContainer = () => {
           </Button>
         }
       />
-      <CardGeneral
+      {/* <CardGeneral
         value="34/80"
         name="total xp"
         icon={
@@ -43,7 +43,7 @@ const GeneralContainer = () => {
         value="324"
         icon={<Image src="/images/home/nanochip.png" alt="nano" h="1.5rem" />}
         name="Total Nanochips"
-      />
+      /> */}
     </SimpleGrid>
   )
 }

@@ -30,30 +30,6 @@ export class Lootbox {
 }
 
 @Entity()
-export class PendingMint {
-  @PrimaryGeneratedColumn()
-  id: string
-
-  @Column({ nullable: false })
-  to: string
-
-  @Column({ nullable: false })
-  batchID: number
-
-  @Column({ nullable: false })
-  amount: number
-
-  @Column({ nullable: false })
-  salt: string
-
-  @Column({ nullable: false })
-  signature: string
-
-  @CreateDateColumn({ default: new Date() })
-  createdAt: Date
-}
-
-@Entity()
 export class User {
   @PrimaryColumn()
   publicAddress: string
