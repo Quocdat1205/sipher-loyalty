@@ -13,6 +13,7 @@ import { AuthModule } from "@modules/auth/auth.module"
 import { LoggerModule } from "@modules/logger/logger.module"
 import { NftItemModule } from "@modules/nft/nftItem.module"
 import { SearchModule } from "@modules/search/search.module"
+import { URIModule } from "@modules/uri/uri.module"
 import { UserModule } from "@modules/user/user.module"
 
 import { LootBoxModule } from "../lootbox/lootbox.module"
@@ -38,6 +39,7 @@ import { AppService } from "./app.service"
     AdminModule,
     MintModule,
     LootBoxModule,
+    URIModule,
   ],
   controllers: [AppController],
   providers: [AppService],
