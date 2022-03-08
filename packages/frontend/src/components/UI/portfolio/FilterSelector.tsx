@@ -5,7 +5,6 @@ import { Box, BoxProps, Collapse, Flex, Stack, Text, useOutsideClick } from "@si
 import useNftFilter from "../../../hooks/useNftFilter"
 
 interface FilterSelectorProps extends BoxProps {
-  title?: string
   placement?: "left" | "right"
   isTruncated?: boolean
   text?: string

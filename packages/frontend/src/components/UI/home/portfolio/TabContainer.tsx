@@ -1,5 +1,9 @@
 import React, { useState } from "react"
-import { Box, Flex, HStack, Skeleton, Text } from "@sipher.dev/sipher-ui"
+import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
+
+import { TokensContainer } from "@components/UI/portfolio/tokens"
+
+import { NFTsContainer } from "./NFTsContainer"
 
 const tabs = ["NFTs", "Tokens"] as const
 type Tab = typeof tabs[number]
@@ -8,6 +12,12 @@ export const TabContainer = () => {
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
 
   const renderTabs = () => {
+    if (currentTab === "NFTs") {
+      return <NFTsContainer />
+    }
+    if (currentTab === "Tokens") {
+      return <TokensContainer />
+    }
     return null
   }
 
@@ -30,9 +40,7 @@ export const TabContainer = () => {
           </Flex>
         ))}
       </HStack>
-      <Box flex={1}>
-        <Skeleton>{renderTabs()}</Skeleton>
-      </Box>
+      <Box flex={1}>{renderTabs()}</Box>
     </Flex>
   )
 }
