@@ -1,22 +1,21 @@
-import console from "console"
-
-import { getConnectionOptions } from "typeorm"
-import { Lootbox } from "@entity"
+import { ERC1155SpaceShipPartLootbox, ERC1155SpaceShipPartLootboxAttribute, Lootbox } from "@entity"
 import { Module, OnApplicationBootstrap } from "@nestjs/common"
+import { ConfigModule } from "@nestjs/config"
 import { NestFactory } from "@nestjs/core"
 import { TypeOrmModule } from "@nestjs/typeorm"
+import { configService } from "@setting/config.typeorm"
 
+import { LootBoxModule } from "@modules/lootbox/lootbox.module"
+import { SeedModule } from "@modules/seed/seed.module"
 import { SeedService } from "@modules/seed/seed.service"
 
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync({
-      useFactory: async () =>
-        Object.assign(await getConnectionOptions(), {
-          autoLoadEntities: true,
-        }),
-    }),
-    TypeOrmModule.forFeature([Lootbox]),
+    SeedModule,
+    LootBoxModule,
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
+    TypeOrmModule.forFeature([Lootbox, ERC1155SpaceShipPartLootbox, ERC1155SpaceShipPartLootboxAttribute]),
   ],
   providers: [SeedService],
 })

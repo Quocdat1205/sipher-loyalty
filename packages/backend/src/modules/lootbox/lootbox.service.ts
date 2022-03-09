@@ -2,7 +2,6 @@
 import fs from "fs"
 
 import { toChecksumAddress } from "ethereumjs-util"
-import { async } from "rxjs"
 import { Repository } from "typeorm"
 import { Lootbox } from "@entity"
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common"
@@ -58,7 +57,7 @@ export class LootBoxService {
       } else {
         lootbox.quantity++
       }
-      LoggerService.log("save lootbox to ", publicAddress)
+      LoggerService.log(`save lootbox to  ${publicAddress}`)
       await this.LootboxRepo.save(lootbox)
     } catch (err) {
       LoggerService.log("err at ", i)
@@ -75,8 +74,8 @@ export class LootBoxService {
   }
 
   distributeLootboxWeeklyForHolder = async () => {
-    const typeId = Math.floor(new Date().getTime() / (86400 * 7)) % 7
-    // await this.distributeLootboxForContract(this.InuContract, typeId)
+    const typeId = Math.floor(new Date().getTime() / (86400 * 49)) % 7
+    await this.distributeLootboxForContract(this.InuContract, typeId)
     await this.distributeLootboxForContract(this.NekoContract, typeId)
   }
 
@@ -118,7 +117,7 @@ export class LootBoxService {
   }
 
   getLootboxFromUserID = async (userId: string) => {
-    LoggerService.log("userId", userId)
+    LoggerService.log(`userId:  ${userId}`)
     // get list wallet address from Sipher User ID
     const walletAddressList = [
       "0x83629905189464CC16F5E7c12D54dD5e87459B33",
