@@ -2,9 +2,10 @@
 import fs from "fs"
 
 import { toChecksumAddress } from "ethereumjs-util"
+import { async } from "rxjs"
 import { Repository } from "typeorm"
 import { Lootbox } from "@entity"
-import { Injectable } from "@nestjs/common"
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common"
 import { Cron } from "@nestjs/schedule"
 import { InjectRepository } from "@nestjs/typeorm"
 import constant from "@setting/constant"
@@ -73,7 +74,7 @@ export class LootBoxService {
     await Promise.all(promises)
   }
 
-  private distributeLootboxWeeklyForHolder = async () => {
+  distributeLootboxWeeklyForHolder = async () => {
     const typeId = Math.floor(new Date().getTime() / (86400 * 7)) % 7
     // await this.distributeLootboxForContract(this.InuContract, typeId)
     await this.distributeLootboxForContract(this.NekoContract, typeId)
@@ -96,6 +97,26 @@ export class LootBoxService {
     return lootboxs
   }
 
+  private getLootboxFromWalletAndTokenIDs = async (publicAddress: string, tokenId: number[]) => {
+    const promises = []
+    for (let i = 0; i < tokenId.length; i++) {
+      promises.push(this.getLootboxFromWalletAndTokenID(publicAddress, tokenId[i]))
+    }
+    return Promise.all(promises)
+  }
+
+  private flattenLootbox = async lootboxs => {
+    const flattern_lootbox = []
+    lootboxs.forEach((lootbox: Lootbox) => {
+      const index = flattern_lootbox.findIndex(
+        (lb: Lootbox) => lb.publicAddress === lootbox.publicAddress && lb.tokenId === lootbox.tokenId,
+      )
+      if (index !== -1) flattern_lootbox[index].quantity += lootbox.quantity
+      else flattern_lootbox.push(lootbox)
+    })
+    return flattern_lootbox
+  }
+
   getLootboxFromUserID = async (userId: string) => {
     LoggerService.log("userId", userId)
     // get list wallet address from Sipher User ID
@@ -108,26 +129,30 @@ export class LootBoxService {
       promises.push(this.getLootboxFromWallet(walletAddress))
     })
     const lootboxs = (await Promise.all(promises)).flat(1)
-    const flattern_lootbox = []
-    lootboxs.forEach((lootbox: Lootbox) => {
-      const index = flattern_lootbox.findIndex(
-        (lb: Lootbox) => lb.publicAddress === lootbox.publicAddress && lb.tokenId === lootbox.tokenId,
-      )
-      if (index !== -1) flattern_lootbox[index].quantity += lootbox.quantity
-      else flattern_lootbox.push(lootbox)
-    })
-    return flattern_lootbox
+
+    return this.flattenLootbox(lootboxs)
   }
 
   mintLootbox = async (mintLootboxInput: MintLootboxInput) => {
     const { walletAddress, batchID, amount } = mintLootboxInput
+    if (batchID.length !== amount.length)
+      throw new HttpException("batchID length and amount length not equal ", HttpStatus.BAD_REQUEST)
 
-    const lootbox = await this.getLootboxFromWalletAndTokenID(walletAddress, batchID)
-    if (!lootbox) return { signanture: "", success: false, message: "not found", data: {} }
-    if (lootbox.quantity - lootbox.pending < amount)
-      return { signanture: "", success: false, message: "not enough balance", data: lootbox }
-    lootbox.pending += amount
-    await this.LootboxRepo.save(lootbox)
-    return { signanture: await this.mintService.mint(mintLootboxInput), success: true, message: "", data: lootbox }
+    if (batchID.filter((x, i, a) => a.indexOf(x) === i).length < batchID.length)
+      throw new HttpException("duplicate batchID  ", HttpStatus.BAD_REQUEST)
+
+    const promises = []
+    const lootboxs = await this.getLootboxFromWalletAndTokenIDs(walletAddress, batchID)
+    for (let i = 0; i < batchID.length; i++) {
+      if (!lootboxs[i]) throw new HttpException("not have tokenID ", HttpStatus.BAD_REQUEST)
+      if (lootboxs[i].quantity - lootboxs[i].pending < amount[i])
+        throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST)
+      lootboxs[i].pending += amount[i]
+    }
+    for (let i = 0; i < lootboxs.length; i++) {
+      promises.push(this.LootboxRepo.save(lootboxs[i]))
+    }
+    const data = await Promise.all(promises)
+    return { signanture: await this.mintService.mint(mintLootboxInput), success: true, message: "", data }
   }
 }

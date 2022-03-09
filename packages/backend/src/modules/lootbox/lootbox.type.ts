@@ -5,14 +5,14 @@ export class MintLootboxInputDto {
   walletAddress: string
 
   @ApiProperty()
-  batchID: number
+  batchID: number[]
 
   @ApiProperty()
-  amount: number
+  amount: number[]
 }
 
 export interface MintLootboxInput {
   walletAddress: string
-  batchID: number
-  amount: number
+  batchID: number[]
+  amount: number[]
 }

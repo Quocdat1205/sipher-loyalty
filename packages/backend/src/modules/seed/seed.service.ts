@@ -6,6 +6,8 @@ import { ERC1155SpaceShipPartLootbox, ERC1155SpaceShipPartLootboxAttribute } fro
 import { Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 
+import { LootBoxService } from "@modules/lootbox/lootbox.service"
+
 // import module
 import { LoggerService } from "../logger/logger.service"
 
@@ -18,6 +20,7 @@ export class SeedService {
     private erc1155SpaceShipPartLootboxRepo: Repository<ERC1155SpaceShipPartLootbox>,
     @InjectRepository(ERC1155SpaceShipPartLootboxAttribute)
     private ERC1155SpaceShipPartLootboxAttributeRepo: Repository<ERC1155SpaceShipPartLootboxAttribute>,
+    private lootboxService: LootBoxService,
   ) {}
 
   private seedERC1155SpaceShipPartLootbox = async erc1155 => {
@@ -59,5 +62,11 @@ export class SeedService {
     }
     await Promise.all(promises)
     LoggerService.log("Done")
+  }
+
+  seedLootbox = async () => {
+    LoggerService.log("start disribute lootbox")
+    await this.lootboxService.distributeLootboxWeeklyForHolder()
+    LoggerService.log("done disribute lootbox")
   }
 }
