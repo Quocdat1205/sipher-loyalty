@@ -12,7 +12,6 @@ import { SeedService } from "@modules/seed/seed.service"
   imports: [
     SeedModule,
     ConfigModule.forRoot(),
-
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
     // TypeOrmModule.forRoot({
     //   type: "postgres",
