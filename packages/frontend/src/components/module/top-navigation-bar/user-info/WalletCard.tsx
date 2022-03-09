@@ -1,5 +1,6 @@
 import React from "react"
-import { Flex, Img } from "@sipher.dev/sipher-ui"
+import Image from "next/image"
+import { Flex } from "@sipher.dev/sipher-ui"
 
 interface WalletCardProps {
   src: string
@@ -25,7 +26,7 @@ export const WalletCard = ({ bg = "neutral.600", src, onClick }: WalletCardProps
       justify="center"
       transition="all 0.2s ease-in-out"
     >
-      <Img src={src} alt={src} h="1.6rem" />
+      <Image width={26} height={26} src={src} alt={src.split("/")[2]} />
     </Flex>
   )
 }
