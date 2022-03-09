@@ -51,6 +51,8 @@ class ConfigService {
 
       synchronize: true,
 
+      autoLoadEntities: true,
+
       ssl: this.isProduction(),
     }
   }
