@@ -78,7 +78,7 @@ export const ShippingModal = ({ isOpen, onClose }: SettingAccountModalProps) => 
                       ) : item === "SIPHER" ? (
                         <SipherIcon mr={2} size="1.2rem" />
                       ) : (
-                        <Image mr={2} src="/icons/usdt.svg" alt="usdt" h="1.2rem" />
+                        <Image mr={2} src="/images/icons/usdt.svg" alt="usdt" h="1.2rem" />
                       )}
                     </Box>
                     <Text fontWeight={600}>{item}</Text>

@@ -9,7 +9,11 @@ interface EthereumIconProp extends BoxProps {
 export const EthereumIcon = ({ isWETH = false, size = "1.2rem", ...rest }: EthereumIconProp) => {
   return (
     <Box {...rest}>
-      <Image h={size} src={`/icons${isWETH ? "/weth.svg" : "/eth.svg"}`} alt={isWETH ? "weth-icon" : "eth-icon"} />
+      <Image
+        h={size}
+        src={`images/icons${isWETH ? "/weth.svg" : "/eth.svg"}`}
+        alt={isWETH ? "weth-icon" : "eth-icon"}
+      />
     </Box>
   )
 }

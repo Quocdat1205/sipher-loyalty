@@ -78,14 +78,14 @@ export const SignIn = ({ changeForm, setChangeForm, onClose }: SignInProps) => {
           <HStack spacing={4}>
             <WalletCard
               bg="#1677EF"
-              src="/icons/facebook.svg"
+              src="/images/icons/facebook.svg"
               onClick={() => {
                 onClose()
               }}
             />
             <WalletCard
               bg="#EA4336"
-              src="/icons/google.svg"
+              src="/images/icons/google.svg"
               onClick={() => {
                 onClose()
               }}
@@ -121,7 +121,7 @@ export const SignIn = ({ changeForm, setChangeForm, onClose }: SignInProps) => {
           <HStack spacing={4}>
             <WalletCard
               bg="white"
-              src="/icons/wallets/metamask.svg"
+              src="/images/icons/wallets/metamask.svg"
               onClick={() => {
                 connect("injected")
                 onClose()
@@ -129,7 +129,7 @@ export const SignIn = ({ changeForm, setChangeForm, onClose }: SignInProps) => {
             />
             <WalletCard
               bg="white"
-              src="/icons/wallets/walletconnect.svg"
+              src="/images/icons/wallets/walletconnect.svg"
               onClick={() => {
                 connect("walletConnect")
                 onClose()

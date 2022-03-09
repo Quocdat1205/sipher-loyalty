@@ -27,7 +27,7 @@ export const ConnectWalletFirstModal = ({ onClose }: ConnectWalletFirstModalProp
           align="center"
         >
           <Text fontWeight={600}>Metamask</Text>
-          <Image src="/icons/wallets/metamask.svg" alt="metamask" h="1.6rem" />
+          <Image src="/images/icons/wallets/metamask.svg" alt="metamask" h="1.6rem" />
         </Flex>
         <Flex
           cursor="pointer"
@@ -43,7 +43,7 @@ export const ConnectWalletFirstModal = ({ onClose }: ConnectWalletFirstModalProp
           align="center"
         >
           <Text fontWeight={600}>ConnectWallet</Text>
-          <Image src="/icons/wallets/walletconnect.svg" alt="walletconnect" h="1.6rem" />
+          <Image src="/images/icons/wallets/walletconnect.svg" alt="walletconnect" h="1.6rem" />
         </Flex>
       </HStack>
       <Box pb={2}>

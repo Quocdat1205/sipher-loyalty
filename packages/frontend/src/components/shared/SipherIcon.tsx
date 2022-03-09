@@ -8,7 +8,7 @@ interface SipherIconProp extends BoxProps {
 export const SipherIcon = ({ size = "1.2rem", ...rest }: SipherIconProp) => {
   return (
     <Box {...rest}>
-      <Image h={size} src={`/icons/sipher.png`} alt={"sipher-icon"} />
+      <Image h={size} src={`/images/icons/sipher.png`} alt={"sipher-icon"} />
     </Box>
   )
 }

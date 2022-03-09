@@ -125,14 +125,14 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
           <HStack spacing={4}>
             <WalletCard
               bg="#1677EF"
-              src="/icons/facebook.svg"
+              src="/images/icons/facebook.svg"
               onClick={() => {
                 setChangeForm({ status: "SIGN_UP_SOCIAL", form: "WALLET_FIRST" })
               }}
             />
             <WalletCard
               bg="#EA4336"
-              src="/icons/google.svg"
+              src="/images/icons/google.svg"
               onClick={() => {
                 setChangeForm({ status: "SIGN_UP_SOCIAL", form: "WALLET_FIRST" })
               }}
@@ -168,14 +168,14 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
           <HStack spacing={4}>
             <WalletCard
               bg="white"
-              src="/icons/wallets/metamask.svg"
+              src="/images/icons/wallets/metamask.svg"
               onClick={() => {
                 setChangeForm({ status: "SIGN_UP_WALLET", form: "CREATE_EMAIL" })
               }}
             />
             <WalletCard
               bg="white"
-              src="/icons/wallets/walletconnect.svg"
+              src="/images/icons/wallets/walletconnect.svg"
               onClick={() => {
                 setChangeForm({ status: "SIGN_UP_WALLET", form: "CREATE_EMAIL" })
               }}
