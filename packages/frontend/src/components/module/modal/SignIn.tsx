@@ -10,6 +10,7 @@ import {
   IconButton,
   InputGroup,
   InputRightElement,
+  Link,
   Stack,
   Text,
 } from "@sipher.dev/sipher-ui"
@@ -70,8 +71,8 @@ export const SignIn = ({ changeForm, setChangeForm, onClose }: SignInProps) => {
       <Text cursor="pointer" color="cyan.600" onClick={() => handleChangeForm("forgot")}>
         Forgot password?
       </Text>
-      <Flex pb={2} align="center">
-        <Box flex={1}>
+      <Flex flexDir="column" pb={2}>
+        <Box mb={4}>
           <Text pb={2} color="neutral.400" fontSize="sm">
             Social Account
           </Text>
@@ -90,12 +91,23 @@ export const SignIn = ({ changeForm, setChangeForm, onClose }: SignInProps) => {
                 onClose()
               }}
             />
+            <WalletCard
+              bg="#4053E4"
+              src="/images/icons/discord.svg"
+              onClick={() => {
+                onClose()
+              }}
+            />
+            <WalletCard
+              bg="#479BE9"
+              src="/images/icons/twitter.svg"
+              onClick={() => {
+                onClose()
+              }}
+            />
           </HStack>
         </Box>
-        <Box pos="relative" mx={4}>
-          <Box pos="absolute" transform="translateY(-20%)" h="3rem" w="1px" bg="neutral.500" />
-        </Box>
-        <Box flex={1}>
+        <Box>
           <Flex pb={2} align="center">
             <Text mr={2} color="neutral.400" fontSize="sm">
               Crypto-Wallet
@@ -112,14 +124,20 @@ export const SignIn = ({ changeForm, setChangeForm, onClose }: SignInProps) => {
               <Text fontSize="sm" color="neutral.900">
                 Wallets are used to send, receive, and store digital assets like Ether. Wallets come in many forms. For
                 more infomation about wallets, see this{" "}
-                <chakra.span color="cyan.500" textDecor="underline">
+                <Link
+                  isExternal
+                  href="https://docs.ethhub.io/using-ethereum/wallets/intro-to-ethereum-wallets/"
+                  color="cyan.500"
+                  textDecor="underline"
+                >
                   explanation
-                </chakra.span>
+                </Link>
               </Text>
             </CustomPopover>
           </Flex>
           <HStack spacing={4}>
             <WalletCard
+              text="Metamask"
               bg="white"
               src="/images/icons/wallets/metamask.svg"
               onClick={() => {
@@ -128,11 +146,11 @@ export const SignIn = ({ changeForm, setChangeForm, onClose }: SignInProps) => {
               }}
             />
             <WalletCard
+              text="ConnectWallet"
               bg="white"
               src="/images/icons/wallets/walletconnect.svg"
               onClick={() => {
                 connect("walletConnect")
-                onClose()
               }}
             />
           </HStack>

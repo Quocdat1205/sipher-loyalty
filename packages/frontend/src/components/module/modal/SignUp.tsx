@@ -10,6 +10,7 @@ import {
   IconButton,
   InputGroup,
   InputRightElement,
+  Link,
   Stack,
   Text,
 } from "@sipher.dev/sipher-ui"
@@ -117,8 +118,8 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
           </Flex>
         </FormControl>
       </Form>
-      <Flex pb={2} align="center">
-        <Box flex={1}>
+      <Flex flexDir="column" pb={2}>
+        <Box mb={4}>
           <Text pb={2} color="neutral.400" fontSize="sm">
             Social Account
           </Text>
@@ -137,12 +138,23 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
                 setChangeForm({ status: "SIGN_UP_SOCIAL", form: "WALLET_FIRST" })
               }}
             />
+            <WalletCard
+              bg="#4053E4"
+              src="/images/icons/discord.svg"
+              onClick={() => {
+                setChangeForm({ status: "SIGN_UP_SOCIAL", form: "WALLET_FIRST" })
+              }}
+            />
+            <WalletCard
+              bg="#479BE9"
+              src="/images/icons/twitter.svg"
+              onClick={() => {
+                setChangeForm({ status: "SIGN_UP_SOCIAL", form: "WALLET_FIRST" })
+              }}
+            />
           </HStack>
         </Box>
-        <Box pos="relative" mx={4}>
-          <Box pos="absolute" transform="translateY(-20%)" h="3rem" w="1px" bg="neutral.500" />
-        </Box>
-        <Box flex={1}>
+        <Box>
           <Flex pb={2} align="center">
             <Text mr={2} color="neutral.400" fontSize="sm">
               Crypto-Wallet
@@ -159,14 +171,20 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
               <Text fontSize="sm" color="neutral.900">
                 Wallets are used to send, receive, and store digital assets like Ether. Wallets come in many forms. For
                 more infomation about wallets, see this{" "}
-                <chakra.span color="cyan.500" textDecor="underline">
+                <Link
+                  isExternal
+                  href="https://docs.ethhub.io/using-ethereum/wallets/intro-to-ethereum-wallets/"
+                  color="cyan.500"
+                  textDecor="underline"
+                >
                   explanation
-                </chakra.span>
+                </Link>
               </Text>
             </CustomPopover>
           </Flex>
           <HStack spacing={4}>
             <WalletCard
+              text="Metamask"
               bg="white"
               src="/images/icons/wallets/metamask.svg"
               onClick={() => {
@@ -174,6 +192,7 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
               }}
             />
             <WalletCard
+              text="ConnectWallet"
               bg="white"
               src="/images/icons/wallets/walletconnect.svg"
               onClick={() => {

@@ -13,7 +13,7 @@ const ContentSpaceShip = () => {
         title="Spaceship"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
       />
-      <Box px={[4, 0]} py={8} flex={1} w="full" maxW="1200px">
+      <Box px={[4, 0]} pt={8} flex={1} w="full">
         <TabContainer />
       </Box>
     </Flex>
