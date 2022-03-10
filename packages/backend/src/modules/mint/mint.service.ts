@@ -1,6 +1,5 @@
 // import library
 import { toChecksumAddress } from "ethereumjs-util"
-import { ethers } from "ethers"
 import { Repository } from "typeorm"
 import { MintStatus, MintType, PendingMint } from "@entity"
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common"
@@ -17,19 +16,16 @@ import { LoggerService } from "../logger/logger.service"
 
 @Injectable()
 export class MintService {
-  private config = {
-    chainId: constant.CHAIN_ID,
-    verifyingContract: constant.SC_ERC1155_SPACESHIP,
-  }
-
   constructor(
     @InjectRepository(PendingMint) private PendingMintRepo: Repository<PendingMint>,
     private authService: AuthService,
   ) {}
 
+  private config = constant.config.erc1155Spaceship
+
   async test() {
     LoggerService.log(`sign mint data for 0x83629905189464CC16F5E7c12D54dD5e87459B33, id : [1] ,amount : [2]`)
-
+    LoggerService.log(this.config)
     const order = {
       to: "0x83629905189464CC16F5E7c12D54dD5e87459B33",
       batchID: 1,

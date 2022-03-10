@@ -29,6 +29,6 @@ export class NftContract {
   }
 
   async getOwnerOf(index: number) {
-    return (await this.contract.methods.ownerOf(index).call()).toString()
+    return (await this.contract.methods.ownerOf(index.toString()).call()).toString()
   }
 }
