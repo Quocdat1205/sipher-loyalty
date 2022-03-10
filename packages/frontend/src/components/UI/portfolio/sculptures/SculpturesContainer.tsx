@@ -30,7 +30,7 @@ export const SculpturesContainer = () => {
           REDEEM ALL
         </Button>
       )}
-      <SimpleGrid spacing={6} columns={[1, 2, 3, 4, 5]}>
+      <SimpleGrid spacing={6} columns={[1, 3, 5]}>
         {renderNFTs()}
       </SimpleGrid>
       <ShippingModal isOpen={isModal === "SHIPPING"} onClose={closeModal} />
