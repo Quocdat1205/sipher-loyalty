@@ -23,7 +23,7 @@ export const SettingAccountModal = ({ isOpen, onClose }: SettingAccountModalProp
             <Text mb={4}>Change your Profile picture</Text>
             <Button size="md" color="neutral.50" border="none" onClick={() => setOpen(true)} bg="neutral.600">
               <Flex align="center">
-                <Avatar mr={2} borderRadius="base" src="/icons/avatar.png" size="xs" />
+                <Avatar mr={2} borderRadius="base" src="/images/icons/avatar.png" size="xs" />
                 Choose NFT
               </Flex>
             </Button>

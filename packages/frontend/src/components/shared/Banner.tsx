@@ -13,12 +13,12 @@ export const Banner = ({ srcBg = "/images/portfolio/banner.png", title, descript
       w="full"
       justify="center"
       bg={`url(${srcBg})`}
-      h="20rem"
+      h={["10rem", "10rem", "10rem", "20rem", "20rem"]}
       bgRepeat="no-repeat"
       bgSize="100%"
       position="relative"
     >
-      <Box py={10} maxW="1200px" w="full">
+      <Box pt={10} maxW="1200px" w="full">
         <Heading mb={2} fontWeight={600}>
           {title}
         </Heading>

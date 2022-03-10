@@ -1,19 +1,28 @@
 import React, { useState } from "react"
 import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 
-const tabs = ["Overview", "Claim", "Inventory"] as const
+import { InventoryContainer } from "./inventory"
+import { OverviewContainer } from "./overview"
+
+const tabs = ["Overview", "Inventory"] as const
 type Tab = typeof tabs[number]
 
 export const TabContainer = () => {
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
 
   const renderTabs = () => {
+    if (currentTab === "Overview") {
+      return <OverviewContainer />
+    }
+    if (currentTab === "Inventory") {
+      return <InventoryContainer />
+    }
     return null
   }
 
   return (
-    <Flex flexDir="column" flex={1} h="full">
-      <HStack spacing={8} overflow="hidden" mb={4} borderBottom="1px" borderColor="neutral.700">
+    <Flex align="center" flexDir="column" flex={1} h="full">
+      <HStack maxW="1200px" w="full" spacing={8} overflow="hidden" borderBottom="1px" borderColor="neutral.700">
         {tabs.map(tab => (
           <Flex
             key={tab}
@@ -30,7 +39,9 @@ export const TabContainer = () => {
           </Flex>
         ))}
       </HStack>
-      <Box flex={1}>{renderTabs()}</Box>
+      <Box w="full" flex={1}>
+        {renderTabs()}
+      </Box>
     </Flex>
   )
 }
