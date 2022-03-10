@@ -22,6 +22,7 @@ export const SpaceshipContainer = () => {
       w="full"
       bg="url(/images/spaceship/bg-galaxy.png), linear-gradient(180deg, rgba(0, 0, 0, 0.5) 9.54%, rgba(0, 0, 0, 0.215) 59.01%, rgba(0, 0, 0, 0.5) 100%)"
       bgRepeat="no-repeat"
+      bgPos="100% 30%"
       bgSize="cover"
     >
       <Box py={4} maxW="1200px" w="full">

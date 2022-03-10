@@ -1,10 +1,11 @@
 import React, { useState } from "react"
 import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 
+import { ClaimContainer } from "./claim/ClaimContainer"
 import { InventoryContainer } from "./inventory"
 import { OverviewContainer } from "./overview"
 
-const tabs = ["Overview", "Inventory"] as const
+const tabs = ["Overview", "Claim", "Inventory"] as const
 type Tab = typeof tabs[number]
 
 export const TabContainer = () => {
@@ -16,6 +17,9 @@ export const TabContainer = () => {
     }
     if (currentTab === "Inventory") {
       return <InventoryContainer />
+    }
+    if (currentTab === "Claim") {
+      return <ClaimContainer />
     }
     return null
   }
