@@ -4,7 +4,7 @@ import { ApiOkResponse, ApiTags } from "@nestjs/swagger"
 
 // import { sessionType } from "../auth/auth.type"
 import { LootBoxService } from "./lootbox.service"
-import { MintLootboxInputDto } from "./lootbox.type"
+import { MintBatchLootboxInputDto, MintLootboxInputDto } from "./lootbox.type"
 
 @ApiTags("lootbox")
 @Controller("lootbox")
@@ -23,8 +23,14 @@ export class LootBoxController {
   }
 
   @ApiOkResponse()
+  @Put("mint-batch")
+  async mintBatchLootbox(@Body() body: MintBatchLootboxInputDto) {
+    return this.lootBoxService.mintBatchLootbox(body)
+  }
+
+  @ApiOkResponse()
   @Put("mint")
-  async mint(@Body() body: MintLootboxInputDto) {
+  async mintLootbox(@Body() body: MintLootboxInputDto) {
     return this.lootBoxService.mintLootbox(body)
   }
 }

@@ -2,7 +2,6 @@
 import fs from "fs"
 
 import { toChecksumAddress } from "ethereumjs-util"
-import { async } from "rxjs"
 import { Repository } from "typeorm"
 import { Lootbox } from "@entity"
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common"
@@ -13,10 +12,9 @@ import constant from "@setting/constant"
 import { MintService } from "@modules/mint/mint.service"
 
 import { NftContract } from "../contract/contract.module"
-// import module
 import { LoggerService } from "../logger/logger.service"
 
-import { MintLootboxInput } from "./lootbox.type"
+import { MintBatchLootboxInput, MintLootboxInput } from "./lootbox.type"
 
 @Injectable()
 export class LootBoxService {
@@ -133,14 +131,18 @@ export class LootBoxService {
     return this.flattenLootbox(lootboxs)
   }
 
-  mintLootbox = async (mintLootboxInput: MintLootboxInput) => {
-    const { walletAddress, batchID, amount } = mintLootboxInput
+  mintBatchLootbox = async (mintBatchLootboxInput: MintBatchLootboxInput) => {
+    const { walletAddress, batchID, amount } = mintBatchLootboxInput
+
+    // verify
     if (batchID.length !== amount.length)
       throw new HttpException("batchID length and amount length not equal ", HttpStatus.BAD_REQUEST)
 
     if (batchID.filter((x, i, a) => a.indexOf(x) === i).length < batchID.length)
       throw new HttpException("duplicate batchID  ", HttpStatus.BAD_REQUEST)
 
+    if (amount.findIndex(item => item === 0) !== -1)
+      throw new HttpException("amount must not equal zero", HttpStatus.BAD_REQUEST)
     const promises = []
     const lootboxs = await this.getLootboxFromWalletAndTokenIDs(walletAddress, batchID)
     for (let i = 0; i < batchID.length; i++) {
@@ -149,10 +151,42 @@ export class LootBoxService {
         throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST)
       lootboxs[i].pending += amount[i]
     }
+
+    // update batch lootbox
     for (let i = 0; i < lootboxs.length; i++) {
       promises.push(this.LootboxRepo.save(lootboxs[i]))
     }
+
+    // sign messages and save pending mint
+    const signanture = await this.mintService.mintBatch(mintBatchLootboxInput)
+
+    // get pending mint
+    const pending = await this.mintService.getPendingLootbox(walletAddress)
+
     const data = await Promise.all(promises)
-    return { signanture: await this.mintService.mint(mintLootboxInput), success: true, message: "", data }
+    return { signanture, data, pending }
+  }
+
+  mintLootbox = async (mintLootboxInput: MintLootboxInput) => {
+    const { walletAddress, batchID, amount } = mintLootboxInput
+
+    // verify
+    if (amount === 0) throw new HttpException("amount must not equal zero", HttpStatus.BAD_REQUEST)
+    const lootbox = await this.getLootboxFromWalletAndTokenID(walletAddress, batchID)
+    if (!lootbox) throw new HttpException("not have tokenID ", HttpStatus.BAD_REQUEST)
+    if (lootbox.quantity - lootbox.pending < amount)
+      throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST)
+    lootbox.pending += amount
+
+    // update lootbox
+    const data = await this.LootboxRepo.save(lootbox)
+
+    // sign messages and save pending mint
+    const signanture = await this.mintService.mint(mintLootboxInput)
+
+    // get pending mint
+    const pending = await this.mintService.getPendingLootbox(walletAddress)
+
+    return { signanture, data, pending }
   }
 }
