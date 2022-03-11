@@ -11,12 +11,12 @@ const initData = [
   {
     id: 2,
     name: "Sipher Inu #2",
-    imageUrl: "/images/spaceship/box.png",
+    imageUrl: "/images/spaceship/box-1.png",
   },
   {
     id: 3,
     name: "Sipher Inu #3",
-    imageUrl: "/images/spaceship/box.png",
+    imageUrl: "/images/spaceship/box-2.png",
   },
 ]
 

@@ -30,6 +30,7 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
         w="full"
         justify="space-between"
         align="center"
+        pos="relative"
       >
         <Flex pos="relative" flex={1} mr={8}>
           <Box p={2} pt={4} px={[4, 4, 8]} pos="relative">

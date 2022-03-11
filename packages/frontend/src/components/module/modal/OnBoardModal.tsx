@@ -14,17 +14,17 @@ interface SettingAccountModalProps {
 
 const imageData = [
   {
-    image: "/images/portfolio/sculpture.png",
+    image: "/images/general/onboard1.png",
     title1: "Ather Labs - Gaming Entertainment",
     title2: "Studio Utilizing Blockchain",
   },
   {
-    image: "/images/portfolio/sculpture.png",
+    image: "/images/general/onboard2.png",
     title1: "ACCESS To ather labs' platforms &",
     title2: "games with one ather account",
   },
   {
-    image: "/images/portfolio/sculpture.png",
+    image: "/images/general/onboard3.png",
     title1: "enjoy extra benefits &",
     title2: "exclusive rewards",
   },
@@ -61,11 +61,21 @@ export const OnBoardModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
       isOpen={isOpen}
       onClose={onClose}
       size="5xl"
+      styleProps={{
+        bg: "rgba(97, 97, 97, 0.1)",
+        border: "1px",
+        borderColor: "whiteAlpha.200",
+        rounded: "2xl",
+      }}
     >
+      <Box opacity="0.5" pos="absolute" w="full" h="full" top="0" left="0" bg="url(/images/general/noise.png)" />
       <Flex px={6} w="full" flexDir="column" align="center">
-        <Heading mb={10} fontWeight={600} fontSize="3xl">
-          WELCOME TO ATHER LABS
-        </Heading>
+        <Flex mb={10} align="center">
+          <Heading mr={4} fontWeight={600} fontSize="3xl">
+            WELCOME TO
+          </Heading>
+          <Image src="/images/general/LOGO.svg" width={274} height={47} alt="LOGO" />
+        </Flex>
         <HStack mb={8} w="full" justify="space-between" spacing={6}>
           {imageData.map(item => (
             <Box sx={{ img: { rounded: "lg" } }} w="full" h="full" key={item.title1}>
