@@ -1,42 +1,42 @@
-import { IsEthereumAddress, IsString } from "class-validator"
+import { IsEthereumAddress, IsString } from "class-validator";
 
 export class addressDto {
   @IsEthereumAddress()
-  publicAddress: string
+  publicAddress: string;
 }
 
 export class signWalletDto {
   @IsString()
-  signature: string
+  signature: string;
 
   @IsEthereumAddress()
-  publicAddress: string
+  publicAddress: string;
 }
 
 export class connectDiscordDto {
   @IsEthereumAddress()
-  publicAddress: string
+  publicAddress: string;
 
   @IsString()
-  id_discord: number
+  id_discord: number;
 
   @IsString()
-  name_discord: string
+  name_discord: string;
 }
 
 export class updateAccountDto {
   @IsEthereumAddress()
-  publicAddress: string
+  publicAddress: string;
 
   @IsString()
-  username: string
+  username: string;
 
   @IsString()
-  email: string
+  email: string;
 
   @IsString()
-  bio: string
+  bio: string;
 
   @IsString()
-  attachment: string
+  attachment: string;
 }

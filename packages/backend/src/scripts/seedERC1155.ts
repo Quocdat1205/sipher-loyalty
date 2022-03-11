@@ -1,12 +1,15 @@
-import { ERC1155SpaceShipPartLootbox, ERC1155SpaceShipPartLootboxAttribute } from "@entity"
-import { Module, OnApplicationBootstrap } from "@nestjs/common"
-import { ConfigModule } from "@nestjs/config"
-import { NestFactory } from "@nestjs/core"
-import { TypeOrmModule } from "@nestjs/typeorm"
-import { configService } from "@setting/config.typeorm"
+import {
+  ERC1155SpaceShipPartLootbox,
+  ERC1155SpaceShipPartLootboxAttribute,
+} from "@entity";
+import { Module, OnApplicationBootstrap } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { NestFactory } from "@nestjs/core";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { configService } from "@setting/config.typeorm";
 
-import { SeedModule } from "@modules/seed/seed.module"
-import { SeedService } from "@modules/seed/seed.service"
+import { SeedModule } from "@modules/seed/seed.module";
+import { SeedService } from "@modules/seed/seed.service";
 
 @Module({
   imports: [
@@ -27,7 +30,10 @@ import { SeedService } from "@modules/seed/seed.service"
     //   synchronize: true,
     //   autoLoadEntities: true,
     // }),
-    TypeOrmModule.forFeature([ERC1155SpaceShipPartLootbox, ERC1155SpaceShipPartLootboxAttribute]),
+    TypeOrmModule.forFeature([
+      ERC1155SpaceShipPartLootbox,
+      ERC1155SpaceShipPartLootboxAttribute,
+    ]),
   ],
   providers: [SeedService],
 })
@@ -35,10 +41,10 @@ export class AppModule implements OnApplicationBootstrap {
   constructor(private readonly seedingService: SeedService) {}
 
   async onApplicationBootstrap(): Promise<void> {
-    await this.seedingService.seedERC1155SpaceShipPartLootboxs()
+    await this.seedingService.seedERC1155SpaceShipPartLootboxs();
   }
 }
 async function bootstrap() {
-  await NestFactory.createApplicationContext(AppModule)
+  await NestFactory.createApplicationContext(AppModule);
 }
-bootstrap()
+bootstrap();

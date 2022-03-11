@@ -9,4 +9,4 @@ export const erc1155Abi = [
   "function isApprovedForAll(account, operator)",
   "function safeTransferFrom(from, to, id, amount, data)",
   "function safeBatchTransferFrom(from, to, ids, amounts, data)",
-]
+];
