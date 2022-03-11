@@ -7,7 +7,7 @@ import { InjectRepository } from "@nestjs/typeorm"
 import constant from "@setting/constant"
 
 import { MintBatchLootboxInput, MintLootboxInput } from "@modules/lootbox/lootbox.type"
-import { randomSalt } from "@utils/random"
+import { randomSalt } from "@utils/utils"
 import { recoverBatchOrderSignature, recoverOrderSignature } from "@utils/recover"
 import { signBatchOrder, signOrder } from "@utils/signer"
 
