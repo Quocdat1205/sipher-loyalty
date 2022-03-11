@@ -1,9 +1,9 @@
-import { Module } from "@nestjs/common"
-import { JwtModule } from "@nestjs/jwt"
-import { PassportModule } from "@nestjs/passport"
-import constant from "@setting/constant"
+import { Module } from "@nestjs/common";
+import { JwtModule } from "@nestjs/jwt";
+import { PassportModule } from "@nestjs/passport";
+import constant from "@setting/constant";
 
-import { AuthService } from "./auth.service"
+import { AuthService } from "./auth.service";
 
 @Module({
   imports: [

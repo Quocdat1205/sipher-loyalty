@@ -1,38 +1,38 @@
-import { Matches } from "class-validator"
-import { ApiProperty } from "@nestjs/swagger"
+import { Matches } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class MintBatchLootboxInputDto {
   @ApiProperty()
   @Matches(/^0x[a-fA-F0-9]{40}$/)
-  walletAddress: string
+  walletAddress: string;
 
   @ApiProperty({ type: [Number] })
-  batchID: number[]
+  batchID: number[];
 
   @ApiProperty({ type: [Number] })
-  amount: number[]
+  amount: number[];
 }
 
 export class MintLootboxInputDto {
   @ApiProperty()
   @Matches(/^0x[a-fA-F0-9]{40}$/)
-  walletAddress: string
+  walletAddress: string;
 
   @ApiProperty()
-  batchID: number
+  batchID: number;
 
   @ApiProperty()
-  amount: number
+  amount: number;
 }
 
 export interface MintLootboxInput {
-  walletAddress: string
-  batchID: number
-  amount: number
+  walletAddress: string;
+  batchID: number;
+  amount: number;
 }
 
 export interface MintBatchLootboxInput {
-  walletAddress: string
-  batchID: number[]
-  amount: number[]
+  walletAddress: string;
+  batchID: number[];
+  amount: number[];
 }

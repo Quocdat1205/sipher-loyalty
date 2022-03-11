@@ -1,12 +1,12 @@
 export interface signUser {
-  publicAddress: string
-  nonce: number
+  publicAddress: string;
+  nonce: number;
 }
 
 export interface signAdmin {
-  username: string
+  username: string;
 }
 
 export interface sessionType {
-  userId: string
+  userId: string;
 }

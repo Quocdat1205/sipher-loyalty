@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Box, Flex } from "@sipher.dev/sipher-ui"
 
+import { GradientBox } from "../layout"
 import { SettingAccountModal } from "../modal"
 
 import Logo from "./Logo"
@@ -24,14 +25,16 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
   const [openSetting, setOpenSetting] = useState<boolean>(false)
 
   return (
-    <Box backdropFilter="blur(10px)" pos={isSticky ? "sticky" : "unset"} top={0} left={0} right={0} zIndex="sticky">
+    <Box backdropFilter="blur(10px)" pos={isSticky ? "sticky" : "relative"} top={0} left={0} right={0} zIndex="sticky">
       <Flex
         bg="linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(51, 52, 74, 0) 100%)"
         w="full"
         justify="space-between"
         align="center"
+        pos="relative"
       >
-        <Flex pos="relative" flex={1} mr={8}>
+        <Flex overflow="hidden" pos="relative" flex={1} mr={8}>
+          <GradientBox />
           <Box p={2} pt={4} px={[4, 4, 8]} pos="relative">
             <Logo />
             <Box

@@ -1,4 +1,9 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm"
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 export enum MintStatus {
   Pending = "Pending",
@@ -14,42 +19,42 @@ export enum MintType {
 @Entity()
 export class PendingMint {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column({ nullable: false })
-  to: string
+  to: string;
 
   @Column({ nullable: false })
-  batchID: number
+  batchID: number;
 
   @Column({ nullable: false })
-  amount: number
+  amount: number;
 
   @Column("int", { array: true, default: [] })
-  batchIDs: number[]
+  batchIDs: number[];
 
   @Column("int", { array: true, default: [] })
-  amounts: number[]
+  amounts: number[];
 
   @Column({ nullable: false })
-  salt: string
+  salt: string;
 
   @Column({
     type: "enum",
     enum: MintStatus,
     default: MintStatus.Pending,
   })
-  status: MintStatus
+  status: MintStatus;
 
   @Column({
     type: "enum",
     enum: MintType,
   })
-  type: MintType
+  type: MintType;
 
   @Column({ nullable: false })
-  signature: string
+  signature: string;
 
   @CreateDateColumn({ default: new Date() })
-  createdAt: Date
+  createdAt: Date;
 }

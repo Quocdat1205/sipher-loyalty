@@ -1,28 +1,28 @@
-import { Injectable } from "@nestjs/common"
-import { JwtService } from "@nestjs/jwt"
+import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 
-import { LoggerService } from "../logger/logger.service"
+import { LoggerService } from "../logger/logger.service";
 
-import { signAdmin, signUser } from "./auth.type"
+import { signAdmin, signUser } from "./auth.type";
 
 @Injectable()
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
   async getTokenUser(user: signUser) {
-    const payload = { publicAddress: user.publicAddress, nonce: user.nonce }
+    const payload = { publicAddress: user.publicAddress, nonce: user.nonce };
 
-    const token = this.jwtService.sign(payload)
+    const token = this.jwtService.sign(payload);
 
-    return token
+    return token;
   }
 
   async getTokenAdmin(admin: signAdmin) {
-    const payload = { username: admin.username }
+    const payload = { username: admin.username };
 
-    const token = this.jwtService.sign(payload)
-    LoggerService.log(token)
+    const token = this.jwtService.sign(payload);
+    LoggerService.log(token);
 
-    return token
+    return token;
   }
 }

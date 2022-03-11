@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { Box, HStack } from "@sipher.dev/sipher-ui"
 
 import FilterSelector from "../FilterSelector"
-import GridSelector from "../GridSelector"
 
 const categoriesSort = [
   { value: "characters", text: "Characters" },
@@ -41,7 +40,6 @@ const FilterBar = () => {
           text="Categories"
           data={categoriesSort}
         />
-        <GridSelector />
       </HStack>
       {/* <Stack spacing={[2, 4]} display={["flex", "none"]}>
         <HStack w="full" align="center" justify={["flex-start", "flex-end"]}>

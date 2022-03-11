@@ -9,23 +9,27 @@ import { LootBoxService } from "@modules/lootbox/lootbox.service"
 import { ZERO_ADDRESS } from "@utils/constants"
 import { signer } from "@utils/signer"
 
-import { LoggerService } from "../../logger/logger.service"
+import { LoggerService } from "../../logger/logger.service";
 
 @Injectable()
 export class LootboxTrackerService {
-  private provider: providers.Provider
+  private provider: providers.Provider;
 
-  private contract: Contract
+  private contract: Contract;
 
-  private contractWithSigner
+  private contractWithSigner;
 
-  private fromBlock: number
+  private fromBlock: number;
 
   constructor(private lootBoxService: LootBoxService) {
-    this.provider = getProvider(constant.CHAIN_ID)
-    this.contract = getContract(constant.config.erc1155Spaceship.verifyingContract, erc1155Abi, this.provider)
-    this.contractWithSigner = this.contract.connect(signer)
-    this.fromBlock = 0
+    this.provider = getProvider(constant.CHAIN_ID);
+    this.contract = getContract(
+      constant.config.erc1155Spaceship.verifyingContract,
+      erc1155Abi,
+      this.provider
+    );
+    this.contractWithSigner = this.contract.connect(signer);
+    this.fromBlock = 0;
   }
 
   @Interval("tracking lootbox transfer", 15000)
@@ -35,12 +39,12 @@ export class LootboxTrackerService {
 
   private currentBlock = async () => {
     try {
-      return await this.provider.getBlockNumber()
+      return await this.provider.getBlockNumber();
     } catch (err) {
       LoggerService.error(err)
       return 0
     }
-  }
+  };
 
   private trackingTranserBatch = async (_fromBlock: number) => {
     const tokenCheckers = []
@@ -78,7 +82,7 @@ export class LootboxTrackerService {
     })
 
     if (!pastEvents) {
-      return _fromBlock // retry
+      return _fromBlock; // retry
     }
     const promises = []
     pastEvents.forEach(event => {

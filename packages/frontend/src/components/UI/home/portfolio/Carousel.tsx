@@ -39,7 +39,7 @@ const swipePower = (offset: number, velocity: number) => {
 
 export const Carousel = ({ deplay = 5000, slideData, isAuto = false }: SlideshowProps) => {
   const [[page, direction], setPage] = useState([0, 0])
-  const pageSize = 5
+  const pageSize = 3
   const pageNumber =
     slideData.length > 0
       ? slideData.length % pageSize > 0
@@ -76,7 +76,7 @@ export const Carousel = ({ deplay = 5000, slideData, isAuto = false }: Slideshow
   }
 
   return (
-    <Box pos="relative" h={["25rem"]} w="full" overflow="hidden">
+    <Box pos="relative" h={["22rem"]} w="full" overflow="hidden">
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={page}
@@ -103,14 +103,15 @@ export const Carousel = ({ deplay = 5000, slideData, isAuto = false }: Slideshow
           }}
         >
           <Box pos="absolute" w="full" h="full">
-            <SimpleGrid w="full" spacing={4} columns={pageSize}>
+            <SimpleGrid p={1} w="full" spacing={6} columns={pageSize}>
               {slideData.slice(index * pageSize, (index + 1) * pageSize).map(item => (
                 <NFTCard
+                  isVerified
                   key={item}
-                  liked={1}
+                  volume={1}
+                  floorPrice={1}
                   tokenId={"1"}
-                  name="Sipher Inu #2173"
-                  collectionId="0x4d91fa57abfead5fbc8445e45b906b85bbd9744c"
+                  collectionName="Sipherian Surge"
                   imageUrl="/images/nft/sipher3.png"
                 />
               ))}

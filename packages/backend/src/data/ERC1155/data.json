@@ -1,87 +1,87 @@
 [
-    {
-        "tokenId": "0",
-        "name": "lootbox #1",
-        "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-        "attributes": [
-            {
-                "trait_type": "background",
-                "value": "Japanese neko"
-            },
-            {
-                "trait_type": "sub-race",
-                "value": "Felis"
-            }
-        ]
-    },
-    {
-        "tokenId": "1",
-        "name": "lootbox #2",
-        "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-        "attributes": [
-            {
-                "trait_type": "fur color",
-                "value": "Orange Tabby"
-            }
-        ]
-    },
-    {
-        "tokenId": "2",
-        "name": "lootbox #3",
-        "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-        "attributes": [
-            {
-                "trait_type": "costume",
-                "value": "bomber jacket"
-            }
-        ]
-    },
-    {
-        "tokenId": "3",
-        "name": "lootbox #4",
-        "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-        "attributes": [
-            {
-                "trait_type": "eye color",
-                "value": "baby blue"
-            }
-        ]
-    },
-    {
-        "tokenId": "4",
-        "name": "lootbox #5",
-        "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-        "attributes": [
-            {
-                "trait_type": "hair",
-                "value": "pink ribbon"
-            },
-            {
-                "trait_type": "weapon",
-                "value": "steel knuckle"
-            }
-        ]
-    },
-    {
-        "tokenId": "5",
-        "name": "lootbox #6",
-        "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-        "attributes": [
-            {
-                "trait_type": "weapon",
-                "value": "steel knuckle"
-            }
-        ]
-    },
-    {
-        "tokenId": "6",
-        "name": "lootbox #7",
-        "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-        "attributes": [
-            {
-                "trait_type": "hair",
-                "value": "pink ribbon"
-            }
-        ]
-    }
+  {
+    "tokenId": "0",
+    "name": "lootbox #1",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "attributes": [
+      {
+        "trait_type": "background",
+        "value": "Japanese neko"
+      },
+      {
+        "trait_type": "sub-race",
+        "value": "Felis"
+      }
+    ]
+  },
+  {
+    "tokenId": "1",
+    "name": "lootbox #2",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "attributes": [
+      {
+        "trait_type": "fur color",
+        "value": "Orange Tabby"
+      }
+    ]
+  },
+  {
+    "tokenId": "2",
+    "name": "lootbox #3",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "attributes": [
+      {
+        "trait_type": "costume",
+        "value": "bomber jacket"
+      }
+    ]
+  },
+  {
+    "tokenId": "3",
+    "name": "lootbox #4",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "attributes": [
+      {
+        "trait_type": "eye color",
+        "value": "baby blue"
+      }
+    ]
+  },
+  {
+    "tokenId": "4",
+    "name": "lootbox #5",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "attributes": [
+      {
+        "trait_type": "hair",
+        "value": "pink ribbon"
+      },
+      {
+        "trait_type": "weapon",
+        "value": "steel knuckle"
+      }
+    ]
+  },
+  {
+    "tokenId": "5",
+    "name": "lootbox #6",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "attributes": [
+      {
+        "trait_type": "weapon",
+        "value": "steel knuckle"
+      }
+    ]
+  },
+  {
+    "tokenId": "6",
+    "name": "lootbox #7",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "attributes": [
+      {
+        "trait_type": "hair",
+        "value": "pink ribbon"
+      }
+    ]
+  }
 ]

@@ -14,4 +14,4 @@ export const erc721Abi = [
   "function transferFrom(address from, address to, uint256 tokenId)",
   "function symbol() view returns (string)",
   "function name() view returns (string)",
-]
+];

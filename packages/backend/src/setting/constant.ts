@@ -11,7 +11,9 @@ export enum Chain {
 type BlockchainConfiguration = {
   rpcUrls: { [k in Chain]: string }
   contracts: {
-    erc1155Spaceship: { [k in Chain]: { address: string; startBlock?: number } }
+    erc1155Spaceship: {
+      [k in Chain]: { address: string; startBlock?: number }
+    }
   }
 }
 

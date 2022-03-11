@@ -397,3 +397,10 @@ Temporary Items
 .env
 dist
 ormconfig.json
+
+# Docker volumes
+docker/postgres
+docker/redis
+
+# Mac
+.DS_Store

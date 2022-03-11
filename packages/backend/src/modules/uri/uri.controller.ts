@@ -1,7 +1,7 @@
-import { Controller, Get, Param } from "@nestjs/common"
+import { Controller, Get, Param } from "@nestjs/common";
 
 // import { sessionType } from "../auth/auth.type"
-import { URIService } from "./uri.service"
+import { URIService } from "./uri.service";
 
 @Controller("uri")
 export class URIController {
@@ -9,6 +9,6 @@ export class URIController {
 
   @Get("/:tokenId")
   async getData(@Param("tokenId") tokenId: number) {
-    return this.uriService.getData(tokenId)
+    return this.uriService.getData(tokenId);
   }
 }

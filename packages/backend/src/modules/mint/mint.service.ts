@@ -18,7 +18,8 @@ import { LoggerService } from "../logger/logger.service"
 @Injectable()
 export class MintService {
   constructor(
-    @InjectRepository(PendingMint) private PendingMintRepo: Repository<PendingMint>,
+    @InjectRepository(PendingMint)
+    private PendingMintRepo: Repository<PendingMint>,
     private authService: AuthService,
   ) {}
 
@@ -63,8 +64,16 @@ export class MintService {
   getPendingLootbox = async (walletAddress: string) => {
     const pending = await this.PendingMintRepo.find({
       where: [
-        { to: walletAddress.toLowerCase(), type: MintType.Lootbox, status: MintStatus.Pending },
-        { to: toChecksumAddress(walletAddress), type: MintType.Lootbox, status: MintStatus.Pending },
+        {
+          to: walletAddress.toLowerCase(),
+          type: MintType.Lootbox,
+          status: MintStatus.Pending,
+        },
+        {
+          to: toChecksumAddress(walletAddress),
+          type: MintType.Lootbox,
+          status: MintStatus.Pending,
+        },
       ],
     })
     return pending

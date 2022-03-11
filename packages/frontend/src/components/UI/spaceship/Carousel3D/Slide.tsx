@@ -1,17 +1,5 @@
 import React from "react"
-import { config } from "react-spring"
-import { Spring } from "react-spring/renderprops"
-import styled from "@emotion/styled"
-
-const SlideContainer = styled.div`
-  position: absolute;
-  height: 100%;
-  top: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform-origin: 50% 50%;
-`
+import { animated, config, Spring } from "react-spring"
 
 interface IProps {
   content: JSX.Element
@@ -51,10 +39,23 @@ export default function Slide({ content, offsetRadius, index, onClick }: IProps)
       }}
       config={config.molasses}
     >
-      {style => (
-        <SlideContainer style={{ ...style, zIndex: Math.abs(Math.abs(offsetFromCenter) - 2) }} onClick={onClick}>
+      {styles => (
+        <animated.div
+          style={{
+            ...styles,
+            position: "absolute",
+            height: "100%",
+            top: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transformOrigin: "50% 50%",
+            zIndex: Math.abs(Math.abs(offsetFromCenter) - 2),
+          }}
+          onClick={onClick}
+        >
           {content}
-        </SlideContainer>
+        </animated.div>
       )}
     </Spring>
   )

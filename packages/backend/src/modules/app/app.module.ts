@@ -1,27 +1,33 @@
 // import library
-import Joi from "joi"
-import { NftOrder, Program, SculpturesOrder, User } from "@entity"
-import { AuthMiddleware } from "@middleware"
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common"
-import { ConfigModule } from "@nestjs/config"
-import { TypeOrmModule } from "@nestjs/typeorm"
-import { configService } from "@setting/config.typeorm"
-import validation from "@setting/validationSchema"
+import Joi from "joi";
+import { NftOrder, Program, SculpturesOrder, User } from "@entity";
+import { AuthMiddleware } from "@middleware";
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { configService } from "@setting/config.typeorm";
+import validation from "@setting/validationSchema";
 
-import { AdminModule } from "@modules/admin/admin.module"
-import { AuthModule } from "@modules/auth/auth.module"
-import { LoggerModule } from "@modules/logger/logger.module"
-import { NftItemModule } from "@modules/nft/nftItem.module"
-import { SearchModule } from "@modules/search/search.module"
-import { URIModule } from "@modules/uri/uri.module"
-import { UserModule } from "@modules/user/user.module"
+import { AdminModule } from "@modules/admin/admin.module";
+import { AuthModule } from "@modules/auth/auth.module";
+import { LoggerModule } from "@modules/logger/logger.module";
+import { NftItemModule } from "@modules/nft/nftItem.module";
+import { SearchModule } from "@modules/search/search.module";
+import { URIModule } from "@modules/uri/uri.module";
+import { UserModule } from "@modules/user/user.module";
 
-import { LootBoxModule } from "../lootbox/lootbox.module"
-import { MintModule } from "../mint/mint.module"
+import { LootBoxModule } from "../lootbox/lootbox.module";
+import { MintModule } from "../mint/mint.module";
 
 // import module
-import { AppController } from "./app.controller"
-import { AppService } from "./app.service"
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { CollectionModule } from "@modules/collection/collection.module";
 
 @Module({
   imports: [
@@ -40,6 +46,7 @@ import { AppService } from "./app.service"
     MintModule,
     LootBoxModule,
     URIModule,
+    CollectionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -50,7 +57,7 @@ export class AppModule implements NestModule {
       .apply(AuthMiddleware)
       .forRoutes(
         { path: "user/sign", method: RequestMethod.POST },
-        { path: "/users/get-info", method: RequestMethod.GET },
-      )
+        { path: "/users/get-info", method: RequestMethod.GET }
+      );
   }
 }
