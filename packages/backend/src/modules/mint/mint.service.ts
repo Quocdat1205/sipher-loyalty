@@ -1,5 +1,6 @@
 // import library
 import { toChecksumAddress } from "ethereumjs-util"
+import { BigNumber } from "ethers"
 import { Repository } from "typeorm"
 import { MintStatus, MintType, PendingMint } from "@entity"
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common"
@@ -7,9 +8,10 @@ import { InjectRepository } from "@nestjs/typeorm"
 import constant from "@setting/constant"
 
 import { MintBatchLootboxInput, MintLootboxInput } from "@modules/lootbox/lootbox.type"
-import { randomSalt } from "@utils/utils"
 import { recoverBatchOrderSignature, recoverOrderSignature } from "@utils/recover"
 import { signBatchOrder, signOrder } from "@utils/signer"
+import { BatchOrder, Order } from "@utils/type"
+import { randomSalt } from "@utils/utils"
 
 import { AuthService } from "../auth/auth.service"
 import { LoggerService } from "../logger/logger.service"
@@ -60,13 +62,71 @@ export class MintService {
   }
 
   getPendingLootbox = async (walletAddress: string) => {
-    const pending = this.PendingMintRepo.find({
+    const pending = await this.PendingMintRepo.find({
       where: [
         { to: walletAddress.toLowerCase(), type: MintType.Lootbox, status: MintStatus.Pending },
         { to: toChecksumAddress(walletAddress), type: MintType.Lootbox, status: MintStatus.Pending },
       ],
     })
     return pending
+  }
+
+  getPendingLootboxByBatchOrder = async (batchOrder: BatchOrder) => {
+    const pending = await this.PendingMintRepo.find({
+      where: [
+        {
+          to: batchOrder.to.toLowerCase(),
+          type: MintType.Lootbox,
+          status: MintStatus.Pending,
+          salt: batchOrder.salt,
+          batchIDs: batchOrder.batchID,
+          amounts: batchOrder.amount,
+        },
+        {
+          to: toChecksumAddress(batchOrder.to),
+          type: MintType.Lootbox,
+          status: MintStatus.Pending,
+          salt: batchOrder.salt,
+          batchIDs: batchOrder.batchID,
+          amounts: batchOrder.amount,
+        },
+      ],
+    })
+    return pending
+  }
+
+  getPendingLootboxByOrder = async (order: Order) => {
+    const pending = await this.PendingMintRepo.findOne({
+      where: [
+        {
+          to: order.to.toLowerCase(),
+          type: MintType.Lootbox,
+          status: MintStatus.Pending,
+          salt: order.salt,
+          batchID: order.batchID,
+          amount: order.amount,
+          batchIDs: [],
+          amounts: [],
+        },
+        {
+          to: toChecksumAddress(order.to),
+          type: MintType.Lootbox,
+          status: MintStatus.Pending,
+          salt: order.salt,
+          batchID: order.batchID,
+          amount: order.amount,
+          batchIDs: [],
+          amounts: [],
+        },
+      ],
+    })
+
+    return pending
+  }
+
+  async updatePendingMint(pendingMint: PendingMint) {
+    LoggerService.log(`update pending mint : ${pendingMint}`)
+    return this.PendingMintRepo.save(pendingMint)
   }
 
   async mintBatch(mintBatchLootboxInput: MintBatchLootboxInput) {

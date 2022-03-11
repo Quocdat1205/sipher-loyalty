@@ -100,8 +100,8 @@ export class SystemConfigProvider {
 
   public get blockchain(): BlockchainConfiguration {
     const rpcUrls = {
-      [Chain.Mainnet]: this.get(`https://mainnet.infura.io/v3/${this.SC_INFURA}`),
-      [Chain.Rinkeby]: this.get(`https://rinkeby.infura.io/v3/${this.SC_INFURA}`),
+      [Chain.Mainnet]: `https://mainnet.infura.io/v3/${this.SC_INFURA}`,
+      [Chain.Rinkeby]: `https://rinkeby.infura.io/v3/${this.SC_INFURA}`,
     }
 
     const erc1155Spaceship = {
