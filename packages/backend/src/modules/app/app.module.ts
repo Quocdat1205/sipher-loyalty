@@ -22,6 +22,7 @@ import { MintModule } from "../mint/mint.module"
 // import module
 import { AppController } from "./app.controller"
 import { AppService } from "./app.service"
+import { CollectionModule } from "@modules/collection/collection.module"
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { AppService } from "./app.service"
     MintModule,
     LootBoxModule,
     URIModule,
+    CollectionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

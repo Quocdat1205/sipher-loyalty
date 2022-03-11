@@ -5,5 +5,6 @@ module.exports = {
   extends: ["airbnb-base", "airbnb-typescript/base", "../../.eslintrc.js"],
   rules: {
     "class-methods-use-this": "off",
+    "no-unused-vars": "warn",
   },
-}
+};
