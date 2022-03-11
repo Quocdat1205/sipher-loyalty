@@ -1,4 +1,4 @@
-import { LoggerService } from "@modules/logger/logger.service";
+import { catchError } from "rxjs";
 import {
   Controller,
   Get,
@@ -8,7 +8,9 @@ import {
   Param,
 } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
-import { catchError } from "rxjs";
+
+import { LoggerService } from "@modules/logger/logger.service";
+
 import { CollectionService } from "./collection.service";
 
 @ApiTags("collection")

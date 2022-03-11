@@ -15,6 +15,7 @@ import validation from "@setting/validationSchema";
 
 import { AdminModule } from "@modules/admin/admin.module";
 import { AuthModule } from "@modules/auth/auth.module";
+import { CollectionModule } from "@modules/collection/collection.module";
 import { LoggerModule } from "@modules/logger/logger.module";
 import { NftItemModule } from "@modules/nft/nftItem.module";
 import { SearchModule } from "@modules/search/search.module";
@@ -27,7 +28,6 @@ import { MintModule } from "../mint/mint.module";
 // import module
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { CollectionModule } from "@modules/collection/collection.module";
 
 @Module({
   imports: [

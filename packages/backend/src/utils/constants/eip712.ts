@@ -1,6 +1,6 @@
-export const EIP712_NAME = "Sipher Spaceship Part"
+export const EIP712_NAME = "Sipher Spaceship Part";
 
-export const EIP712_VERSION = "1.0"
+export const EIP712_VERSION = "1.0";
 
 export const EIP712_DOMAIN_TEMPLATE = {
   name: EIP712_NAME,

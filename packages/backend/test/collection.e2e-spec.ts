@@ -1,7 +1,8 @@
 import request from "supertest";
-import { CollectionModule } from "@modules/collection/collection.module";
 import { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
+
+import { CollectionModule } from "@modules/collection/collection.module";
 
 describe("Collection", () => {
   let app: INestApplication;
@@ -16,11 +17,10 @@ describe("Collection", () => {
   });
 
   describe("/GET collection stats", () => {
-    it("should return 200", () => {
-      return request(app.getHttpServer())
+    it("should return 200", () =>
+      request(app.getHttpServer())
         .get("/collection/sipherianflash/stats")
-        .expect(200);
-    });
+        .expect(200));
 
     it("should return 404", async () => {
       const response = await request(app.getHttpServer()).get(

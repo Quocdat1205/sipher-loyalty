@@ -1,28 +1,16 @@
 // import library
 import fs from "fs";
 
-<<<<<<< HEAD
-import { toChecksumAddress } from "ethereumjs-util"
-import { Repository } from "typeorm"
-import { Lootbox, MintStatus } from "@entity"
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common"
-import { Cron } from "@nestjs/schedule"
-import { InjectRepository } from "@nestjs/typeorm"
-import constant from "@setting/constant"
-
-import { MintService } from "@modules/mint/mint.service"
-import { BatchOrder, Order } from "@utils/type"
-=======
 import { toChecksumAddress } from "ethereumjs-util";
 import { Repository } from "typeorm";
-import { Lootbox } from "@entity";
+import { Lootbox, MintStatus } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { Cron } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
 
 import { MintService } from "@modules/mint/mint.service";
->>>>>>> dd60bbe8983e0f89701b5d9b86a1847acd79b7eb
+import { BatchOrder, Order } from "@utils/type";
 
 import { NftContract } from "../contract/contract.module";
 import { LoggerService } from "../logger/logger.service";
@@ -245,51 +233,69 @@ export class LootBoxService {
     // get pending mint
     const pending = await this.mintService.getPendingLootbox(walletAddress);
 
-    return { signanture, data, pending }
-  }
+    return { signanture, data, pending };
+  };
 
   updateLootboxFromTrackerBatchOrder = async (batchOrder: BatchOrder) => {
     // get pending mint
 
-    const pending = await this.mintService.getPendingLootboxByBatchOrder(batchOrder)
+    const pending = await this.mintService.getPendingLootboxByBatchOrder(
+      batchOrder
+    );
     if (pending && pending.length > 0) {
-      LoggerService.log(`pending : ${pending}`)
-      const lootboxs = await this.getLootboxFromWalletAndTokenIDs(batchOrder.to, batchOrder.batchID)
-      const promises = []
+      LoggerService.log(`pending : ${pending}`);
+      const lootboxs = await this.getLootboxFromWalletAndTokenIDs(
+        batchOrder.to,
+        batchOrder.batchID
+      );
+      const promises = [];
       for (let i = 0; i < batchOrder.batchID.length; i++) {
         lootboxs[i].pending =
-          lootboxs[i].pending > batchOrder.amount[i] ? lootboxs[i].pending - batchOrder.amount[i] : 0
+          lootboxs[i].pending > batchOrder.amount[i]
+            ? lootboxs[i].pending - batchOrder.amount[i]
+            : 0;
         lootboxs[i].quantity =
-          lootboxs[i].quantity > batchOrder.amount[i] ? lootboxs[i].quantity - batchOrder.amount[i] : 0
+          lootboxs[i].quantity > batchOrder.amount[i]
+            ? lootboxs[i].quantity - batchOrder.amount[i]
+            : 0;
       }
       // update batch lootbox
       for (let i = 0; i < lootboxs.length; i++) {
-        pending[i].status = MintStatus.Minted
-        promises.push(this.mintService.updatePendingMint(pending[i]))
-        promises.push(this.LootboxRepo.save(lootboxs[i]))
+        pending[i].status = MintStatus.Minted;
+        promises.push(this.mintService.updatePendingMint(pending[i]));
+        promises.push(this.LootboxRepo.save(lootboxs[i]));
       }
-      const result = await Promise.all(promises)
-      LoggerService.log(`update lootboxs from tracker done :${JSON.stringify(result)}`)
-    } else LoggerService.log("event resoved or not in db")
-  }
+      const result = await Promise.all(promises);
+      LoggerService.log(
+        `update lootboxs from tracker done :${JSON.stringify(result)}`
+      );
+    } else LoggerService.log("event resoved or not in db");
+  };
 
   updateLootboxFromTrackerOrder = async (order: Order) => {
     // get pending mint
 
-    const pending = await this.mintService.getPendingLootboxByOrder(order)
+    const pending = await this.mintService.getPendingLootboxByOrder(order);
     if (pending) {
-      LoggerService.log(`pending : ${pending}`)
-      const lootbox = await this.getLootboxFromWalletAndTokenID(order.to, order.batchID)
-      lootbox.pending = lootbox.pending > order.amount ? lootbox.pending - order.amount : 0
-      lootbox.quantity = lootbox.quantity > order.amount ? lootbox.quantity - order.amount : 0
+      LoggerService.log(`pending : ${pending}`);
+      const lootbox = await this.getLootboxFromWalletAndTokenID(
+        order.to,
+        order.batchID
+      );
+      lootbox.pending =
+        lootbox.pending > order.amount ? lootbox.pending - order.amount : 0;
+      lootbox.quantity =
+        lootbox.quantity > order.amount ? lootbox.quantity - order.amount : 0;
 
-      const promises = []
+      const promises = [];
       // update batch lootbox
-      pending.status = MintStatus.Minted
-      promises.push(this.mintService.updatePendingMint(pending))
-      promises.push(this.LootboxRepo.save(lootbox))
-      const result = await Promise.all(promises)
-      LoggerService.log(`update lootbox from tracker done :${JSON.stringify(result)}`)
-    } else LoggerService.log("event resoved or not in db")
-  }
+      pending.status = MintStatus.Minted;
+      promises.push(this.mintService.updatePendingMint(pending));
+      promises.push(this.LootboxRepo.save(lootbox));
+      const result = await Promise.all(promises);
+      LoggerService.log(
+        `update lootbox from tracker done :${JSON.stringify(result)}`
+      );
+    } else LoggerService.log("event resoved or not in db");
+  };
 }
