@@ -6,196 +6,196 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm"
+} from "typeorm";
 
 @Entity()
 export class Lootbox {
   @PrimaryGeneratedColumn("increment")
-  id: number
+  id: number;
 
   @Column({ nullable: false })
-  publicAddress: string
+  publicAddress: string;
 
   @Column({ default: 1 })
-  quantity: number
+  quantity: number;
 
   @Column({ nullable: false })
-  tokenId: number
+  tokenId: number;
 
   @Column({ default: 0 })
-  pending: number
+  pending: number;
 
   @CreateDateColumn({ default: new Date() })
-  createdAt: Date
+  createdAt: Date;
 }
 
 @Entity()
 export class User {
   @PrimaryColumn()
-  publicAddress: string
+  publicAddress: string;
 
   @Column({ nullable: true })
-  email: string
+  email: string;
 
   @Column({ default: 0, nullable: true })
-  xp_point: number
+  xp_point: number;
 
   @Column({ default: 0, nullable: true })
-  nano_point: number
+  nano_point: number;
 
   @Column({ nullable: true })
-  username: string
+  username: string;
 
   @Column({ nullable: true })
-  id_discord: number
+  id_discord: number;
 
   @Column()
-  nonce: number
+  nonce: number;
 
   @Column({ nullable: true, default: "" })
-  attachment: string
+  attachment: string;
 
   @Column({ nullable: true, default: "" })
-  bio: string
+  bio: string;
 
   @Column({ default: "bronze" })
-  tier: string
+  tier: string;
 
   @CreateDateColumn({ default: new Date() })
-  createdAt: Date
+  createdAt: Date;
 
   @UpdateDateColumn({ default: new Date() })
-  updatedAt: Date
+  updatedAt: Date;
 }
 
 @Entity()
 export class Address {
   @PrimaryGeneratedColumn("uuid")
-  id_address: string
+  id_address: string;
 
   @Column()
-  publicAddress: string
+  publicAddress: string;
 
   @Column()
-  fullname: string
+  fullname: string;
 
   @Column()
-  phone: string
+  phone: string;
 
   @Column()
-  address: string
+  address: string;
 
   @Column()
-  isDefault: boolean
+  isDefault: boolean;
 
   @Column()
-  type: string
+  type: string;
 
   @CreateDateColumn({ default: new Date() })
-  createdAt: Date
+  createdAt: Date;
 }
 
 @Entity()
 export class TransactionLogs {
   @PrimaryGeneratedColumn("increment")
-  id: number
+  id: number;
 
   @Column()
-  publicAddress: string
+  publicAddress: string;
 
   @Column()
-  type: string
+  type: string;
 
   @Column()
-  quantity: number
+  quantity: number;
 
   @Column()
-  priceEth: number
+  priceEth: number;
 
   @Column()
-  priceUsd: number
+  priceUsd: number;
 
   @CreateDateColumn({ default: new Date() })
-  createdAt: Date
+  createdAt: Date;
 }
 
 @Entity()
 export class ActivityLogs {
   @PrimaryGeneratedColumn("increment")
-  id: number
+  id: number;
 
   @Column()
-  publicAddress: string
+  publicAddress: string;
 
   @Column()
-  category: string
+  category: string;
 
   @Column()
-  activity: string
+  activity: string;
 
   @Column()
-  status: string
+  status: string;
 
   @CreateDateColumn({ default: new Date() })
-  createdAt: Date
+  createdAt: Date;
 }
 
 @Entity()
 export class NftOrder {
   @PrimaryGeneratedColumn("increment")
-  id: number
+  id: number;
 
   @Column()
-  id_sculpture: string
+  id_sculpture: string;
 
   @Column()
-  name_nft: string
+  name_nft: string;
 
   @Column()
-  id_nft: string
+  id_nft: string;
 }
 
 @Entity()
 export class SculpturesOrder {
   @PrimaryGeneratedColumn("uuid")
-  id_program: string
+  id_program: string;
 
   @Column()
-  publicAddress: string
+  publicAddress: string;
 
   @Column()
-  first_name: string
+  first_name: string;
 
   @Column()
-  last_name: string
+  last_name: string;
 
   @Column()
-  email: string
+  email: string;
 
   @Column()
-  street_address: string
+  street_address: string;
 
   @Column()
-  town_city: string
+  town_city: string;
 
   @Column()
-  country: string
+  country: string;
 
   @Column()
-  zip_code: string
+  zip_code: string;
 
   @Column()
-  tracking_link: string
+  tracking_link: string;
 
   @Column()
-  shipping_fee: number
+  shipping_fee: number;
 
   @Column()
-  status: string
+  status: string;
 
-  @OneToMany(() => NftOrder, nft => nft.id_sculpture)
-  nft: NftOrder[]
+  @OneToMany(() => NftOrder, (nft) => nft.id_sculpture)
+  nft: NftOrder[];
 
   @CreateDateColumn()
-  createdAt: Date
+  createdAt: Date;
 }

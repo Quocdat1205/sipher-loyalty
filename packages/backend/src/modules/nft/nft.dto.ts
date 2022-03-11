@@ -1,78 +1,78 @@
-import { IsBoolean, IsNumber, IsString } from "class-validator"
+import { IsBoolean, IsNumber, IsString } from "class-validator";
 
 export class NftItemAttribute {
   @IsString()
-  trait_type: string
+  trait_type: string;
 
   @IsString()
-  value: string
+  value: string;
 }
 export class NftItem {
   @IsString()
-  id: string
+  id: string;
 
   @IsString()
-  collectionId: string
+  collectionId: string;
 
   @IsString()
-  owner: string
+  owner: string;
 
   @IsString()
-  tokenId: string
+  tokenId: string;
 
   @IsNumber()
-  chainId: number
+  chainId: number;
 
   @IsString()
-  name: string
+  name: string;
 
   @IsString()
-  creator: string
+  creator: string;
 
   @IsString()
-  auctionId?: string
+  auctionId?: string;
 
   @IsString()
-  lastListingId?: string
+  lastListingId?: string;
 
   @IsNumber()
-  price?: number
+  price?: number;
 
   @IsString()
-  currency?: string
+  currency?: string;
 
   @IsNumber()
-  lastPrice?: number
+  lastPrice?: number;
 
   @IsString()
-  lastCurrency?: string
+  lastCurrency?: string;
 
   @IsString()
-  tokenUri: string
+  tokenUri: string;
 
   @IsString()
-  imageUrl: string
+  imageUrl: string;
 
   @IsString()
-  imageThumbnailUrl: string
+  imageThumbnailUrl: string;
 
-  attributes: NftItemAttribute[]
+  attributes: NftItemAttribute[];
 
   @IsNumber()
-  viewCount = 0
+  viewCount = 0;
 
   @IsNumber()
-  favoriteCount = 0
+  favoriteCount = 0;
 
   @IsString()
-  rarity?: string
+  rarity?: string;
 
   @IsNumber()
-  rarityRank = -1
+  rarityRank = -1;
 
   @IsNumber()
-  rarityScore = 0
+  rarityScore = 0;
 
   @IsBoolean()
-  favorited = false
+  favorited = false;
 }

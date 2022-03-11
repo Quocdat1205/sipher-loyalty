@@ -1,8 +1,6 @@
 import { HttpService } from "@nestjs/axios";
-import { AxiosResponse } from "axios";
 import { Injectable } from "@nestjs/common";
-import { catchError, map, Observable } from "rxjs";
-import { LoggerService } from "@modules/logger/logger.service";
+import { map, Observable } from "rxjs";
 import _ from "lodash";
 
 @Injectable()

@@ -1,4 +1,4 @@
-import Joi from "joi"
+import Joi from "joi";
 
 const validation = {
   ACCESS_TOKEN_SECRET: Joi.string().required(),
@@ -9,6 +9,6 @@ const validation = {
   ELASTICSEARCH_ENDPOINT: Joi.string().required(),
   TK_WEB: Joi.string().required(),
   PW_WEB: Joi.string().required(),
-}
+};
 
-export default validation
+export default validation;

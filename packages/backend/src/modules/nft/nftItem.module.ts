@@ -1,7 +1,7 @@
-import { Module } from "@nestjs/common"
+import { Module } from "@nestjs/common";
 
-import { NftItemController } from "./nftItem.controller"
-import { NftItemService } from "./nftItem.service"
+import { NftItemController } from "./nftItem.controller";
+import { NftItemService } from "./nftItem.service";
 
 @Module({
   providers: [NftItemService],

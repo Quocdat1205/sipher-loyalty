@@ -1,7 +1,7 @@
-import { Body, Controller, Get } from "@nestjs/common"
+import { Body, Controller, Get } from "@nestjs/common";
 
 // import { sessionType } from "../auth/auth.type"
-import { MintService } from "./mint.service"
+import { MintService } from "./mint.service";
 
 @Controller("mint")
 export class MintController {
@@ -9,6 +9,6 @@ export class MintController {
 
   @Get("test")
   async test() {
-    return this.mintService.test()
+    return this.mintService.test();
   }
 }
