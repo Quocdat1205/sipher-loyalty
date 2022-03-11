@@ -2,27 +2,51 @@ import React from "react"
 import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 
 const data = [
-  { id: "Astero", isActive: true },
-  { id: "Aphrodite", isActive: false },
-  { id: "Athena", isActive: false },
-  { id: "Athena", isActive: false },
-  { id: "Poseidon", isActive: false },
-  { id: "Artemis", isActive: false },
-  { id: "Dionysus", isActive: false },
+  { id: "Astero", isActive: true, y: "-40%", i: 1 },
+  { id: "Aphrodite", isActive: false, y: "50%", i: 2 },
+  { id: "Athena", isActive: false, y: "100%", i: 3 },
+  { id: "Athena", isActive: false, y: "110%", i: 4 },
+  { id: "Poseidon", isActive: false, y: "100%", i: 5 },
+  { id: "Artemis", isActive: false, y: "50%", i: 6 },
+  { id: "Dionysus", isActive: false, y: "-40%", i: 7 },
 ]
 
 export const Timeline = () => {
   return (
     <Box pos="relative">
-      <HStack px={16} w="full" justify="space-between">
-        {data.map(item => (
+      <svg viewBox="300 300 1200 75" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad1">
+            {data.map((item, idx) => (
+              <stop
+                key={idx}
+                offset={`${item.i * 14}%`}
+                stopColor={"#9091A0"}
+                stopOpacity={idx === 0 ? 0.25 : idx < 5 ? idx / (idx * 1.5) : idx === 6 ? 0 : (idx - 1) / (idx * 1.5)}
+              />
+            ))}
+          </linearGradient>
+        </defs>
+        <path strokeWidth="2" d="M 300 300 C 600 400, 1200 400, 1500 300" stroke="url(#grad1)" fill="transparent" />
+      </svg>
+      <HStack
+        top="50%"
+        left="50%"
+        transform="translate(-50%, -50%)"
+        pos="absolute"
+        px={16}
+        w="full"
+        justify="space-between"
+      >
+        {data.map((item, idx) => (
           <Flex
+            transform={`translateY(${item.y})`}
             justify="center"
             align="center"
             rounded="full"
             zIndex={3}
             pos="relative"
-            key={item.id}
+            key={idx}
             bg="radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 100%)"
             boxSize="34px"
           >
@@ -42,25 +66,6 @@ export const Timeline = () => {
           </Flex>
         ))}
       </HStack>
-      <Box
-        zIndex={2}
-        pos="absolute"
-        w="10%"
-        h="3px"
-        bgGradient="linear(to-r, blackAlpha.400, accent.500)"
-        top="50%"
-        left="0"
-        transform="translateY(-50%)"
-      />
-      <Box
-        pos="absolute"
-        w="full"
-        h="3px"
-        bgGradient="linear(to-r, blackAlpha.400, neutral.400 ,neutral.400, neutral.400, neutral.400,neutral.400, blackAlpha.400 )"
-        top="50%"
-        left="0"
-        transform="translateY(-50%)"
-      />
     </Box>
   )
 }
