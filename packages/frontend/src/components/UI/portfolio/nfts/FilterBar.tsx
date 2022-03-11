@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { Box, HStack } from "@sipher.dev/sipher-ui"
 
 import FilterSelector from "../FilterSelector"
-import GridSelector from "../GridSelector"
 
 const categoriesSort = [
   { value: "characters", text: "Characters" },
