@@ -1,3 +1,5 @@
 export * from "./SpCalendar"
 export * from "./SpCopy"
+export * from "./SpLayer"
 export * from "./SpTime"
+export * from "./SpVerified"

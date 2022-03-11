@@ -5,8 +5,6 @@ import { useWalletContext } from "@web3"
 import { OnBoardModal } from "../modal"
 import { TopNavigationBar } from "../top-navigation-bar"
 
-import { GradientBox } from "."
-
 interface StoreFrontLayoutProps {
   children: ReactNode
 }
@@ -31,7 +29,6 @@ export const Layout = ({ children }: StoreFrontLayoutProps) => {
       color="whiteAlpha.900"
       bg="neutral.900"
     >
-      <GradientBox />
       <TopNavigationBar isSticky />
       <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
         {account ? children : <OnBoardModal isOpen={modal} onClose={() => setModal(false)} />}

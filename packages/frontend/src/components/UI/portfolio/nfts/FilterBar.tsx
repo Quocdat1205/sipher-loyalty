@@ -41,7 +41,6 @@ const FilterBar = () => {
           text="Categories"
           data={categoriesSort}
         />
-        <GridSelector />
       </HStack>
       {/* <Stack spacing={[2, 4]} display={["flex", "none"]}>
         <HStack w="full" align="center" justify={["flex-start", "flex-end"]}>
