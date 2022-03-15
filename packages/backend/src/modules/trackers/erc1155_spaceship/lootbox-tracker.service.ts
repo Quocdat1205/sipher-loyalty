@@ -39,7 +39,7 @@ export class LootboxTrackerService {
 
   private currentBlock = async () => {
     try {
-      return await this.provider.getBlockNumber();
+      return this.provider.getBlockNumber();
     } catch (err) {
       LoggerService.error(err);
       return 0;
