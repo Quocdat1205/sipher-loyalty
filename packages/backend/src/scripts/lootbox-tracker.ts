@@ -40,8 +40,5 @@ async function bootstrap() {
       "Bootstrap"
     );
   });
-
-  // await tracker.initCollection('0x4d91fa57abfead5fbc8445e45b906b85bbd9744c', 9751804); // INU
-  // await tracker.initCollection('0x97c8480d593b93ae90f8613a5b2ac02e7a3dd0ed', 9751807); // NEKO
 }
 bootstrap();

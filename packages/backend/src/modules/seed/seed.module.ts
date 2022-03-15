@@ -7,8 +7,11 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { LootBoxModule } from "@modules/lootbox/lootbox.module";
+import { Airdrop } from "src/entity/airdrop.entity";
 
-import { SeedService } from "./seed.service";
+import { SeedAirdropService } from "./seedAirdrop.service";
+import { SeedERC1155Service } from "./seedERC1155.service";
+import { SeedLootboxService } from "./seedLootbox.service";
 
 @Module({
   imports: [
@@ -17,9 +20,10 @@ import { SeedService } from "./seed.service";
       ERC1155SpaceShipPartLootbox,
       ERC1155SpaceShipPartLootboxAttribute,
       Lootbox,
+      Airdrop,
     ]),
   ],
-  providers: [SeedService],
-  exports: [SeedService],
+  providers: [SeedAirdropService, SeedERC1155Service, SeedLootboxService],
+  exports: [SeedAirdropService, SeedERC1155Service, SeedLootboxService],
 })
 export class SeedModule {}
