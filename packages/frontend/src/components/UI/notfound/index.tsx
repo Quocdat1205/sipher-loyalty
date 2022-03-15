@@ -3,15 +3,11 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { Box, Button, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
 
-import notFoundGif from "./404.gif"
-import notFoundBackground from "./404bg.png"
-import notFoundModel from "./404model.png"
-
 const NotFoundUI = () => {
   const router = useRouter()
   return (
     <Box h="100vh">
-      <Image src={notFoundBackground} alt="Not Found Background" layout="fill" />
+      <Image src="/images/404/404bg.png" alt="Not Found Background" layout="fill" />
       <Flex
         w="full"
         h="full"
@@ -24,9 +20,9 @@ const NotFoundUI = () => {
       >
         <Flex direction="column" align="center" maxW="56rem">
           <Box pos="relative" textAlign="center" mb={32}>
-            <Image src={notFoundGif} alt="Not Found" width={600} height={300} />
+            <Image src="/images/404/404.gif" alt="Not Found" width={600} height={300} />
             <Box pos="absolute" top="50%" left="50%" transform="translate(-50%,-20%)">
-              <Image src={notFoundModel} alt="Not Found" width={219} height={298} />
+              <Image src="/images/404/404model.png" alt="Not Found" width={219} height={298} />
             </Box>
           </Box>
           <Heading mb={4} fontSize="7xl" fontWeight={900}>
