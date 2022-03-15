@@ -14,6 +14,7 @@ import { configService } from "@setting/config.typeorm";
 import validation from "@setting/validationSchema";
 
 import { AdminModule } from "@modules/admin/admin.module";
+import { AirdropModule } from "@modules/airdrop/airdrop.module";
 import { AuthModule } from "@modules/auth/auth.module";
 import { CollectionModule } from "@modules/collection/collection.module";
 import { LoggerModule } from "@modules/logger/logger.module";
@@ -47,6 +48,7 @@ import { AppService } from "./app.service";
     LootBoxModule,
     URIModule,
     CollectionModule,
+    AirdropModule,
   ],
   controllers: [AppController],
   providers: [AppService],

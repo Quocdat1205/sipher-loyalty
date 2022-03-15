@@ -11,7 +11,7 @@ import { configService } from "@setting/config.typeorm";
 
 import { LootBoxModule } from "@modules/lootbox/lootbox.module";
 import { SeedModule } from "@modules/seed/seed.module";
-import { SeedService } from "@modules/seed/seed.service";
+import { SeedLootboxService } from "@modules/seed/seedLootbox.service";
 
 @Module({
   imports: [
@@ -19,16 +19,12 @@ import { SeedService } from "@modules/seed/seed.service";
     LootBoxModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([
-      Lootbox,
-      ERC1155SpaceShipPartLootbox,
-      ERC1155SpaceShipPartLootboxAttribute,
-    ]),
+    TypeOrmModule.forFeature([Lootbox]),
   ],
-  providers: [SeedService],
+  providers: [SeedLootboxService],
 })
 export class AppModule implements OnApplicationBootstrap {
-  constructor(private readonly seedingService: SeedService) {}
+  constructor(private readonly seedingService: SeedLootboxService) {}
 
   async onApplicationBootstrap(): Promise<void> {
     await this.seedingService.seedLootbox();
