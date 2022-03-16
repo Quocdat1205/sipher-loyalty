@@ -26,7 +26,7 @@ export const ClaimContainer = () => {
         bgGradient="linear(180deg, #1B1C27 0%, rgba(27, 28, 39, 0) 52.08%, #1B1C27 100%)"
       />
       <Box zIndex={2} maxW="1200px" w="full">
-        <Box h="800px" w="80%" m="0 auto">
+        <Box h="600px" w="80%" m="0 auto">
           <Carousel3D slides={claimDataElement} goToSlide={goToSlide} offsetRadius={2} showNavigation={false} />
         </Box>
       </Box>

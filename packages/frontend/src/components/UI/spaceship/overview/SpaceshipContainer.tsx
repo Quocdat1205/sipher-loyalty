@@ -48,7 +48,7 @@ export const SpaceshipContainer = () => {
               REVEAL LOOTBOX
             </Button>
           </Box>
-          <Flex flexDir="column" pos="relative" align="flex-end" ml={8} p={4} flex={1}>
+          <Flex pos="relative" flexDir="column" align="flex-end" ml={8} p={4} flex={1}>
             <Flex
               p={6}
               flexDir="column"
@@ -56,22 +56,36 @@ export const SpaceshipContainer = () => {
               transform="auto"
               skewX="-15deg"
               bg="rgba(41, 42, 64, 0.6)"
-              w="26rem"
+              w="25rem"
               h="32rem"
             >
-              <Box flex={3}>
+              <Box flex={3} overflow="hidden">
                 <Box
-                  maxW="26rem"
+                  zIndex={2}
                   transform="auto"
                   skewX="15deg"
                   pos="absolute"
                   top="0"
                   left="0"
-                  translateX="-35%"
-                  translateY="-10%"
+                  translateX="-10%"
+                  translateY="5%"
                 >
-                  <Image src="/images/spaceship/plane.png" alt="plane" width={527} height={527} quality={100} />
+                  <Image src="/images/spaceship/plane.png" alt="plane" width={550} height={350} quality={100} />
                 </Box>
+                <Box
+                  transform="auto"
+                  skewX="15deg"
+                  bg="blackAlpha.800"
+                  boxShadow="0px 0px 30px #000000"
+                  filter="blur(50px)"
+                  boxSize="15rem"
+                  position="absolute"
+                  top="0"
+                  left="50%"
+                  rounded="full"
+                  translateX="-50%"
+                  translateY="15%"
+                />
               </Box>
               <Box p={6} borderTop="1px" borderColor="neutral.600" flex={1}>
                 <SimpleGrid transform="auto" skewX="15deg" columns={3} spacing={4}>

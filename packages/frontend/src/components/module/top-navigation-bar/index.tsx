@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Box, Flex } from "@sipher.dev/sipher-ui"
 
 import { GradientBox } from "../layout"
-import { SettingAccountModal } from "../modal"
+import { BuySipherModal, SettingAccountModal } from "../modal"
 
 import Logo from "./Logo"
 import NavMenus from "./NavMenus"
@@ -10,19 +10,21 @@ import { ConnectWalletButton } from "./user-info"
 
 interface TopNavigationBarProps {
   isSticky?: boolean
+  isSignUp: boolean
+  setIsSignUp: (isSignUp: boolean) => void
 }
 
 const menus = [
   { path: "/", label: "DASHBOARD" },
-  { path: "/spaceship", label: "SPACESHIP" },
   { path: "/portfolio", label: "PORTFOLIO" },
   { path: "/airdrop", label: "AIRDROP" },
+  { path: "/spaceship", label: "SPACESHIP" },
   // { path: "/quest", label: "QUEST" },
   // { path: "/rewards", label: "REWARD" },
 ]
 
-export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) => {
-  const [openSetting, setOpenSetting] = useState<boolean>(false)
+export const TopNavigationBar = ({ isSticky = false, isSignUp, setIsSignUp }: TopNavigationBarProps) => {
+  const [modal, setModal] = useState<string>("")
 
   return (
     <Box backdropFilter="blur(10px)" pos={isSticky ? "sticky" : "relative"} top={0} left={0} right={0} zIndex="sticky">
@@ -50,10 +52,11 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
           </Flex>
         </Flex>
         <Box mr={4} ml={8}>
-          <ConnectWalletButton setOpenSetting={setOpenSetting} />
+          <ConnectWalletButton isSignUp={isSignUp} setIsSignUp={setIsSignUp} setModal={setModal} />
         </Box>
       </Flex>
-      <SettingAccountModal isOpen={openSetting} onClose={() => setOpenSetting(false)} />
+      <SettingAccountModal isOpen={modal === "SETTING"} onClose={() => setModal("")} />
+      <BuySipherModal isOpen={modal === "BUY"} onClose={() => setModal("")} />
     </Box>
   )
 }

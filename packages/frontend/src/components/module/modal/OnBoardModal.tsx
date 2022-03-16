@@ -8,6 +8,7 @@ import { ChakraModal } from "@components/shared"
 interface SettingAccountModalProps {
   isOpen: boolean
   onClose: () => void
+  setIsSignUp: (isSignUp: boolean) => void
 }
 
 // const slideData = [<Slide1 />, <Slide2 />, <Slide1 />]
@@ -30,7 +31,7 @@ const imageData = [
   },
 ]
 
-export const OnBoardModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
+export const OnBoardModal = ({ isOpen, onClose, setIsSignUp }: SettingAccountModalProps) => {
   // const [[page, direction], setPage] = useState([0, 0])
 
   // const index = wrap(0, slideData.length, page)
@@ -49,6 +50,7 @@ export const OnBoardModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
 
   const handleClick = () => {
     toggleWalletModal(true)
+    setIsSignUp(true)
     onClose()
   }
 
