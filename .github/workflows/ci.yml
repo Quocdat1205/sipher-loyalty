@@ -1,0 +1,314 @@
+name: CI workflow
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branchs
+  push:
+    branches: [develop, staging, main]
+    paths-ignore:
+      - '.github/**'
+  pull_request:
+    branches: [develop, staging, main]
+    paths-ignore:
+      - '.github/**'
+  workflow_dispatch:
+
+jobs:
+  #-------------Workflow---------------
+  # 1. Check PR: Unit test, build
+  # 2. Merged: Build, Update manifest k8s
+  # 3. Run Terraform for frontend
+  #------------------------------------
+
+  # Check branch
+  check_module_changed:
+    #if: ${{ (github.ref_name == 'dev' || github.ref_name == 'develop') }}
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          base: ${{ github.ref }}
+          filters: |
+            backend: ./**
+
+  # Terraform for frontend
+  terraform-plan-for-dev:
+    if: github.base_ref == 'develop'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: NPM Setup
+        run: |
+          cat << EOF >> .npmrc
+          always-auth=true
+          //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          EOF
+
+      - name: Yarn install
+        run: yarn install
+
+      - name: Build packages
+        run: cd packages/frontend && yarn build:tf
+        env:
+          NEXT_PUBLIC_API_URL: https://loyalty.sipher.gg
+
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: |
+          cd packages/frontend && terraform init -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_DEV }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_DEV }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_DEV }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+
+      - name: Terraform Validate
+        run: cd packages/frontend && terraform validate
+
+      - name: Terraform Plan
+        run: |
+          cd packages/frontend && terraform plan -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_DEV }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_DEV }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+
+      - name: Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: ''
+          fields: repo,message,commit,author,eventName,ref,workflow,job,pullRequest
+        if: always() # Pick up events even if the job fails or is canceled.
+
+  terraform-apply-for-dev:
+    if: github.ref_name == 'develop'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: NPM Setup
+        run: |
+          cat << EOF >> .npmrc      
+          always-auth=true
+          //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          EOF
+
+      - name: Yarn install
+        run: yarn install
+
+      - name: Build packages
+        run: cd packages/frontend && yarn build:tf
+        env:
+          NEXT_PUBLIC_API_URL: https://dev-api-marketplace.sipher.gg
+
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: |
+          cd packages/frontend && terraform init -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_DEV }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_DEV }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_DEV }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+
+      - name: Terraform Validate
+        run: cd packages/frontend && terraform validate
+
+      - name: Terraform Apply
+        run: |
+          cd packages/frontend && terraform apply -auto-approve -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_DEV }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_DEV }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+
+      - name: Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: ''
+          fields: repo,message,commit,author,eventName,ref,workflow,job,pullRequest
+        if: always() # Pick up events even if the job fails or is canceled.
+
+  #------------Dev branch------------------
+  # When creating PR to develop branch
+  backend-pre-merged-dev:
+    needs: check_module_changed
+    if: ${{ github.base_ref == 'develop' && needs.check_module_changed.outputs.backend == 'true'}}
+    uses: sipherxyz/marketplace/.github/workflows/default-check-pr.yml@template
+    with:
+      module: backend
+    secrets:
+      webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # When code merged to develop branch
+  backend-post-merged-dev:
+    needs: check_module_changed
+    if: ${{ github.ref_name == 'develop' && needs.check_module_changed.outputs.backend == 'true'}}
+    uses: sipherxyz/marketplace/.github/workflows/default-build_deploy.yml@template
+    with:
+      module: backend
+      aws_region: us-east-1
+      argocd_host: cd-dev.sipher.gg
+      argocd_user: admin
+    secrets:
+      aws_accesskey: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }} # plaintext in github secret
+      aws_secret: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }} # plaintext in github secret
+      webhook: ${{ secrets.SLACK_WEBHOOK_URL }} # plaintext in github secret
+      argocd_secret: ${{ secrets.ARGOCD_SECRET }} # plaintext in github secret
+  #-----------------------------------
+
+  #------------Main branch------------------
+  # When creating PR to main branch
+  backend-pre-merged-main:
+    needs: check_module_changed
+    if: ${{ github.base_ref == 'main' && needs.check_module_changed.outputs.backend == 'true'}}
+    uses: sipherxyz/marketplace/.github/workflows/default-check-pr.yml@template
+    with:
+      module: backend
+    secrets:
+      webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # When code merged to main branch
+  backend-post-merged-main:
+    needs: check_module_changed
+    if: ${{ github.ref_name == 'main' && needs.check_module_changed.outputs.backend == 'true'}}
+    uses: sipherxyz/marketplace/.github/workflows/default-build_deploy.yml@template
+    with:
+      module: backend
+      aws_region: us-east-1
+      argocd_host: argocd.sipher.gg
+      argocd_user: admin
+    secrets:
+      aws_accesskey: ${{ secrets.AWS_ACCESS_KEY_ID }} # plaintext in github secret
+      aws_secret: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # plaintext in github secret
+      webhook: ${{ secrets.SLACK_WEBHOOK_URL }} # plaintext in github secret
+      argocd_secret: ${{ secrets.ARGOCD_SECRET }} # plaintext in github secret
+  #-----------------------------------
+
+  terraform-plan-for-prod:
+    if: github.base_ref == 'main'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: NPM Setup
+        run: |
+          cat << EOF >> .npmrc      
+          always-auth=true
+          //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          EOF
+
+      - name: Yarn install
+        run: yarn install
+
+      - name: Build packages
+        run: cd packages/frontend && yarn build:tf
+
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: |
+          cd packages/frontend && terraform init -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_PROD }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Terraform Validate
+        run: cd packages/frontend && terraform validate
+
+      - name: Terraform Plan
+        run: |
+          cd packages/frontend && terraform plan -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: ''
+          fields: repo,message,commit,author,eventName,ref,workflow,job,pullRequest
+        if: always() # Pick up events even if the job fails or is canceled.
+
+  terraform-apply-for-prod:
+    if: github.ref_name == 'main'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: NPM Setup
+        run: |
+          cat << EOF >> .npmrc      
+          always-auth=true
+          //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          EOF
+
+      - name: Yarn install
+        run: yarn install
+
+      - name: Build packages
+        run: cd packages/frontend && yarn build:tf
+
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: |
+          cd packages/frontend && terraform init -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_PROD }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Terraform Validate
+        run: cd packages/frontend && terraform validate
+
+      - name: Terraform Apply
+        run: |
+          cd packages/frontend && terraform apply -auto-approve -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          author_name: ''
+          fields: repo,message,commit,author,eventName,ref,workflow,job,pullRequest
+        if: always() # Pick up events even if the job fails or is canceled.
