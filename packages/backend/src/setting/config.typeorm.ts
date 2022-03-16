@@ -30,7 +30,10 @@ class ConfigService {
     return mode !== "DEV";
   }
 
-  public getTypeOrmConfig(): TypeOrmModuleOptions {
+  public getTypeOrmConfig(): TypeOrmModuleOptions & {
+    seeds: string[];
+    factories: string[];
+  } {
     return {
       type: "postgres",
 
@@ -43,6 +46,10 @@ class ConfigService {
       entities: [join(__dirname, "**", "*.entity{.ts,.js}")],
 
       migrationsTableName: "migration",
+
+      seeds: ["src/seed/**/*{.ts,.js}"],
+
+      factories: ["src/factory/**/*{.ts,.js}"],
 
       migrations: ["src/migration/*.{ts,js}"],
 
