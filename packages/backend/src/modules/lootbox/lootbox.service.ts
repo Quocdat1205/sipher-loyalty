@@ -16,15 +16,16 @@ import { NftContract } from "../contract/contract.module";
 import { LoggerService } from "../logger/logger.service";
 
 import { MintBatchLootboxInput, MintLootboxInput } from "./lootbox.type";
+import { join } from "path";
 
 @Injectable()
 export class LootBoxService {
   private abiINU = JSON.parse(
-    fs.readFileSync("./src/data/INU/abi.json").toString()
+    fs.readFileSync(join(__dirname, "../../data/INU/abi.json")).toString()
   );
 
   private abiNEKO = JSON.parse(
-    fs.readFileSync("./src/data/NEKO/abi.json").toString()
+    fs.readFileSync(join(__dirname, "../../data/NEKO/abi.json")).toString()
   );
 
   private InuContract = new NftContract({

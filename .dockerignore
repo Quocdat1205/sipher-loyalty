@@ -1,0 +1,8 @@
+node_modules
+.git
+
+**/node_modules
+**/dist
+**/.next
+
+README.md
