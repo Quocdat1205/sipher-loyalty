@@ -15,6 +15,8 @@ import { ChakraModal } from "@components/shared"
 interface ConnectWalletModalProps {
   isOpen: boolean
   onClose: () => void
+  isSignUp: boolean
+  setIsSignUp: (isSignUp: boolean) => void
 }
 
 export interface ChangeFormProps {
@@ -25,11 +27,11 @@ interface initProps {
   form: string
   status: string
 }
+const initForm: initProps = { form: "SIGN_IN", status: "" }
+const initFormSignUp: initProps = { form: "SIGN_UP", status: "" }
 
-const initForm: initProps = { form: "SIGN_UP", status: "" }
-
-export const ConnectWalletModal = ({ isOpen, onClose }: ConnectWalletModalProps) => {
-  const [changeForm, setChangeForm] = useState(initForm)
+export const ConnectWalletModal = ({ isOpen, onClose, isSignUp, setIsSignUp }: ConnectWalletModalProps) => {
+  const [changeForm, setChangeForm] = useState(isSignUp ? initFormSignUp : initForm)
   const [isComplete, setIsComplete] = useState(false)
 
   const completeText = isComplete
@@ -41,13 +43,15 @@ export const ConnectWalletModal = ({ isOpen, onClose }: ConnectWalletModalProps)
     : ""
 
   useEffect(() => {
-    setChangeForm(initForm)
+    setChangeForm(isSignUp ? initFormSignUp : initForm)
     setIsComplete(false)
+    setIsSignUp(false)
   }, [isOpen])
 
   return (
     <ChakraModal
       closeOnOverlayClick={changeForm.form === "SIGN_IN" || changeForm.form === "SIGN_UP"}
+      scrollBehavior="inside"
       isHiddenClose={
         changeForm.status === "SIGN_UP" ||
         changeForm.status === "FORGOT" ||

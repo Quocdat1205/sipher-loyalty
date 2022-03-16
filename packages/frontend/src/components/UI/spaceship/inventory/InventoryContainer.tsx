@@ -4,13 +4,14 @@ import { Box, Button, Flex, SimpleGrid } from "@sipher.dev/sipher-ui"
 import { BoxCard, useInventory } from "."
 
 export const InventoryContainer = () => {
-  const { inventoryData, openModalShipping } = useInventory()
+  const { inventoryData, openModalShipping, handleView } = useInventory()
 
   const renderNFTs = () => {
     return inventoryData.map(i => (
       <BoxCard
         key={i.id}
         tokenId={i.id}
+        handleView={handleView}
         onClick={i.onSelect}
         name={i.name}
         imageUrl={i.imageUrl}

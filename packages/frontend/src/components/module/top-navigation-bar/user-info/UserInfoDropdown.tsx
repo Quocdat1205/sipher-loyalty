@@ -27,10 +27,10 @@ import { OptionCard } from "."
 interface UserInfoDropdownProps {
   isOpen: boolean
   onClose: () => void
-  setOpenSetting?: (value: boolean) => void
+  setModal?: (value: string) => void
 }
 
-export const UserInfoDropdown = ({ isOpen, onClose, setOpenSetting }: UserInfoDropdownProps) => {
+export const UserInfoDropdown = ({ isOpen, onClose, setModal }: UserInfoDropdownProps) => {
   const router = useRouter()
   const wallet = useWalletContext()
 
@@ -72,7 +72,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, setOpenSetting }: UserInfoDr
             </Flex>
             <IconButton
               ml={2}
-              onClick={() => setOpenSetting!(true)}
+              onClick={() => setModal!("SETTING")}
               boxSize="40px"
               rounded="base"
               color="neutral.50"
@@ -102,7 +102,9 @@ export const UserInfoDropdown = ({ isOpen, onClose, setOpenSetting }: UserInfoDr
               </Text>
             </Flex>
           </HStack>
-          <Button w="full">BUY SIPHER</Button>
+          <Button w="full" onClick={() => setModal!("BUY")}>
+            BUY SIPHER
+          </Button>
         </Stack>
         <Divider borderColor="neutral.600" mb={4} />
         <Box mb={4} w="full">

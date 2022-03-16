@@ -12,7 +12,19 @@ export const TRANSFER_ERC20_PROXY_ADDRESS = "0x5acFbF9681fD5e9A32E74EFB7Fd0CA794
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 
-export const SipherTokenAddress = "0x9F52c8ecbEe10e00D9faaAc5Ee9Ba0fF6550F511" // main
+export const SipherTokenAddress = "0x9F52c8ecbEe10e00D9faaAc5Ee9Ba0fF6550F511" // main\
+
+export const LPSipherWethUniswapAddress = "0xF3fDcfbfdB96315FC628854627BDd5e363b3aDE4" // main
+
+export const LPSipherWethKyberAddress = "0x9A56f30fF04884cB06da80cB3aEf09c6132f5E77" // main
+
+export const ViewAddress = "0xA8317c540bC1268F98E042a20fE19057E85d6277" // main
+
+export const StakingPoolAddress = "0x7EE4b5dbc4b97C30A08791CE8601E695735960dB" // main
+
+export const StakingLPSipherWethUniswapAddress = "0x5b2D34C26B5eb7388F54a3E8D4bE3Ac24E7616f9" // main
+
+export const StakingLPSipherWethKyberAddress = "0xEB3CadDe330a4AA3D627F666aEcdD6F65208B19F" //main
 
 export const PRICE_TYPE = [
   { id: "ETH", contract: ZERO_ADDRESS },

@@ -8,19 +8,20 @@ export const CustomCheckbox = ({ ...rest }: CheckboxProps) => {
       sx={{
         ".chakra-checkbox__control": {
           border: "2px solid",
-          borderRadius: "2px",
+          borderRadius: "full",
+          bg: "whiteAlpha.300",
           borderColor: "neutral.400",
           _focus: { boxShadow: "none" },
         },
         ".chakra-checkbox__control[data-checked]": {
           border: "none",
+          color: "neutral.900",
           bg: "accent.500",
-          color: "black",
           _hover: { bg: "accent.500" },
         },
       }}
       border="none"
-      size="md"
+      size="lg"
       {...rest}
     />
   )

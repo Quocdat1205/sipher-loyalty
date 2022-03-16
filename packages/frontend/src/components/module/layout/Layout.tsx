@@ -11,11 +11,12 @@ interface StoreFrontLayoutProps {
 
 export const Layout = ({ children }: StoreFrontLayoutProps) => {
   const { account } = useWalletContext()
-  const [modal, setModal] = useState(false)
+  const [isOnboard, setIsOnboard] = useState(false)
+  const [isSignUp, setIsSignUp] = useState(false)
 
   useEffect(() => {
     if (!account) {
-      setModal(true)
+      setIsOnboard(true)
     }
   }, [account])
 
@@ -29,9 +30,13 @@ export const Layout = ({ children }: StoreFrontLayoutProps) => {
       color="whiteAlpha.900"
       bg="neutral.900"
     >
-      <TopNavigationBar isSticky />
+      <TopNavigationBar isSticky isSignUp={isSignUp} setIsSignUp={setIsSignUp} />
       <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
-        {account ? children : <OnBoardModal isOpen={modal} onClose={() => setModal(false)} />}
+        {account ? (
+          children
+        ) : (
+          <OnBoardModal setIsSignUp={setIsSignUp} isOpen={isOnboard} onClose={() => setIsOnboard(false)} />
+        )}
       </Flex>
     </Flex>
   )

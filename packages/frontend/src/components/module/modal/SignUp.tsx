@@ -57,7 +57,8 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
   return (
     <Stack px={6} spacing={6} w="full">
       <Text color="neutral.300">
-        Please link crypto-wallet in order to sign in. No funds are neccessary or will be withdrawn.
+        Please link crypto-wallet in order to sign in. This will only be used to link to your account. Funds will not be
+        withdrawn and no minimum balance required.
       </Text>
       <Form>
         <FormControl as="fieldset">
@@ -118,6 +119,21 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
           </Flex>
         </FormControl>
       </Form>
+      <Text color="neutral.400">
+        I have read and agree to the{" "}
+        <Link textDecor="underline" color="cyan.600" isExternal>
+          Ather Labs Privacy Policy
+        </Link>
+      </Text>
+      <Button onClick={signIn} fontSize="md" py={6} fontWeight={600}>
+        SIGN UP
+      </Button>
+      <Flex align="center">
+        <Text fontWeight={600} mr={4}>
+          or Sign up with
+        </Text>
+        <Box bg="neutral.600" h="1px" flex={1} />
+      </Flex>
       <Flex flexDir="column" pb={2}>
         <Box mb={4}>
           <Text pb={2} color="neutral.400" fontSize="sm">
@@ -202,9 +218,6 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
           </HStack>
         </Box>
       </Flex>
-      <Button onClick={signIn} fontSize="md" py={6} fontWeight={600}>
-        SIGN UP
-      </Button>
       <Text color="neutral.400" textAlign="center">
         Already have an account?{" "}
         <chakra.span textDecor="underline" cursor="pointer" color="cyan.600" onClick={handleChangeForm}>
