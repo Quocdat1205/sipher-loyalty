@@ -19,8 +19,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed-erc1155": "ts-node -r tsconfig-paths/register src/scripts/seedERC1155.ts",
     "seed-lootbox": "ts-node -r tsconfig-paths/register src/scripts/seedLootbox.ts",
-    "seed-airdrop": "ts-node -r tsconfig-paths/register src/scripts/seedAirdrop.ts",
-    "dev:tracker:lootbox": "ts-node -r tsconfig-paths/register src/scripts/lootbox-tracker.ts"
+    "dev:tracker:lootbox": "ts-node -r tsconfig-paths/register src/scripts/lootbox-tracker.ts",
+    "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
+    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
   },
   "dependencies": {
     "@acuris/aws-es-connection": "^2.3.0",
@@ -84,6 +85,7 @@
     "ts-loader": "^9.2.6",
     "ts-node": "^10.3.0",
     "tsconfig-paths": "^3.11.0",
+    "typeorm-seeding": "^1.6.1",
     "typescript": "^4.4.4"
   },
   "jest": {

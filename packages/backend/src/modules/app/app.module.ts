@@ -1,6 +1,6 @@
 // import library
 import Joi from "joi";
-import { NftOrder, Program, SculpturesOrder, User } from "@entity";
+import { NftOrder, Program, SculpturesOrder, ShopifyCode, User } from "@entity";
 import { AuthMiddleware } from "@middleware";
 import {
   MiddlewareConsumer,
@@ -37,7 +37,13 @@ import { AppService } from "./app.service";
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([User, Program, SculpturesOrder, NftOrder]),
+    TypeOrmModule.forFeature([
+      User,
+      Program,
+      SculpturesOrder,
+      NftOrder,
+      ShopifyCode,
+    ]),
     SearchModule,
     UserModule,
     LoggerModule,
