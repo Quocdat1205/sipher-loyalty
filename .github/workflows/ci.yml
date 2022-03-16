@@ -117,7 +117,7 @@ jobs:
       - name: Build packages
         run: cd packages/frontend && yarn build:tf
         env:
-          NEXT_PUBLIC_API_URL: https://dev-api-marketplace.sipher.gg
+          NEXT_PUBLIC_API_URL: https://dev-api-loyalty.sipher.gg
 
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v1
@@ -154,7 +154,7 @@ jobs:
   backend-pre-merged-dev:
     needs: check_module_changed
     if: ${{ github.base_ref == 'develop' && needs.check_module_changed.outputs.backend == 'true'}}
-    uses: sipherxyz/marketplace/.github/workflows/default-check-pr.yml@template
+    uses: sipherxyz/loyalty/.github/workflows/default-check-pr.yml@template
     with:
       module: backend
     secrets:
@@ -164,7 +164,7 @@ jobs:
   backend-post-merged-dev:
     needs: check_module_changed
     if: ${{ github.ref_name == 'develop' && needs.check_module_changed.outputs.backend == 'true'}}
-    uses: sipherxyz/marketplace/.github/workflows/default-build_deploy.yml@template
+    uses: sipherxyz/loyalty/.github/workflows/default-build_deploy.yml@template
     with:
       module: backend
       aws_region: us-east-1
@@ -182,7 +182,7 @@ jobs:
   backend-pre-merged-main:
     needs: check_module_changed
     if: ${{ github.base_ref == 'main' && needs.check_module_changed.outputs.backend == 'true'}}
-    uses: sipherxyz/marketplace/.github/workflows/default-check-pr.yml@template
+    uses: sipherxyz/loyalty/.github/workflows/default-check-pr.yml@template
     with:
       module: backend
     secrets:
@@ -192,7 +192,7 @@ jobs:
   backend-post-merged-main:
     needs: check_module_changed
     if: ${{ github.ref_name == 'main' && needs.check_module_changed.outputs.backend == 'true'}}
-    uses: sipherxyz/marketplace/.github/workflows/default-build_deploy.yml@template
+    uses: sipherxyz/loyalty/.github/workflows/default-build_deploy.yml@template
     with:
       module: backend
       aws_region: us-east-1
