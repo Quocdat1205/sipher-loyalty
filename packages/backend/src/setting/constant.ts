@@ -79,6 +79,8 @@ export class SystemConfigProvider {
 
   ERC1155_SPACESHIP_STARTBLOCK = this.get("ERC1155_SPACESHIP_STARTBLOCK");
 
+  SCULPTURE_ADDRESS = this.get("SCULPTURE_ADDRESS");
+
   public get isDebugging() {
     return !!this.get("DEBUG");
   }

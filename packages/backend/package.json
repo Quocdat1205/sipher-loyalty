@@ -94,8 +94,32 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
+    "rootDir": ".",
+    "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.[jt]sx?$",
+    "moduleNameMapper": {
+      "@env": "<rootDir>/src/env",
+      "^@core/(.*)$": [
+        "<rootDir>/src/core/$1"
+      ],
+      "^@models/(.*)$": [
+        "<rootDir>/src/models/$1"
+      ],
+      "^@modules/(.*)$": [
+        "<rootDir>/src/modules/$1"
+      ],
+      "^@utils/(.*)$": [
+        "<rootDir>/src/utils/$1"
+      ],
+      "@entity": [
+        "<rootDir>/src/entity/index.entity"
+      ],
+      "@middleware": [
+        "<rootDir>/src/middleware/index.middleware"
+      ],
+      "^@setting/(.*)$": [
+        "<rootDir>/src/setting/$1"
+      ]
+    },
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },

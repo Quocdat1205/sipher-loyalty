@@ -29,6 +29,8 @@ import { MintModule } from "../mint/mint.module";
 // import module
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { MultiTokenModule } from "@modules/multi-token/multi-token.module";
+import { SculptureModule } from "@modules/sculpture/sculpture.module";
 
 @Module({
   imports: [
@@ -55,6 +57,8 @@ import { AppService } from "./app.service";
     URIModule,
     CollectionModule,
     AirdropModule,
+    MultiTokenModule,
+    SculptureModule,
   ],
   controllers: [AppController],
   providers: [AppService],
