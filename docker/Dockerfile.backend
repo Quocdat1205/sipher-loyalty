@@ -12,8 +12,6 @@ COPY /packages/backend .
 COPY tsconfig.json /.
 RUN npm install
 RUN yarn build
-RUN ls
-RUN ls dist
 
 # DIST
 FROM node:16.14-alpine
