@@ -1,4 +1,5 @@
 export * from "./OverviewContainer"
 export * from "./SpaceshipContainer"
 export * from "./Timeline"
+export * from "./TutorialSpaceship"
 export * from "./WhatSpaceship"

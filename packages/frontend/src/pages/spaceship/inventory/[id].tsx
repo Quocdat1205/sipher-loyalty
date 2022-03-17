@@ -5,7 +5,7 @@ import { DetailsLayout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
 import { DetailBox } from "@components/UI/spaceship/inventory"
 
-import { NextPageWithLayout } from "../_app"
+import { NextPageWithLayout } from "../../_app"
 
 const SpaceshipDetailPage: NextPageWithLayout = () => {
   const router = useRouter()

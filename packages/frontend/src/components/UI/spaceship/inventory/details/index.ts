@@ -1,3 +1,5 @@
 export * from "./ActionContainer"
+export * from "./ContentDetails"
 export * from "./DetailBox"
+export * from "./HeaderDetails"
 export * from "./NftImage"

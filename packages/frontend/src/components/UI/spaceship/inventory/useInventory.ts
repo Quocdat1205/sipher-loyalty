@@ -54,7 +54,7 @@ export const useInventory = () => {
   }))
 
   const handleView = (id: string | number) => {
-    router.push(`/spaceship/${id}`)
+    router.push(`/spaceship/inventory/${id}`)
   }
 
   const openModalShipping = () => {

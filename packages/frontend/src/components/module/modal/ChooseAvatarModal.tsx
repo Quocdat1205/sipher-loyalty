@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { Box, Img, SimpleGrid } from "@sipher.dev/sipher-ui"
-
-import { ChakraModal } from "@components/shared"
+import { BiArrowBack } from "react-icons/bi"
+import { Box, Flex, Img, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
 interface ChooseAvatarModalProps {
-  choose: string
+  setChangeForm: (v: string) => void
   setChoose: (src: string) => void
-  isOpen: boolean
-  onClose: () => void
 }
 
 interface CardProps {
@@ -31,30 +28,36 @@ const ImgCard = ({ active, src, onClick }: CardProps) => {
   )
 }
 
-export const ChooseAvatarModal = ({ setChoose, isOpen, onClose }: ChooseAvatarModalProps) => {
+export const ChooseAvatarModal = ({ setChoose, setChangeForm }: ChooseAvatarModalProps) => {
   const [selected, setSelected] = useState<number>()
 
   const handleSelected = (index: number) => {
     setSelected(index)
-    setChoose("/images/avatar/avatar1.png")
+    setChoose("/images/avatar1.png")
   }
 
   useEffect(() => {
     setSelected(undefined)
-  }, [isOpen])
+  }, [setChangeForm])
 
   return (
-    <ChakraModal isCentered title={"CHOOSE NFT"} isOpen={isOpen} onClose={onClose} size="xl">
+    <Box px={6}>
+      <Flex onClick={() => setChangeForm("SETTING")} cursor="pointer" mb={4} align="center">
+        <Box mr={1} color="accent.500">
+          <BiArrowBack size="1.2rem" />
+        </Box>
+        <Text color="neutral.400">Choose NFT</Text>
+      </Flex>
       <SimpleGrid pb={2} columns={4} spacing={6}>
         {Array.from(Array(6).keys()).map((i, index) => (
           <ImgCard
             key={i}
             active={index === selected}
-            src="/images/avatar/avatar1.png"
+            src="/images/avatar1.png"
             onClick={() => handleSelected(index)}
           />
         ))}
       </SimpleGrid>
-    </ChakraModal>
+    </Box>
   )
 }
