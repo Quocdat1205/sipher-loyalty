@@ -1,5 +1,6 @@
 // import library
 import fs from "fs";
+import { join } from "path";
 
 import { toChecksumAddress } from "ethereumjs-util";
 import { Repository } from "typeorm";
@@ -16,7 +17,6 @@ import { NftContract } from "../contract/contract.module";
 import { LoggerService } from "../logger/logger.service";
 
 import { MintBatchLootboxInput, MintLootboxInput } from "./lootbox.type";
-import { join } from "path";
 
 @Injectable()
 export class LootBoxService {
