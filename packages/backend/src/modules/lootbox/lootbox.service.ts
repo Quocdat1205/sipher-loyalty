@@ -1,5 +1,6 @@
 // import library
 import fs from "fs";
+import { join } from "path";
 
 import { toChecksumAddress } from "ethereumjs-util";
 import { Repository } from "typeorm";
@@ -20,11 +21,11 @@ import { MintBatchLootboxInput, MintLootboxInput } from "./lootbox.type";
 @Injectable()
 export class LootBoxService {
   private abiINU = JSON.parse(
-    fs.readFileSync("./src/data/INU/abi.json").toString()
+    fs.readFileSync(join(__dirname, "../../data/INU/abi.json")).toString()
   );
 
   private abiNEKO = JSON.parse(
-    fs.readFileSync("./src/data/NEKO/abi.json").toString()
+    fs.readFileSync(join(__dirname, "../../data/NEKO/abi.json")).toString()
   );
 
   private InuContract = new NftContract({

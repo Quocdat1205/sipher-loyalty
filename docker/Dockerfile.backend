@@ -1,0 +1,25 @@
+# PACKAGES
+FROM node:16.14-alpine AS packages
+WORKDIR /packages
+COPY /packages/backend/package.json /packages/backend/package-lock.json ./
+ENV NODE_ENV=production
+RUN npm ci
+
+# SRC
+FROM node:16.14-alpine AS src
+WORKDIR /packages/backend
+COPY /packages/backend .
+COPY tsconfig.json /.
+RUN npm install
+RUN yarn build
+RUN ls
+RUN ls dist
+
+# DIST
+FROM node:16.14-alpine
+WORKDIR /app
+COPY --from=packages /packages/node_modules ./node_modules
+COPY --from=src /packages/backend/dist ./dist
+ENTRYPOINT ["node"]
+EXPOSE 5500
+CMD ["dist/main.js"]

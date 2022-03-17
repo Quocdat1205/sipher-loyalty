@@ -7,7 +7,7 @@ interface ConnectWalletFirstModalProps {
   onClose: () => void
 }
 
-const WalletConnectCard = ({ onClick, text, srcImage }) => {
+export const WalletConnectCard = ({ onClick, text, srcImage }) => {
   return (
     <Flex
       bg="white"

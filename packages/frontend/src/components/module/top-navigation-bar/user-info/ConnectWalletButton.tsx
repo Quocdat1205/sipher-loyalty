@@ -9,10 +9,12 @@ import { shortenAddress } from "@utils"
 import { ConnectWalletModal, UserInfoDropdown } from "."
 
 interface ConnectWalletButtonProps {
-  setOpenSetting?: (value: boolean) => void
+  setModal?: (value: string) => void
+  isSignUp: boolean
+  setIsSignUp: (value: boolean) => void
 }
 
-export const ConnectWalletButton = ({ setOpenSetting }: ConnectWalletButtonProps) => {
+export const ConnectWalletButton = ({ setModal, isSignUp, setIsSignUp }: ConnectWalletButtonProps) => {
   const wallet = useWalletContext()
   const popRef = useRef<HTMLDivElement>(null)
   const [infoPopup, setInfoPopup] = useState(false)
@@ -84,12 +86,15 @@ export const ConnectWalletButton = ({ setOpenSetting }: ConnectWalletButtonProps
           overflow="auto"
           maxH={["35rem", "unset"]}
         >
-          {infoPopup && (
-            <UserInfoDropdown isOpen={infoPopup} onClose={() => setInfoPopup(false)} setOpenSetting={setOpenSetting} />
-          )}
+          {infoPopup && <UserInfoDropdown isOpen={infoPopup} onClose={() => setInfoPopup(false)} setModal={setModal} />}
         </Box>
       </Box>
-      <ConnectWalletModal isOpen={isWalletModalOpen} onClose={() => toggleWalletModal(false)} />
+      <ConnectWalletModal
+        isSignUp={isSignUp}
+        setIsSignUp={setIsSignUp}
+        isOpen={isWalletModalOpen}
+        onClose={() => toggleWalletModal(false)}
+      />
     </Box>
   )
 }

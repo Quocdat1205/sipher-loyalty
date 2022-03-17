@@ -4,11 +4,25 @@ import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 const data = [
   { id: "Astero", isActive: true, y: "-40%", i: 1 },
   { id: "Aphrodite", isActive: false, y: "50%", i: 2 },
-  { id: "Athena", isActive: false, y: "100%", i: 3 },
+  { id: "Athena", isActive: false, y: "95%", i: 3 },
   { id: "Athena", isActive: false, y: "110%", i: 4 },
-  { id: "Poseidon", isActive: false, y: "100%", i: 5 },
+  { id: "Poseidon", isActive: false, y: "95%", i: 5 },
   { id: "Artemis", isActive: false, y: "50%", i: 6 },
   { id: "Dionysus", isActive: false, y: "-40%", i: 7 },
+]
+
+const opacityArr = [
+  { id: 0, opacity: "10%" },
+  { id: 1, opacity: "40%" },
+  { id: 2, opacity: "40%" },
+  { id: 3, opacity: "60%" },
+  { id: 4, opacity: "80%" },
+  { id: 5, opacity: "100%" },
+  { id: 6, opacity: "80%" },
+  { id: 7, opacity: "60%" },
+  { id: 8, opacity: "40%" },
+  { id: 9, opacity: "40%" },
+  { id: 10, opacity: "10%" },
 ]
 
 export const Timeline = () => {
@@ -17,13 +31,8 @@ export const Timeline = () => {
       <svg viewBox="300 300 1200 75" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="grad1">
-            {data.map((item, idx) => (
-              <stop
-                key={idx}
-                offset={`${item.i * 14}%`}
-                stopColor={"#9091A0"}
-                stopOpacity={idx === 0 ? 0.25 : idx < 5 ? idx / (idx * 1.5) : idx === 6 ? 0 : (idx - 1) / (idx * 1.5)}
-              />
+            {opacityArr.map(item => (
+              <stop key={item.id} offset={`${item.id * 10}%`} stopColor={"#9091A0"} stopOpacity={item.opacity} />
             ))}
           </linearGradient>
         </defs>

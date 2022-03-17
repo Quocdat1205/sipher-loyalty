@@ -11,7 +11,7 @@ const ContentSpaceShip = () => {
       <Banner
         srcBg="/images/spaceship/banner.png"
         title="Spaceship"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+        description="Transport yourself throughout the various dungeons and the World of Sipheria"
       />
       <Box px={[4, 0]} pt={8} flex={1} w="full">
         <TabContainer />
