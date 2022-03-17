@@ -43,7 +43,6 @@ const QuantitySelector = ({ onChange, value, maxValue, minValue = 0, isDisabled 
           rounded="0"
           _hover={{
             bgColor: "transparent",
-            bgGradient: "linear(to-b, blackAlpha.900, blackAlpha.500, blackAlpha.900)",
           }}
           _focus={{
             shadow: "none",
