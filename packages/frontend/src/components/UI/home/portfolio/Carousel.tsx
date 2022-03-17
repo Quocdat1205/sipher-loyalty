@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { wrap } from "popmotion"
 import { Box, HStack, SimpleGrid } from "@sipher.dev/sipher-ui"
 
-import { NFTCard } from "@components/UI/portfolio/nfts"
+import { CollectionCard } from "@components/UI/portfolio/collection"
 
 interface SlideshowProps {
   isAuto?: boolean
@@ -105,7 +105,8 @@ export const Carousel = ({ deplay = 5000, slideData, isAuto = false }: Slideshow
           <Box pos="absolute" w="full" h="full">
             <SimpleGrid p={1} w="full" spacing={6} columns={pageSize}>
               {slideData.slice(index * pageSize, (index + 1) * pageSize).map(item => (
-                <NFTCard
+                <CollectionCard
+                  onClick={() => console.log("a")}
                   isVerified
                   key={item}
                   volume={1}

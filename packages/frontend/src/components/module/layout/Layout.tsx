@@ -31,7 +31,7 @@ export const Layout = ({ children }: StoreFrontLayoutProps) => {
       bg="neutral.900"
     >
       <TopNavigationBar isSticky isSignUp={isSignUp} setIsSignUp={setIsSignUp} />
-      <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
+      <Flex flexDir="column" zIndex={2} overflow="auto" flex={1} w="full">
         {account ? (
           children
         ) : (
