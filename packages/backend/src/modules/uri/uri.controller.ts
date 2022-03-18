@@ -7,8 +7,13 @@ import { URIService } from "./uri.service";
 export class URIController {
   constructor(private uriService: URIService) {}
 
-  @Get("/:tokenId")
-  async getData(@Param("tokenId") tokenId: number) {
-    return this.uriService.getData(tokenId);
+  @Get("erc1155-spaceship/:tokenId")
+  async getDataERC1155Spaceship(@Param("tokenId") tokenId: number) {
+    return this.uriService.getDataERC1155Spaceship(tokenId);
+  }
+
+  @Get("erc1155-sculpture/:tokenId")
+  async getDataERC1155Sculpture(@Param("tokenId") tokenId: number) {
+    return this.uriService.getDataERC1155Sculpture(tokenId);
   }
 }

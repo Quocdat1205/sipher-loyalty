@@ -6,13 +6,14 @@ import { Injectable } from "@nestjs/common";
 export enum Chain {
   Mainnet = 1,
   Rinkeby = 4,
+  Mumbai = 80001,
 }
 
 type BlockchainConfiguration = {
   rpcUrls: { [k in Chain]: string };
   contracts: {
     erc1155Spaceship: {
-      [k in Chain]: { address: string; startBlock?: number };
+      [k in Chain]: { address: string };
     };
   };
 };
@@ -40,6 +41,8 @@ export class SystemConfigProvider {
   SESSION_HOST = this.get("SESSION_HOST");
 
   SC_INFURA = this.get("SC_INFURA");
+
+  POLYGON_RPC_URL = this.get("POLYGON_RPC_URL");
 
   SC_NFT_INU = this.get("SC_NFT_INU");
 
@@ -77,8 +80,6 @@ export class SystemConfigProvider {
 
   CHAIN_ID = parseInt(this.get("CHAIN_ID"), 10);
 
-  ERC1155_SPACESHIP_STARTBLOCK = this.get("ERC1155_SPACESHIP_STARTBLOCK");
-
   public get isDebugging() {
     return !!this.get("DEBUG");
   }
@@ -104,24 +105,21 @@ export class SystemConfigProvider {
     const rpcUrls = {
       [Chain.Mainnet]: `https://mainnet.infura.io/v3/${this.SC_INFURA}`,
       [Chain.Rinkeby]: `https://rinkeby.infura.io/v3/${this.SC_INFURA}`,
+      [Chain.Mumbai]: `${this.POLYGON_RPC_URL}`,
     };
 
     const erc1155Spaceship = {
       [Chain.Mainnet]: {
         address: this.get(`${this.SC_ERC1155_SPACESHIP}_${Chain.Mainnet}`),
-        startBlock: Number.parseInt(
-          this.get(`ERC1155_SPACESHIP_STARTBLOCK_${Chain.Mainnet}`, "0"),
-          10
-        ),
       },
       [Chain.Rinkeby]: {
         address: this.get(`${this.SC_ERC1155_SPACESHIP}_${Chain.Rinkeby}`),
-        startBlock: Number.parseInt(
-          this.get(`ERC1155_SPACESHIP_STARTBLOCK_${Chain.Rinkeby}`, "0"),
-          10
-        ),
+      },
+      [Chain.Mumbai]: {
+        address: this.get(`${this.SC_ERC1155_SPACESHIP}_${Chain.Mumbai}`),
       },
     };
+
     return { rpcUrls, contracts: { erc1155Spaceship } };
   }
 

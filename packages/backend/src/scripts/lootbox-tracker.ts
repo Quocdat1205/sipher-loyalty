@@ -10,12 +10,13 @@ import { LoggerModule } from "@modules/logger/logger.module";
 import { LoggerService } from "@modules/logger/logger.service";
 import { MintModule } from "@modules/mint/mint.module";
 import { LootboxTrackerModule } from "@modules/trackers/erc1155_spaceship/lootbox-tracker.module";
+import { TrackedBlock } from "src/entity/tracking.entity";
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([Lootbox, PendingMint]),
+    TypeOrmModule.forFeature([Lootbox, PendingMint, TrackedBlock]),
     LoggerModule,
     LootboxTrackerModule,
     MintModule,

@@ -18,64 +18,66 @@ import { signBatchOrder, signOrder } from "@utils/signer";
 import { BatchOrder, Order } from "@utils/type";
 import { randomSalt } from "@utils/utils";
 
+import { AuthService } from "../auth/auth.service";
 import { LoggerService } from "../logger/logger.service";
 
 @Injectable()
 export class MintService {
   constructor(
     @InjectRepository(PendingMint)
-    private PendingMintRepo: Repository<PendingMint>
+    private PendingMintRepo: Repository<PendingMint>,
+    private authService: AuthService
   ) {}
 
   private config = constant.config.erc1155Spaceship;
 
-  // async test() {
-  //   LoggerService.log(
-  //     `sign mint data for 0x83629905189464CC16F5E7c12D54dD5e87459B33, id : [1] ,amount : [2]`
-  //   );
-  //   LoggerService.log(this.config);
-  //   const order = {
-  //     to: "0x83629905189464CC16F5E7c12D54dD5e87459B33",
-  //     batchID: 1,
-  //     amount: 2,
-  //     salt: "0x",
-  //   };
-  //   const batchOrder = {
-  //     to: "0x83629905189464CC16F5E7c12D54dD5e87459B33",
-  //     batchID: [1],
-  //     amount: [2],
-  //     salt: "0x",
-  //   };
+  async test() {
+    LoggerService.log(
+      `sign mint data for 0x83629905189464CC16F5E7c12D54dD5e87459B33, id : [1] ,amount : [2]`
+    );
+    LoggerService.log(this.config);
+    const order = {
+      to: "0x83629905189464CC16F5E7c12D54dD5e87459B33",
+      batchID: 1,
+      amount: 2,
+      salt: "0x",
+    };
+    const batchOrder = {
+      to: "0x83629905189464CC16F5E7c12D54dD5e87459B33",
+      batchID: [1],
+      amount: [2],
+      salt: "0x",
+    };
 
-  //   const signature = await signOrder(this.config, order);
+    const signature = await signOrder(this.config, order);
 
-  //   const signatureBatch = await signBatchOrder(this.config, batchOrder);
+    const signatureBatch = await signBatchOrder(this.config, batchOrder);
 
-  //   const verifySignature = recoverOrderSignature(
-  //     order,
-  //     signature,
-  //     this.config
-  //   );
-  //   const verifySignatureBatch = recoverBatchOrderSignature(
-  //     batchOrder,
-  //     signatureBatch,
-  //     this.config
-  //   );
-  //   if (!verifySignature)
-  //     throw new HttpException("wrong signature", HttpStatus.BAD_REQUEST);
-  //   if (!verifySignatureBatch)
-  //     throw new HttpException("wrong signature batch", HttpStatus.BAD_REQUEST);
+    const verifySignature = recoverOrderSignature(
+      order,
+      signature,
+      this.config
+    );
+    const verifySignatureBatch = recoverBatchOrderSignature(
+      batchOrder,
+      signatureBatch,
+      this.config
+    );
+    if (!verifySignature)
+      throw new HttpException("wrong signature", HttpStatus.BAD_REQUEST);
+    if (!verifySignatureBatch)
+      throw new HttpException("wrong signature batch", HttpStatus.BAD_REQUEST);
 
-  //   // const signatureTest = await signer._signTypedData(
-  //   //   createEIP712Domain(this.config.chainId, this.config.verifyingContract),
-  //   //   {
-  //   //     Test: [{ name: "id", type: "bytes" }],
-  //   //   },
-  //   //   { id: defaultAbiCoder.encode(["uint256[]"], [[1]]) },
-  //   // )
+    // const signatureTest = await signer._signTypedData(
+    //   createEIP712Domain(this.config.chainId, this.config.verifyingContract),
+    //   {
+    //     Test: [{ name: "id", type: "bytes" }],
+    //   },
+    //   { id: defaultAbiCoder.encode(["uint256[]"], [[1]]) },
+    // )
 
-  //   return { signature, signatureBatch };
-  // }
+    return { signature, signatureBatch };
+  }
 
   getPendingLootbox = async (walletAddress: string) => {
     const pending = await this.PendingMintRepo.find({

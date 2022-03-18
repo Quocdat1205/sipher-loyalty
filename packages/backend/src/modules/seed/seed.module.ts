@@ -1,4 +1,6 @@
 import {
+  ERC1155Sculpture,
+  ERC1155SculptureAttribute,
   ERC1155SpaceShipPartLootbox,
   ERC1155SpaceShipPartLootboxAttribute,
   Lootbox,
@@ -10,7 +12,8 @@ import { LootBoxModule } from "@modules/lootbox/lootbox.module";
 import { Airdrop } from "src/entity/airdrop.entity";
 
 import { SeedAirdropService } from "./seedAirdrop.service";
-import { SeedERC1155Service } from "./seedERC1155.service";
+import { SeedERC1155SculptureService } from "./seedERC1155Sculpture.service";
+import { SeedERC1155SpaceshipService } from "./seedERC1155Spaceship.service";
 import { SeedLootboxService } from "./seedLootbox.service";
 
 @Module({
@@ -19,11 +22,23 @@ import { SeedLootboxService } from "./seedLootbox.service";
     TypeOrmModule.forFeature([
       ERC1155SpaceShipPartLootbox,
       ERC1155SpaceShipPartLootboxAttribute,
+      ERC1155Sculpture,
+      ERC1155SculptureAttribute,
       Lootbox,
       Airdrop,
     ]),
   ],
-  providers: [SeedAirdropService, SeedERC1155Service, SeedLootboxService],
-  exports: [SeedAirdropService, SeedERC1155Service, SeedLootboxService],
+  providers: [
+    SeedAirdropService,
+    SeedERC1155SpaceshipService,
+    SeedERC1155SculptureService,
+    SeedLootboxService,
+  ],
+  exports: [
+    SeedAirdropService,
+    SeedERC1155SpaceshipService,
+    SeedERC1155SculptureService,
+    SeedLootboxService,
+  ],
 })
 export class SeedModule {}

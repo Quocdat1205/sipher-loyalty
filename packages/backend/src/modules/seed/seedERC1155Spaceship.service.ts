@@ -13,13 +13,9 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { LoggerService } from "../logger/logger.service";
 
 @Injectable()
-export class SeedERC1155Service {
+export class SeedERC1155SpaceshipService {
   private erc1155Data = JSON.parse(
-    fs.readFileSync("./src/data/ERC1155/data.json").toString()
-  );
-
-  private airdropData = JSON.parse(
-    fs.readFileSync("./src/data/AIRDROP/nft.json").toString()
+    fs.readFileSync("./src/data/ERC1155/LOOTBOX/data.json").toString()
   );
 
   constructor(

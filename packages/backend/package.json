@@ -17,7 +17,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "seed-erc1155": "ts-node -r tsconfig-paths/register src/scripts/seedERC1155.ts",
+    "seed-erc1155-spaceship": "ts-node -r tsconfig-paths/register src/scripts/seedERC1155Spaceship.ts",
+    "seed-erc1155-sculpture": "ts-node -r tsconfig-paths/register src/scripts/seedERC1155Sculpture.ts",
     "seed-lootbox": "ts-node -r tsconfig-paths/register src/scripts/seedLootbox.ts",
     "seed-airdrop": "ts-node -r tsconfig-paths/register src/scripts/seedAirdrop.ts",
     "dev:tracker:lootbox": "ts-node -r tsconfig-paths/register src/scripts/lootbox-tracker.ts"

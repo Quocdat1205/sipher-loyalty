@@ -1,4 +1,6 @@
 import {
+  ERC1155Sculpture,
+  ERC1155SculptureAttribute,
   ERC1155SpaceShipPartLootbox,
   ERC1155SpaceShipPartLootboxAttribute,
 } from "@entity";
@@ -13,6 +15,8 @@ import { URIService } from "./uri.service";
     TypeOrmModule.forFeature([
       ERC1155SpaceShipPartLootbox,
       ERC1155SpaceShipPartLootboxAttribute,
+      ERC1155Sculpture,
+      ERC1155SculptureAttribute,
     ]),
   ],
   providers: [URIService],
