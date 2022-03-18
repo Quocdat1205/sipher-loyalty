@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+
 import { ShopifyCode } from "./shopify-code.entity";
 
 @Entity()

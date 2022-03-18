@@ -1,10 +1,14 @@
 // library
+import path from "path";
+
 import { urlencoded } from "express";
 import helmet from "helmet";
+import { generateApi } from "swagger-typescript-api";
 import { ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import constant from "@setting/constant";
 import cors from "@setting/cors";
 import appSession from "@setting/session";
 
@@ -24,6 +28,26 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api", app, document);
+
+  // generate typescript api
+  if (!constant.isDebugging) {
+    await generateApi({
+      name: "sdk",
+      output: path.resolve(__dirname, "../../frontend/src/api"),
+      spec: document as any,
+      templates: path.resolve(__dirname, "../src/swagger-templates"),
+      prettier: {
+        singleQuote: true,
+        jsxSingleQuote: false,
+        arrowParens: "avoid",
+        trailingComma: "all",
+        tabWidth: 2,
+        printWidth: 100,
+        parser: "typescript",
+      },
+      httpClientType: "axios",
+    });
+  }
 
   app.useGlobalPipes(
     new ValidationPipe({
