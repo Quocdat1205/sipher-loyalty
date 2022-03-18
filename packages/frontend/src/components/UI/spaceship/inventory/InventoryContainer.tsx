@@ -27,7 +27,7 @@ export const InventoryContainer = () => {
       <Box py={6} maxW="1200px" w="full">
         {inventoryData.filter(i => i.isChecked).length !== 0 && (
           <Button onClick={openModalMint} mb={4}>
-            MINT ALL
+            MINT NFT({inventoryDataCheck.length})
           </Button>
         )}
         <SimpleGrid spacing={6} columns={[1, 3, 5]}>

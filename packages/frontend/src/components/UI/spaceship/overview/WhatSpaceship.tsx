@@ -43,7 +43,7 @@ export const WhatSpaceship = () => {
       pos="relative"
       flexDir="column"
       align="center"
-      minH="100vh"
+      h="full"
       w="full"
       bg="url(/images/spaceship/bg-galaxy2.png)"
       bgRepeat="no-repeat"
@@ -53,7 +53,7 @@ export const WhatSpaceship = () => {
         pos="absolute"
         top="0"
         left="0"
-        h="100vh"
+        h="full"
         w="full"
         bgGradient="linear(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%)"
       />

@@ -8,7 +8,7 @@ import { CustomPopover } from "@components/shared"
 
 export const TutorialSpaceship = () => {
   return (
-    <Flex pos="relative" flexDir="column" align="center" w="full">
+    <Flex pt={16} pos="relative" flexDir="column" align="center" w="full">
       <Flex
         bgGradient="linear(180deg, #292A40 0%, rgba(41, 42, 64, 0) 100%)"
         flexDir="column"
@@ -31,8 +31,8 @@ export const TutorialSpaceship = () => {
             </Text>
           </Box>
           <HStack pl={16} justify="space-between" align="center" flex={3}>
-            <Box>
-              <Flex mb={2} align="center">
+            <Box textAlign="center">
+              <Flex justify="center" mb={2} align="center">
                 <Text fontWeight={600} mr={2}>
                   Loot Box
                 </Text>
@@ -71,7 +71,7 @@ export const TutorialSpaceship = () => {
                 transform="translate(-50%,-50%)"
               />
             </Box>
-            <Box>
+            <Box textAlign="center">
               <Text mb={2} fontWeight={600}>
                 Ship Parts
               </Text>
@@ -92,7 +92,7 @@ export const TutorialSpaceship = () => {
                 transform="translate(-50%,-50%)"
               />
             </Box>
-            <Box>
+            <Box textAlign="center">
               <Text mb={2} fontWeight={600}>
                 Spaceship
               </Text>

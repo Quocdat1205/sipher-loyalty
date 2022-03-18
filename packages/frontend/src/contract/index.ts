@@ -1,7 +1,6 @@
 import { BigNumber, providers } from "ethers"
 
 import { LPSipherWethKyberAddress, LPSipherWethUniswapAddress, SipherTokenAddress, WETH_ADDRESS } from "@constant"
-import { weiToEther } from "@utils"
 import { getETHPrice, getSipherPrice } from "src/api/price"
 
 import ERC20 from "./ERC20"
@@ -43,11 +42,11 @@ export class ContractCaller {
   public async getLpUniswapTVL() {
     const lpBalance = await this.WETH.getBalance(LPSipherWethUniswapAddress)
     const ethPrice = await getETHPrice()
-    const StakedLPPoolETH = parseFloat(weiToEther(lpBalance)) * ethPrice
+    const StakedLPPoolETH = lpBalance * ethPrice
 
     const sipherBalance = await this.SipherToken.getBalance(LPSipherWethUniswapAddress)
     const sipherPrice = await getSipherPrice()
-    const StakedLPPoolSipher = parseFloat(weiToEther(sipherBalance)) * sipherPrice
+    const StakedLPPoolSipher = sipherBalance * sipherPrice
 
     return StakedLPPoolETH + StakedLPPoolSipher
   }
@@ -55,11 +54,11 @@ export class ContractCaller {
   public async getLpKyberTVL() {
     const lpBalance = await this.WETH.getBalance(LPSipherWethKyberAddress)
     const ethPrice = await getETHPrice()
-    const StakedLPPoolETH = parseFloat(weiToEther(lpBalance)) * ethPrice
+    const StakedLPPoolETH = lpBalance * ethPrice
 
     const sipherBalance = await this.SipherToken.getBalance(LPSipherWethKyberAddress)
     const sipherPrice = await getSipherPrice()
-    const StakedLPPoolSipher = parseFloat(weiToEther(sipherBalance)) * sipherPrice
+    const StakedLPPoolSipher = sipherBalance * sipherPrice
 
     return StakedLPPoolETH + StakedLPPoolSipher
   }
@@ -68,13 +67,13 @@ export class ContractCaller {
     const lpPoolTVL = await this.getLpUniswapTVL()
 
     const totalSupply = await this.LPSipherWethUniswap.totalSupply()
-    return lpPoolTVL / parseFloat(totalSupply)
+    return lpPoolTVL / totalSupply
   }
 
   public async getLpKyberPrice() {
     const lpPoolTVL = await this.getLpKyberTVL()
     const totalSupply = await this.LPSipherWethKyber.totalSupply()
-    return lpPoolTVL / parseFloat(totalSupply)
+    return lpPoolTVL / totalSupply
   }
 
   public async sign(message: any) {

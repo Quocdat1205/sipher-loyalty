@@ -1,5 +1,6 @@
-import { ShopifyCode } from "../entity/shopify-code.entity";
 import { define } from "typeorm-seeding";
+
+import { ShopifyCode } from "../entity/shopify-code.entity";
 
 define(ShopifyCode, () => {
   const shopifyCode = new ShopifyCode();

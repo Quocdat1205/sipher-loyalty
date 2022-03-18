@@ -17,20 +17,16 @@ const activityLog = [
   {
     currency: "ETH",
     name: "Sipher NEKO #7922",
-    price: 0.027,
-    priceInUSD: 200.23,
-    from: "0xFD8FE238077684e0846db8FA31231231",
-    to: "0xFD8FE238077684e0846db8FA434C5F6c0200003f",
-    time: "3 months ago",
+    balance: 0.027,
+    value: 0.05,
+    change: 900.23,
   },
   {
     currency: "SIPHER",
     name: "Sipher NEKO #7923",
-    price: 0.05,
-    priceInUSD: 900.23,
-    from: "0xFD8FE238077684e0846db8FA434C5F6c0200003f",
-    to: "0xFD8FE238077684e0846db8FA31231231",
-    time: "3 months ago",
+    balance: 0.05,
+    value: 0.05,
+    change: 100.23,
   },
 ]
 
@@ -75,11 +71,11 @@ export const TokensContainer = () => {
                   {item.currency}
                 </Flex>
               </chakra.td>
-              <chakra.td p={2}>{currency(item.price)}</chakra.td>
+              <chakra.td p={2}>{currency(item.balance)}</chakra.td>
               <chakra.td p={2}>
-                <Flex align="center">${currency(item.price)}</Flex>
+                <Flex align="center">${currency(item.value)}</Flex>
               </chakra.td>
-              <chakra.td p={2}>{currency(item.priceInUSD)}%</chakra.td>
+              <chakra.td p={2}>{currency(item.change)}%</chakra.td>
             </chakra.tr>
           ))}
         </chakra.tbody>

@@ -18,7 +18,6 @@ export const SpaceshipContainer = () => {
     <Flex
       flexDir="column"
       align="center"
-      h="100vh"
       w="full"
       bg="url(/images/spaceship/bg-galaxy.png), linear-gradient(180deg, rgba(0, 0, 0, 0.5) 9.54%, rgba(0, 0, 0, 0.215) 59.01%, rgba(0, 0, 0, 0.5) 100%)"
       bgRepeat="no-repeat"

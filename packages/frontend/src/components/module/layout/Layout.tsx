@@ -2,6 +2,8 @@ import { ReactNode, useEffect, useState } from "react"
 import { Flex } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
+import { getSignIn } from "@utils"
+
 import { OnBoardModal } from "../modal"
 import { TopNavigationBar } from "../top-navigation-bar"
 
@@ -15,10 +17,10 @@ export const Layout = ({ children }: StoreFrontLayoutProps) => {
   const [isSignUp, setIsSignUp] = useState(false)
 
   useEffect(() => {
-    if (!account) {
+    if (!getSignIn()) {
       setIsOnboard(true)
     }
-  }, [account])
+  }, [])
 
   return (
     <Flex

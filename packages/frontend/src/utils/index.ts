@@ -1,5 +1,7 @@
 import { BigNumber, ethers } from "ethers"
 
+const SIGNIN_KEY = "SIGNIN"
+
 export * from "./constant"
 export * from "./urlQuery"
 export const currency = (
@@ -31,3 +33,15 @@ export const capitalize = (str: string) => {
 export const etherToWei = (amount: number | string) => ethers.utils.parseEther(amount.toString())
 
 export const weiToEther = (wei: string | BigNumber) => ethers.utils.formatEther(wei)
+
+export const setSignIn = (signIn: string) => {
+  localStorage?.setItem(SIGNIN_KEY, signIn)
+}
+
+export const getSignIn = (): string | null => {
+  return localStorage?.getItem(SIGNIN_KEY)
+}
+
+export const clearSignIn = () => {
+  localStorage?.removeItem(SIGNIN_KEY)
+}

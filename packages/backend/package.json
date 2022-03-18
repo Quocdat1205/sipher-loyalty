@@ -60,8 +60,10 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.4.0",
+    "swagger-typescript-api": "^9.3.1",
     "swagger-ui-express": "^4.3.0",
     "typeorm": "^0.2.44",
+    "typeorm-seeding": "^1.6.1",
     "web3": "^1.7.1"
   },
   "devDependencies": {

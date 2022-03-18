@@ -64,7 +64,6 @@ export const useStake = () => {
     },
     {
       poolName: "Kyber SLP $SIPHER-ETH",
-
       APR: !dataFetch
         ? 0
         : (((parseFloat(dataFetch.StakingLPSipherWethKyber.weight) / parseFloat(dataFetch.totalWeight)) *

@@ -1,5 +1,7 @@
 import { BigNumber, Contract, ethers, providers } from "ethers"
 
+import { weiToEther } from "@utils"
+
 import { SIPHER_TOKEN_ABI } from "../constant"
 
 class ERC20 {
@@ -11,8 +13,10 @@ class ERC20 {
     this.contract = new ethers.Contract(contractAddress, contractAbi || SIPHER_TOKEN_ABI, provider)
   }
 
-  async getBalance(address: string): Promise<BigNumber> {
-    return await this.contract.balanceOf(address)
+  async getBalance(address: string): Promise<number> {
+    const value = await this.contract.balanceOf(address)
+
+    return parseFloat(weiToEther(value))
   }
 
   async allowance(ownerAddress: string, targetAddress: string): Promise<BigNumber> {
