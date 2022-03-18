@@ -9,6 +9,7 @@ interface DetailsCollectionProps {
 }
 
 export const DetailsCollection = ({ id }: DetailsCollectionProps) => {
+  console.log(id)
   return (
     <Box>
       <Box pos="relative" h="18rem">
