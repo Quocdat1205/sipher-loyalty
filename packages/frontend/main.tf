@@ -24,14 +24,14 @@ provider "aws" {
 # Terraform remote state, store its state on s3 instead of local
 terraform {
   backend "s3" {
-    key    = "terraform-state-key"
+    key    = "terraform-loyalty-state-key"
     region = "us-east-1"
   }
 }
 
 module "tf_next" {
   source = "milliHQ/next-js/aws"
-  deployment_name = "tf-next-marketplace"
+  deployment_name = "tf-next-loyalty"
 
   providers = {
     aws.global_region = aws.global_region
