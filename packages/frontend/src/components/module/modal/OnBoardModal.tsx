@@ -4,6 +4,7 @@ import { Box, Button, Flex, Heading, HStack, Text } from "@sipher.dev/sipher-ui"
 import { useStore } from "@store"
 
 import { ChakraModal } from "@components/shared"
+import { setSignIn } from "@utils"
 
 interface SettingAccountModalProps {
   isOpen: boolean
@@ -51,6 +52,7 @@ export const OnBoardModal = ({ isOpen, onClose, setIsSignUp }: SettingAccountMod
   const handleClick = () => {
     toggleWalletModal(true)
     setIsSignUp(true)
+    setSignIn("true")
     onClose()
   }
 

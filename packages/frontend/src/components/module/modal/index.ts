@@ -1,4 +1,5 @@
 export * from "./AccountModal"
+export * from "./AccountPassword"
 export * from "./BuySipherModal"
 export * from "./ChangePassword"
 export * from "./ChooseAvatarModal"

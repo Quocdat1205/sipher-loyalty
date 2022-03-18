@@ -8,6 +8,16 @@ export const getSipherPrice = async (): Promise<number> => {
   return data
 }
 
+export const getETHPrice = async (): Promise<number> => {
+  const { data } = await fetcher.get("price/ether")
+  return data
+}
+
+export const getSipherPriceChange = async (): Promise<number> => {
+  const { data } = await fetcher.get("/price/sipher/change")
+  return data
+}
+
 export const useSipherPrice = () => {
   const { data } = useQuery("sipher-price", getSipherPrice, {
     initialData: 0,
@@ -15,9 +25,21 @@ export const useSipherPrice = () => {
 
   return data as number
 }
-export const getETHPrice = async (): Promise<number> => {
-  const { data } = await fetcher.get("price/ether")
-  return data
+
+export const useSipherChangePercent = () => {
+  const { data } = useQuery("sipher-change", getSipherPriceChange, {
+    initialData: 0,
+  })
+
+  return data as number
+}
+
+export const useETHPrice = () => {
+  const { data } = useQuery("eth-price", getETHPrice, {
+    initialData: 0,
+  })
+
+  return data as number
 }
 
 export const useLpUniswapPrice = () => {

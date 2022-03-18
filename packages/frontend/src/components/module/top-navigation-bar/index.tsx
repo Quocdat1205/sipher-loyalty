@@ -51,7 +51,7 @@ export const TopNavigationBar = ({ isSticky = false, isSignUp, setIsSignUp }: To
             <NavMenus menus={menus} />
           </Flex>
         </Flex>
-        <Box mr={4} ml={8}>
+        <Box mr={8} ml={8}>
           <ConnectWalletButton isSignUp={isSignUp} setIsSignUp={setIsSignUp} setModal={setModal} />
         </Box>
       </Flex>
