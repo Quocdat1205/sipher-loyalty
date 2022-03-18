@@ -1,6 +1,7 @@
+import { join } from "path";
+
 import dotenv from "dotenv";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { join } from "path";
 
 dotenv.config();
 

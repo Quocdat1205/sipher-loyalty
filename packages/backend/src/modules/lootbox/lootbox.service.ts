@@ -1,6 +1,3 @@
-import fs from "fs";
-import { join } from "path";
-
 import { toChecksumAddress } from "ethereumjs-util";
 import { Contract, providers } from "ethers";
 import { Repository } from "typeorm";

@@ -83,7 +83,7 @@ export class UserService {
       const payload = { publicAddress, nonce: new_nonce };
       const accessToken = this.authService.getTokenUser(payload);
 
-      return await accessToken;
+      return accessToken;
     } catch (error) {
       LoggerService.error(error);
 
@@ -95,24 +95,15 @@ export class UserService {
   }
 
   async getInfo(publicAddress: string) {
-    try {
-      LoggerService.log(`Get info service!`);
+    LoggerService.log(`Get info service!`);
 
-      const user = await this.UserRepo.findOne({ publicAddress });
+    const user = await this.UserRepo.findOne({ publicAddress });
 
-      if (!user) {
-        return new HttpException("User not found", HttpStatus.BAD_REQUEST);
-      }
-
-      return user;
-    } catch (error) {
-      LoggerService.error(error);
-
-      return new HttpException(
-        "Something went wrong, please try again!",
-        HttpStatus.BAD_REQUEST
-      );
+    if (!user) {
+      throw new HttpException("User not found", HttpStatus.BAD_REQUEST);
     }
+
+    return user;
   }
 
   async intergationDiscord({

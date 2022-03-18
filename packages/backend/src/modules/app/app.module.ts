@@ -18,7 +18,10 @@ import { AirdropModule } from "@modules/airdrop/airdrop.module";
 import { AuthModule } from "@modules/auth/auth.module";
 import { CollectionModule } from "@modules/collection/collection.module";
 import { LoggerModule } from "@modules/logger/logger.module";
+import { MerchModule } from "@modules/merch/merch.module";
+import { MultiTokenModule } from "@modules/multi-token/multi-token.module";
 import { NftItemModule } from "@modules/nft/nftItem.module";
+import { SculptureModule } from "@modules/sculpture/sculpture.module";
 import { SearchModule } from "@modules/search/search.module";
 import { URIModule } from "@modules/uri/uri.module";
 import { UserModule } from "@modules/user/user.module";
@@ -29,8 +32,6 @@ import { MintModule } from "../mint/mint.module";
 // import module
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { MultiTokenModule } from "@modules/multi-token/multi-token.module";
-import { SculptureModule } from "@modules/sculpture/sculpture.module";
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { SculptureModule } from "@modules/sculpture/sculpture.module";
     AirdropModule,
     MultiTokenModule,
     SculptureModule,
+    MerchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
