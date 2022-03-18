@@ -4,7 +4,7 @@ import { Layout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
 import ContentPortfolio from "@components/UI/portfolio"
 
-import { NextPageWithLayout } from "./_app"
+import { NextPageWithLayout } from "../_app"
 
 const PortfolioPage: NextPageWithLayout = () => {
   return (

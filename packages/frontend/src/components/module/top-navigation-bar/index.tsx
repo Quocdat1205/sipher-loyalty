@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Box, Flex } from "@sipher.dev/sipher-ui"
 
 import { GradientBox } from "../layout"
-import { BuySipherModal, SettingAccountModal } from "../modal"
+import { AccountModal, BuySipherModal } from "../modal"
 
 import Logo from "./Logo"
 import NavMenus from "./NavMenus"
@@ -55,7 +55,7 @@ export const TopNavigationBar = ({ isSticky = false, isSignUp, setIsSignUp }: To
           <ConnectWalletButton isSignUp={isSignUp} setIsSignUp={setIsSignUp} setModal={setModal} />
         </Box>
       </Flex>
-      <SettingAccountModal isOpen={modal === "SETTING"} onClose={() => setModal("")} />
+      <AccountModal isOpen={modal === "SETTING"} onClose={() => setModal("")} />
       <BuySipherModal isOpen={modal === "BUY"} onClose={() => setModal("")} />
     </Box>
   )

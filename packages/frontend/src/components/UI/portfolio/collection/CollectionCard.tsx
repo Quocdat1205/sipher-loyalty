@@ -13,18 +13,23 @@ interface CardProps {
   imageUrl: string
   volume: number
   floorPrice: number
+  onClick: (id: number | string) => void
 }
 
-export const NFTCard = ({ collectionName, tokenId, isVerified = false, imageUrl, volume, floorPrice }: CardProps) => {
-  const handleClick = () => {
-    console.log(tokenId)
-  }
-
+export const CollectionCard = ({
+  collectionName,
+  tokenId,
+  isVerified = false,
+  imageUrl,
+  volume,
+  floorPrice,
+  onClick,
+}: CardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
     <Box
-      onClick={handleClick}
+      onClick={() => onClick(tokenId)}
       _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
       overflow="hidden"
       rounded="lg"

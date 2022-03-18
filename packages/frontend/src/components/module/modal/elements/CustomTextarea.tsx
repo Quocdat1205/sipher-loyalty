@@ -1,14 +1,7 @@
 import React from "react"
-import { Textarea } from "@sipher.dev/sipher-ui"
+import { Textarea, TextareaProps } from "@sipher.dev/sipher-ui"
 
-interface CustomTextareaProps {
-  value?: string
-  onChange?: (value: string) => void
-  onFocus?: () => void
-  placeholder?: string
-  maxLength?: number
-}
-export function CustomTextarea({ value, onChange, onFocus, placeholder, maxLength }: CustomTextareaProps) {
+export function CustomTextarea({ ...rest }: TextareaProps) {
   return (
     <Textarea
       resize="none"
@@ -17,14 +10,11 @@ export function CustomTextarea({ value, onChange, onFocus, placeholder, maxLengt
       variant="filled"
       rounded="base"
       py={2}
+      _hover={{ bg: "neutral.500" }}
       _focus={{ bg: "neutral.600" }}
       fontWeight={400}
       border="none"
-      placeholder={placeholder}
-      value={value}
-      onChange={e => onChange && onChange(e.target.value)}
-      onFocus={onFocus}
-      maxLength={maxLength}
+      {...rest}
     />
   )
 }

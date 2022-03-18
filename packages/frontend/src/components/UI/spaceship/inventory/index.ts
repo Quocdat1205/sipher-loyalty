@@ -1,4 +1,5 @@
 export * from "./BoxCard"
 export * from "./details"
 export * from "./InventoryContainer"
+export * from "./MintModal"
 export * from "./useInventory"

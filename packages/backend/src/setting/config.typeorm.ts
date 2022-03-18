@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { join } from "path";
 
 dotenv.config();
 
@@ -29,7 +30,10 @@ class ConfigService {
     return mode !== "DEV";
   }
 
-  public getTypeOrmConfig(): TypeOrmModuleOptions {
+  public getTypeOrmConfig(): TypeOrmModuleOptions & {
+    seeds: string[];
+    factories: string[];
+  } {
     return {
       type: "postgres",
 
@@ -38,10 +42,14 @@ class ConfigService {
       username: this.getValue("POSTGRES_USER"),
       password: this.getValue("POSTGRES_PASSWORD"),
       database: this.getValue("POSTGRES_DATABASE"),
-
-      entities: ["dist/**/*.entity{.ts,.js}"],
+      // Need to use src/* instead of dist/* if you generate ormconfig.json and need to run typeorm-seeding
+      entities: [join(__dirname, "**", "*.entity{.ts,.js}")],
 
       migrationsTableName: "migration",
+
+      seeds: ["src/seed/**/*{.ts,.js}"],
+
+      factories: ["src/factory/**/*{.ts,.js}"],
 
       migrations: ["src/migration/*.{ts,js}"],
 

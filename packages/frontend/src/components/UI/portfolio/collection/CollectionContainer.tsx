@@ -2,12 +2,16 @@ import React from "react"
 import { Box, SimpleGrid } from "@sipher.dev/sipher-ui"
 
 import FilterBar from "./FilterBar"
-import { NFTCard } from "."
+import { useCollection } from "./useCollection"
+import { CollectionCard } from "."
 
-export const NFTsContainer = () => {
+export const CollectionContainer = () => {
+  const { handleClick } = useCollection()
+
   const renderNFTs = () => {
     return Array.from(Array(12).keys()).map(i => (
-      <NFTCard
+      <CollectionCard
+        onClick={handleClick}
         isVerified
         key={i}
         volume={1}

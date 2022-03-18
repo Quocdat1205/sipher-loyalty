@@ -80,6 +80,8 @@ export class SystemConfigProvider {
 
   CHAIN_ID = parseInt(this.get("CHAIN_ID"), 10);
 
+  SCULPTURE_ADDRESS = this.get("SCULPTURE_ADDRESS");
+
   public get isDebugging() {
     return !!this.get("DEBUG");
   }

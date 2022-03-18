@@ -3,6 +3,8 @@ import { Box, Flex } from "@sipher.dev/sipher-ui"
 
 import { useWidth } from "@hooks"
 
+import { ContentDetails } from "./ContentDetails"
+import { HeaderDetails } from "./HeaderDetails"
 import { ActionContainer, NftImage } from "."
 
 interface DetailBoxProps {
@@ -14,6 +16,8 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
   const windowWidth = useWidth()
   // right UI info details
   const widthContainer = 800
+
+  console.log(id)
 
   useEffect(() => {
     setBoxWidth(windowWidth.width - widthContainer)
@@ -40,7 +44,8 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
               <NftImage src={"/images/spaceship/box.png"} alt={"a"} />
             </Box>
             <Box maxWidth={`${widthContainer}px`} flex={1}>
-              {id}
+              <HeaderDetails />
+              <ContentDetails />
             </Box>
           </Box>
           <ActionContainer />

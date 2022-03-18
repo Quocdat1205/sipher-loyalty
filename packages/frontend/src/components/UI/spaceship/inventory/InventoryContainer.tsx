@@ -1,10 +1,12 @@
 import React from "react"
 import { Box, Button, Flex, SimpleGrid } from "@sipher.dev/sipher-ui"
 
+import { MintModal } from "./MintModal"
 import { BoxCard, useInventory } from "."
 
 export const InventoryContainer = () => {
-  const { inventoryData, openModalShipping, handleView } = useInventory()
+  const { handleMint, isSuccess, isModal, setIsModal, inventoryData, inventoryDataCheck, openModalMint, handleView } =
+    useInventory()
 
   const renderNFTs = () => {
     return inventoryData.map(i => (
@@ -24,7 +26,7 @@ export const InventoryContainer = () => {
     <Flex flexDir="column" align="center">
       <Box py={6} maxW="1200px" w="full">
         {inventoryData.filter(i => i.isChecked).length !== 0 && (
-          <Button onClick={openModalShipping} mb={4}>
+          <Button onClick={openModalMint} mb={4}>
             MINT ALL
           </Button>
         )}
@@ -32,6 +34,13 @@ export const InventoryContainer = () => {
           {renderNFTs()}
         </SimpleGrid>
       </Box>
+      <MintModal
+        isSuccess={isSuccess}
+        handleMint={handleMint}
+        dataMint={inventoryDataCheck}
+        isOpen={isModal === "MINT"}
+        onClose={() => setIsModal("")}
+      />
     </Flex>
   )
 }

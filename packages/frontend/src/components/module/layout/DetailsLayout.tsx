@@ -36,7 +36,7 @@ export const DetailsLayout = ({ children }: StoreFrontLayoutProps) => {
       <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
         <Flex zIndex={1} flexDir="column" align="center">
           <Box pt={8} px={8} w="full" maxW="1440px">
-            <Button onClick={() => router.push("/spaceship")} pl={2} variant="ghost" alignItems="center">
+            <Button onClick={() => router.back()} pl={2} variant="ghost" alignItems="center">
               <Box color="neutral.500">
                 <BiChevronLeft size="1.4rem" />
               </Box>

@@ -1,9 +1,9 @@
 import { ReactNode } from "react"
 import { useRouter } from "next/router"
 
-import { DetailsLayout } from "@components/module/layout"
+import { Layout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
-import { DetailBox } from "@components/UI/spaceship/inventory"
+import { DetailsCollection } from "@components/UI/portfolio/collection"
 
 import { NextPageWithLayout } from "../_app"
 
@@ -12,12 +12,12 @@ const SpaceshipDetailPage: NextPageWithLayout = () => {
 
   return (
     <>
-      <Metadata title="Spaceship - Box" description="Details Box" />
-      <DetailBox id={router.query.id} />
+      <Metadata title="Portfolio" description="Details Collection" />
+      <DetailsCollection id={router.query.id} />
     </>
   )
 }
 
-SpaceshipDetailPage.getLayout = (page: ReactNode) => <DetailsLayout>{page}</DetailsLayout>
+SpaceshipDetailPage.getLayout = (page: ReactNode) => <Layout>{page}</Layout>
 
 export default SpaceshipDetailPage
