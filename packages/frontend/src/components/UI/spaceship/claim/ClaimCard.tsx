@@ -2,39 +2,32 @@ import React, { useState } from "react"
 import { BsClockFill } from "react-icons/bs"
 import { MdInfo } from "react-icons/md"
 import Image from "next/image"
-import { Box, Button, Divider, Flex, Link, Skeleton, Text } from "@sipher.dev/sipher-ui"
+import { Box, Divider, Flex, Link, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
 
 interface CardProps {
   name: string
   imageUrl: string
-  isActive: boolean
+  isActive?: boolean
 }
 
-export const ClaimCard = React.memo(({ isActive, name, imageUrl }: CardProps) => {
+export const ClaimCard = React.memo(({ name, imageUrl }: CardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
-    <Flex
-      rounded="lg"
-      _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
-      align="center"
-      justify="center"
-      flexDir="column"
-      pos="relative"
-    >
+    <Flex rounded="lg" align="center" justify="center" flexDir="column" pos="relative">
       <Skeleton overflow="hidden" display="flex" isLoaded={imageLoaded}>
         <Image
           src={imageUrl || ""}
           alt={name}
           loading="lazy"
-          height={250}
-          width={250}
+          height={280}
+          width={280}
           onLoad={() => setImageLoaded(true)}
         />
       </Skeleton>
-      <Box p={6}>
+      <Box p={4} w="full">
         <Divider mb={4} borderColor="whiteAlpha.200" />
         <Flex flexDir="column" align="center" mb={4} textAlign="center">
           <Flex mb={2} align="center">
@@ -70,10 +63,6 @@ export const ClaimCard = React.memo(({ isActive, name, imageUrl }: CardProps) =>
             </Box>
             <Text>06D : 23H : 35M</Text>
           </Flex>
-        </Flex>
-        <Flex transition="0.25s opacity ease-in-out" opacity={isActive ? 1 : 0} align="center">
-          <Button>ClAIM LOOTBOX</Button>
-          <Button ml={4}>CLAIM ALL LOOTBOXES(10)</Button>
         </Flex>
       </Box>
       <Flex

@@ -1,1 +1,1 @@
-export const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5500/api/sipher/loyalty"
+export const baseURL = process.env.NEXT_PUBLIC_API_URL || "https://beloyalty.sipherion.com/api/sipher/loyalty/"

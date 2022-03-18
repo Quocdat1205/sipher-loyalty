@@ -8,7 +8,7 @@ export const NFTsContainer = () => {
 
   return (
     <Box>
-      <Carousel isAuto slideData={data} />
+      <Carousel slideData={data} />
     </Box>
   )
 }

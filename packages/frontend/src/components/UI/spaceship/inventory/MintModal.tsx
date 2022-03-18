@@ -63,7 +63,7 @@ export const MintModal = ({
             <Divider borderColor="whiteAlpha.100" mb={2} />
             <Flex mb={6} align="center" justify="space-between">
               <Text fontWeight={600}>SUM QTY(s)</Text>
-              <Text fontWeight={600}>10</Text>
+              <Text fontWeight={600}>{dataMint.map(item => item.slot).reduce((acc, val) => acc + val, 0)}</Text>
             </Flex>
             <Text color="grey.400">
               Minting Lootbox(es) to NFT(s) will be processed on Polygon and require you to change Blockchain network.

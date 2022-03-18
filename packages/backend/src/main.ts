@@ -30,24 +30,24 @@ async function bootstrap() {
   SwaggerModule.setup("api", app, document);
 
   // generate typescript api
-  if (!constant.isDebugging) {
-    await generateApi({
-      name: "sdk",
-      output: path.resolve(__dirname, "../../frontend/src/api"),
-      spec: document as any,
-      templates: path.resolve(__dirname, "../src/swagger-templates"),
-      prettier: {
-        singleQuote: true,
-        jsxSingleQuote: false,
-        arrowParens: "avoid",
-        trailingComma: "all",
-        tabWidth: 2,
-        printWidth: 100,
-        parser: "typescript",
-      },
-      httpClientType: "axios",
-    });
-  }
+  // if (!constant.isDebugging) {
+  //   await generateApi({
+  //     name: "sdk",
+  //     output: path.resolve(__dirname, "../../frontend/src/api"),
+  //     spec: document as any,
+  //     templates: path.resolve(__dirname, "../src/swagger-templates"),
+  //     prettier: {
+  //       singleQuote: true,
+  //       jsxSingleQuote: false,
+  //       arrowParens: "avoid",
+  //       trailingComma: "all",
+  //       tabWidth: 2,
+  //       printWidth: 100,
+  //       parser: "typescript",
+  //     },
+  //     httpClientType: "axios",
+  //   });
+  // }
 
   app.useGlobalPipes(
     new ValidationPipe({

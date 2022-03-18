@@ -3,6 +3,7 @@ import { Box, Flex } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
 import { Banner } from "@components/shared"
+import { getSignIn } from "@utils"
 
 import { OnBoardModal } from "../modal"
 import TabPage from "../TabPage"
@@ -19,7 +20,6 @@ const tabs = [
   },
   { text: "NFTs", path: "/airdrop/nfts" },
   { text: "Tokens", path: "/airdrop/tokens" },
-  { text: "Sculptures", path: "/airdrop/sculptures" },
   { text: "Merch", path: "/airdrop/merch" },
 ]
 
@@ -29,10 +29,10 @@ export const LayoutAirdrop = ({ children }: StoreFrontLayoutProps) => {
   const [isSignUp, setIsSignUp] = useState(false)
 
   useEffect(() => {
-    if (!account) {
+    if (!getSignIn()) {
       setIsOnboard(true)
     }
-  }, [account])
+  }, [])
 
   return (
     <Flex
