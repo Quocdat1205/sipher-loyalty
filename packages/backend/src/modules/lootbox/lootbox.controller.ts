@@ -1,7 +1,16 @@
 import { Lootbox } from "@entity";
-import { Body, Controller, Get, Param, Put } from "@nestjs/common";
-import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Put,
+  Req,
+  UseGuards,
+} from "@nestjs/common";
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
+import { AtherGuard } from "@modules/auth/auth.guard";
 import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 // import { sessionType } from "../auth/auth.type"
@@ -13,8 +22,14 @@ import { MintBatchLootboxInputDto, MintLootboxInputDto } from "./lootbox.type";
 export class LootBoxController {
   constructor(private lootBoxService: LootBoxService) {}
 
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
   @Get("get-by-walllet/:walletAddress")
-  async getLootboxFromWallet(@Param("walletAddress") walletAddress: string) {
+  async getLootboxFromWallet(
+    @Param("walletAddress") walletAddress: string,
+    @Req() req: any
+  ) {
+    console.log(req.userData);
     return this.lootBoxService.getLootboxFromWallet(walletAddress);
   }
 

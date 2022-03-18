@@ -1,4 +1,7 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Req, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth } from "@nestjs/swagger";
+
+import { AtherGuard } from "@modules/auth/auth.guard";
 
 // import { sessionType } from "../auth/auth.type"
 import { URIService } from "./uri.service";
