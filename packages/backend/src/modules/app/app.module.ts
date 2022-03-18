@@ -23,6 +23,7 @@ import { MintModule } from "../mint/mint.module";
 // import module
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { SculptureTrackerModule } from "@modules/trackers/erc1155_spaceship/sculpture-tracker.module";
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { AppService } from "./app.service";
     MultiTokenModule,
     SculptureModule,
     MerchModule,
+    SculptureTrackerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

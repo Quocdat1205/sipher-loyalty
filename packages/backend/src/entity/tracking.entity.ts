@@ -3,8 +3,8 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
-
 @Entity()
 export class TrackedBlock {
   @PrimaryGeneratedColumn("increment")
@@ -18,4 +18,7 @@ export class TrackedBlock {
 
   @CreateDateColumn({ default: new Date() })
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

@@ -58,6 +58,8 @@ class ConfigService {
         migrationsDir: "src/migration/*.{ts,js}",
       },
 
+      logging: this.getValue("NODE_ENV") === "develop",
+
       synchronize: true,
 
       autoLoadEntities: true,
