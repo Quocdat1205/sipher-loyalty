@@ -1,67 +1,75 @@
-// import library
 import fs from "fs";
+import { join } from "path";
 
 import { toChecksumAddress } from "ethereumjs-util";
+import { Contract, providers } from "ethers";
 import { Repository } from "typeorm";
-import { Lootbox, MintStatus } from "@entity";
+import { BurnType, Lootbox, MintStatus } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { Cron } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
+import { erc721Abi } from "@setting/blockchain/abis";
+import { getContract, getProvider } from "@setting/blockchain/ethers";
 import constant from "@setting/constant";
 
+import { BurnService } from "@modules/burn/burn.service";
 import { MintService } from "@modules/mint/mint.service";
 import { BatchOrder, Order } from "@utils/type";
+import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
-import { NftContract } from "../contract/contract.module";
 import { LoggerService } from "../logger/logger.service";
 
 import { MintBatchLootboxInput, MintLootboxInput } from "./lootbox.type";
-import { join } from "path";
 
 @Injectable()
 export class LootBoxService {
-  private abiINU = JSON.parse(
-    fs.readFileSync(join(__dirname, "../../data/INU/abi.json")).toString()
-  );
+  private provider: providers.Provider;
 
-  private abiNEKO = JSON.parse(
-    fs.readFileSync(join(__dirname, "../../data/NEKO/abi.json")).toString()
-  );
+  private InuContract: Contract;
 
-  private InuContract = new NftContract({
-    abi: this.abiINU,
-    contract: constant.SC_NFT_INU,
-  });
-
-  private NekoContract = new NftContract({
-    abi: this.abiNEKO,
-    contract: constant.SC_NFT_NEKO,
-  });
+  private NekoContract: Contract;
 
   constructor(
-    @InjectRepository(Lootbox) private LootboxRepo: Repository<Lootbox>,
-    private mintService: MintService
-  ) {}
+    @InjectRepository(Lootbox) private lootboxRepo: Repository<Lootbox>,
+    @InjectRepository(ClaimableLootbox)
+    private claimableLootboxRepo: Repository<ClaimableLootbox>,
+    private mintService: MintService,
+    private burnService: BurnService
+  ) {
+    this.provider = getProvider(constant.CHAIN_ID);
+    this.InuContract = getContract(
+      constant.SC_NFT_INU,
+      erc721Abi,
+      this.provider
+    );
+    this.NekoContract = getContract(
+      constant.SC_NFT_NEKO,
+      erc721Abi,
+      this.provider
+    );
+  }
 
   @Cron("0 0 0 * * 0")
   async handleCron() {
-    LoggerService.log("check balance holder Sipher nft and distribute");
-    await this.distributeLootboxWeeklyForHolder();
-    LoggerService.log("distribute lootbox finished! ");
+    LoggerService.log("Start distribute claimable lootbox! ");
+    await this.weeklySnapshotForClaimableLootbox();
+    LoggerService.log("Distribute claimable lootbox finished! ");
   }
 
-  private distributeLootbox = async (
-    nftContract: NftContract,
+  private distributeClaimableLootbox = async (
+    nftContract: Contract,
     i: number,
     tokenId: number
   ) => {
     try {
-      const publicAddress: string = await nftContract.getOwnerOf(i);
-      let lootbox = await this.LootboxRepo.findOne({
-        where: { publicAddress, tokenId },
-      });
+      const publicAddress: string = await nftContract.ownerOf(i);
+      let lootbox = await this.getClaimableLootboxFromWalletAndTokenID(
+        publicAddress,
+        tokenId
+      );
+
       if (!lootbox) {
-        lootbox = this.LootboxRepo.create({
+        lootbox = this.claimableLootboxRepo.create({
           publicAddress,
           tokenId,
           quantity: 1,
@@ -69,46 +77,119 @@ export class LootBoxService {
       } else {
         lootbox.quantity++;
       }
-      LoggerService.log(`save lootbox to  ${publicAddress}`);
-      await this.LootboxRepo.save(lootbox);
+      LoggerService.log(`save claimable lootbox to  ${publicAddress}`);
+      await this.claimableLootboxRepo.save(lootbox);
     } catch (err) {
-      LoggerService.log("err at ", i);
+      LoggerService.log(`err at ${i}, ${err}`);
     }
   };
 
-  private distributeLootboxForContract = async (
-    nftContract: NftContract,
+  private distributeClaimableLootboxForContract = async (
+    nftContract: Contract,
     typeId: number
   ) => {
     const promises = [];
-
-    for (let i = 1; i <= 10000; i++) {
-      promises.push(this.distributeLootbox(nftContract, i, typeId));
-    }
+    if (typeId !== 6) {
+      // random id if week 7 (typeID = 6 )
+      for (let i = 1; i <= 10000; i++) {
+        promises.push(this.distributeClaimableLootbox(nftContract, i, typeId));
+      }
+    } else
+      for (let i = 1; i <= 10000; i++) {
+        promises.push(
+          this.distributeClaimableLootbox(
+            nftContract,
+            i,
+            Math.round(Math.random() * 5)
+          )
+        );
+      }
     await Promise.all(promises);
   };
 
-  distributeLootboxWeeklyForHolder = async () => {
-    const typeId = Math.floor(new Date().getTime() / (86400 * 49)) % 7;
-    await this.distributeLootboxForContract(this.InuContract, typeId);
-    await this.distributeLootboxForContract(this.NekoContract, typeId);
+  private takeSnapshot = async (typeId: number) => {
+    switch (typeId) {
+      case 0: // CHIM CHIM inu + neko
+        await this.distributeClaimableLootboxForContract(
+          this.InuContract,
+          typeId
+        );
+        await this.distributeClaimableLootboxForContract(
+          this.NekoContract,
+          typeId
+        );
+        break;
+      case 1: // SWORDFISH inu + neko
+        await this.distributeClaimableLootboxForContract(
+          this.InuContract,
+          typeId
+        );
+        await this.distributeClaimableLootboxForContract(
+          this.NekoContract,
+          typeId
+        );
+        break;
+      case 2: // MANTA inu + neko
+        await this.distributeClaimableLootboxForContract(
+          this.InuContract,
+          typeId
+        );
+        await this.distributeClaimableLootboxForContract(
+          this.NekoContract,
+          typeId
+        );
+        break;
+      case 3: // OTTER inu + neko
+        await this.distributeClaimableLootboxForContract(
+          this.InuContract,
+          typeId
+        );
+        await this.distributeClaimableLootboxForContract(
+          this.NekoContract,
+          typeId
+        );
+        break;
+      case 4: // DODO neko
+        await this.distributeClaimableLootboxForContract(
+          this.NekoContract,
+          typeId
+        );
+        break;
+      case 5: // TUI inu
+        await this.distributeClaimableLootboxForContract(
+          this.InuContract,
+          typeId
+        );
+        break;
+      case 6: // random(0->5) inu
+        await this.distributeClaimableLootboxForContract(
+          this.InuContract,
+          typeId
+        );
+        break;
+      default:
+        break;
+    }
   };
 
-  getLootboxFromWallet = async (publicAddress: string) => {
-    const lootboxs = await this.LootboxRepo.find({
+  private getLootboxFromWalletAndTokenID = async (
+    publicAddress: string,
+    tokenId: number
+  ) => {
+    const lootboxs = await this.lootboxRepo.findOne({
       where: [
-        { publicAddress: toChecksumAddress(publicAddress) },
-        { publicAddress: publicAddress.toLowerCase() },
+        { publicAddress: toChecksumAddress(publicAddress), tokenId },
+        { publicAddress: publicAddress.toLowerCase(), tokenId },
       ],
     });
     return lootboxs;
   };
 
-  getLootboxFromWalletAndTokenID = async (
+  private getClaimableLootboxFromWalletAndTokenID = async (
     publicAddress: string,
     tokenId: number
   ) => {
-    const lootboxs = await this.LootboxRepo.findOne({
+    const lootboxs = await this.claimableLootboxRepo.findOne({
       where: [
         { publicAddress: toChecksumAddress(publicAddress), tokenId },
         { publicAddress: publicAddress.toLowerCase(), tokenId },
@@ -144,6 +225,58 @@ export class LootBoxService {
     return flattern_lootbox;
   };
 
+  claimLootbox = async (publicAddress: string, tokenId: number) => {
+    const claimableLootbox = await this.getClaimableLootboxFromWalletAndTokenID(
+      publicAddress,
+      tokenId
+    );
+    // verify
+    if (!claimableLootbox || claimableLootbox.quantity <= 0)
+      throw new HttpException(
+        `Don't have claimable lootbox id : ${tokenId}`,
+        HttpStatus.BAD_REQUEST
+      );
+
+    // update claimablelootbox quatity = 0
+    const { quantity } = claimableLootbox;
+    claimableLootbox.quantity = 0;
+    await this.claimableLootboxRepo.save(claimableLootbox);
+
+    // create or update lootbox
+    let lootbox = await this.getLootboxFromWalletAndTokenID(
+      publicAddress,
+      tokenId
+    );
+    if (!lootbox) {
+      lootbox = this.lootboxRepo.create({
+        publicAddress,
+        tokenId,
+        quantity,
+      });
+    } else {
+      lootbox.quantity += quantity;
+    }
+    LoggerService.log(`save lootbox to  ${publicAddress}`);
+    await this.lootboxRepo.save(lootbox);
+  };
+
+  weeklySnapshotForClaimableLootbox = async () => {
+    const typeId =
+      Math.floor(Math.abs(new Date().getTime() - 1648771200) / (86400 * 49)) %
+      7;
+    await this.takeSnapshot(typeId);
+  };
+
+  getLootboxFromWallet = async (publicAddress: string) => {
+    const lootboxs = await this.lootboxRepo.find({
+      where: [
+        { publicAddress: toChecksumAddress(publicAddress) },
+        { publicAddress: publicAddress.toLowerCase() },
+      ],
+    });
+    return lootboxs;
+  };
+
   getLootboxFromUserID = async (userId: string) => {
     LoggerService.log(`userId:  ${userId}`);
     // get list wallet address from Sipher User ID
@@ -154,6 +287,32 @@ export class LootBoxService {
     const promises = [];
     walletAddressList.forEach((walletAddress) => {
       promises.push(this.getLootboxFromWallet(walletAddress));
+    });
+    const lootboxs = (await Promise.all(promises)).flat(1);
+
+    return this.flattenLootbox(lootboxs);
+  };
+
+  getClaimableLootboxFromWallet = async (publicAddress: string) => {
+    const lootboxs = await this.lootboxRepo.find({
+      where: [
+        { publicAddress: toChecksumAddress(publicAddress) },
+        { publicAddress: publicAddress.toLowerCase() },
+      ],
+    });
+    return lootboxs;
+  };
+
+  getClaimableLootboxFromUserID = async (userId: string) => {
+    LoggerService.log(`userId:  ${userId}`);
+    // get list wallet address from Sipher User ID
+    const walletAddressList = [
+      "0x83629905189464CC16F5E7c12D54dD5e87459B33",
+      "0xE5B8CbFf1768E8559E0F002ac01fA5D070551b4D",
+    ];
+    const promises = [];
+    walletAddressList.forEach((walletAddress) => {
+      promises.push(this.getClaimableLootboxFromWallet(walletAddress));
     });
     const lootboxs = (await Promise.all(promises)).flat(1);
 
@@ -193,7 +352,7 @@ export class LootBoxService {
 
     // update batch lootbox
     for (let i = 0; i < lootboxs.length; i++) {
-      promises.push(this.LootboxRepo.save(lootboxs[i]));
+      promises.push(this.lootboxRepo.save(lootboxs[i]));
     }
 
     // sign messages and save pending mint
@@ -226,7 +385,7 @@ export class LootBoxService {
     lootbox.pending += amount;
 
     // update lootbox
-    const data = await this.LootboxRepo.save(lootbox);
+    const data = await this.lootboxRepo.save(lootbox);
 
     // sign messages and save pending mint
     const signanture = await this.mintService.mint(mintLootboxInput);
@@ -237,7 +396,7 @@ export class LootBoxService {
     return { signanture, data, pending };
   };
 
-  updateLootboxFromTrackerBatchOrder = async (batchOrder: BatchOrder) => {
+  updateLootboxFromTrackerMintedBatchOrder = async (batchOrder: BatchOrder) => {
     // get pending mint
 
     const pending = await this.mintService.getPendingLootboxByBatchOrder(
@@ -264,16 +423,16 @@ export class LootBoxService {
       for (let i = 0; i < lootboxs.length; i++) {
         pending[i].status = MintStatus.Minted;
         promises.push(this.mintService.updatePendingMint(pending[i]));
-        promises.push(this.LootboxRepo.save(lootboxs[i]));
+        promises.push(this.lootboxRepo.save(lootboxs[i]));
       }
       const result = await Promise.all(promises);
       LoggerService.log(
-        `update lootboxs from tracker done :${JSON.stringify(result)}`
+        `update lootboxs from tracker minted done :${JSON.stringify(result)}`
       );
-    } else LoggerService.log("event resoved or not in db");
+    } else LoggerService.log("event resoved or not in pending minted db");
   };
 
-  updateLootboxFromTrackerOrder = async (order: Order) => {
+  updateLootboxFromTrackerMintedOrder = async (order: Order) => {
     // get pending mint
 
     const pending = await this.mintService.getPendingLootboxByOrder(order);
@@ -292,11 +451,76 @@ export class LootBoxService {
       // update batch lootbox
       pending.status = MintStatus.Minted;
       promises.push(this.mintService.updatePendingMint(pending));
-      promises.push(this.LootboxRepo.save(lootbox));
+      promises.push(this.lootboxRepo.save(lootbox));
       const result = await Promise.all(promises);
       LoggerService.log(
-        `update lootbox from tracker done :${JSON.stringify(result)}`
+        `update lootbox from tracker minted done :${JSON.stringify(result)}`
       );
-    } else LoggerService.log("event resoved or not in db");
+    } else LoggerService.log("event resoved or not in pending minted db");
+  };
+
+  updateLootboxFromTrackerBurnedBatchOrder = async (batchOrder: BatchOrder) => {
+    // get pending mint
+
+    const burned = await this.burnService.getBurnedBatchOrder(batchOrder);
+    if (!burned) {
+      LoggerService.log(`recover burned : ${burned}`);
+      const lootboxs = await this.getLootboxFromWalletAndTokenIDs(
+        batchOrder.to,
+        batchOrder.batchID
+      );
+      const promises = [];
+      for (let i = 0; i < batchOrder.batchID.length; i++) {
+        lootboxs[i].quantity += batchOrder.amount[i];
+      }
+      // update batch lootbox
+      const _burned = {
+        to: batchOrder.to,
+        salt: batchOrder.salt,
+        batchIDs: batchOrder.batchID,
+        amounts: batchOrder.amount,
+        type: BurnType.Lootbox,
+      };
+      promises.push(this.burnService.createBurned(_burned));
+      for (let i = 0; i < lootboxs.length; i++) {
+        promises.push(this.lootboxRepo.save(lootboxs[i]));
+      }
+      const result = await Promise.all(promises);
+      LoggerService.log(
+        `update lootbox from tracker burned done :${JSON.stringify(result)}`
+      );
+    } else LoggerService.log("event resoved or in burned database");
+  };
+
+  updateLootboxFromTrackerBurnedOrder = async (order: Order) => {
+    // get burned tracked with salt
+
+    const burned = await this.burnService.getBurnedSingle(order);
+    if (!burned) {
+      LoggerService.log(`burned : ${burned}`);
+      const lootbox = await this.getLootboxFromWalletAndTokenID(
+        order.to,
+        order.batchID
+      );
+      lootbox.quantity += order.amount;
+
+      const promises = [];
+      // update burned lootbox
+      const _burned = {
+        to: order.to,
+        batchID: order.batchID,
+        amount: order.amount,
+        salt: order.salt,
+        batchIDs: [],
+        amounts: [],
+        type: BurnType.Lootbox,
+      };
+      promises.push(this.burnService.createBurned(_burned));
+      promises.push(this.lootboxRepo.save(lootbox));
+      const result = await Promise.all(promises);
+      LoggerService.log(
+        `update lootbox from tracker burned done :${JSON.stringify(result)}`
+      );
+    } else LoggerService.log("event resoved or in burned database");
   };
 }

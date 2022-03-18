@@ -11,8 +11,8 @@ export class SeedLootboxService {
   constructor(private lootboxService: LootBoxService) {}
 
   seedLootbox = async () => {
-    LoggerService.log("start disribute lootbox");
-    await this.lootboxService.distributeLootboxWeeklyForHolder();
-    LoggerService.log("done disribute lootbox");
+    LoggerService.log("start disribute claimable lootbox");
+    await this.lootboxService.weeklySnapshotForClaimableLootbox();
+    LoggerService.log("done disribute claimable lootbox");
   };
 }

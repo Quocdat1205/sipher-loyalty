@@ -1,18 +1,28 @@
-import { Lootbox, PendingMint } from "@entity";
+import { Burned, Lootbox, PendingMint } from "@entity";
 import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { BurnModule } from "@modules/burn/burn.module";
 import { LootBoxService } from "@modules/lootbox/lootbox.service";
 import { MintModule } from "@modules/mint/mint.module";
+import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
+import { TrackedBlock } from "src/entity/tracking.entity";
 
 import { LootboxTrackerService } from "./lootbox-tracker.service";
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
-    TypeOrmModule.forFeature([Lootbox, PendingMint]),
+    TypeOrmModule.forFeature([
+      Lootbox,
+      PendingMint,
+      TrackedBlock,
+      ClaimableLootbox,
+      Burned,
+    ]),
     MintModule,
+    BurnModule,
   ],
   providers: [LootboxTrackerService, LootBoxService],
   exports: [LootboxTrackerService],

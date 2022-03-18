@@ -7,27 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-
-@Entity()
-export class Lootbox {
-  @PrimaryGeneratedColumn("increment")
-  id: number;
-
-  @Column({ nullable: false })
-  publicAddress: string;
-
-  @Column({ default: 1 })
-  quantity: number;
-
-  @Column({ nullable: false })
-  tokenId: number;
-
-  @Column({ default: 0 })
-  pending: number;
-
-  @CreateDateColumn({ default: new Date() })
-  createdAt: Date;
-}
+import { ShopifyCode } from "./shopify-code.entity";
 
 @Entity()
 export class User {
@@ -60,6 +40,9 @@ export class User {
 
   @Column({ default: "bronze" })
   tier: string;
+
+  @OneToMany(() => ShopifyCode, (shopifyCode) => shopifyCode.user)
+  shopifyCode: ShopifyCode[];
 
   @CreateDateColumn({ default: new Date() })
   createdAt: Date;

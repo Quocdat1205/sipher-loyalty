@@ -1,8 +1,11 @@
-import React from "react"
+import React, { useState } from "react"
 import { ImPriceTag } from "react-icons/im"
 import { Box, Button, chakra, HStack } from "@sipher.dev/sipher-ui"
 
+import QuantitySelector from "./QuantitySelector"
+
 export const ActionContainer = () => {
+  const [slot, setSlot] = useState(0)
   return (
     <Box
       px={4}
@@ -15,7 +18,9 @@ export const ActionContainer = () => {
       borderColor="neutral.600"
     >
       <HStack spacing={4}>
-        <Box flex={1}></Box>
+        <Box flex={1}>
+          <QuantitySelector onChange={setSlot} maxValue={5} value={slot} />
+        </Box>
         <Box flex={1}>
           <Button
             py={5}

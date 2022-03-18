@@ -1,8 +1,4 @@
-import {
-  ERC1155SpaceShipPartLootbox,
-  ERC1155SpaceShipPartLootboxAttribute,
-  Lootbox,
-} from "@entity";
+import { Lootbox } from "@entity";
 import { Module, OnApplicationBootstrap } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
