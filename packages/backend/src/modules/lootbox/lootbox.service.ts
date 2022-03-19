@@ -12,6 +12,7 @@ import { erc721Abi } from "@setting/blockchain/abis";
 import { getContract, getProvider } from "@setting/blockchain/ethers";
 import constant from "@setting/constant";
 
+import { UserData } from "@modules/auth/auth.types";
 import { BurnService } from "@modules/burn/burn.service";
 import { MintService } from "@modules/mint/mint.service";
 import { BatchOrder, Order } from "@utils/type";
@@ -49,12 +50,12 @@ export class LootBoxService {
     );
   }
 
-  @Cron("0 0 0 * * 0")
-  async handleCron() {
-    LoggerService.log("Start distribute claimable lootbox! ");
-    await this.weeklySnapshotForClaimableLootbox();
-    LoggerService.log("Distribute claimable lootbox finished! ");
-  }
+  // @Cron("0 0 0 * * 0")
+  // async handleCron() {
+  //   LoggerService.log("Start distribute claimable lootbox! ");
+  //   await this.weeklySnapshotForClaimableLootbox();
+  //   LoggerService.log("Distribute claimable lootbox finished! ");
+  // }
 
   private distributeClaimableLootbox = async (
     nftContract: Contract,
@@ -277,16 +278,12 @@ export class LootBoxService {
     return lootboxs;
   };
 
-  getLootboxFromUserID = async (userId: string) => {
+  getLootboxFromUserID = async (userData: UserData) => {
+    const { userId, walletAddress } = userData;
     LoggerService.log(`userId:  ${userId}`);
-    // get list wallet address from Sipher User ID
-    const walletAddressList = [
-      "0x83629905189464CC16F5E7c12D54dD5e87459B33",
-      "0xE5B8CbFf1768E8559E0F002ac01fA5D070551b4D",
-    ];
     const promises = [];
-    walletAddressList.forEach((walletAddress) => {
-      promises.push(this.getLootboxFromWallet(walletAddress));
+    walletAddress.forEach((wAddress) => {
+      promises.push(this.getLootboxFromWallet(wAddress));
     });
     const lootboxs = (await Promise.all(promises)).flat(1);
 
@@ -294,7 +291,7 @@ export class LootBoxService {
   };
 
   getClaimableLootboxFromWallet = async (publicAddress: string) => {
-    const lootboxs = await this.lootboxRepo.find({
+    const lootboxs = await this.claimableLootboxRepo.find({
       where: [
         { publicAddress: toChecksumAddress(publicAddress) },
         { publicAddress: publicAddress.toLowerCase() },
@@ -303,16 +300,12 @@ export class LootBoxService {
     return lootboxs;
   };
 
-  getClaimableLootboxFromUserID = async (userId: string) => {
+  getClaimableLootboxFromUserID = async (userData: UserData) => {
+    const { userId, walletAddress } = userData;
     LoggerService.log(`userId:  ${userId}`);
-    // get list wallet address from Sipher User ID
-    const walletAddressList = [
-      "0x83629905189464CC16F5E7c12D54dD5e87459B33",
-      "0xE5B8CbFf1768E8559E0F002ac01fA5D070551b4D",
-    ];
     const promises = [];
-    walletAddressList.forEach((walletAddress) => {
-      promises.push(this.getClaimableLootboxFromWallet(walletAddress));
+    walletAddress.forEach((wAddress) => {
+      promises.push(this.getClaimableLootboxFromWallet(wAddress));
     });
     const lootboxs = (await Promise.all(promises)).flat(1);
 

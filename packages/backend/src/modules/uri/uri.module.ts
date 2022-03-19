@@ -4,7 +4,6 @@ import {
   ERC1155SpaceShipPartLootbox,
   ERC1155SpaceShipPartLootboxAttribute,
 } from "@entity";
-import { HttpService } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 

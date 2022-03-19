@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toChecksumAddress } from "ethereumjs-util";
 import { Observable } from "rxjs";
 import {
   CanActivate,
@@ -21,10 +22,13 @@ export class AtherGuard implements CanActivate {
           },
         }
       );
-      req.userData = data;
+      const userData = {
+        userId: data[0].userId,
+        walletAddress: data.map((el: any) => toChecksumAddress(el.address)),
+      };
+      req.userData = userData;
     } catch (err) {
       throw new HttpException("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
-      return false;
     }
     return true;
   }
