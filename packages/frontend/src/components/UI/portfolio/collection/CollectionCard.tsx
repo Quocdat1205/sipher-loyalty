@@ -8,7 +8,7 @@ import { currency } from "@utils"
 
 interface CardProps {
   collectionName: string
-  tokenId: string
+  collectionId: string
   isVerified: boolean
   imageUrl: string
   volume: number
@@ -18,7 +18,7 @@ interface CardProps {
 
 export const CollectionCard = ({
   collectionName,
-  tokenId,
+  collectionId,
   isVerified = false,
   imageUrl,
   volume,
@@ -29,7 +29,7 @@ export const CollectionCard = ({
 
   return (
     <Box
-      onClick={() => onClick(tokenId)}
+      onClick={() => onClick(collectionId)}
       _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
       overflow="hidden"
       rounded="lg"

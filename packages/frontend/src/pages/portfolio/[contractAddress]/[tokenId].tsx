@@ -3,17 +3,16 @@ import { useRouter } from "next/router"
 
 import { DetailsLayout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
-import { DetailBox } from "@components/UI/spaceship/inventory"
-
-import { NextPageWithLayout } from "../../_app"
+import { DetailNFT } from "@components/UI/portfolio/nft/details"
+import { NextPageWithLayout } from "src/pages/_app"
 
 const SpaceshipDetailPage: NextPageWithLayout = () => {
   const router = useRouter()
-
+  const { contractAddress, tokenId } = router.query
   return (
     <>
-      <Metadata title="Spaceship - Box" description="Details Box" />
-      <DetailBox id={router.query.id as string} />
+      <Metadata title="Portfolio - Detail NFT" description="Detail NFT" />
+      <DetailNFT collectionId={contractAddress as string} tokenId={tokenId as string} />
     </>
   )
 }

@@ -16,7 +16,7 @@ export const CollectionContainer = () => {
         key={i}
         volume={1}
         floorPrice={1}
-        tokenId={"1"}
+        collectionId={"1"}
         collectionName="Sipherian Surge"
         imageUrl="/images/nft/sipher3.png"
       />

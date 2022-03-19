@@ -117,7 +117,7 @@ export const Carousel = ({ deplay = 10000, slideData, isAuto = false }: Slidesho
                   key={item}
                   volume={1}
                   floorPrice={1}
-                  tokenId={"1"}
+                  collectionId={"1"}
                   collectionName="Sipherian Surge"
                   imageUrl="/images/nft/sipher3.png"
                 />

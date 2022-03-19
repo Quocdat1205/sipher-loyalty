@@ -3,21 +3,22 @@ import { Box, Flex } from "@sipher.dev/sipher-ui"
 
 import { useWidth } from "@hooks"
 
-import { ContentDetails } from "./ContentDetails"
 import { HeaderDetails } from "./HeaderDetails"
+import TabContainer from "./TabContainer"
 import { ActionContainer, NftImage } from "."
 
 interface DetailBoxProps {
-  id: string
+  collectionId: string
+  tokenId: string
 }
 
-export const DetailBox = ({ id }: DetailBoxProps) => {
+export const DetailNFT = ({ collectionId, tokenId }: DetailBoxProps) => {
   const [boxWidth, setBoxWidth] = useState(0)
   const windowWidth = useWidth()
   // right UI info details
   const widthContainer = 800
 
-  console.log(id)
+  console.log(collectionId, tokenId)
 
   useEffect(() => {
     setBoxWidth(windowWidth.width - widthContainer)
@@ -44,8 +45,19 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
               <NftImage src={"/images/spaceship/box.png"} alt={"a"} />
             </Box>
             <Box maxWidth={`${widthContainer}px`} flex={1}>
-              <HeaderDetails />
-              <ContentDetails />
+              <HeaderDetails
+                creator={"1"}
+                owner={"1"}
+                user={[]}
+                name={"1"}
+                isFetched={false}
+                contractAddress={collectionId}
+                tokenId={tokenId}
+                rarityRank={0}
+                viewFavorite={0}
+                viewCount={1}
+              />
+              <TabContainer isFetched={false} tokenId={tokenId} contractAddress={collectionId} />
             </Box>
           </Box>
           <ActionContainer />

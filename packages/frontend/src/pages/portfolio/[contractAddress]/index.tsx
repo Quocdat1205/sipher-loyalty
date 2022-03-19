@@ -4,20 +4,19 @@ import { useRouter } from "next/router"
 import { Layout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
 import { DetailsCollection } from "@components/UI/portfolio/collection"
+import { NextPageWithLayout } from "src/pages/_app"
 
-import { NextPageWithLayout } from "../_app"
-
-const SpaceshipDetailPage: NextPageWithLayout = () => {
+const CollectionDetailsPage: NextPageWithLayout = () => {
   const router = useRouter()
 
   return (
     <>
       <Metadata title="Portfolio" description="Details Collection" />
-      <DetailsCollection id={router.query.id} />
+      <DetailsCollection collectionId={router.query.contractAddress as string} />
     </>
   )
 }
 
-SpaceshipDetailPage.getLayout = (page: ReactNode) => <Layout>{page}</Layout>
+CollectionDetailsPage.getLayout = (page: ReactNode) => <Layout>{page}</Layout>
 
-export default SpaceshipDetailPage
+export default CollectionDetailsPage
