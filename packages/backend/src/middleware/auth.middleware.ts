@@ -8,7 +8,7 @@ import {
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
-    if (req.session.userId !== req.body.publicAddress || !req.session.userId) {
+    if (req.session.userID !== req.body.publicAddress || !req.session.userID) {
       res.locals.abc = false;
       throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
     }

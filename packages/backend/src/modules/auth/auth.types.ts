@@ -1,5 +1,5 @@
 export type UserData = {
-  userId: string;
-  walletAddress: string[];
-  currentWalletAddress?: string;
+  userID: string;
+  publicAddress: string[];
+  currentpublicAddress?: string;
 };

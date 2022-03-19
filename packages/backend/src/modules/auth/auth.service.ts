@@ -4,14 +4,14 @@ import { UserData } from "./auth.types";
 
 @Injectable()
 export class AuthService {
-  verifyAddress = async (walletAddress: string, userData: UserData) => {
+  verifyAddress = async (publicAddress: string, userData: UserData) => {
     if (
-      userData.walletAddress.findIndex(
-        (wAddress) => wAddress === walletAddress
+      userData.publicAddress.findIndex(
+        (wAddress) => wAddress === publicAddress
       ) === -1
     )
       throw new HttpException("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
-    else userData.currentWalletAddress = walletAddress;
+    else userData.currentpublicAddress = publicAddress;
     return userData;
   };
 }

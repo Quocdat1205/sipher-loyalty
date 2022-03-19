@@ -12,8 +12,8 @@ export class MintController {
   //   return this.mintService.test();
   // }
 
-  @Get("pending/:walletAddress")
-  async getPendingLootbox(@Param("walletAddress") walletAddress: string) {
-    return this.mintService.getPendingLootbox(walletAddress);
+  @Get("pending/:publicAddress")
+  async getPendingLootbox(@Param("publicAddress") publicAddress: string) {
+    return this.mintService.getPendingLootbox(publicAddress);
   }
 }

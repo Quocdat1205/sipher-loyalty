@@ -17,7 +17,7 @@ export class ERC1155SpaceShipPartLootbox {
   id: string;
 
   @Column({ nullable: false })
-  tokenId: string;
+  tokenID: string;
 
   @Column({ nullable: false })
   name: string;
@@ -47,7 +47,7 @@ export class ERC1155Sculpture {
   id: string;
 
   @Column({ nullable: false })
-  tokenId: string;
+  tokenID: string;
 
   @Column({ nullable: false })
   name: string;

@@ -23,8 +23,8 @@ export class AtherGuard implements CanActivate {
         }
       );
       const userData = {
-        userId: data[0].userId,
-        walletAddress: data.map((el: any) => toChecksumAddress(el.address)),
+        userID: data[0].userId,
+        publicAddress: data.map((el: any) => toChecksumAddress(el.address)),
       };
       req.userData = userData;
     } catch (err) {

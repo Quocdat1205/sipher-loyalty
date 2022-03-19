@@ -15,7 +15,11 @@ import { AuthService } from "@modules/auth/auth.service";
 import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 import { LootBoxService } from "./lootbox.service";
-import { MintBatchLootboxInputDto, MintLootboxInputDto } from "./lootbox.type";
+import {
+  ClaimLootboxInputDto,
+  MintBatchLootboxInputDto,
+  MintLootboxInputDto,
+} from "./lootbox.type";
 
 @ApiTags("lootbox")
 @Controller("lootbox")
@@ -27,40 +31,40 @@ export class LootBoxController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @Get("get-by-walllet/:walletAddress")
+  @Get("get-by-walllet/:publicAddress")
   async getLootboxFromWallet(
-    @Param("walletAddress") walletAddress: string,
+    @Param("publicAddress") publicAddress: string,
     @Req() req: any
   ) {
     const userData = await this.authService.verifyAddress(
-      walletAddress,
+      publicAddress,
       req.userData
     );
     return this.lootBoxService.getLootboxFromWallet(
-      userData.currentWalletAddress
+      userData.currentpublicAddress
     );
   }
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @Get("get-by-walllet/claimable/:walletAddress")
+  @Get("get-by-walllet/claimable/:publicAddress")
   async getClaimableLootboxFromWallet(
-    @Param("walletAddress") walletAddress: string,
+    @Param("publicAddress") publicAddress: string,
     @Req() req: any
   ) {
     const userData = await this.authService.verifyAddress(
-      walletAddress,
+      publicAddress,
       req.userData
     );
     return this.lootBoxService.getClaimableLootboxFromWallet(
-      userData.currentWalletAddress
+      userData.currentpublicAddress
     );
   }
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: Lootbox })
-  @Get("get-by-userid")
+  @Get("get-by-userID")
   async getLootboxFromUserID(@Req() req: any) {
     return this.lootBoxService.getLootboxFromUserID(req.userData);
   }
@@ -68,7 +72,7 @@ export class LootBoxController {
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: ClaimableLootbox })
-  @Get("get-by-userid/claimable")
+  @Get("get-by-userID/claimable")
   async getClaimableLootboxFromUserID(@Req() req: any) {
     return this.lootBoxService.getClaimableLootboxFromUserID(req.userData);
   }
@@ -81,7 +85,7 @@ export class LootBoxController {
     @Body() body: MintBatchLootboxInputDto,
     @Req() req: any
   ) {
-    await this.authService.verifyAddress(body.walletAddress, req.userData);
+    await this.authService.verifyAddress(body.publicAddress, req.userData);
     return this.lootBoxService.mintBatchLootbox(body);
   }
 
@@ -90,7 +94,16 @@ export class LootBoxController {
   @ApiOkResponse()
   @Put("mint")
   async mintLootbox(@Body() body: MintLootboxInputDto, @Req() req: any) {
-    await this.authService.verifyAddress(body.walletAddress, req.userData);
+    await this.authService.verifyAddress(body.publicAddress, req.userData);
     return this.lootBoxService.mintLootbox(body);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @ApiOkResponse()
+  @Put("claim/:tokenID")
+  async claim(@Body() body: ClaimLootboxInputDto, @Req() req: any) {
+    await this.authService.verifyAddress(body.publicAddress, req.userData);
+    return this.lootBoxService.claimLootbox(body);
   }
 }

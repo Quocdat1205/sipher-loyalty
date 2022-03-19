@@ -19,7 +19,7 @@ redisClient.on("error", (err: Error) => {
 });
 
 const appSession = session({
-  name: "userId",
+  name: "userID",
   store: new RedisStore({ client: redisClient }),
   cookie: {
     maxAge: 1000 * 60 * 60 * 6, // 6 hour

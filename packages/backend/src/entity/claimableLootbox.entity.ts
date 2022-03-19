@@ -17,7 +17,7 @@ export class ClaimableLootbox {
   quantity: number;
 
   @Column({ nullable: false })
-  tokenId: number;
+  tokenID: number;
 
   @CreateDateColumn({ default: new Date() })
   createdAt: Date;
