@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
-import { Airdrop } from "../../entity/airdrop.entity";
+import { Airdrop, AirdropType } from "../../entity/airdrop.entity";
 
 @Injectable()
 export class AirdropService {
@@ -10,11 +10,21 @@ export class AirdropService {
     @InjectRepository(Airdrop) private airdropRepos: Repository<Airdrop>
   ) {}
 
-  async getAirdrop(publicAddress: string, campaignCode: string) {
+  async getAllAirdrop(publicAddress: string) {
     const data = await this.airdropRepos.findOne({
       where: [
-        { claimer: publicAddress, campaignCode },
-        { claimer: publicAddress.toLowerCase(), campaignCode },
+        { claimer: publicAddress },
+        { claimer: publicAddress.toLowerCase() },
+      ],
+    });
+    return data;
+  }
+
+  async getTokenAirdrop(publicAddress: string) {
+    const data = await this.airdropRepos.findOne({
+      where: [
+        { claimer: publicAddress, type: AirdropType.TOKEN },
+        { claimer: publicAddress.toLowerCase(), type: AirdropType.TOKEN },
       ],
     });
     return data;
