@@ -21,16 +21,16 @@ export class URIService {
     private ERC1155SculptureAttributeRepo: Repository<ERC1155SculptureAttribute>
   ) {}
 
-  async getDataERC1155Spaceship(tokenId: number) {
+  async getDataERC1155Spaceship(tokenID: number) {
     return this.ERC1155SpaceShipPartLootboxRepo.findOne({
-      where: [{ tokenId }],
+      where: [{ tokenID }],
       relations: ["attributes"],
     });
   }
 
-  async getDataERC1155Sculpture(tokenId: number) {
+  async getDataERC1155Sculpture(tokenID: number) {
     return this.ERC1155SculptureRepo.findOne({
-      where: [{ tokenId }],
+      where: [{ tokenID }],
       relations: ["attributes"],
     });
   }

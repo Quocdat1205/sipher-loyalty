@@ -30,7 +30,7 @@ export class MultiTokenService {
     );
     const balance = await contract.balanceOf(
       multiTokenBalanceDto.address,
-      BigNumber.from(multiTokenBalanceDto.tokenId)
+      BigNumber.from(multiTokenBalanceDto.tokenID)
     );
     return balance;
   }

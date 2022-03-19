@@ -7,5 +7,5 @@ export class MultiTokenBalanceDto {
 
   @IsNumberString()
   @IsNotEmpty()
-  tokenId: string;
+  tokenID: string;
 }

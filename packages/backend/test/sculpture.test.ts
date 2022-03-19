@@ -42,7 +42,7 @@ describe("Sculpture unit test", () => {
       jest.spyOn(shopifyCodeRepo, "save").mockImplementation();
       const result = await sculptureService.claimSculptureCode({
         address: "0x0",
-        tokenId: "1",
+        tokenID: "1",
       });
       expect(result.length).toEqual(3);
     });

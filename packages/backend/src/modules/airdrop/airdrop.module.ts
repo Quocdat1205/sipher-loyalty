@@ -1,13 +1,15 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { AuthModule } from "@modules/auth/auth.module";
+
 import { Airdrop } from "../../entity/airdrop.entity";
 
 import { AirdropController } from "./airdrop.controller";
 import { AirdropService } from "./airdrop.service";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Airdrop])],
+  imports: [TypeOrmModule.forFeature([Airdrop]), AuthModule],
   providers: [AirdropService],
   controllers: [AirdropController],
 })

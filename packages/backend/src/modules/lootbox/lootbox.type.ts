@@ -4,7 +4,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class MintBatchLootboxInputDto {
   @ApiProperty()
   @Matches(/^0x[a-fA-F0-9]{40}$/)
-  walletAddress: string;
+  publicAddress: string;
 
   @ApiProperty({ type: [Number] })
   batchID: number[];
@@ -16,7 +16,7 @@ export class MintBatchLootboxInputDto {
 export class MintLootboxInputDto {
   @ApiProperty()
   @Matches(/^0x[a-fA-F0-9]{40}$/)
-  walletAddress: string;
+  publicAddress: string;
 
   @ApiProperty()
   batchID: number;
@@ -25,14 +25,23 @@ export class MintLootboxInputDto {
   amount: number;
 }
 
+export class ClaimLootboxInputDto {
+  @ApiProperty()
+  @Matches(/^0x[a-fA-F0-9]{40}$/)
+  publicAddress: string;
+
+  @ApiProperty()
+  tokenID: number;
+}
+
 export interface MintLootboxInput {
-  walletAddress: string;
+  publicAddress: string;
   batchID: number;
   amount: number;
 }
 
 export interface MintBatchLootboxInput {
-  walletAddress: string;
+  publicAddress: string;
   batchID: number[];
   amount: number[];
 }

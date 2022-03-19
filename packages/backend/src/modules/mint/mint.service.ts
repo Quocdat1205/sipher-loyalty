@@ -77,16 +77,16 @@ export class MintService {
   //   return { signature, signatureBatch };
   // }
 
-  getPendingLootbox = async (walletAddress: string) => {
+  getPendingLootbox = async (publicAddress: string) => {
     const pending = await this.PendingMintRepo.find({
       where: [
         {
-          to: walletAddress.toLowerCase(),
+          to: publicAddress.toLowerCase(),
           type: MintType.Lootbox,
           status: MintStatus.Pending,
         },
         {
-          to: toChecksumAddress(walletAddress),
+          to: toChecksumAddress(publicAddress),
           type: MintType.Lootbox,
           status: MintStatus.Pending,
         },
@@ -154,13 +154,13 @@ export class MintService {
   }
 
   async mintBatch(mintBatchLootboxInput: MintBatchLootboxInput) {
-    const { walletAddress, batchID, amount } = mintBatchLootboxInput;
+    const { publicAddress, batchID, amount } = mintBatchLootboxInput;
     LoggerService.log(
-      `sign mint data for ${walletAddress},${batchID},${amount}`
+      `sign mint data for ${publicAddress},${batchID},${amount}`
     );
 
     const batchOrder = {
-      to: walletAddress,
+      to: publicAddress,
       batchID,
       amount,
       salt: randomSalt(),
@@ -172,7 +172,7 @@ export class MintService {
     const promises = [];
     for (let i = 0; i < batchID.length; i++) {
       const order = {
-        to: walletAddress,
+        to: publicAddress,
         batchID: batchID[i],
         amount: amount[i],
         batchIDs: batchID,
@@ -183,7 +183,7 @@ export class MintService {
         status: MintStatus.Pending,
       };
       const pendingMint = this.PendingMintRepo.create(order);
-      LoggerService.log("save pending mint to ", walletAddress);
+      LoggerService.log("save pending mint to ", publicAddress);
       promises.push(this.PendingMintRepo.save(pendingMint));
     }
     await Promise.all(promises);
@@ -198,13 +198,13 @@ export class MintService {
   }
 
   async mint(mintLootboxInput: MintLootboxInput) {
-    const { walletAddress, batchID, amount } = mintLootboxInput;
+    const { publicAddress, batchID, amount } = mintLootboxInput;
     LoggerService.log(
-      `sign mint data for ${walletAddress},${batchID},${amount}`
+      `sign mint data for ${publicAddress},${batchID},${amount}`
     );
 
     const order = {
-      to: walletAddress,
+      to: publicAddress,
       batchID,
       amount,
       salt: randomSalt(),
@@ -215,7 +215,7 @@ export class MintService {
     const signature = await signOrder(this.config, order);
     order.signature = signature;
     const pendingMint = this.PendingMintRepo.create(order);
-    LoggerService.log("save pending mint to ", walletAddress);
+    LoggerService.log("save pending mint to ", publicAddress);
     await this.PendingMintRepo.save(pendingMint);
 
     const verifySignature = recoverOrderSignature(

@@ -82,6 +82,8 @@ export class SystemConfigProvider {
 
   SCULPTURE_ADDRESS = this.get("SCULPTURE_ADDRESS");
 
+  ATHER_ID_URL = this.get("ATHER_ID_URL");
+
   public get isDebugging() {
     return !!this.get("DEBUG");
   }

@@ -1,28 +1,17 @@
-import { Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 
-import { LoggerService } from "../logger/logger.service";
-
-import { signAdmin, signUser } from "./auth.type";
+import { UserData } from "./auth.types";
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
-
-  async getTokenUser(user: signUser) {
-    const payload = { publicAddress: user.publicAddress, nonce: user.nonce };
-
-    const token = this.jwtService.sign(payload);
-
-    return token;
-  }
-
-  async getTokenAdmin(admin: signAdmin) {
-    const payload = { username: admin.username };
-
-    const token = this.jwtService.sign(payload);
-    LoggerService.log(token);
-
-    return token;
-  }
+  verifyAddress = async (publicAddress: string, userData: UserData) => {
+    if (
+      userData.publicAddress.findIndex(
+        (wAddress) => wAddress === publicAddress
+      ) === -1
+    )
+      throw new HttpException("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+    else userData.currentpublicAddress = publicAddress;
+    return userData;
+  };
 }

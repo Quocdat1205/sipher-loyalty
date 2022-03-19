@@ -17,7 +17,7 @@ export class Lootbox {
   quantity: number;
 
   @Column({ nullable: false })
-  tokenId: number;
+  tokenID: number;
 
   @Column({ default: 0 })
   pending: number;
