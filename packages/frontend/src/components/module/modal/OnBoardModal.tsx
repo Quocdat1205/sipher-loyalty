@@ -32,18 +32,6 @@ const imageData = [
 ]
 
 export const OnBoardModal = ({ isOpen, onClose, setIsSignUp }: SettingAccountModalProps) => {
-  // const [[page, direction], setPage] = useState([0, 0])
-
-  // const index = wrap(0, slideData.length, page)
-
-  // const paginate = (newDirection: number) => {
-  //   setPage([page + newDirection, newDirection])
-  // }
-
-  // const handleClick = (idx: number) => {
-  //   paginate(idx < index ? idx - index + slideData.length : idx - index)
-  // }
-
   const { toggleWalletModal } = useStore(s => ({
     toggleWalletModal: s.toggleWalletModal,
   }))

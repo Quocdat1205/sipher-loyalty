@@ -8,7 +8,7 @@ export const usePasswordValidation = ({ firstPassword = "", secondPassword = "",
   const [match, setMatch] = useState<boolean>()
 
   useEffect(() => {
-    setValidLength(firstPassword.length >= requiredLength ? true : false)
+    setValidLength(firstPassword.length >= requiredLength)
     setUpperCase(firstPassword.toLowerCase() !== firstPassword)
     setHasNumber(/\d/.test(firstPassword))
     setMatch(secondPassword !== "" && firstPassword === secondPassword)
