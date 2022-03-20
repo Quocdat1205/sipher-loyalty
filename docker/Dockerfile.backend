@@ -1,20 +1,22 @@
+# syntax=docker/dockerfile:1
+
 # PACKAGES
-FROM node:16.14-alpine AS packages
+FROM mhart/alpine-node:14 AS packages
 WORKDIR /packages
-COPY /packages/backend/package.json /packages/backend/package-lock.json ./
+COPY /packages/backend/package.json /yarn.lock ./
 ENV NODE_ENV=production
-RUN npm ci
+RUN yarn install --frozen-lockfile
 
 # SRC
-FROM node:16.14-alpine AS src
+FROM mhart/alpine-node:14 AS src
 WORKDIR /packages/backend
 COPY /packages/backend .
 COPY tsconfig.json /.
-RUN npm install
+RUN yarn install
 RUN yarn build
 
 # DIST
-FROM node:16.14-alpine
+FROM mhart/alpine-node:14
 WORKDIR /app
 COPY --from=packages /packages/node_modules ./node_modules
 COPY --from=src /packages/backend/dist ./dist
