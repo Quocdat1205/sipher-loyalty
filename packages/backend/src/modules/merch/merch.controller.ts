@@ -1,8 +1,10 @@
 import { Controller, Get, Put, Query } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 
 import { claimMerchDto, walletAddressDto } from "./merch.dto";
 import { MerchService } from "./merch.service";
 
+@ApiTags("merch")
 @Controller("merch")
 export class MerchController {
   constructor(private merchService: MerchService) {}

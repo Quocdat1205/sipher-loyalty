@@ -3,7 +3,7 @@ import { Contract, providers } from "ethers";
 import { Repository } from "typeorm";
 import { BurnType, Lootbox, MintStatus } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { Cron } from "@nestjs/schedule";
+// import { Cron } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
 import { erc721Abi } from "@setting/blockchain/abis";
 import { getContract, getProvider } from "@setting/blockchain/ethers";
