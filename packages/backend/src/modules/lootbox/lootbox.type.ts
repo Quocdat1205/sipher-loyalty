@@ -31,7 +31,7 @@ export class ClaimLootboxInputDto {
   publicAddress: string;
 
   @ApiProperty()
-  tokenID: number;
+  tokenId: number;
 }
 
 export interface MintLootboxInput {

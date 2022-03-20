@@ -101,7 +101,7 @@ export class LootBoxController {
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse()
-  @Put("claim/:tokenID")
+  @Put("claim/:tokenId")
   async claim(@Body() body: ClaimLootboxInputDto, @Req() req: any) {
     await this.authService.verifyAddress(body.publicAddress, req.userData);
     return this.lootBoxService.claimLootbox(body);

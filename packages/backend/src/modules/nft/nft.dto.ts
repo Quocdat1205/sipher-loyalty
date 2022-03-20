@@ -18,7 +18,7 @@ export class NftItem {
   owner: string;
 
   @IsString()
-  tokenID: string;
+  tokenId: string;
 
   @IsNumber()
   chainId: number;

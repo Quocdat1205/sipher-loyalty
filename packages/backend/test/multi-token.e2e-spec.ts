@@ -37,7 +37,7 @@ describe("Collection", () => {
       expect(res.statusCode).toEqual(400);
     });
 
-    it("should return 400 when tokenID is invalid", async () => {
+    it("should return 400 when tokenId is invalid", async () => {
       const res = await request(app.getHttpServer()).get(
         "/erc1155/balance/0xB6B61613268921913A5c01dF94D21D4de34e84cE/sods"
       );

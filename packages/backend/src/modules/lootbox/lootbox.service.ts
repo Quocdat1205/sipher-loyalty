@@ -61,19 +61,19 @@ export class LootBoxService {
   private distributeClaimableLootbox = async (
     nftContract: Contract,
     i: number,
-    tokenID: number
+    tokenId: number
   ) => {
     try {
       const publicAddress: string = await nftContract.ownerOf(i);
       let lootbox = await this.getClaimableLootboxFromWalletAndTokenID(
         publicAddress,
-        tokenID
+        tokenId
       );
 
       if (!lootbox) {
         lootbox = this.claimableLootboxRepo.create({
           publicAddress,
-          tokenID,
+          tokenId,
           quantity: 1,
         });
       } else {
@@ -176,12 +176,12 @@ export class LootBoxService {
 
   private getLootboxFromWalletAndTokenID = async (
     publicAddress: string,
-    tokenID: number
+    tokenId: number
   ) => {
     const lootboxs = await this.lootboxRepo.findOne({
       where: [
-        { publicAddress: toChecksumAddress(publicAddress), tokenID },
-        { publicAddress: publicAddress.toLowerCase(), tokenID },
+        { publicAddress: toChecksumAddress(publicAddress), tokenId },
+        { publicAddress: publicAddress.toLowerCase(), tokenId },
       ],
     });
     return lootboxs;
@@ -189,12 +189,12 @@ export class LootBoxService {
 
   private getClaimableLootboxFromWalletAndTokenID = async (
     publicAddress: string,
-    tokenID: number
+    tokenId: number
   ) => {
     const lootboxs = await this.claimableLootboxRepo.findOne({
       where: [
-        { publicAddress: toChecksumAddress(publicAddress), tokenID },
-        { publicAddress: publicAddress.toLowerCase(), tokenID },
+        { publicAddress: toChecksumAddress(publicAddress), tokenId },
+        { publicAddress: publicAddress.toLowerCase(), tokenId },
       ],
     });
     return lootboxs;
@@ -202,12 +202,12 @@ export class LootBoxService {
 
   private getLootboxFromWalletAndTokenIDs = async (
     publicAddress: string,
-    tokenID: number[]
+    tokenId: number[]
   ) => {
     const promises = [];
-    for (let i = 0; i < tokenID.length; i++) {
+    for (let i = 0; i < tokenId.length; i++) {
       promises.push(
-        this.getLootboxFromWalletAndTokenID(publicAddress, tokenID[i])
+        this.getLootboxFromWalletAndTokenID(publicAddress, tokenId[i])
       );
     }
     return Promise.all(promises);
@@ -219,7 +219,7 @@ export class LootBoxService {
       const index = flattern_lootbox.findIndex(
         (lb: Lootbox) =>
           lb.publicAddress === lootbox.publicAddress &&
-          lb.tokenID === lootbox.tokenID
+          lb.tokenId === lootbox.tokenId
       );
       if (index !== -1) flattern_lootbox[index].quantity += lootbox.quantity;
       else flattern_lootbox.push(lootbox);
@@ -228,15 +228,15 @@ export class LootBoxService {
   };
 
   claimLootbox = async (claimLootboxInputDto: ClaimLootboxInputDto) => {
-    const { publicAddress, tokenID } = claimLootboxInputDto;
+    const { publicAddress, tokenId } = claimLootboxInputDto;
     const claimableLootbox = await this.getClaimableLootboxFromWalletAndTokenID(
       publicAddress,
-      tokenID
+      tokenId
     );
     // verify
     if (!claimableLootbox || claimableLootbox.quantity <= 0)
       throw new HttpException(
-        `Don't have claimable lootbox id : ${tokenID}`,
+        `Don't have claimable lootbox id : ${tokenId}`,
         HttpStatus.BAD_REQUEST
       );
 
@@ -248,12 +248,12 @@ export class LootBoxService {
     // create or update lootbox
     let lootbox = await this.getLootboxFromWalletAndTokenID(
       publicAddress,
-      tokenID
+      tokenId
     );
     if (!lootbox) {
       lootbox = this.lootboxRepo.create({
         publicAddress,
-        tokenID,
+        tokenId,
         quantity,
       });
     } else {
@@ -339,7 +339,7 @@ export class LootBoxService {
     );
     for (let i = 0; i < batchID.length; i++) {
       if (!lootboxs[i])
-        throw new HttpException("not have tokenID ", HttpStatus.BAD_REQUEST);
+        throw new HttpException("not have tokenId ", HttpStatus.BAD_REQUEST);
       if (lootboxs[i].quantity - lootboxs[i].pending < amount[i])
         throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
       lootboxs[i].pending += amount[i];
@@ -374,7 +374,7 @@ export class LootBoxService {
       batchID
     );
     if (!lootbox)
-      throw new HttpException("not have tokenID ", HttpStatus.BAD_REQUEST);
+      throw new HttpException("not have tokenId ", HttpStatus.BAD_REQUEST);
     if (lootbox.quantity - lootbox.pending < amount)
       throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
     lootbox.pending += amount;

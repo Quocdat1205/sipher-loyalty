@@ -7,7 +7,7 @@ import { MultiTokenService } from "./multi-token.service";
 export class MultiTokenController {
   constructor(private multiTokenService: MultiTokenService) {}
 
-  @Get("balance/:address/:tokenID")
+  @Get("balance/:address/:tokenId")
   @HttpCode(200)
   async getBalance(@Param() multiTokenBalanceDto: MultiTokenBalanceDto) {
     console.log(
