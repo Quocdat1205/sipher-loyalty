@@ -34,6 +34,18 @@ export class SculptureService {
     return balance;
   }
 
+  async getAddressOwnedCode(address: string) {
+    const shopifycodes = await this.shopifyCodeRepo.find({
+      where: {
+        ownerAddress: address,
+      },
+    });
+    if (!shopifycodes) {
+      return [];
+    }
+    return shopifycodes;
+  }
+
   async redeemShopifyCode(redeemShopifyCodeDto: RedeemShopifyCodeDto) {
     const { amount, tokenId, address, txHash } = redeemShopifyCodeDto;
     const existed = await this.shopifyCodeRepo.findOne({
