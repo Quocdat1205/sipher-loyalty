@@ -1,9 +1,11 @@
+import { getManager, getRepository, Repository } from "typeorm";
 import { ShopifyCode, User } from "@entity";
-import { MultiTokenService } from "@modules/multi-token/multi-token.service";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
-import { getManager, getRepository, Repository } from "typeorm";
+
+import { MultiTokenService } from "@modules/multi-token/multi-token.service";
+
 import { SculptureBalanceDto } from "./sculpture.dto";
 
 @Injectable()
@@ -34,20 +36,22 @@ export class SculptureService {
     if (amount <= 0) {
       return [];
     }
-    let codes: string[] = [];
+    const codes: string[] = [];
     const user = await this.userRepo.findOne(ownerAddress);
     if (!user) {
       // TODO: Should implement not found error later
       return [];
     }
+    const promises = [];
     for (let i = 0; i < amount; i++) {
       const code = this.generateShopifyCodes();
       codes.push(code);
       const shopifyCode = new ShopifyCode();
       shopifyCode.code = code;
       shopifyCode.user = user;
-      await this.shopifyCodeRepo.save(shopifyCode);
+      promises.push(this.shopifyCodeRepo.save(shopifyCode));
     }
+    Promise.all(promises); // not waiting all done to response fe
     return codes;
   }
 

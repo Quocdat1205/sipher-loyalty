@@ -1,7 +1,7 @@
 // import library
 import Joi from "joi";
 import { NftOrder, Program, SculpturesOrder, ShopifyCode, User } from "@entity";
-import { Module, NestModule } from "@nestjs/common";
+import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { configService } from "@setting/config.typeorm";
@@ -10,6 +10,7 @@ import validation from "@setting/validationSchema";
 import { AirdropModule } from "@modules/airdrop/airdrop.module";
 import { CollectionModule } from "@modules/collection/collection.module";
 import { LoggerModule } from "@modules/logger/logger.module";
+import { MerchModule } from "@modules/merch/merch.module";
 import { MultiTokenModule } from "@modules/multi-token/multi-token.module";
 import { NftItemModule } from "@modules/nft/nftItem.module";
 import { SculptureModule } from "@modules/sculpture/sculpture.module";
@@ -47,6 +48,7 @@ import { AppService } from "./app.service";
     AirdropModule,
     MultiTokenModule,
     SculptureModule,
+    MerchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -59,12 +61,5 @@ import { AppService } from "./app.service";
 //       { path: "user/sign", method: RequestMethod.POST },
 //       { path: "/users/get-info", method: RequestMethod.GET }
 //     );
-// }
-// configure(AtherID: AtherIDMiddleware) {
-//   AtherID.apply(AtherIDMiddleware).forRoutes(
-//     { path: "user/sign", method: RequestMethod.POST },
-//     { path: "/users/get-info", method: RequestMethod.GET }
-//   );
-// }
 // }
 export class AppModule {}
