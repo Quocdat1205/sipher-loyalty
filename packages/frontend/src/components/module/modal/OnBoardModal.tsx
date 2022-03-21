@@ -32,26 +32,20 @@ const imageData = [
   },
 ]
 
-export const OnBoardModal = ({ isOpen, onClose, setIsSignUp }: SettingAccountModalProps) => {
-  const { toggleWalletModal } = useStore(s => ({
-    toggleWalletModal: s.toggleWalletModal,
+export const OnBoardModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
+  const { setAuthFlow } = useStore(s => ({
+    setAuthFlow: s.setAuthFlow,
   }))
 
   const handleClick = () => {
-    toggleWalletModal(true)
-    setIsSignUp(true)
-    setSignIn("true")
+    setAuthFlow("SIGN_IN")
     onClose()
   }
 
   return (
     <ChakraModal
-      isHiddenClose
-      closeOnOverlayClick={false}
-      isCentered
       title={""}
       isOpen={isOpen}
-      onClose={onClose}
       size="5xl"
       styleProps={{
         bg: "rgba(97, 97, 97, 0.1)",
@@ -87,56 +81,6 @@ export const OnBoardModal = ({ isOpen, onClose, setIsSignUp }: SettingAccountMod
           </Button>
         </Box>
       </Flex>
-      {/* <Flex mb={4} align="center" justify="center">
-        <StepComponent slideData={slideData} page={page} direction={direction} index={index} handleClick={handleClick}>
-          {index === 0 ? (
-            <Fragment>
-              <Text fontSize="lg" fontWeight={00} textAlign="center">
-                Ather Labs - Gaming Entertainment
-              </Text>
-              <Text fontSize="lg" fontWeight={600} textAlign="center">
-                Studio Utilizing Blockchain
-              </Text>
-            </Fragment>
-          ) : index === 1 ? (
-            <Fragment>
-              <Text fontSize="lg" fontWeight={600} textAlign="center">
-                Access to Ather Labs' Platforms &
-              </Text>
-              <Text fontSize="lg" fontWeight={600} textAlign="center">
-                Games with one Ather Account
-              </Text>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <Text fontSize="lg" fontWeight={600} textAlign="center">
-                Enjoy extra Benefits &
-              </Text>
-              <Text fontSize="lg" fontWeight={600} textAlign="center">
-                Earn exclusive Rewards
-              </Text>
-            </Fragment>
-          )}
-        </StepComponent>
-      </Flex>
-      <Box h="3rem">
-        {index === slideData.length - 1 ? (
-          <Box textAlign="center" w="full">
-            <Button onClick={onClose} letterSpacing="1px" fontSize="md" w="12rem" py={6}>
-              GET STARTED
-            </Button>
-          </Box>
-        ) : (
-          <HStack py={4} justify="space-between">
-            <Button onClick={onClose} variant="ghost" color="accent.500" fontSize="md">
-              SKIP
-            </Button>
-            <Button onClick={() => paginate(1)} variant="ghost" color="neutral.200" fontSize="md">
-              NEXT
-            </Button>
-          </HStack>
-        )}
-      </Box> */}
     </ChakraModal>
   )
 }

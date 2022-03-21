@@ -3,6 +3,7 @@ import { BiRefresh } from "react-icons/bi"
 import { BsArrowRightShort } from "react-icons/bs"
 import { IoMdClose, IoMdSettings } from "react-icons/io"
 import { IoPersonCircle } from "react-icons/io5"
+import { useMutation } from "react-query"
 import { useRouter } from "next/router"
 import {
   Avatar,
@@ -23,18 +24,27 @@ import { AccountModal, BuySipherModal } from "@components/module/modal"
 import { EthereumIcon, SipherIcon } from "@components/shared"
 import { ClipboardCopy } from "@components/shared/ClipboardCopy"
 import { shortenAddress } from "@utils"
+import { useAuth } from "src/providers/auth"
 
-import { OptionCard } from "."
+import OptionCard from "./OptionCard"
 
 interface UserInfoDropdownProps {
   isOpen: boolean
   onClose: () => void
 }
 
-export const UserInfoDropdown = ({ isOpen, onClose }: UserInfoDropdownProps) => {
+const UserInfoDropdown = ({ isOpen, onClose }: UserInfoDropdownProps) => {
   const router = useRouter()
   const wallet = useWalletContext()
   const [modal, setModal] = useState("")
+
+  const { signOut } = useAuth()
+
+  const { mutate: mutateSignOut, isLoading } = useMutation(signOut, {
+    onSuccess: () => {
+      onClose()
+    },
+  })
 
   return (
     <Box
@@ -166,21 +176,18 @@ export const UserInfoDropdown = ({ isOpen, onClose }: UserInfoDropdownProps) => 
               icon={<IoPersonCircle size="1.5rem" />}
               onClick={() => router.push("/profile/inventory")}
             />
-            {/* <OptionCard name="Notification Setting" icon={<IoNotifications size="1.5rem" />} /> */}
             <OptionCard name="ETH / WETH Station" icon={<BiRefresh size="1.5rem" />} />
           </Stack>
           <Button
-            onClick={() => {
-              wallet.reset()
-              onClose()
-            }}
+            onClick={() => mutateSignOut()}
+            isLoading={isLoading}
             w="full"
             color="white"
             _hover={{ bg: "red.300" }}
             backgroundColor="red.400"
             rounded="base"
           >
-            DISCONNECT
+            SIGN OUT
           </Button>
         </Flex>
         <AccountModal isOpen={modal === "SETTING"} onClose={() => setModal("")} />
@@ -189,3 +196,5 @@ export const UserInfoDropdown = ({ isOpen, onClose }: UserInfoDropdownProps) => 
     </Box>
   )
 }
+
+export default UserInfoDropdown

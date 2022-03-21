@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs"
 import { MdInfo } from "react-icons/md"
@@ -21,9 +21,7 @@ import {
 } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
-import { CustomInput } from "@components/module/modal"
-import { WalletCard } from "@components/module/top-navigation-bar/user-info"
-import { ChakraModal, CustomPopover, Form, FormControl, FormField } from "@components/shared"
+import { ChakraModal, CustomInput, CustomPopover, Form, FormControl, FormField, WalletCard } from "@components/shared"
 import { useChakraToast } from "@hooks"
 
 import FillEmailForm from "./FillEmailForm"
@@ -75,11 +73,10 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
 
   const wallet = useWalletContext()
 
-  const handleConnectWallet = () => {}
-
-  // useEffect(() => {
-  //   if (wallet.account) setShowEmailForm(true)
-  // }, [wallet.account])
+  const handleConnectWallet = async (connectorId: Parameters<typeof wallet["connect"]>["0"]) => {
+    const account = await wallet.connect(connectorId)
+    if (account) setShowEmailForm(true)
+  }
 
   // show verify form after user has signed up
   if (showVerify) return <VerifySignUpForm email={email} />
@@ -207,8 +204,18 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
               </CustomPopover>
             </Flex>
             <HStack spacing={4}>
-              <WalletCard text="Metamask" bg="white" src="/images/icons/wallets/metamask.svg" />
-              <WalletCard text="ConnectWallet" bg="white" src="/images/icons/wallets/walletconnect.svg" />
+              <WalletCard
+                text="Metamask"
+                bg="white"
+                src="/images/icons/wallets/metamask.svg"
+                onClick={() => handleConnectWallet("injected")}
+              />
+              <WalletCard
+                text="ConnectWallet"
+                bg="white"
+                src="/images/icons/wallets/walletconnect.svg"
+                onClick={() => handleConnectWallet("walletConnect")}
+              />
             </HStack>
           </Box>
         </Flex>

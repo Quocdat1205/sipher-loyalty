@@ -10,9 +10,9 @@ import { SignInProvider } from "@components/module/forms/authentication/useSignI
 import { shortenAddress } from "@utils"
 import { useAuth } from "src/providers/auth"
 
-import { UserInfoDropdown } from "."
+import UserInfoDropdown from "./UserInfoDropdown"
 
-export const ConnectWalletButton = () => {
+const SignInButton = () => {
   const wallet = useWalletContext()
   const popRef = useRef<HTMLDivElement>(null)
   const [infoPopup, setInfoPopup] = useState(false)
@@ -40,7 +40,7 @@ export const ConnectWalletButton = () => {
             transform={"auto"}
             boxShadow={"base"}
           >
-            {!wallet.isActive ? (
+            {!(authenticated && wallet.isActive) ? (
               <Flex
                 px={2}
                 py={2}
@@ -59,13 +59,7 @@ export const ConnectWalletButton = () => {
                 </Box>
               </Flex>
             ) : (
-              <Flex
-                transform={"auto"}
-                skewX={"5deg"}
-                align="center"
-                cursor="pointer"
-                onClick={() => setInfoPopup(!infoPopup)}
-              >
+              <Flex align="center" cursor="pointer" onClick={() => setInfoPopup(!infoPopup)}>
                 <Avatar bg="gray" size="sm" />
                 <Text color="white" display={["none", "block"]} ml={2}>
                   {shortenAddress(wallet.account)}
@@ -81,3 +75,5 @@ export const ConnectWalletButton = () => {
     </SignInProvider>
   )
 }
+
+export default SignInButton

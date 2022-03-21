@@ -6,7 +6,7 @@ interface OptionCardProps extends FlexProps {
   onClick?: () => void
 }
 
-export const OptionCard = ({ children, name, icon, onClick, ...rest }: OptionCardProps) => {
+const OptionCard = ({ children, name, icon, onClick, ...rest }: OptionCardProps) => {
   return (
     <Flex
       role="group"
@@ -29,3 +29,5 @@ export const OptionCard = ({ children, name, icon, onClick, ...rest }: OptionCar
     </Flex>
   )
 }
+
+export default OptionCard

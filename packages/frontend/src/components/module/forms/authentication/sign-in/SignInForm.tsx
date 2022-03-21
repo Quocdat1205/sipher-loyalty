@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs"
 import { MdInfo } from "react-icons/md"
@@ -23,9 +23,7 @@ import {
 import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
-import { CustomInput } from "@components/module/modal"
-import { WalletCard } from "@components/module/top-navigation-bar/user-info"
-import { ChakraModal, CustomPopover, Form, FormField } from "@components/shared"
+import { ChakraModal, CustomInput, CustomPopover, Form, FormField, WalletCard } from "@components/shared"
 import { useChakraToast } from "@hooks"
 import { useAuth } from "src/providers/auth"
 
@@ -54,21 +52,20 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
 
   const toast = useChakraToast()
   const { setUser: setSigningInUser } = useSignInContext()
-  const { setUser } = useAuth()
+  const { setUser, authenticated } = useAuth()
 
   const setAuthFlow = useStore(s => s.setAuthFlow)
 
   const [connectWallet, setConnectWallet] = useState(false)
 
+  useEffect(() => {
+    if (authenticated) setConnectWallet(true)
+  }, [authenticated])
+
   const handleChallenge = async (user: any) => {
     if (!user.challengeName) {
-      toast({
-        status: "success",
-        title: "Sign in successful",
-      })
       if (!wallet.isActive) setConnectWallet(true)
       else onClose()
-
       return setUser(user)
     }
 
