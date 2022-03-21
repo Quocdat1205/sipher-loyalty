@@ -1,5 +1,4 @@
 import { createContext, FC, useContext, useEffect, useMemo, useRef, useState } from "react"
-import { useRouter } from "next/router"
 import AtherIdAuth, {
   AtherIdEnviromment,
   CognitoUser,

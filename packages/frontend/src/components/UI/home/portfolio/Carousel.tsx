@@ -37,7 +37,7 @@ const swipePower = (offset: number, velocity: number) => {
   return Math.abs(offset) * velocity
 }
 
-export const Carousel = ({ deplay = 5000, slideData, isAuto = false }: SlideshowProps) => {
+export const Carousel = ({ deplay = 10000, slideData, isAuto = false }: SlideshowProps) => {
   const [[page, direction], setPage] = useState([0, 0])
   const pageSize = 3
   const pageNumber =
@@ -61,11 +61,17 @@ export const Carousel = ({ deplay = 5000, slideData, isAuto = false }: Slideshow
   }
 
   useEffect(() => {
+    let isUnmounted = false
     if (isAuto) {
       resetTimeout()
-      timeoutRef.current = setTimeout(() => paginate(1), deplay)
+      timeoutRef.current = setTimeout(() => {
+        if (!isUnmounted) {
+          paginate(1)
+        }
+      }, deplay)
 
       return () => {
+        isUnmounted = true
         resetTimeout()
       }
     }
@@ -111,7 +117,7 @@ export const Carousel = ({ deplay = 5000, slideData, isAuto = false }: Slideshow
                   key={item}
                   volume={1}
                   floorPrice={1}
-                  tokenId={"1"}
+                  collectionId={"1"}
                   collectionName="Sipherian Surge"
                   imageUrl="/images/nft/sipher3.png"
                 />
@@ -127,8 +133,8 @@ export const Carousel = ({ deplay = 5000, slideData, isAuto = false }: Slideshow
             onClick={() => handleClick(idx)}
             key={idx}
             bg={index === idx ? "white" : "whiteAlpha.500"}
-            w="16px"
-            h={index === idx ? "4px" : "2px"}
+            w="20px"
+            h={index === idx ? "6px" : "3px"}
             rounded="full"
           />
         ))}

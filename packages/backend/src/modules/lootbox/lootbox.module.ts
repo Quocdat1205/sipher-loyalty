@@ -3,6 +3,7 @@ import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { AuthModule } from "@modules/auth/auth.module";
 import { BurnModule } from "@modules/burn/burn.module";
 import { MintModule } from "@modules/mint/mint.module";
 import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
@@ -16,6 +17,7 @@ import { LootBoxService } from "./lootbox.service";
     TypeOrmModule.forFeature([Lootbox, ClaimableLootbox]),
     MintModule,
     BurnModule,
+    AuthModule,
   ],
   providers: [LootBoxService],
   controllers: [LootBoxController],

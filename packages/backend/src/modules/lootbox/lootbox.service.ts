@@ -1,17 +1,15 @@
-import fs from "fs";
-import { join } from "path";
-
 import { toChecksumAddress } from "ethereumjs-util";
 import { Contract, providers } from "ethers";
 import { Repository } from "typeorm";
 import { BurnType, Lootbox, MintStatus } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { Cron } from "@nestjs/schedule";
+// import { Cron } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
 import { erc721Abi } from "@setting/blockchain/abis";
 import { getContract, getProvider } from "@setting/blockchain/ethers";
 import constant from "@setting/constant";
 
+import { UserData } from "@modules/auth/auth.types";
 import { BurnService } from "@modules/burn/burn.service";
 import { MintService } from "@modules/mint/mint.service";
 import { BatchOrder, Order } from "@utils/type";
@@ -19,7 +17,11 @@ import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 import { LoggerService } from "../logger/logger.service";
 
-import { MintBatchLootboxInput, MintLootboxInput } from "./lootbox.type";
+import {
+  ClaimLootboxInputDto,
+  MintBatchLootboxInput,
+  MintLootboxInput,
+} from "./lootbox.type";
 
 @Injectable()
 export class LootBoxService {
@@ -49,12 +51,12 @@ export class LootBoxService {
     );
   }
 
-  @Cron("0 0 0 * * 0")
-  async handleCron() {
-    LoggerService.log("Start distribute claimable lootbox! ");
-    await this.weeklySnapshotForClaimableLootbox();
-    LoggerService.log("Distribute claimable lootbox finished! ");
-  }
+  // @Cron("0 0 0 * * 0")
+  // async handleCron() {
+  //   LoggerService.log("Start distribute claimable lootbox! ");
+  //   await this.weeklySnapshotForClaimableLootbox();
+  //   LoggerService.log("Distribute claimable lootbox finished! ");
+  // }
 
   private distributeClaimableLootbox = async (
     nftContract: Contract,
@@ -225,7 +227,8 @@ export class LootBoxService {
     return flattern_lootbox;
   };
 
-  claimLootbox = async (publicAddress: string, tokenId: number) => {
+  claimLootbox = async (claimLootboxInputDto: ClaimLootboxInputDto) => {
+    const { publicAddress, tokenId } = claimLootboxInputDto;
     const claimableLootbox = await this.getClaimableLootboxFromWalletAndTokenID(
       publicAddress,
       tokenId
@@ -277,16 +280,12 @@ export class LootBoxService {
     return lootboxs;
   };
 
-  getLootboxFromUserID = async (userId: string) => {
-    LoggerService.log(`userId:  ${userId}`);
-    // get list wallet address from Sipher User ID
-    const walletAddressList = [
-      "0x83629905189464CC16F5E7c12D54dD5e87459B33",
-      "0xE5B8CbFf1768E8559E0F002ac01fA5D070551b4D",
-    ];
+  getLootboxFromUserID = async (userData: UserData) => {
+    const { userID, publicAddress } = userData;
+    LoggerService.log(`userID:  ${userID}`);
     const promises = [];
-    walletAddressList.forEach((walletAddress) => {
-      promises.push(this.getLootboxFromWallet(walletAddress));
+    publicAddress.forEach((wAddress) => {
+      promises.push(this.getLootboxFromWallet(wAddress));
     });
     const lootboxs = (await Promise.all(promises)).flat(1);
 
@@ -294,7 +293,7 @@ export class LootBoxService {
   };
 
   getClaimableLootboxFromWallet = async (publicAddress: string) => {
-    const lootboxs = await this.lootboxRepo.find({
+    const lootboxs = await this.claimableLootboxRepo.find({
       where: [
         { publicAddress: toChecksumAddress(publicAddress) },
         { publicAddress: publicAddress.toLowerCase() },
@@ -303,16 +302,12 @@ export class LootBoxService {
     return lootboxs;
   };
 
-  getClaimableLootboxFromUserID = async (userId: string) => {
-    LoggerService.log(`userId:  ${userId}`);
-    // get list wallet address from Sipher User ID
-    const walletAddressList = [
-      "0x83629905189464CC16F5E7c12D54dD5e87459B33",
-      "0xE5B8CbFf1768E8559E0F002ac01fA5D070551b4D",
-    ];
+  getClaimableLootboxFromUserID = async (userData: UserData) => {
+    const { userID, publicAddress } = userData;
+    LoggerService.log(`userID:  ${userID}`);
     const promises = [];
-    walletAddressList.forEach((walletAddress) => {
-      promises.push(this.getClaimableLootboxFromWallet(walletAddress));
+    publicAddress.forEach((wAddress) => {
+      promises.push(this.getClaimableLootboxFromWallet(wAddress));
     });
     const lootboxs = (await Promise.all(promises)).flat(1);
 
@@ -320,7 +315,7 @@ export class LootBoxService {
   };
 
   mintBatchLootbox = async (mintBatchLootboxInput: MintBatchLootboxInput) => {
-    const { walletAddress, batchID, amount } = mintBatchLootboxInput;
+    const { publicAddress, batchID, amount } = mintBatchLootboxInput;
 
     // verify
     if (batchID.length !== amount.length)
@@ -339,12 +334,12 @@ export class LootBoxService {
       );
     const promises = [];
     const lootboxs = await this.getLootboxFromWalletAndTokenIDs(
-      walletAddress,
+      publicAddress,
       batchID
     );
     for (let i = 0; i < batchID.length; i++) {
       if (!lootboxs[i])
-        throw new HttpException("not have tokenID ", HttpStatus.BAD_REQUEST);
+        throw new HttpException("not have tokenId ", HttpStatus.BAD_REQUEST);
       if (lootboxs[i].quantity - lootboxs[i].pending < amount[i])
         throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
       lootboxs[i].pending += amount[i];
@@ -359,14 +354,14 @@ export class LootBoxService {
     const signanture = await this.mintService.mintBatch(mintBatchLootboxInput);
 
     // get pending mint
-    const pending = await this.mintService.getPendingLootbox(walletAddress);
+    const pending = await this.mintService.getPendingLootbox(publicAddress);
 
     const data = await Promise.all(promises);
     return { signanture, data, pending };
   };
 
   mintLootbox = async (mintLootboxInput: MintLootboxInput) => {
-    const { walletAddress, batchID, amount } = mintLootboxInput;
+    const { publicAddress, batchID, amount } = mintLootboxInput;
 
     // verify
     if (amount === 0)
@@ -375,11 +370,11 @@ export class LootBoxService {
         HttpStatus.BAD_REQUEST
       );
     const lootbox = await this.getLootboxFromWalletAndTokenID(
-      walletAddress,
+      publicAddress,
       batchID
     );
     if (!lootbox)
-      throw new HttpException("not have tokenID ", HttpStatus.BAD_REQUEST);
+      throw new HttpException("not have tokenId ", HttpStatus.BAD_REQUEST);
     if (lootbox.quantity - lootbox.pending < amount)
       throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
     lootbox.pending += amount;
@@ -391,7 +386,7 @@ export class LootBoxService {
     const signanture = await this.mintService.mint(mintLootboxInput);
 
     // get pending mint
-    const pending = await this.mintService.getPendingLootbox(walletAddress);
+    const pending = await this.mintService.getPendingLootbox(publicAddress);
 
     return { signanture, data, pending };
   };

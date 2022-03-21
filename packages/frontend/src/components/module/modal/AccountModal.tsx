@@ -1,7 +1,8 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import { ChakraModal } from "@components/shared"
 
+import { AccountPassword } from "./AccountPassword"
 import { SettingModal } from "./SettingModal"
 import { ChooseAvatarModal } from "."
 
@@ -12,13 +13,19 @@ interface SettingAccountModalProps {
 
 export const AccountModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
   const [changeForm, setChangeForm] = useState("SETTING")
-  const [choose, setChoose] = useState("")
+
+  useEffect(() => {
+    setChangeForm("SETTING")
+  }, [isOpen])
+
   return (
     <ChakraModal isCentered title={"ACCOUNT SETTINGS"} isOpen={isOpen} onClose={onClose} size="xl">
       {changeForm === "SETTING" ? (
-        <SettingModal setChangeForm={setChangeForm} choose={choose} onClose={onClose} />
+        <SettingModal setChangeForm={setChangeForm} onClose={onClose} />
       ) : changeForm === "AVATAR" ? (
-        <ChooseAvatarModal setChangeForm={setChangeForm} setChoose={setChoose} />
+        <ChooseAvatarModal setChangeForm={setChangeForm} />
+      ) : changeForm === "PASSWORD" ? (
+        <AccountPassword setChangeForm={setChangeForm} />
       ) : (
         ""
       )}

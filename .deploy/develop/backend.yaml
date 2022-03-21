@@ -2,10 +2,6 @@ sipher-chart:
   deploys:
     - name: backend
       replicasCount: 1
-      command: ['/bin/sh']
-      args:
-        - '-c'
-        - 'node ./dist/main.js'
       resources:
         requests:
           memory: 512Mi
@@ -16,14 +12,14 @@ sipher-chart:
       services:
         - name: api
           containerPort:
-            api: 3001
-        - name: health
-          type: ClusterIP
-          containerPort:
-            health: 3001
-          health:
-            live: /api/health
-            livenessPort: 3001
-            ready: /api/health
-            readinessPort: 3001
+            api: 5500
+        # - name: health
+        #   type: ClusterIP
+        #   containerPort:
+        #     health: 5500
+        #   health:
+        #     live: /api/health
+        #     livenessPort: 5500
+        #     ready: /api/health
+        #     readinessPort: 5500
   env: {}

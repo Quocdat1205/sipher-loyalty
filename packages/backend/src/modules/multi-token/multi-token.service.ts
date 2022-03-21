@@ -1,33 +1,26 @@
-import { Provider } from "@ethersproject/abstract-provider";
+import { BigNumber, providers } from "ethers";
 import { Injectable } from "@nestjs/common";
+import { erc1155Abi } from "@setting/blockchain/abis";
 import { getContract, getProvider } from "@setting/blockchain/ethers";
 import constant from "@setting/constant";
-import { BigNumber } from "ethers";
-import { readFileSync } from "fs";
-import { join } from "path";
+
 import { MultiTokenBalanceDto } from "./multi-token.dto";
 
 @Injectable()
 export class MultiTokenService {
-  private erc1155abi: string;
-  private provider: Provider;
+  private erc1155abi;
+
+  private provider: providers.Provider;
 
   constructor() {
-    this.provider = this.provider = getProvider(constant.CHAIN_ID);
-    this.erc1155abi = readFileSync(
-      join(__dirname, "../../data/ERC1155/abi.json")
-    ).toString();
+    this.provider = getProvider(constant.CHAIN_ID);
   }
 
   async balanceOf(
     contractAddress: string,
     multiTokenBalanceDto: MultiTokenBalanceDto
   ): Promise<BigNumber> {
-    const contract = getContract(
-      contractAddress,
-      this.erc1155abi,
-      this.provider
-    );
+    const contract = getContract(contractAddress, erc1155Abi, this.provider);
     const balance = await contract.balanceOf(
       multiTokenBalanceDto.address,
       BigNumber.from(multiTokenBalanceDto.tokenId)

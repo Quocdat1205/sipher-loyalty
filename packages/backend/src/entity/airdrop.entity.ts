@@ -5,6 +5,12 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
+export enum AirdropType {
+  NFT = "NFT",
+  TOKEN = "TOKEN",
+  MERCH = "MERCH",
+}
+
 @Entity()
 export class Airdrop {
   @PrimaryGeneratedColumn()
@@ -23,10 +29,16 @@ export class Airdrop {
   claimer: string;
 
   @Column({ nullable: false })
-  campaignCode: string;
+  addressContract: string;
 
   @Column({ nullable: false })
   totalAmount: string;
+
+  @Column({
+    type: "enum",
+    enum: AirdropType,
+  })
+  type: AirdropType;
 
   @Column({ nullable: false })
   startTime: string;

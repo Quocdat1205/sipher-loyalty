@@ -23,7 +23,7 @@ import {
 } from "@sipher.dev/sipher-ui"
 
 import { CustomInput } from "@components/module/modal"
-import { CustomPopover, Form, FormField } from "@components/shared"
+import { ChakraModal, CustomPopover, Form, FormField } from "@components/shared"
 import { useChakraToast, usePasswordStrength } from "@hooks"
 
 import VerifySignUpForm from "./VerifySignUpForm"
@@ -69,99 +69,101 @@ const FillEmailForm = () => {
   if (showVerify) return <VerifySignUpForm email={email} isWalletConnected={true} />
 
   return (
-    <Stack pos="relative" px={6} spacing={6} w="full">
-      <Flex display="inline-block" align="center">
-        <Text mr={2} color="neutral.400" fontSize="sm">
-          You will need to fill in your email and password to enable{" "}
-          <chakra.span sx={{ ">div": { display: "inline-block" } }} textDecor="underline" color="cyan.600">
-            Ather Account{" "}
-            <CustomPopover
-              placement="top"
-              label="Crypto-wallet"
-              icon={
-                <Box color="neutral.500">
-                  <MdInfo size="1.2rem" />
-                </Box>
-              }
-            >
-              <Text fontSize="sm" color="neutral.900">
-                Wallets are used to send, receive, and store digital assets like Ether. Wallets come in many forms. For
-                more infomation about wallets, see this{" "}
-                <chakra.span color="cyan.500" textDecor="underline">
-                  explanation
-                </chakra.span>
-              </Text>
-            </CustomPopover>
-          </chakra.span>
-        </Text>
-      </Flex>
-      <Form onSubmit={handleSubmit(d => mutate(d))}>
-        <FormControl as="fieldset">
-          <FormField error={errors.email}>
-            <CustomInput
-              placeholder="Email address"
-              {...register("email", { onChange: e => setEmail(e.target.value) })}
-            />
-          </FormField>
-        </FormControl>
-        <FormControl mb={2} as="fieldset">
-          <FormField error={errors.password}>
-            <InputGroup size="md">
+    <ChakraModal title={"YOU ARE ALMOST THERE"} size="lg" isOpen={true} hideCloseButton={true}>
+      <Stack pos="relative" px={6} spacing={6} w="full">
+        <Flex display="inline-block" align="center">
+          <Text mr={2} color="neutral.400" fontSize="sm">
+            You will need to fill in your email and password to enable{" "}
+            <chakra.span sx={{ ">div": { display: "inline-block" } }} textDecor="underline" color="cyan.600">
+              Ather Account{" "}
+              <CustomPopover
+                placement="top"
+                label="Crypto-wallet"
+                icon={
+                  <Box color="neutral.500">
+                    <MdInfo size="1.2rem" />
+                  </Box>
+                }
+              >
+                <Text fontSize="sm" color="neutral.900">
+                  Wallets are used to send, receive, and store digital assets like Ether. Wallets come in many forms.
+                  For more infomation about wallets, see this{" "}
+                  <chakra.span color="cyan.500" textDecor="underline">
+                    explanation
+                  </chakra.span>
+                </Text>
+              </CustomPopover>
+            </chakra.span>
+          </Text>
+        </Flex>
+        <Form onSubmit={handleSubmit(d => mutate(d))}>
+          <FormControl as="fieldset">
+            <FormField error={errors.email}>
               <CustomInput
-                pr="2.5rem"
-                type={show ? "text" : "password"}
-                placeholder="Password"
-                {...register("password")}
+                placeholder="Email address"
+                {...register("email", { onChange: e => setEmail(e.target.value) })}
               />
-              <InputRightElement width="2.5rem">
-                <IconButton
-                  variant="ghost"
-                  aria-label="eye-icon"
-                  color="neutral.400"
-                  _hover={{ bg: "neutral.500" }}
-                  _active={{ bg: "neutral.500" }}
-                  icon={show ? <BsEyeSlashFill size="1rem" /> : <BsEyeFill size="1rem" />}
-                  size="sm"
-                  h="1.75rem"
-                  onClick={() => setShow(!show)}
+            </FormField>
+          </FormControl>
+          <FormControl mb={2} as="fieldset">
+            <FormField error={errors.password}>
+              <InputGroup size="md">
+                <CustomInput
+                  pr="2.5rem"
+                  type={show ? "text" : "password"}
+                  placeholder="Password"
+                  {...register("password")}
                 />
-              </InputRightElement>
-            </InputGroup>
-          </FormField>
-        </FormControl>
-        <FormControl mb={2} as="fieldset">
-          <FormField error={errors.passwordConfirmation}>
-            <InputGroup size="md">
-              <CustomInput
-                pr="2.5rem"
-                type={show ? "text" : "password"}
-                placeholder="Password"
-                {...register("passwordConfirmation")}
-              />
-              <InputRightElement width="2.5rem">
-                <IconButton
-                  variant="ghost"
-                  aria-label="eye-icon"
-                  color="neutral.400"
-                  _hover={{ bg: "neutral.500" }}
-                  _active={{ bg: "neutral.500" }}
-                  icon={show ? <BsEyeSlashFill size="1rem" /> : <BsEyeFill size="1rem" />}
-                  size="sm"
-                  h="1.75rem"
-                  onClick={() => setShow(!show)}
+                <InputRightElement width="2.5rem">
+                  <IconButton
+                    variant="ghost"
+                    aria-label="eye-icon"
+                    color="neutral.400"
+                    _hover={{ bg: "neutral.500" }}
+                    _active={{ bg: "neutral.500" }}
+                    icon={show ? <BsEyeSlashFill size="1rem" /> : <BsEyeFill size="1rem" />}
+                    size="sm"
+                    h="1.75rem"
+                    onClick={() => setShow(!show)}
+                  />
+                </InputRightElement>
+              </InputGroup>
+            </FormField>
+          </FormControl>
+          <FormControl mb={2} as="fieldset">
+            <FormField error={errors.passwordConfirmation}>
+              <InputGroup size="md">
+                <CustomInput
+                  pr="2.5rem"
+                  type={show ? "text" : "password"}
+                  placeholder="Password"
+                  {...register("passwordConfirmation")}
                 />
-              </InputRightElement>
-            </InputGroup>
-          </FormField>
-        </FormControl>
-        <Box pb={2}>
-          <Divider pos="absolute" left="0" w="full" borderColor="whiteAlpha.100" />
-        </Box>
-        <Button fontSize="md" py={6} fontWeight={600} type="submit" isLoading={isLoading}>
-          CONTINUE
-        </Button>
-      </Form>
-    </Stack>
+                <InputRightElement width="2.5rem">
+                  <IconButton
+                    variant="ghost"
+                    aria-label="eye-icon"
+                    color="neutral.400"
+                    _hover={{ bg: "neutral.500" }}
+                    _active={{ bg: "neutral.500" }}
+                    icon={show ? <BsEyeSlashFill size="1rem" /> : <BsEyeFill size="1rem" />}
+                    size="sm"
+                    h="1.75rem"
+                    onClick={() => setShow(!show)}
+                  />
+                </InputRightElement>
+              </InputGroup>
+            </FormField>
+          </FormControl>
+          <Box pb={2}>
+            <Divider pos="absolute" left="0" w="full" borderColor="whiteAlpha.100" />
+          </Box>
+          <Button fontSize="md" py={6} fontWeight={600} type="submit" isLoading={isLoading}>
+            CONTINUE
+          </Button>
+        </Form>
+      </Stack>
+    </ChakraModal>
   )
 }
 

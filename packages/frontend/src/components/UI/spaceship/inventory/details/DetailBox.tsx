@@ -8,7 +8,7 @@ import { HeaderDetails } from "./HeaderDetails"
 import { ActionContainer, NftImage } from "."
 
 interface DetailBoxProps {
-  id: string | string[] | undefined
+  id: string
 }
 
 export const DetailBox = ({ id }: DetailBoxProps) => {

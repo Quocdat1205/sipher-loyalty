@@ -5,6 +5,7 @@ import { Box, chakra, Divider, HStack, Stack, Text } from "@sipher.dev/sipher-ui
 import { useWalletContext } from "@web3"
 
 import { WalletConnectCard } from "@components/module/modal"
+import { ChakraModal } from "@components/shared"
 import { useChakraToast } from "@hooks"
 
 const ConnectToWallet = () => {
@@ -40,34 +41,36 @@ const ConnectToWallet = () => {
   )
 
   return (
-    <Stack pos="relative" px={6} spacing={6} w="full">
-      <Text color="neutral.300">{`You’ll need to connect wallet to complete the sign up process.`}</Text>
-      <HStack w="full" justify="space-between" align="center" spacing={6}>
-        <WalletConnectCard
-          onClick={() => {
-            mutateAddWallet("injected")
-          }}
-          text={currentConnector === "injected" ? progress : "Metamask"}
-          srcImage="/images/icons/wallets/metamask.svg"
-        />
-        <WalletConnectCard
-          onClick={() => {
-            mutateAddWallet("walletConnect")
-          }}
-          text={currentConnector === "walletConnect" ? progress : "ConnectWallet"}
-          srcImage="/images/icons/wallets/walletconnect.svg"
-        />
-      </HStack>
-      <Box pb={2}>
-        <Divider pos="absolute" left="0" w="full" borderColor="whiteAlpha.100" />
-      </Box>
-      <Text color="neutral.400" textAlign="center">
-        Don't have a Wallet?{" "}
-        <chakra.span textDecor="underline" cursor="pointer" color="cyan.600">
-          Learn More
-        </chakra.span>
-      </Text>
-    </Stack>
+    <ChakraModal title={"CONNECT TO A WALLET"} size="lg" isOpen={true} hideCloseButton={true}>
+      <Stack pos="relative" px={6} spacing={6} w="full">
+        <Text color="neutral.300">{`You’ll need to connect wallet to complete the sign up process.`}</Text>
+        <HStack w="full" justify="space-between" align="center" spacing={6}>
+          <WalletConnectCard
+            onClick={() => {
+              mutateAddWallet("injected")
+            }}
+            text={currentConnector === "injected" ? progress : "Metamask"}
+            srcImage="/images/icons/wallets/metamask.svg"
+          />
+          <WalletConnectCard
+            onClick={() => {
+              mutateAddWallet("walletConnect")
+            }}
+            text={currentConnector === "walletConnect" ? progress : "ConnectWallet"}
+            srcImage="/images/icons/wallets/walletconnect.svg"
+          />
+        </HStack>
+        <Box pb={2}>
+          <Divider pos="absolute" left="0" w="full" borderColor="whiteAlpha.100" />
+        </Box>
+        <Text color="neutral.400" textAlign="center">
+          Don't have a Wallet?{" "}
+          <chakra.span textDecor="underline" cursor="pointer" color="cyan.600">
+            Learn More
+          </chakra.span>
+        </Text>
+      </Stack>
+    </ChakraModal>
   )
 }
 

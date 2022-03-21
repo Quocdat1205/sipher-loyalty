@@ -1,6 +1,6 @@
 {
   "merkleRoot": "0x966506e52e624acde0d8f26992450832d3b23436f925f53e0bfbb94b9f397a8a",
-  "campaignCode": "investors_CP1",
+  "addressContract": "0x56B1A20D0F78834CF69AaCF5b33D9Ab198089ff5",
   "startTime": "1646524800",
   "vestingInterval": "2419200",
   "numberOfVestingPoint": "12",

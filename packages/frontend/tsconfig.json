@@ -20,8 +20,10 @@
       "@store": ["src/store"],
       "@utils": ["src/utils"],
       "@api": ["src/api"],
+      "@sdk": ["src/api/sdk"],
       "@contract": ["src/contract"],
       "@web3": ["src/web3"],
+      "@client": ["src/api/client"],
       "@@types": ["src/types"]
     }
   },

@@ -26,7 +26,7 @@ export class AppModule implements OnApplicationBootstrap {
   constructor(private readonly seedingService: SeedAirdropService) {}
 
   async onApplicationBootstrap(): Promise<void> {
-    await this.seedingService.seedAirdropNFT();
+    await this.seedingService.seedAirdropHolder();
     await this.seedingService.seedAirdropInvestor_CP1();
   }
 }

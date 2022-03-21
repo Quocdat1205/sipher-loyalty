@@ -1,51 +1,109 @@
 import { Lootbox } from "@entity";
-import { Body, Controller, Get, Param, Put } from "@nestjs/common";
-import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Put,
+  Req,
+  UseGuards,
+} from "@nestjs/common";
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
+import { AtherGuard } from "@modules/auth/auth.guard";
+import { AuthService } from "@modules/auth/auth.service";
 import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
-// import { sessionType } from "../auth/auth.type"
 import { LootBoxService } from "./lootbox.service";
-import { MintBatchLootboxInputDto, MintLootboxInputDto } from "./lootbox.type";
+import {
+  ClaimLootboxInputDto,
+  MintBatchLootboxInputDto,
+  MintLootboxInputDto,
+} from "./lootbox.type";
 
 @ApiTags("lootbox")
 @Controller("lootbox")
 export class LootBoxController {
-  constructor(private lootBoxService: LootBoxService) {}
+  constructor(
+    private lootBoxService: LootBoxService,
+    private authService: AuthService
+  ) {}
 
-  @Get("get-by-walllet/:walletAddress")
-  async getLootboxFromWallet(@Param("walletAddress") walletAddress: string) {
-    return this.lootBoxService.getLootboxFromWallet(walletAddress);
-  }
-
-  @Get("get-by-walllet/claimable/:walletAddress")
-  async getClaimableLootboxFromWallet(
-    @Param("walletAddress") walletAddress: string
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @Get("get-by-walllet/:publicAddress")
+  async getLootboxFromWallet(
+    @Param("publicAddress") publicAddress: string,
+    @Req() req: any
   ) {
-    return this.lootBoxService.getClaimableLootboxFromWallet(walletAddress);
+    const userData = await this.authService.verifyAddress(
+      publicAddress,
+      req.userData
+    );
+    return this.lootBoxService.getLootboxFromWallet(
+      userData.currentpublicAddress
+    );
   }
 
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @Get("get-by-walllet/claimable/:publicAddress")
+  async getClaimableLootboxFromWallet(
+    @Param("publicAddress") publicAddress: string,
+    @Req() req: any
+  ) {
+    const userData = await this.authService.verifyAddress(
+      publicAddress,
+      req.userData
+    );
+    return this.lootBoxService.getClaimableLootboxFromWallet(
+      userData.currentpublicAddress
+    );
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: Lootbox })
-  @Get("get-by-userid/:userid")
-  async getLootboxFromUserID(@Param("userid") userid: string) {
-    return this.lootBoxService.getLootboxFromUserID(userid);
+  @Get("get-by-userID")
+  async getLootboxFromUserID(@Req() req: any) {
+    return this.lootBoxService.getLootboxFromUserID(req.userData);
   }
 
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: ClaimableLootbox })
-  @Get("get-by-userid/:userid")
-  async getClaimableLootboxFromUserID(@Param("userid") userid: string) {
-    return this.lootBoxService.getClaimableLootboxFromUserID(userid);
+  @Get("get-by-userID/claimable")
+  async getClaimableLootboxFromUserID(@Req() req: any) {
+    return this.lootBoxService.getClaimableLootboxFromUserID(req.userData);
   }
 
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
   @ApiOkResponse()
   @Put("mint-batch")
-  async mintBatchLootbox(@Body() body: MintBatchLootboxInputDto) {
+  async mintBatchLootbox(
+    @Body() body: MintBatchLootboxInputDto,
+    @Req() req: any
+  ) {
+    await this.authService.verifyAddress(body.publicAddress, req.userData);
     return this.lootBoxService.mintBatchLootbox(body);
   }
 
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
   @ApiOkResponse()
   @Put("mint")
-  async mintLootbox(@Body() body: MintLootboxInputDto) {
+  async mintLootbox(@Body() body: MintLootboxInputDto, @Req() req: any) {
+    await this.authService.verifyAddress(body.publicAddress, req.userData);
     return this.lootBoxService.mintLootbox(body);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @ApiOkResponse()
+  @Put("claim/:tokenId")
+  async claim(@Body() body: ClaimLootboxInputDto, @Req() req: any) {
+    await this.authService.verifyAddress(body.publicAddress, req.userData);
+    return this.lootBoxService.claimLootbox(body);
   }
 }

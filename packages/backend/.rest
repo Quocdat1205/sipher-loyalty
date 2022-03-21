@@ -1,0 +1,4 @@
+GET http://localhost:5500/api/sipher/loyalty/merch/get-all?wallet_address=0x029125CD60b8c17efC2F6e741a88509d315790BB
+
+###
+PUT http://localhost:5500/api/sipher/loyalty/merch/claim?wallet_address=0x029125CD60b8c17efC2F6e741a88509d315790BB&id_merch=abc

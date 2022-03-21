@@ -1,5 +1,4 @@
 export * from "./ConnectWalletButton"
-export * from "./ConnectWalletModal"
 export * from "./OptionCard"
 export * from "./UserInfoDropdown"
 export * from "./WalletCard"

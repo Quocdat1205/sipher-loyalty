@@ -55,8 +55,8 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
   }
 
   return (
-    <Stack px={6} spacing={6} w="full">
-      <Text color="neutral.300">
+    <Stack px={6} spacing={3} w="full">
+      <Text fontSize="sm" color="neutral.300">
         Please link crypto-wallet in order to sign in. This will only be used to link to your account. Funds will not be
         withdrawn and no minimum balance required.
       </Text>
@@ -119,7 +119,7 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
           </Flex>
         </FormControl>
       </Form>
-      <Text color="neutral.400">
+      <Text fontSize="sm" color="neutral.400">
         I have read and agree to the{" "}
         <Link textDecor="underline" color="cyan.600" isExternal>
           Ather Labs Privacy Policy
@@ -136,7 +136,7 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
       </Flex>
       <Flex flexDir="column" pb={2}>
         <Box mb={4}>
-          <Text pb={2} color="neutral.400" fontSize="sm">
+          <Text pb={1} color="neutral.400" fontSize="sm">
             Social Account
           </Text>
           <HStack spacing={4}>
@@ -171,7 +171,7 @@ export const SignUp = ({ changeForm, setChangeForm }: SignUpProps) => {
           </HStack>
         </Box>
         <Box>
-          <Flex pb={2} align="center">
+          <Flex pb={1} align="center">
             <Text mr={2} color="neutral.400" fontSize="sm">
               Crypto-Wallet
             </Text>

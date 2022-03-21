@@ -12,8 +12,8 @@ import { LoggerService } from "../logger/logger.service";
 
 @Injectable()
 export class SeedAirdropService {
-  private airdropDataNFT = JSON.parse(
-    fs.readFileSync("./src/data/AIRDROP/nft.json").toString()
+  private airdropDataHolder = JSON.parse(
+    fs.readFileSync("./src/data/AIRDROP/Holder.json").toString()
   );
 
   private airdropDataInvestorsCP1 = JSON.parse(
@@ -25,41 +25,42 @@ export class SeedAirdropService {
     private airdropRepo: Repository<Airdrop>
   ) {}
 
-  seedAirdropNFT = async () => {
-    const flaternAirdrop = this.airdropDataNFT.data.map((el) => ({
-      merkleRoot: this.airdropDataNFT.merkleRoot,
+  seedAirdropHolder = async () => {
+    const flaternAirdrop = this.airdropDataHolder.data.map((el) => ({
+      merkleRoot: this.airdropDataHolder.merkleRoot,
       ...el,
-      campaignCode: this.airdropDataNFT.campaignCode,
-      startTime: this.airdropDataNFT.startTime,
-      vestingInterval: this.airdropDataNFT.vestingInterval,
-      numberOfVestingPoint: this.airdropDataNFT.numberOfVestingPoint,
+      addressContract: this.airdropDataHolder.addressContract,
+      startTime: this.airdropDataHolder.startTime,
+      vestingInterval: this.airdropDataHolder.vestingInterval,
+      numberOfVestingPoint: this.airdropDataHolder.numberOfVestingPoint,
     }));
     await this.airdropRepo.query(
-      `delete from airdrop where "campaignCode"='${this.airdropDataNFT.campaignCode}';`
+      `delete from airdrop where "addressContract"='${this.airdropDataHolder.addressContract}';`
     );
 
     const promises = [];
     for (let i = 0; i < flaternAirdrop.length; i++) {
-      const query = `insert into airdrop ("merkleRoot","proof","leaf","claimer","campaignCode","totalAmount","startTime","vestingInterval","numberOfVestingPoint") values (
+      const query = `insert into airdrop ("merkleRoot","proof","leaf","claimer","addressContract","totalAmount","startTime","vestingInterval","numberOfVestingPoint","type") values (
             '${flaternAirdrop[i].merkleRoot}',
             '${`{${flaternAirdrop[i].proof.join(",")}}`}',
             '${flaternAirdrop[i].leaf}',
             '${flaternAirdrop[i].claimer.toLowerCase()}',
-            '${flaternAirdrop[i].campaignCode}',
+            '${flaternAirdrop[i].addressContract}',
             '${flaternAirdrop[i].totalAmount}',
             '${flaternAirdrop[i].startTime}',
             '${flaternAirdrop[i].vestingInterval}',
-            '${flaternAirdrop[i].numberOfVestingPoint}');`;
+            '${flaternAirdrop[i].numberOfVestingPoint}'
+            ,'TOKEN');`;
       // LoggerService.log(query);
       promises.push(this.airdropRepo.query(query));
     }
     await Promise.all(promises);
 
     const airdropCount = await this.airdropRepo.query(
-      `select count(*) from airdrop where "campaignCode"='${this.airdropDataNFT.campaignCode}';`
+      `select count(*) from airdrop where "addressContract"='${this.airdropDataHolder.addressContract}';`
     );
     LoggerService.log(
-      `Check airdrop nft : ${
+      `Check airdrop Holder : ${
         parseInt(airdropCount[0].count, 10) === flaternAirdrop.length
           ? "OK"
           : "Failed"
@@ -72,34 +73,35 @@ export class SeedAirdropService {
     const flaternAirdrop = this.airdropDataInvestorsCP1.data.map((el) => ({
       merkleRoot: this.airdropDataInvestorsCP1.merkleRoot,
       ...el,
-      campaignCode: this.airdropDataInvestorsCP1.campaignCode,
+      addressContract: this.airdropDataInvestorsCP1.addressContract,
       startTime: this.airdropDataInvestorsCP1.startTime,
       vestingInterval: this.airdropDataInvestorsCP1.vestingInterval,
       numberOfVestingPoint: this.airdropDataInvestorsCP1.numberOfVestingPoint,
     }));
     await this.airdropRepo.query(
-      `delete from airdrop where "campaignCode"='${this.airdropDataInvestorsCP1.campaignCode}';`
+      `delete from airdrop where "addressContract"='${this.airdropDataInvestorsCP1.addressContract}';`
     );
 
     const promises = [];
     for (let i = 0; i < flaternAirdrop.length; i++) {
-      const query = `insert into airdrop ("merkleRoot","proof","leaf","claimer","campaignCode","totalAmount","startTime","vestingInterval","numberOfVestingPoint") values (
+      const query = `insert into airdrop ("merkleRoot","proof","leaf","claimer","addressContract","totalAmount","startTime","vestingInterval","numberOfVestingPoint","type") values (
             '${flaternAirdrop[i].merkleRoot}',
             '${`{${flaternAirdrop[i].proof.join(",")}}`}',
             '${flaternAirdrop[i].leaf}',
             '${flaternAirdrop[i].claimer.toLowerCase()}',
-            '${flaternAirdrop[i].campaignCode}',
+            '${flaternAirdrop[i].addressContract}',
             '${flaternAirdrop[i].totalAmount}',
             '${flaternAirdrop[i].startTime}',
             '${flaternAirdrop[i].vestingInterval}',
-            '${flaternAirdrop[i].numberOfVestingPoint}');`;
+            '${flaternAirdrop[i].numberOfVestingPoint}'
+            ,'TOKEN');`;
       // LoggerService.log(query);
       promises.push(this.airdropRepo.query(query));
     }
     await Promise.all(promises);
 
     const airdropCount = await this.airdropRepo.query(
-      `select count(*) from airdrop where "campaignCode"='${this.airdropDataInvestorsCP1.campaignCode}';`
+      `select count(*) from airdrop where "addressContract"='${this.airdropDataInvestorsCP1.addressContract}';`
     );
     LoggerService.log(
       `Check airdrop investors campaign 1: ${

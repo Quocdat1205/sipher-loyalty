@@ -1,6 +1,7 @@
+import { join } from "path";
+
 import dotenv from "dotenv";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { join } from "path";
 
 dotenv.config();
 
@@ -56,6 +57,8 @@ class ConfigService {
       cli: {
         migrationsDir: "src/migration/*.{ts,js}",
       },
+
+      logging: this.getValue("NODE_ENV") === "develop",
 
       synchronize: true,
 

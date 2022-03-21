@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+
 import { ShopifyCode } from "./shopify-code.entity";
 
 @Entity()
@@ -40,9 +41,6 @@ export class User {
 
   @Column({ default: "bronze" })
   tier: string;
-
-  @OneToMany(() => ShopifyCode, (shopifyCode) => shopifyCode.user)
-  shopifyCode: ShopifyCode[];
 
   @CreateDateColumn({ default: new Date() })
   createdAt: Date;

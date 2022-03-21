@@ -1,15 +1,32 @@
 import React from "react"
 import Image from "next/image"
-import { Avatar, Box, Flex, Heading, Link, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Avatar, Box, Flex, Heading, Link, SimpleGrid, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { SpVerified } from "@components/shared/icons"
 
+import { NFTCard, useNFTs } from "../nft"
+
 interface DetailsCollectionProps {
-  id: string | string[] | undefined
+  collectionId: string
 }
 
-export const DetailsCollection = ({ id }: DetailsCollectionProps) => {
-  console.log(id)
+export const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
+  const { handleClick } = useNFTs()
+
+  const renderNFTs = () => {
+    return Array.from(Array(12).keys()).map(i => (
+      <NFTCard
+        onClick={handleClick}
+        price={0.1}
+        tokenId="1"
+        key={i}
+        collectionId={collectionId}
+        name="Sipherian Surge"
+        imageUrl="/images/nft/sipher3.png"
+      />
+    ))
+  }
+
   return (
     <Box>
       <Box pos="relative" h="18rem">
@@ -32,6 +49,9 @@ export const DetailsCollection = ({ id }: DetailsCollectionProps) => {
           </Link>
         </Text>
       </Stack>
+      <SimpleGrid pt={8} spacing={6} columns={3}>
+        {renderNFTs()}
+      </SimpleGrid>
     </Box>
   )
 }

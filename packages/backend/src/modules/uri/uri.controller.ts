@@ -1,8 +1,10 @@
 import { Controller, Get, Param } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 
 // import { sessionType } from "../auth/auth.type"
 import { URIService } from "./uri.service";
 
+@ApiTags("uri")
 @Controller("uri")
 export class URIController {
   constructor(private uriService: URIService) {}

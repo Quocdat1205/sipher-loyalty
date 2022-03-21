@@ -173,7 +173,7 @@ export class LootboxTrackerService {
     _fromBlock: number,
     _currentBlock: number
   ) => {
-    const filter = this.contract.filters.Minted();
+    const filter = this.contract.filters.MintRecord();
     const pastEvents = await this.contract
       .queryFilter(filter, _fromBlock, _currentBlock)
       .catch((err) => {

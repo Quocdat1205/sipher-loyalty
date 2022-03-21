@@ -174,7 +174,7 @@ jobs:
       aws_accesskey: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }} # plaintext in github secret
       aws_secret: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }} # plaintext in github secret
       webhook: ${{ secrets.SLACK_WEBHOOK_URL }} # plaintext in github secret
-      argocd_secret: ${{ secrets.ARGOCD_SECRET }} # plaintext in github secret
+      argocd_secret: ${{ secrets.DEV_ARGOCD_SECRET }} # plaintext in github secret
   #-----------------------------------
 
   #------------Main branch------------------

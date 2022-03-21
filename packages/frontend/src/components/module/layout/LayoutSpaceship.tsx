@@ -3,6 +3,7 @@ import { Box, Flex } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
 import { Banner } from "@components/shared"
+import { getSignIn } from "@utils"
 
 import { OnBoardModal } from "../modal"
 import TabPage from "../TabPage"
@@ -27,10 +28,10 @@ export const LayoutSpaceship = ({ children }: StoreFrontLayoutProps) => {
   const [isSignUp, setIsSignUp] = useState(false)
 
   useEffect(() => {
-    if (!account) {
+    if (!getSignIn()) {
       setIsOnboard(true)
     }
-  }, [account])
+  }, [])
 
   return (
     <Flex
@@ -51,7 +52,7 @@ export const LayoutSpaceship = ({ children }: StoreFrontLayoutProps) => {
               title="Spaceship"
               description="Transport yourself throughout the various dungeons and the World of Sipheria"
             />
-            <Flex flexDir="column" align="center" px={[4, 0]} py={8} flex={1} w="full">
+            <Flex flexDir="column" align="center" px={[4, 0]} pt={8} flex={1} w="full">
               <Flex flexDir="column" w="full" maxW="1200px">
                 <TabPage tabs={tabs} />
               </Flex>

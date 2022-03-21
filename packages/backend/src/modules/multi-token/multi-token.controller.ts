@@ -1,4 +1,5 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, Param } from "@nestjs/common";
+
 import { MultiTokenBalanceDto } from "./multi-token.dto";
 import { MultiTokenService } from "./multi-token.service";
 

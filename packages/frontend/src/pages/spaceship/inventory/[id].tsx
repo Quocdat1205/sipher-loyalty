@@ -13,7 +13,7 @@ const SpaceshipDetailPage: NextPageWithLayout = () => {
   return (
     <>
       <Metadata title="Spaceship - Box" description="Details Box" />
-      <DetailBox id={router.query.id} />
+      <DetailBox id={router.query.id as string} />
     </>
   )
 }

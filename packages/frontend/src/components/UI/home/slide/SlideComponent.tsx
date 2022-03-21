@@ -51,11 +51,17 @@ export const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: Sli
   }
 
   useEffect(() => {
+    let isUnmounted = false
     if (isAuto) {
       resetTimeout()
-      timeoutRef.current = setTimeout(() => paginate(1), deplay)
+      timeoutRef.current = setTimeout(() => {
+        if (!isUnmounted) {
+          paginate(1)
+        }
+      }, deplay)
 
       return () => {
+        isUnmounted = true
         resetTimeout()
       }
     }
@@ -104,8 +110,8 @@ export const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: Sli
             onClick={() => handleClick(idx)}
             key={idx}
             bg={index === idx ? "white" : "whiteAlpha.500"}
-            w="16px"
-            h={index === idx ? "4px" : "2px"}
+            w="20px"
+            h={index === idx ? "6px" : "3px"}
             rounded="full"
           />
         ))}
