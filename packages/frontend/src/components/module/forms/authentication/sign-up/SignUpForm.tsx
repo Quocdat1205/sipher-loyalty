@@ -98,8 +98,8 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
 
   return (
     <ChakraModal title={"SIGN IN OR CREATE ACCOUNT"} size="lg" isOpen={isOpen} onClose={onClose}>
-      <Stack px={6} spacing={6} w="full">
-        <Text color="neutral.300">
+      <Stack px={6} spacing={4} w="full">
+        <Text fontSize="sm" color="neutral.300">
           Please link crypto-wallet in order to sign in. This will only be used to link to your account. Funds will not
           be withdrawn and no minimum balance required.
         </Text>
@@ -137,7 +137,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
               </InputGroup>
             </FormField>
           </FormControl>
-          <FormControl mb={2} as="fieldset">
+          <FormControl mb={4} as="fieldset">
             <FormField error={errors?.confirmPassword?.message}>
               <InputGroup size="md">
                 <CustomInput
@@ -162,13 +162,13 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
               </InputGroup>
             </FormField>
           </FormControl>
-          <Text color="neutral.400">
+          <Text fontSize="sm" mb={4} color="neutral.400">
             I have read and agree to the{" "}
             <Link textDecor="underline" color="cyan.600" isExternal>
               Ather Labs Privacy Policy
             </Link>
           </Text>
-          <Button type="submit" fontSize="md" py={6} fontWeight={600} isLoading={isLoading}>
+          <Button w="full" type="submit" fontSize="md" py={6} fontWeight={600} isLoading={isLoading}>
             SIGN UP
           </Button>
         </Form>
@@ -184,7 +184,10 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
               Social Account
             </Text>
             <HStack spacing={4}>
+              <WalletCard bg="#1677EF" src="/images/icons/facebook.svg" />
               <WalletCard bg="#EA4336" src="/images/icons/google.svg" />
+              <WalletCard bg="#4053E4" src="/images/icons/discord.svg" />
+              <WalletCard bg="#479BE9" src="/images/icons/twitter.svg" />
             </HStack>
           </Box>
           <Box>

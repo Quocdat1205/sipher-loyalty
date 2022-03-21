@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import { useMutation, useQuery } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, Button, chakra, Divider, FormControl, Stack, Text } from "@sipher.dev/sipher-ui"
@@ -55,13 +55,18 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
 
   if (isConnectingWallet) return <ConnectToWallet />
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    mutate()
+  }
+
   return (
     <ChakraModal title={"VERIFY YOUR ACCOUNT"} size="lg" isOpen={true} hideCloseButton={true}>
       <Stack pos="relative" px={6} spacing={6} w="full">
         <Text color="neutral.300">
           Please enter Passcode sent to <chakra.span fontWeight={600}>{email}</chakra.span>
         </Text>
-        <Form onSubmit={() => mutate()}>
+        <Form onSubmit={handleSubmit}>
           <FormControl mb={0} as="fieldset">
             <FormField>
               <CustomInput placeholder="Passcode" value={code} onChange={e => setCode(e.target.value)} />

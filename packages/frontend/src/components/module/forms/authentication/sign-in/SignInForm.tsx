@@ -116,11 +116,13 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
       onSuccess: handleChallenge,
       onError: (e: any) => {
         if (e?.message === "User is not confirmed.") setVerifyCode(true)
-        toast({
-          status: "error",
-          title: "Signature Error",
-          message: e.message || "User denied to sign message.",
-        })
+        else {
+          toast({
+            status: "error",
+            title: "Signature Error",
+            message: e.message || "User denied to sign message.",
+          })
+        }
       },
       onSettled: () => setConnectingMethod(null),
     },
