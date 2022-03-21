@@ -2,13 +2,13 @@ import React from "react"
 import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 
 const data = [
-  { id: "Astero", isActive: true, y: "-40%", i: 1 },
-  { id: "Aphrodite", isActive: false, y: "50%", i: 2 },
-  { id: "Athena", isActive: false, y: "95%", i: 3 },
-  { id: "Athena", isActive: false, y: "110%", i: 4 },
-  { id: "Poseidon", isActive: false, y: "95%", i: 5 },
-  { id: "Artemis", isActive: false, y: "50%", i: 6 },
-  { id: "Dionysus", isActive: false, y: "-40%", i: 7 },
+  { id: "Chim Chim", isActive: true, y: "-40%", i: 1 },
+  { id: "Swordfish", isActive: false, y: "50%", i: 2 },
+  { id: "Manta", isActive: false, y: "95%", i: 3 },
+  { id: "Otter", isActive: false, y: "110%", i: 4 },
+  { id: "Dodo", isActive: false, y: "95%", i: 5 },
+  { id: "Tui", isActive: false, y: "50%", i: 6 },
+  { id: "Ikan", isActive: false, y: "-40%", i: 7 },
 ]
 
 const opacityArr = [
@@ -59,8 +59,11 @@ export const Timeline = () => {
             bg="radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 100%)"
             boxSize="34px"
           >
-            <Box bg={item.isActive ? "accent.500" : "neutral.400"} rounded="full" boxSize="12px">
+            <>
+              <Box bg={item.isActive ? "accent.500" : "neutral.400"} rounded="full" boxSize="12px"></Box>
               <Text
+                w="auto"
+                whiteSpace="nowrap"
                 color={item.isActive ? "accent.500" : "white"}
                 fontWeight={600}
                 fontSize="lg"
@@ -71,7 +74,7 @@ export const Timeline = () => {
               >
                 {item.id}
               </Text>
-            </Box>
+            </>
           </Flex>
         ))}
       </HStack>
