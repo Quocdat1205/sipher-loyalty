@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 
-import CommonLayout from "@components/module/layout/CommonLayout"
+import { CommonLayout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
 import AirdropUI from "@components/UI/airdrop"
 

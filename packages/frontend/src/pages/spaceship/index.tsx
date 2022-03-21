@@ -1,8 +1,8 @@
 import { ReactNode } from "react"
 
-import { LayoutSpaceship } from "@components/module/layout"
+import { CommonLayout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
-import { OverviewContainer } from "@components/UI/spaceship"
+import ContentSpaceship from "@components/UI/spaceship"
 
 import { NextPageWithLayout } from "../_app"
 
@@ -10,11 +10,11 @@ const SpaceshipPage: NextPageWithLayout = () => {
   return (
     <>
       <Metadata title="Spaceship" description="Overview" />
-      <OverviewContainer />
+      <ContentSpaceship />
     </>
   )
 }
 
-SpaceshipPage.getLayout = (page: ReactNode) => <LayoutSpaceship>{page}</LayoutSpaceship>
+SpaceshipPage.getLayout = (page: ReactNode) => <CommonLayout>{page}</CommonLayout>
 
 export default SpaceshipPage

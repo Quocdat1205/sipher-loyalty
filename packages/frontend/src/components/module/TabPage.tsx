@@ -7,7 +7,7 @@ interface TabPageProps {
 
 const TabPage = ({ tabs }: TabPageProps) => {
   const router = useRouter()
-  const currentTab = router.query.tab || "all"
+  const currentTab = router.query.tab || tabs[0].name
 
   return (
     <HStack spacing={8} overflow="hidden" borderBottom="1px" borderColor="neutral.700">
