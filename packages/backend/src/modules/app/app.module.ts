@@ -16,6 +16,7 @@ import { NftItemModule } from "@modules/nft/nftItem.module";
 import { SculptureModule } from "@modules/sculpture/sculpture.module";
 import { SearchModule } from "@modules/search/search.module";
 import { URIModule } from "@modules/uri/uri.module";
+import { UserModule } from "@modules/user/user.module";
 
 import { LootBoxModule } from "../lootbox/lootbox.module";
 import { MintModule } from "../mint/mint.module";
@@ -49,6 +50,7 @@ import { AppService } from "./app.service";
     MultiTokenModule,
     SculptureModule,
     MerchModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

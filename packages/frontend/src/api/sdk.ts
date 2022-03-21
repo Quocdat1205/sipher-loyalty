@@ -109,6 +109,8 @@ export interface Airdrop {
   created: string;
 }
 
+export type BioDto = object;
+
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
 
 export type QueryParamsType = Record<string | number, any>;
@@ -486,6 +488,34 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, any>({
         path: `/api/sipher/loyalty/sculpture/shopify-code/${ownerAddress}`,
         method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name UserControllerUploadImg
+     * @request POST:/api/sipher/loyalty/user/upload-image
+     */
+    userControllerUploadImg: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/user/upload-image`,
+        method: 'POST',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name UserControllerUploadBio
+     * @request POST:/api/sipher/loyalty/user/update-bio
+     */
+    userControllerUploadBio: (data: BioDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/user/update-bio`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

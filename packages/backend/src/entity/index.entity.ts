@@ -8,3 +8,5 @@ export * from "./merch.entity";
 export * from "./mint.entity";
 export * from "./program.entity";
 export * from "./shopify-code.entity";
+export * from "./S3.entity";
+export * from "./user.entity";
