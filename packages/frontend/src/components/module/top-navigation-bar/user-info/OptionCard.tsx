@@ -14,7 +14,7 @@ export const OptionCard = ({ children, name, icon, onClick, ...rest }: OptionCar
       p={2}
       cursor="pointer"
       w="full"
-      _hover={{ bg: "accent.600" }}
+      _hover={{ bg: "accent.500" }}
       align="center"
       onClick={onClick}
       {...rest}

@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react"
 import Cropper from "react-easy-crop"
+import { Area, Point } from "react-easy-crop/types"
 import { BiArrowBack } from "react-icons/bi"
 import Image from "next/image"
 import {
@@ -21,30 +22,30 @@ interface ChooseAvatarModalProps {
   setChangeForm: (v: string) => void
 }
 
-const dogImg = "/images/avatar1.png"
+const dogImg = "/images/nft/sipher1.png"
 
 export const ChooseAvatarModal = ({ setChangeForm }: ChooseAvatarModalProps) => {
-  const [crop, setCrop] = useState({ x: 0, y: 0 })
+  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
-  const [croppedImage, setCroppedImage] = useState<any>()
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState()
 
-  const onCropComplete = useCallback(croppedAreaPixels => {
+  const [croppedImage, setCroppedImage] = useState<any>()
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>()
+
+  const onCropComplete = useCallback((_, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels)
   }, [])
 
   const showCroppedImage = useCallback(async () => {
     try {
-      const croppedImages = await getCroppedImg(dogImg, croppedAreaPixels)
-      console.log("donee", { croppedImage })
-      setCroppedImage(croppedImages)
+      const croppedImage = await getCroppedImg(dogImg, croppedAreaPixels)
+      setCroppedImage(croppedImage)
     } catch (e) {
       console.error(e)
     }
   }, [croppedAreaPixels])
 
-  const handleCancel = useCallback(() => {
-    setCroppedImage(undefined)
+  const onClose = useCallback(() => {
+    setCroppedImage(null)
   }, [])
 
   return (
@@ -55,7 +56,7 @@ export const ChooseAvatarModal = ({ setChangeForm }: ChooseAvatarModalProps) => 
         </Box>
         <Text color="neutral.400">Upload Image</Text>
       </Flex>
-      <Flex align="center" justify="center" mb={4} pos="relative" h="24rem">
+      <Flex align="center" justify="center" mb={4} pos="relative" h="20rem">
         {croppedImage ? (
           <Box sx={{ span: { rounded: "full", overflow: "hidden" } }}>
             <Image src={croppedImage} alt="new-image" width={240} height={240} />
@@ -64,9 +65,10 @@ export const ChooseAvatarModal = ({ setChangeForm }: ChooseAvatarModalProps) => 
           <Cropper
             cropShape="round"
             image={dogImg}
+            showGrid={false}
             crop={crop}
             zoom={zoom}
-            aspect={3 / 3}
+            aspect={1 / 1}
             onCropChange={setCrop}
             onCropComplete={onCropComplete}
             onZoomChange={setZoom}
@@ -90,7 +92,7 @@ export const ChooseAvatarModal = ({ setChangeForm }: ChooseAvatarModalProps) => 
       {croppedImage ? (
         <HStack spacing={4} justify="center">
           <Button>Save</Button>
-          <Button bg="neutral.600" onClick={handleCancel} colorScheme="neutral" variant="secondary">
+          <Button bg="neutral.600" onClick={onClose} colorScheme="neutral" variant="secondary">
             Cancel
           </Button>
         </HStack>

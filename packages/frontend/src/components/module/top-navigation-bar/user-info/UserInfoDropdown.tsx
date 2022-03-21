@@ -1,9 +1,8 @@
-import { useState } from "react"
-import { BiRefresh } from "react-icons/bi"
+import { BiHeadphone } from "react-icons/bi"
 import { BsArrowRightShort } from "react-icons/bs"
 import { IoMdClose, IoMdSettings } from "react-icons/io"
-import { IoPersonCircle } from "react-icons/io5"
-import { useRouter } from "next/router"
+import { RiEarthFill } from "react-icons/ri"
+import { useQuery } from "react-query"
 import {
   Avatar,
   Box,
@@ -19,22 +18,24 @@ import {
 } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
-import { AccountModal, BuySipherModal } from "@components/module/modal"
 import { EthereumIcon, SipherIcon } from "@components/shared"
 import { ClipboardCopy } from "@components/shared/ClipboardCopy"
-import { shortenAddress } from "@utils"
+import { currency, shortenAddress } from "@utils"
 
 import { OptionCard } from "."
 
 interface UserInfoDropdownProps {
   isOpen: boolean
   onClose: () => void
+  setModal: (v: string) => void
 }
 
-export const UserInfoDropdown = ({ isOpen, onClose }: UserInfoDropdownProps) => {
-  const router = useRouter()
-  const wallet = useWalletContext()
-  const [modal, setModal] = useState("")
+export const UserInfoDropdown = ({ isOpen, onClose, setModal }: UserInfoDropdownProps) => {
+  const { account, reset, scCaller } = useWalletContext()
+
+  const { data: ethereum } = useQuery(["ethereum", account], () => scCaller.current?.getEtherBalance(account!))
+  const { data: sipher } = useQuery(["sipher", account], () => scCaller.current?.getSipherBalance(account!))
+  const { data: weth } = useQuery(["weth", account], () => scCaller.current?.getWETHBalance(account!))
 
   return (
     <Box
@@ -79,8 +80,8 @@ export const UserInfoDropdown = ({ isOpen, onClose }: UserInfoDropdownProps) => 
             </Text>
             <Flex>
               <Flex align="center" p={2} rounded="base" border="1px" borderColor="neutral.600">
-                <Text mr={4}>{shortenAddress(wallet.account)}</Text>
-                <ClipboardCopy color="#E7E7ED" text={wallet.account ?? ""} />
+                <Text mr={4}>{shortenAddress(account)}</Text>
+                <ClipboardCopy color="#E7E7ED" text={account ?? ""} />
               </Flex>
               <IconButton
                 ml={2}
@@ -132,7 +133,8 @@ export const UserInfoDropdown = ({ isOpen, onClose }: UserInfoDropdownProps) => 
                   <Text ml={2}>ETH</Text>
                 </Flex>
                 <Text>
-                  0.14 <chakra.span color="neutral.400">($1,056)</chakra.span>
+                  {currency(parseFloat(ethereum!))}{" "}
+                  <chakra.span color="neutral.400">(${currency(parseFloat(ethereum ?? "0") * 23)})</chakra.span>
                 </Text>
               </Flex>
               <Flex align="center" justify="space-between">
@@ -143,7 +145,7 @@ export const UserInfoDropdown = ({ isOpen, onClose }: UserInfoDropdownProps) => 
                   <Text ml={2}>WETH</Text>
                 </Flex>
                 <Text>
-                  0.14 <chakra.span color="neutral.400">($1,056)</chakra.span>
+                  {currency(weth ?? 0)} <chakra.span color="neutral.400">(${currency((weth ?? 0) * 23)})</chakra.span>
                 </Text>
               </Flex>
               <Flex align="center" justify="space-between">
@@ -154,7 +156,8 @@ export const UserInfoDropdown = ({ isOpen, onClose }: UserInfoDropdownProps) => 
                   <Text ml={2}>SIPHER</Text>
                 </Flex>
                 <Text>
-                  0.14 <chakra.span color="neutral.400">($1,056)</chakra.span>
+                  {currency(sipher ?? 0)}{" "}
+                  <chakra.span color="neutral.400">(${currency((sipher ?? 0) * 23)})</chakra.span>
                 </Text>
               </Flex>
             </Stack>
@@ -162,16 +165,15 @@ export const UserInfoDropdown = ({ isOpen, onClose }: UserInfoDropdownProps) => 
           <Divider borderColor="neutral.600" mb={4} />
           <Stack mb={4} w="full" align="flex-start">
             <OptionCard
-              name="My Profile"
-              icon={<IoPersonCircle size="1.5rem" />}
-              onClick={() => router.push("/profile/inventory")}
+              name="Sipher Home Page"
+              icon={<RiEarthFill size="1.4rem" />}
+              onClick={() => window.open("https://sipher.xyz/", "_blank")}
             />
-            {/* <OptionCard name="Notification Setting" icon={<IoNotifications size="1.5rem" />} /> */}
-            <OptionCard name="ETH / WETH Station" icon={<BiRefresh size="1.5rem" />} />
+            <OptionCard name="Support" icon={<BiHeadphone size="1.4rem" />} />
           </Stack>
           <Button
             onClick={() => {
-              wallet.reset()
+              reset()
               onClose()
             }}
             w="full"
@@ -183,8 +185,6 @@ export const UserInfoDropdown = ({ isOpen, onClose }: UserInfoDropdownProps) => 
             DISCONNECT
           </Button>
         </Flex>
-        <AccountModal isOpen={modal === "SETTING"} onClose={() => setModal("")} />
-        <BuySipherModal isOpen={modal === "BUY"} onClose={() => setModal("")} />
       </ScaleFade>
     </Box>
   )

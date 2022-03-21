@@ -44,7 +44,7 @@ export const SpaceshipContainer = () => {
               do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
             </Text>
             <Button size="lg" mt={8} letterSpacing="1px">
-              REVEAL LOOTBOX
+              CLAIM LOOTBOX
             </Button>
           </Box>
           <Flex pos="relative" flexDir="column" align="flex-end" ml={8} p={4} flex={1}>

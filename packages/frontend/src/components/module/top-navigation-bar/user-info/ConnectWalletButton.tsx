@@ -7,6 +7,7 @@ import { useWalletContext } from "@web3"
 import SignInForm from "@components/module/forms/authentication/sign-in"
 import SignUpForm from "@components/module/forms/authentication/sign-up"
 import { SignInProvider } from "@components/module/forms/authentication/useSignInContext"
+import { AccountModal, BuySipherModal } from "@components/module/modal"
 import { shortenAddress } from "@utils"
 import { useAuth } from "src/providers/auth"
 
@@ -16,6 +17,7 @@ export const ConnectWalletButton = () => {
   const wallet = useWalletContext()
   const popRef = useRef<HTMLDivElement>(null)
   const [infoPopup, setInfoPopup] = useState(false)
+  const [modal, setModal] = useState("")
 
   const { authFlow, setAuthFlow } = useStore(s => ({
     authFlow: s.authFlow,
@@ -73,10 +75,12 @@ export const ConnectWalletButton = () => {
               </Flex>
             )}
           </Flex>
-          {infoPopup && <UserInfoDropdown isOpen={infoPopup} onClose={() => setInfoPopup(false)} />}
+          {infoPopup && <UserInfoDropdown setModal={setModal} isOpen={infoPopup} onClose={() => setInfoPopup(false)} />}
         </Box>
         <SignInForm isOpen={authFlow === "SIGN_IN"} onClose={() => setAuthFlow(null)} />
         <SignUpForm isOpen={authFlow === "SIGN_UP"} onClose={() => setAuthFlow(null)} />
+        <AccountModal isOpen={modal === "SETTING"} onClose={() => setModal("")} />
+        <BuySipherModal isOpen={modal === "BUY"} onClose={() => setModal("")} />
       </Box>
     </SignInProvider>
   )

@@ -1,6 +1,7 @@
 import { BigNumber, providers } from "ethers"
 
 import { LPSipherWethKyberAddress, LPSipherWethUniswapAddress, SipherTokenAddress, WETH_ADDRESS } from "@constant"
+import { weiToEther } from "@utils"
 import { getETHPrice, getSipherPrice } from "src/api/price"
 
 import ERC20 from "./ERC20"
@@ -35,8 +36,19 @@ export class ContractCaller {
     this.StakingLPSipherWethUniswap = new StakingLPSipherWethUniswap(this.provider)
   }
 
-  public async getEtherBalance(from: string): Promise<BigNumber> {
-    return await this.provider.getBalance(from)
+  public async getEtherBalance(from: string): Promise<string> {
+    const balance: BigNumber = await this.provider.getBalance(from)
+    return weiToEther(balance.toString())
+  }
+
+  public async getSipherBalance(from: string): Promise<number> {
+    const balance = await this.SipherToken.getBalance(from)
+    return balance
+  }
+
+  public async getWETHBalance(from: string): Promise<number> {
+    const balance = await this.WETH.getBalance(from)
+    return balance
   }
 
   public async getLpUniswapTVL() {
