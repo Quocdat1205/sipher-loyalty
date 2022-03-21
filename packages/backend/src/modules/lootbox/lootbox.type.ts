@@ -1,5 +1,8 @@
 import { Matches } from "class-validator";
+import { Lootbox, PendingMint } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
+
+import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 export class MintBatchLootboxInputDto {
   @ApiProperty()
@@ -23,6 +26,36 @@ export class MintLootboxInputDto {
 
   @ApiProperty()
   amount: number;
+}
+
+export class resMintBatchDto {
+  @ApiProperty()
+  signanture: string;
+
+  @ApiProperty()
+  data: Lootbox[];
+
+  @ApiProperty()
+  pending: PendingMint[];
+}
+
+export class resMintSingleDto {
+  @ApiProperty()
+  signanture: string;
+
+  @ApiProperty()
+  data: Lootbox;
+
+  @ApiProperty()
+  pending: PendingMint[];
+}
+
+export class resClaimLootboxDto {
+  @ApiProperty()
+  resultClaimableLootbox: ClaimableLootbox;
+
+  @ApiProperty()
+  resultLootbox: Lootbox;
 }
 
 export class ClaimLootboxInputDto {

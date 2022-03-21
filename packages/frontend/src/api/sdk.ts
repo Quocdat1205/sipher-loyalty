@@ -21,10 +21,22 @@ export interface MintBatchLootboxInputDto {
   amount: number[];
 }
 
+export interface ResMintBatchDto {
+  signanture: string;
+  data: string[];
+  pending: string[];
+}
+
 export interface MintLootboxInputDto {
   publicAddress: string;
   batchID: number;
   amount: number;
+}
+
+export interface ResMintSingleDto {
+  signanture: string;
+  data: Lootbox;
+  pending: string[];
 }
 
 export interface ClaimLootboxInputDto {
@@ -200,10 +212,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     lootBoxControllerGetLootboxFromWallet: (publicAddress: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<Lootbox[], any>({
         path: `/api/sipher/loyalty/lootbox/get-by-walllet/${publicAddress}`,
         method: 'GET',
         secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -216,10 +229,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     lootBoxControllerGetClaimableLootboxFromWallet: (publicAddress: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<ClaimableLootbox[], any>({
         path: `/api/sipher/loyalty/lootbox/get-by-walllet/claimable/${publicAddress}`,
         method: 'GET',
         secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -232,7 +246,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     lootBoxControllerGetLootboxFromUserId: (params: RequestParams = {}) =>
-      this.request<Lootbox, any>({
+      this.request<Lootbox[], any>({
         path: `/api/sipher/loyalty/lootbox/get-by-userID`,
         method: 'GET',
         secure: true,
@@ -249,7 +263,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     lootBoxControllerGetClaimableLootboxFromUserId: (params: RequestParams = {}) =>
-      this.request<ClaimableLootbox, any>({
+      this.request<ClaimableLootbox[], any>({
         path: `/api/sipher/loyalty/lootbox/get-by-userID/claimable`,
         method: 'GET',
         secure: true,
@@ -266,12 +280,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     lootBoxControllerMintBatchLootbox: (data: MintBatchLootboxInputDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<ResMintBatchDto, any>({
         path: `/api/sipher/loyalty/lootbox/mint-batch`,
         method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 
@@ -284,12 +299,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     lootBoxControllerMintLootbox: (data: MintLootboxInputDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<ResMintSingleDto, any>({
         path: `/api/sipher/loyalty/lootbox/mint`,
         method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
 

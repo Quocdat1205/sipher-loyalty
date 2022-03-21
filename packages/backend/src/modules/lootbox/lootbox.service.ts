@@ -253,7 +253,9 @@ export class LootBoxService {
     // update claimablelootbox quatity = 0
     const { quantity } = claimableLootbox;
     claimableLootbox.quantity = 0;
-    await this.claimableLootboxRepo.save(claimableLootbox);
+    const resultClaimableLootbox = await this.claimableLootboxRepo.save(
+      claimableLootbox
+    );
 
     // create or update lootbox
     let lootbox = await this.getLootboxFromWalletAndTokenID(
@@ -270,7 +272,8 @@ export class LootBoxService {
       lootbox.quantity += quantity;
     }
     LoggerService.log(`save lootbox to  ${publicAddress}`);
-    await this.lootboxRepo.save(lootbox);
+    const resultLootbox = this.lootboxRepo.save(lootbox);
+    return { resultClaimableLootbox, resultLootbox };
   };
 
   weeklySnapshotForClaimableLootbox = async () => {
