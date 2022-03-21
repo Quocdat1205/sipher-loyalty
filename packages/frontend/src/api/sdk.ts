@@ -47,7 +47,18 @@ export interface Lootbox {
   createdAt: string;
 }
 
-export type ClaimableLootbox = object;
+export interface ClaimableLootbox {
+  id: number;
+  publicAddress: string;
+  quantity: number;
+  tokenId: number;
+
+  /** @format date-time */
+  expiredDate: string;
+
+  /** @format date-time */
+  createdAt: string;
+}
 
 export interface MintBatchLootboxInputDto {
   publicAddress: string;
