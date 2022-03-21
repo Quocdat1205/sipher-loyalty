@@ -11,7 +11,7 @@ export class Merch {
   id_merch: string;
 
   @Column()
-  wallet_address: string;
+  publicAddress: string;
 
   @Column()
   attachment: string;

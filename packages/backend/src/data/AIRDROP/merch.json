@@ -1,0 +1,11 @@
+[
+  {
+    "imageUrl": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_token.png",
+    "publicAddress": "0x83629905189464CC16F5E7c12D54dD5e87459B33",
+    "attachment": "",
+    "title": "test title",
+    "description": "test desc",
+    "isClaim": false,
+    "promo_code": "XXXXXX"
+  }
+]
