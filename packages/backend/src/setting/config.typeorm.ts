@@ -3,6 +3,8 @@ import { join } from "path";
 import dotenv from "dotenv";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
+import constant from "./constant";
+
 dotenv.config();
 
 class ConfigService {
@@ -24,11 +26,6 @@ class ConfigService {
 
   public getPort() {
     return this.getValue("PORT", true);
-  }
-
-  public isProduction() {
-    const mode = this.getValue("MODE", false);
-    return mode !== "DEV";
   }
 
   public getTypeOrmConfig(): TypeOrmModuleOptions & {
@@ -58,11 +55,11 @@ class ConfigService {
         migrationsDir: "src/migration/*.{ts,js}",
       },
 
-      synchronize: true,
+      synchronize: !constant.isProduction,
 
       autoLoadEntities: true,
 
-      ssl: this.isProduction(),
+      ssl: constant.isProduction,
     };
   }
 }

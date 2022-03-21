@@ -32,6 +32,9 @@ export class ClaimLootboxInputDto {
 
   @ApiProperty()
   tokenId: number;
+
+  @ApiProperty()
+  expiredDate: Date;
 }
 
 export interface MintLootboxInput {

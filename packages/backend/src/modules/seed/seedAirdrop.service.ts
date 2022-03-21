@@ -26,8 +26,11 @@ export class SeedAirdropService {
   ) {}
 
   seedAirdropHolder = async () => {
+    console.log(1);
+
     const flaternAirdrop = this.airdropDataHolder.data.map((el) => ({
       merkleRoot: this.airdropDataHolder.merkleRoot,
+      imageUrl: this.airdropDataHolder.imageUrl,
       ...el,
       addressContract: this.airdropDataHolder.addressContract,
       startTime: this.airdropDataHolder.startTime,
@@ -40,8 +43,11 @@ export class SeedAirdropService {
 
     const promises = [];
     for (let i = 0; i < flaternAirdrop.length; i++) {
-      const query = `insert into airdrop ("merkleRoot","proof","leaf","claimer","addressContract","totalAmount","startTime","vestingInterval","numberOfVestingPoint","type") values (
+      console.log(flaternAirdrop[i].imageUrl);
+
+      const query = `insert into airdrop ("merkleRoot","imageUrl","proof","leaf","claimer","addressContract","totalAmount","startTime","vestingInterval","numberOfVestingPoint","type") values (
             '${flaternAirdrop[i].merkleRoot}',
+            '${flaternAirdrop[i].imageUrl}',
             '${`{${flaternAirdrop[i].proof.join(",")}}`}',
             '${flaternAirdrop[i].leaf}',
             '${flaternAirdrop[i].claimer.toLowerCase()}',
@@ -72,6 +78,7 @@ export class SeedAirdropService {
   seedAirdropInvestor_CP1 = async () => {
     const flaternAirdrop = this.airdropDataInvestorsCP1.data.map((el) => ({
       merkleRoot: this.airdropDataInvestorsCP1.merkleRoot,
+      imageUrl: this.airdropDataInvestorsCP1.imageUrl,
       ...el,
       addressContract: this.airdropDataInvestorsCP1.addressContract,
       startTime: this.airdropDataInvestorsCP1.startTime,
@@ -84,8 +91,9 @@ export class SeedAirdropService {
 
     const promises = [];
     for (let i = 0; i < flaternAirdrop.length; i++) {
-      const query = `insert into airdrop ("merkleRoot","proof","leaf","claimer","addressContract","totalAmount","startTime","vestingInterval","numberOfVestingPoint","type") values (
+      const query = `insert into airdrop ("merkleRoot","imageUrl","proof","leaf","claimer","addressContract","totalAmount","startTime","vestingInterval","numberOfVestingPoint","type") values (
             '${flaternAirdrop[i].merkleRoot}',
+            '${flaternAirdrop[i].imageUrl}',
             '${`{${flaternAirdrop[i].proof.join(",")}}`}',
             '${flaternAirdrop[i].leaf}',
             '${flaternAirdrop[i].claimer.toLowerCase()}',
