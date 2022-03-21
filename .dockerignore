@@ -5,4 +5,8 @@ node_modules
 **/dist
 **/.next
 
+# Docker volumes
+docker/postgres
+docker/redis
+
 README.md

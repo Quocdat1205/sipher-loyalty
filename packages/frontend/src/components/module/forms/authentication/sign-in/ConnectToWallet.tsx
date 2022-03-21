@@ -42,7 +42,6 @@ const ConnectToWallet = () => {
   return (
     <ChakraModal title={"CONNECT TO A WALLET"} size="lg" isOpen={isOpen} hideCloseButton={true}>
       <Stack pos="relative" px={6} spacing={6} w="full">
-        <Text color="neutral.300">{`You’ll need to connect wallet to complete the sign up process.`}</Text>
         <HStack w="full" justify="space-between" align="center" spacing={6}>
           <WalletConnectCard
             onClick={() => {
@@ -59,7 +58,7 @@ const ConnectToWallet = () => {
             srcImage="/images/icons/wallets/walletconnect.svg"
           />
         </HStack>
-        <Box pb={2}>
+        <Box>
           <Divider pos="absolute" left="0" w="full" borderColor="whiteAlpha.100" />
         </Box>
         <Text color="neutral.400" textAlign="center">

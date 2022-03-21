@@ -18,7 +18,7 @@ import {
 import { CustomInput } from "@components/module/modal"
 import { CustomPopover, Form, FormControl, FormField } from "@components/shared"
 
-import { ChangeFormProps, WalletCard } from "../top-navigation-bar/user-info"
+import { ChangeFormProps, WalletCard } from "../top-navigation-bar/sign-in-button"
 
 import { usePasswordValidation } from "./usePasswordValidation"
 

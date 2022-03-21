@@ -13,18 +13,15 @@ import {
   Divider,
   Flex,
   FormControl,
-  HStack,
   IconButton,
   InputGroup,
   InputRightElement,
   Stack,
   Text,
-  toast,
 } from "@sipher.dev/sipher-ui"
 
-import { CustomInput } from "@components/module/modal"
-import { ChakraModal, CustomPopover, Form, FormField } from "@components/shared"
-import { useChakraToast, usePasswordStrength } from "@hooks"
+import { ChakraModal, CustomInput, CustomPopover, Form, FormField } from "@components/shared"
+import { useChakraToast } from "@hooks"
 
 import VerifySignUpForm from "./VerifySignUpForm"
 
@@ -131,13 +128,13 @@ const FillEmailForm = () => {
             </FormField>
           </FormControl>
           <FormControl mb={2} as="fieldset">
-            <FormField error={errors.passwordConfirmation}>
+            <FormField error={errors.confirmPassword}>
               <InputGroup size="md">
                 <CustomInput
                   pr="2.5rem"
                   type={show ? "text" : "password"}
                   placeholder="Password"
-                  {...register("passwordConfirmation")}
+                  {...register("confirmPassword")}
                 />
                 <InputRightElement width="2.5rem">
                   <IconButton

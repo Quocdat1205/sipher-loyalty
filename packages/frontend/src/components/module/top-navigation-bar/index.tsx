@@ -1,12 +1,10 @@
-import { useState } from "react"
 import { Box, Flex } from "@sipher.dev/sipher-ui"
 
 import { GradientBox } from "../layout"
-import { AccountModal, BuySipherModal } from "../modal"
 
-import Logo from "./Logo"
+import Logo from "./logo"
 import NavMenus from "./NavMenus"
-import { ConnectWalletButton } from "./user-info"
+import SignInButton from "./sign-in-button"
 
 interface TopNavigationBarProps {
   isSticky?: boolean
@@ -46,7 +44,7 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
           </Flex>
         </Flex>
         <Box mr={8} ml={8}>
-          <ConnectWalletButton />
+          <SignInButton />
         </Box>
       </Flex>
     </Box>
