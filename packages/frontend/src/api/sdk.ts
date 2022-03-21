@@ -363,12 +363,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags lootbox
      * @name LootBoxControllerClaim
-     * @request PUT:/api/sipher/loyalty/lootbox/claim-lootbox/{publicAddress}
+     * @request PUT:/api/sipher/loyalty/lootbox/claim-lootbox
      * @secure
      */
-    lootBoxControllerClaim: (publicAddress: string, params: RequestParams = {}) =>
+    lootBoxControllerClaim: (params: RequestParams = {}) =>
       this.request<ClaimableLootbox[], any>({
-        path: `/api/sipher/loyalty/lootbox/claim-lootbox/${publicAddress}`,
+        path: `/api/sipher/loyalty/lootbox/claim-lootbox`,
         method: 'PUT',
         secure: true,
         format: 'json',
