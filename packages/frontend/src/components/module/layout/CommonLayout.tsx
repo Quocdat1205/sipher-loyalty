@@ -1,9 +1,12 @@
-import { ReactNode } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { Flex } from "@sipher.dev/sipher-ui"
 
+import { getSignIn } from "@utils"
+
+import { OnBoardModal } from "../modal"
 import { TopNavigationBar } from "../top-navigation-bar"
 
-const CommonLayout = ({ children }: { children: ReactNode }) => {
+export const CommonLayout = ({ children }: { children: ReactNode }) => {
   return (
     <Flex
       pos="relative"
@@ -17,9 +20,8 @@ const CommonLayout = ({ children }: { children: ReactNode }) => {
       <TopNavigationBar isSticky />
       <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
         {children}
+        <OnBoardModal />
       </Flex>
     </Flex>
   )
 }
-
-export default CommonLayout

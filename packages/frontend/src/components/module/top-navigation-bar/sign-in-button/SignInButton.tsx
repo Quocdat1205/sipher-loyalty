@@ -67,7 +67,7 @@ const SignInButton = () => {
               </Flex>
             )}
           </Flex>
-          <UserInfoDropdown isOpen={infoPopup} onClose={() => setInfoPopup(false)} />
+          {infoPopup && <UserInfoDropdown isOpen={infoPopup} onClose={() => setInfoPopup(false)} />}
         </Box>
         <SignInForm isOpen={authFlow === "SIGN_IN"} onClose={() => setAuthFlow(null)} />
         <SignUpForm isOpen={authFlow === "SIGN_UP"} onClose={() => setAuthFlow(null)} />

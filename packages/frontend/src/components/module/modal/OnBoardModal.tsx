@@ -1,16 +1,10 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import { Box, Button, Flex, Heading, HStack, Text } from "@sipher.dev/sipher-ui"
 import { useStore } from "@store"
 
 import { ChakraModal } from "@components/shared"
-import { setSignIn } from "@utils"
-
-interface SettingAccountModalProps {
-  isOpen: boolean
-  onClose: () => void
-  setIsSignUp: (isSignUp: boolean) => void
-}
+import { getSignIn, setSignIn } from "@utils"
 
 // const slideData = [<Slide1 />, <Slide2 />, <Slide1 />]
 
@@ -32,26 +26,37 @@ const imageData = [
   },
 ]
 
-export const OnBoardModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
+export const OnBoardModal = () => {
   const { setAuthFlow } = useStore(s => ({
     setAuthFlow: s.setAuthFlow,
   }))
 
+  const [isOnboard, setIsOnboard] = useState(false)
+
+  useEffect(() => {
+    if (!getSignIn()) {
+      setIsOnboard(true)
+    }
+  }, [])
+
   const handleClick = () => {
-    setAuthFlow("SIGN_IN")
-    onClose()
+    setAuthFlow("SIGN_UP")
+    setSignIn("true")
+    setIsOnboard(false)
   }
 
   return (
     <ChakraModal
       title={""}
-      isOpen={isOpen}
+      isOpen={isOnboard}
       size="5xl"
+      hideCloseButton
       styleProps={{
         bg: "rgba(97, 97, 97, 0.1)",
         border: "1px",
         borderColor: "whiteAlpha.200",
         rounded: "2xl",
+        backdropFilter: "blur(20px)",
       }}
     >
       <Box opacity="0.5" pos="absolute" w="full" h="full" top="0" left="0" bg="url(/images/general/noise.png)" />

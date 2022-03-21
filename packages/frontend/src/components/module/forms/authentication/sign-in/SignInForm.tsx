@@ -5,7 +5,7 @@ import { MdInfo } from "react-icons/md"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
-import AtherIdAuth from "@sipher.dev/ather-id"
+import AtherIdAuth, { CognitoUser } from "@sipher.dev/ather-id"
 import {
   Box,
   Button,
@@ -57,12 +57,33 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
   const setAuthFlow = useStore(s => s.setAuthFlow)
 
   const [connectWallet, setConnectWallet] = useState(false)
+  const [connectingMethod, setConnectingMethod] = useState<string | null>(null)
 
   useEffect(() => {
-    if (authenticated) setConnectWallet(true)
-  }, [authenticated])
+    if (authenticated && !wallet.isActive) setConnectWallet(true)
+  }, [authenticated, !wallet.isActive])
+
+  const handleWalletChallenge = async (cogitoUser: CognitoUser, message: string) => {
+    if (!wallet.scCaller.current) return
+
+    const response = await wallet.scCaller.current.sign(message)
+
+    if (!response) {
+      toast({
+        status: "error",
+        title: "Sign Error",
+        message: "No response is received!",
+      })
+      return
+    }
+
+    const user = await AtherIdAuth.responseToSignInChallenge(cogitoUser, response)
+    setUser(user)
+    onClose()
+  }
 
   const handleChallenge = async (user: any) => {
+    console.log("USER", user)
     if (!user.challengeName) {
       if (!wallet.isActive) setConnectWallet(true)
       else onClose()
@@ -75,7 +96,7 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
     } else if (user.challengeName === "CUSTOM_CHALLENGE") {
       const { challenge } = user.challengeParam
       if (challenge === "WALLET") {
-        toast({ title: "Need wallet challength" })
+        return handleWalletChallenge(user, user.challengeParam.message)
       }
     }
 
@@ -86,41 +107,48 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
     })
   }
 
-  const { mutate: mutateSignIn, isLoading: isSigningIn } = useMutation<
-    unknown,
-    unknown,
-    { emailOrWallet: string; password?: string }
-  >(input => AtherIdAuth.signIn(input.emailOrWallet, input.password), {
-    onSuccess: handleChallenge,
-    onError: (e: any) => {
-      toast({
-        status: "error",
-        title: "Error",
-        message: e.message || "Something went wrong!",
-      })
+  const { mutate: mutateSignIn } = useMutation<unknown, unknown, { emailOrWallet: string; password?: string }>(
+    input => AtherIdAuth.signIn(input.emailOrWallet, input.password),
+    {
+      onSuccess: handleChallenge,
+      onError: (e: any) => {
+        toast({
+          status: "error",
+          title: "Signature Error",
+          message: e.message || "User denied to sign message.",
+        })
+      },
+      onSettled: () => setConnectingMethod(null),
     },
-  })
+  )
 
   const handleWalletSignin = async (connectorId: Parameters<typeof wallet["connect"]>["0"]) => {
-    if (!wallet.account) {
-      await wallet.connect(connectorId)
+    setConnectingMethod(connectorId as string)
+    let account = wallet.account
+    if (!account) {
+      account = (await wallet.connect(connectorId)) as string
     }
-    mutateSignIn({ emailOrWallet: wallet.account! })
+    mutateSignIn({ emailOrWallet: account! })
   }
 
   if (connectWallet) return <ConnectToWallet />
 
   return (
     <ChakraModal title={"SIGN IN"} size="lg" isOpen={isOpen} onClose={onClose}>
-      <Form onSubmit={handleSubmit(d => mutateSignIn({ emailOrWallet: d.email, password: d.password }))}>
+      <Form
+        onSubmit={handleSubmit(d => {
+          setConnectingMethod("email")
+          mutateSignIn({ emailOrWallet: d.email, password: d.password })
+        })}
+      >
         <Stack px={6} spacing={6} w="full">
           <FormControl as="fieldset">
-            <FormField error={errors.email}>
+            <FormField error={errors?.email?.message}>
               <CustomInput placeholder="Email address" {...register("email", { required: true })} />
             </FormField>
           </FormControl>
           <FormControl mb={0} as="fieldset">
-            <FormField error={errors.password}>
+            <FormField error={errors?.password?.message}>
               <InputGroup size="md">
                 <CustomInput
                   pr="2.5rem"
@@ -193,17 +221,21 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
                   bg="white"
                   src="/images/icons/wallets/metamask.svg"
                   onClick={() => handleWalletSignin("injected")}
+                  isLoading={connectingMethod === "injected"}
+                  spinnerColor="black"
                 />
                 <WalletCard
                   text="ConnectWallet"
                   bg="white"
                   src="/images/icons/wallets/walletconnect.svg"
                   onClick={() => handleWalletSignin("walletConnect")}
+                  isLoading={connectingMethod === "walletConnect"}
+                  spinnerColor="black"
                 />
               </HStack>
             </Box>
           </Flex>
-          <Button fontSize="md" py={6} fontWeight={600} type="submit" isLoading={isSigningIn}>
+          <Button fontSize="md" py={6} fontWeight={600} type="submit" isLoading={connectingMethod === "email"}>
             SIGN IN
           </Button>
         </Stack>
