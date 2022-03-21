@@ -9,6 +9,7 @@ export enum AirdropType {
   NFT = "NFT",
   TOKEN = "TOKEN",
   MERCH = "MERCH",
+  ALL = "ALL",
 }
 
 @Entity()

@@ -23,8 +23,6 @@ export class ScupltureTrackerService {
     private trackBlockRepo: Repository<TrackedBlock>
   ) {
     this.provider = getProvider(constant.CHAIN_ID);
-
-    LoggerService.log("1");
     this.sculptureContract = getContract(
       constant.blockchain.contracts.erc1155Sculpture[constant.CHAIN_ID].address,
       sculptureAbi,
@@ -34,7 +32,6 @@ export class ScupltureTrackerService {
 
   @Interval("scuplture-tracker", 15000)
   async runOnIntervalTracker() {
-    LoggerService.log("1");
     await this.trackRedeemedRecord();
   }
 
@@ -64,7 +61,7 @@ export class ScupltureTrackerService {
 
   private async getToBlock(currentFromBlock: number): Promise<number> {
     const chainLatestBlock = await this.provider.getBlockNumber();
-    const toBlock = currentFromBlock + 500;
+    const toBlock = currentFromBlock + 10000;
     if (toBlock <= chainLatestBlock) {
       return toBlock;
     }

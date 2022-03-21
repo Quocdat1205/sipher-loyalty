@@ -37,8 +37,6 @@ export interface ClaimLootboxInputDto {
 
 export type Airdrop = object;
 
-export type Merch = object;
-
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
 
 export type QueryParamsType = Record<string | number, any>;
@@ -359,47 +357,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags airdrop
-     * @name AirdropControllerGetAllAirdrop
-     * @request GET:/api/sipher/loyalty/airdrop/all/{publicAddress}
+     * @name AirdropControllerGetAirdropByType
+     * @request GET:/api/sipher/loyalty/airdrop/{airdropType}/{publicAddress}
      * @secure
      */
-    airdropControllerGetAllAirdrop: (publicAddress: string, params: RequestParams = {}) =>
+    airdropControllerGetAirdropByType: (publicAddress: string, airdropType: string, params: RequestParams = {}) =>
       this.request<Airdrop, any>({
-        path: `/api/sipher/loyalty/airdrop/all/${publicAddress}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags airdrop
-     * @name AirdropControllerGetTokenAirdrop
-     * @request GET:/api/sipher/loyalty/airdrop/token/{publicAddress}
-     * @secure
-     */
-    airdropControllerGetTokenAirdrop: (publicAddress: string, params: RequestParams = {}) =>
-      this.request<Airdrop, any>({
-        path: `/api/sipher/loyalty/airdrop/token/${publicAddress}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags airdrop
-     * @name AirdropControllerGetAllMerch
-     * @request GET:/api/sipher/loyalty/airdrop/merch/{publicAddress}
-     * @secure
-     */
-    airdropControllerGetAllMerch: (publicAddress: string, params: RequestParams = {}) =>
-      this.request<Merch, any>({
-        path: `/api/sipher/loyalty/airdrop/merch/${publicAddress}`,
+        path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}`,
         method: 'GET',
         secure: true,
         format: 'json',

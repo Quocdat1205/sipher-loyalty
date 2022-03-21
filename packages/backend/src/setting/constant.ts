@@ -29,7 +29,7 @@ type ConfigMint = {
 };
 @Injectable()
 export class SystemConfigProvider {
-  PORT = this.get("PORT");
+  PORT = parseInt(this.get("PORT"), 10);
 
   MODE = this.get("MODE");
 
