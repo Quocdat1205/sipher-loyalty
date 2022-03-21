@@ -31,6 +31,9 @@ export class Airdrop {
   @Column({ nullable: false })
   addressContract: string;
 
+  @Column({ nullable: true })
+  imageUrl: string;
+
   @Column({ nullable: false })
   totalAmount: string;
 

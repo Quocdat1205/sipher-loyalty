@@ -23,7 +23,7 @@ export class AppModule implements OnApplicationBootstrap {
   constructor(private readonly seedingService: SeedLootboxService) {}
 
   async onApplicationBootstrap(): Promise<void> {
-    await this.seedingService.seedLootbox();
+    await this.seedingService.seedLootboxCustom();
   }
 }
 async function bootstrap() {

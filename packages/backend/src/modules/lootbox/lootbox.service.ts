@@ -64,10 +64,12 @@ export class LootBoxService {
     tokenId: number
   ) => {
     try {
+      const expiredDate = new Date(new Date().getTime() / 1000 + 86400 * 7);
       const publicAddress: string = await nftContract.ownerOf(i);
-      let lootbox = await this.getClaimableLootboxFromWalletAndTokenID(
+      let lootbox = await this.getClaimableLootboxFromWalletAndTokenIdExpired(
         publicAddress,
-        tokenId
+        tokenId,
+        expiredDate
       );
 
       if (!lootbox) {
@@ -75,6 +77,7 @@ export class LootBoxService {
           publicAddress,
           tokenId,
           quantity: 1,
+          expiredDate,
         });
       } else {
         lootbox.quantity++;
@@ -187,14 +190,19 @@ export class LootBoxService {
     return lootboxs;
   };
 
-  private getClaimableLootboxFromWalletAndTokenID = async (
+  private getClaimableLootboxFromWalletAndTokenIdExpired = async (
     publicAddress: string,
-    tokenId: number
+    tokenId: number,
+    expiredDate: Date
   ) => {
     const lootboxs = await this.claimableLootboxRepo.findOne({
       where: [
-        { publicAddress: toChecksumAddress(publicAddress), tokenId },
-        { publicAddress: publicAddress.toLowerCase(), tokenId },
+        {
+          publicAddress: toChecksumAddress(publicAddress),
+          tokenId,
+          expiredDate,
+        },
+        { publicAddress: publicAddress.toLowerCase(), tokenId, expiredDate },
       ],
     });
     return lootboxs;
@@ -228,11 +236,13 @@ export class LootBoxService {
   };
 
   claimLootbox = async (claimLootboxInputDto: ClaimLootboxInputDto) => {
-    const { publicAddress, tokenId } = claimLootboxInputDto;
-    const claimableLootbox = await this.getClaimableLootboxFromWalletAndTokenID(
-      publicAddress,
-      tokenId
-    );
+    const { publicAddress, tokenId, expiredDate } = claimLootboxInputDto;
+    const claimableLootbox =
+      await this.getClaimableLootboxFromWalletAndTokenIdExpired(
+        publicAddress,
+        tokenId,
+        expiredDate
+      );
     // verify
     if (!claimableLootbox || claimableLootbox.quantity <= 0)
       throw new HttpException(
@@ -518,4 +528,26 @@ export class LootBoxService {
       );
     } else LoggerService.log("event resoved or in burned database");
   };
+
+  async upsertClaimedLootbox(claimableLootbox: ClaimableLootbox) {
+    try {
+      let lootbox = await this.getClaimableLootboxFromWalletAndTokenIdExpired(
+        claimableLootbox.publicAddress,
+        claimableLootbox.tokenId,
+        claimableLootbox.expiredDate
+      );
+
+      if (!lootbox) {
+        lootbox = this.claimableLootboxRepo.create(claimableLootbox);
+      } else {
+        lootbox.quantity++;
+      }
+      LoggerService.log(
+        `save claimable lootbox to  ${claimableLootbox.publicAddress}`
+      );
+      await this.claimableLootboxRepo.save(lootbox);
+    } catch (err) {
+      LoggerService.log(` ${err}`);
+    }
+  }
 }

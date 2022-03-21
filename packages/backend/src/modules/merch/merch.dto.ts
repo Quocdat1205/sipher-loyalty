@@ -2,12 +2,12 @@ import { IsEthereumAddress, IsString, IsUUID } from "class-validator";
 
 export class walletAddressDto {
   @IsEthereumAddress()
-  wallet_address: string;
+  publicAddress: string;
 }
 
 export class claimMerchDto {
   @IsString()
-  wallet_address: string;
+  publicAddress: string;
 
   @IsUUID()
   id_merch: string;

@@ -1,3 +1,4 @@
+import { Transform } from "class-transformer";
 import {
   Column,
   CreateDateColumn,
@@ -8,7 +9,7 @@ import {
 @Entity()
 export class ClaimableLootbox {
   @PrimaryGeneratedColumn("increment")
-  id: number;
+  id?: number;
 
   @Column({ nullable: false })
   publicAddress: string;
@@ -19,6 +20,10 @@ export class ClaimableLootbox {
   @Column({ nullable: false })
   tokenId: number;
 
+  @Column({ type: "timestamp", nullable: true })
+  @Transform(({ value }) => new Date(value))
+  expiredDate: Date;
+
   @CreateDateColumn({ default: new Date() })
-  createdAt: Date;
+  createdAt?: Date;
 }

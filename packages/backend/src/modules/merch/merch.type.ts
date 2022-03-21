@@ -1,11 +1,11 @@
 export interface claimItem {
-  wallet_address: string;
+  publicAddress: string;
   id_merch: string;
 }
 
 export interface merch {
   id_merch: string;
-  wallet_address: string;
+  publicAddress: string;
   attachment: string;
   title: string;
   description: string;

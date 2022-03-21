@@ -2,6 +2,7 @@ import {
   ERC1155SpaceShipPartLootbox,
   ERC1155SpaceShipPartLootboxAttribute,
   Lootbox,
+  Merch,
 } from "@entity";
 import { Module, OnApplicationBootstrap } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
@@ -18,7 +19,7 @@ import { Airdrop } from "src/entity/airdrop.entity";
     SeedModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([Airdrop]),
+    TypeOrmModule.forFeature([Airdrop, Merch]),
   ],
   providers: [SeedAirdropService],
 })
@@ -28,6 +29,7 @@ export class AppModule implements OnApplicationBootstrap {
   async onApplicationBootstrap(): Promise<void> {
     await this.seedingService.seedAirdropHolder();
     await this.seedingService.seedAirdropInvestor_CP1();
+    await this.seedingService.seedAirdropMerch();
   }
 }
 async function bootstrap() {
