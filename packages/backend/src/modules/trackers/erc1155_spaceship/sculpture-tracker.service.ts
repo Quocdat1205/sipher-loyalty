@@ -24,6 +24,7 @@ export class ScupltureTrackerService {
   ) {
     this.provider = getProvider(constant.CHAIN_ID);
 
+    LoggerService.log("1");
     this.sculptureContract = getContract(
       constant.blockchain.contracts.erc1155Sculpture[constant.CHAIN_ID].address,
       sculptureAbi,
