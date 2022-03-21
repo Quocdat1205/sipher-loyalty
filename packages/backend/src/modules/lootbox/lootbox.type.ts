@@ -58,6 +58,16 @@ export class resClaimLootboxDto {
   resultLootbox: Lootbox;
 }
 
+export class resLootboxDto {
+  @ApiProperty()
+  data: Lootbox[];
+}
+
+export class resClaimableLootboxDto {
+  @ApiProperty()
+  data: ClaimableLootbox[];
+}
+
 export class ClaimLootboxInputDto {
   @ApiProperty()
   @Matches(/^0x[a-fA-F0-9]{40}$/)

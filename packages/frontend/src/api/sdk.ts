@@ -11,40 +11,15 @@
 
 export type PendingMint = object;
 
-export type Lootbox = object;
-
-export type ClaimableLootbox = object;
-
-export interface MintBatchLootboxInputDto {
+export interface Lootbox {
+  id: number;
   publicAddress: string;
-  batchID: number[];
-  amount: number[];
-}
-
-export interface ResMintBatchDto {
-  signanture: string;
-  data: string[];
-  pending: string[];
-}
-
-export interface MintLootboxInputDto {
-  publicAddress: string;
-  batchID: number;
-  amount: number;
-}
-
-export interface ResMintSingleDto {
-  signanture: string;
-  data: Lootbox;
-  pending: string[];
-}
-
-export interface ClaimLootboxInputDto {
-  publicAddress: string;
+  quantity: number;
   tokenId: number;
+  pending: number;
 
   /** @format date-time */
-  expiredDate: string;
+  createdAt: string;
 }
 
 export type Airdrop = object;
@@ -217,113 +192,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: 'GET',
         secure: true,
         format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags lootbox
-     * @name LootBoxControllerGetClaimableLootboxFromWallet
-     * @request GET:/api/sipher/loyalty/lootbox/get-by-walllet/claimable/{publicAddress}
-     * @secure
-     */
-    lootBoxControllerGetClaimableLootboxFromWallet: (publicAddress: string, params: RequestParams = {}) =>
-      this.request<ClaimableLootbox[], any>({
-        path: `/api/sipher/loyalty/lootbox/get-by-walllet/claimable/${publicAddress}`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags lootbox
-     * @name LootBoxControllerGetLootboxFromUserId
-     * @request GET:/api/sipher/loyalty/lootbox/get-by-userID
-     * @secure
-     */
-    lootBoxControllerGetLootboxFromUserId: (params: RequestParams = {}) =>
-      this.request<Lootbox[], any>({
-        path: `/api/sipher/loyalty/lootbox/get-by-userID`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags lootbox
-     * @name LootBoxControllerGetClaimableLootboxFromUserId
-     * @request GET:/api/sipher/loyalty/lootbox/get-by-userID/claimable
-     * @secure
-     */
-    lootBoxControllerGetClaimableLootboxFromUserId: (params: RequestParams = {}) =>
-      this.request<ClaimableLootbox[], any>({
-        path: `/api/sipher/loyalty/lootbox/get-by-userID/claimable`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags lootbox
-     * @name LootBoxControllerMintBatchLootbox
-     * @request PUT:/api/sipher/loyalty/lootbox/mint-batch
-     * @secure
-     */
-    lootBoxControllerMintBatchLootbox: (data: MintBatchLootboxInputDto, params: RequestParams = {}) =>
-      this.request<ResMintBatchDto, any>({
-        path: `/api/sipher/loyalty/lootbox/mint-batch`,
-        method: 'PUT',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags lootbox
-     * @name LootBoxControllerMintLootbox
-     * @request PUT:/api/sipher/loyalty/lootbox/mint
-     * @secure
-     */
-    lootBoxControllerMintLootbox: (data: MintLootboxInputDto, params: RequestParams = {}) =>
-      this.request<ResMintSingleDto, any>({
-        path: `/api/sipher/loyalty/lootbox/mint`,
-        method: 'PUT',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags lootbox
-     * @name LootBoxControllerClaim
-     * @request PUT:/api/sipher/loyalty/lootbox/claim/{tokenId}
-     * @secure
-     */
-    lootBoxControllerClaim: (tokenId: string, data: ClaimLootboxInputDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/sipher/loyalty/lootbox/claim/${tokenId}`,
-        method: 'PUT',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         ...params,
       }),
 

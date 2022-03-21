@@ -211,7 +211,7 @@ export class LootBoxService {
   private getLootboxFromWalletAndTokenIDs = async (
     publicAddress: string,
     tokenId: number[]
-  ) => {
+  ): Promise<Array<Lootbox>> => {
     const promises = [];
     for (let i = 0; i < tokenId.length; i++) {
       promises.push(
@@ -221,7 +221,7 @@ export class LootBoxService {
     return Promise.all(promises);
   };
 
-  private flattenLootbox = async (lootboxs) => {
+  private flattenLootbox = async (lootboxs): Promise<Array<any>> => {
     const flattern_lootbox = [];
     lootboxs.forEach((lootbox: Lootbox) => {
       const index = flattern_lootbox.findIndex(
@@ -283,7 +283,9 @@ export class LootBoxService {
     await this.takeSnapshot(typeId);
   };
 
-  getLootboxFromWallet = async (publicAddress: string) => {
+  getLootboxFromWallet = async (
+    publicAddress: string
+  ): Promise<Array<Lootbox>> => {
     const lootboxs = await this.lootboxRepo.find({
       where: [
         { publicAddress: toChecksumAddress(publicAddress) },
@@ -293,7 +295,9 @@ export class LootBoxService {
     return lootboxs;
   };
 
-  getLootboxFromUserID = async (userData: UserData) => {
+  getLootboxFromUserID = async (
+    userData: UserData
+  ): Promise<Array<Lootbox>> => {
     const { userID, publicAddress } = userData;
     LoggerService.log(`userID:  ${userID}`);
     const promises = [];
@@ -305,7 +309,9 @@ export class LootBoxService {
     return this.flattenLootbox(lootboxs);
   };
 
-  getClaimableLootboxFromWallet = async (publicAddress: string) => {
+  getClaimableLootboxFromWallet = async (
+    publicAddress: string
+  ): Promise<Array<ClaimableLootbox>> => {
     const lootboxs = await this.claimableLootboxRepo.find({
       where: [
         { publicAddress: toChecksumAddress(publicAddress) },
@@ -315,7 +321,9 @@ export class LootBoxService {
     return lootboxs;
   };
 
-  getClaimableLootboxFromUserID = async (userData: UserData) => {
+  getClaimableLootboxFromUserID = async (
+    userData: UserData
+  ): Promise<Array<ClaimableLootbox>> => {
     const { userID, publicAddress } = userData;
     LoggerService.log(`userID:  ${userID}`);
     const promises = [];
@@ -532,7 +540,9 @@ export class LootBoxService {
     } else LoggerService.log("event resoved or in burned database");
   };
 
-  async upsertClaimedLootbox(claimableLootbox: ClaimableLootbox) {
+  async upsertClaimedLootbox(
+    claimableLootbox: ClaimableLootbox
+  ): Promise<ClaimableLootbox> {
     try {
       let lootbox = await this.getClaimableLootboxFromWalletAndTokenIdExpired(
         claimableLootbox.publicAddress,
@@ -548,7 +558,7 @@ export class LootBoxService {
       LoggerService.log(
         `save claimable lootbox to  ${claimableLootbox.publicAddress}`
       );
-      await this.claimableLootboxRepo.save(lootbox);
+      return this.claimableLootboxRepo.save(lootbox);
     } catch (err) {
       LoggerService.log(` ${err}`);
     }

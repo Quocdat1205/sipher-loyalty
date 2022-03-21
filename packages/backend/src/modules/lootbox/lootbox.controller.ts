@@ -1,9 +1,8 @@
-import { Lootbox, PendingMint } from "@entity";
+import { ClaimableLootbox, Lootbox } from "@entity";
 import {
   Body,
   Controller,
   Get,
-  HttpException,
   Param,
   Put,
   Req,
@@ -13,7 +12,6 @@ import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
 import { AtherGuard } from "@modules/auth/auth.guard";
 import { AuthService } from "@modules/auth/auth.service";
-import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 import { LootBoxService } from "./lootbox.service";
 import {
@@ -35,7 +33,7 @@ export class LootBoxController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: [Lootbox] })
+  @ApiOkResponse({ type: Lootbox, isArray: true })
   @Get("get-by-walllet/:publicAddress")
   async getLootboxFromWallet(
     @Param("publicAddress") publicAddress: string,
@@ -52,7 +50,7 @@ export class LootBoxController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: [ClaimableLootbox] })
+  @ApiOkResponse({ type: ClaimableLootbox, isArray: true })
   @Get("get-by-walllet/claimable/:publicAddress")
   async getClaimableLootboxFromWallet(
     @Param("publicAddress") publicAddress: string,
@@ -69,7 +67,7 @@ export class LootBoxController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: [Lootbox] })
+  @ApiOkResponse({ type: Lootbox, isArray: true })
   @Get("get-by-userID")
   async getLootboxFromUserID(@Req() req: any) {
     return this.lootBoxService.getLootboxFromUserID(req.userData);
@@ -77,7 +75,7 @@ export class LootBoxController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: [ClaimableLootbox] })
+  @ApiOkResponse({ type: ClaimableLootbox, isArray: true })
   @Get("get-by-userID/claimable")
   async getClaimableLootboxFromUserID(@Req() req: any) {
     return this.lootBoxService.getClaimableLootboxFromUserID(req.userData);

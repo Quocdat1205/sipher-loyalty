@@ -21,7 +21,7 @@ export class AirdropController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: Airdrop })
+  @ApiOkResponse({ type: Airdrop || Merch })
   @Get("/:airdropType/:publicAddress")
   async getAirdropByType(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
@@ -31,30 +31,6 @@ export class AirdropController {
     await this.authService.verifyAddress(publicAddress, req.userData);
     return this.airdropService.getAirdropByType(publicAddress, airdropType);
   }
-
-  // @UseGuards(AtherGuard)
-  // @ApiBearerAuth("JWT-auth")
-  // @ApiOkResponse({ type: Airdrop })
-  // @Get("/token/:publicAddress")
-  // async getTokenAirdrop(
-  //   @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
-  //   @Req() req: any
-  // ) {
-  //   await this.authService.verifyAddress(publicAddress, req.userData);
-  //   return this.airdropService.getTokenAirdrop(publicAddress);
-  // }
-
-  // @UseGuards(AtherGuard)
-  // @ApiBearerAuth("JWT-auth")
-  // @ApiOkResponse({ type: Merch })
-  // @Get("/merch/:publicAddress")
-  // async getAllMerch(
-  //   @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
-  //   @Req() req: any
-  // ) {
-  //   await this.authService.verifyAddress(publicAddress, req.userData);
-  //   return this.merchService.getAllMerch(publicAddress);
-  // }
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
