@@ -68,18 +68,6 @@ export class resClaimableLootboxDto {
   data: ClaimableLootbox[];
 }
 
-export class ClaimLootboxInputDto {
-  @ApiProperty()
-  @Matches(/^0x[a-fA-F0-9]{40}$/)
-  publicAddress: string;
-
-  @ApiProperty()
-  tokenId: number;
-
-  @ApiProperty()
-  expiredDate: Date;
-}
-
 export interface MintLootboxInput {
   publicAddress: string;
   batchID: number;

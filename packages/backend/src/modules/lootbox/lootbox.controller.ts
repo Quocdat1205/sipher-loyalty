@@ -15,7 +15,6 @@ import { AuthService } from "@modules/auth/auth.service";
 
 import { LootBoxService } from "./lootbox.service";
 import {
-  ClaimLootboxInputDto,
   MintBatchLootboxInputDto,
   MintLootboxInputDto,
   resClaimLootboxDto,
@@ -104,10 +103,10 @@ export class LootBoxController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: resClaimLootboxDto })
-  @Put("claim/:tokenId")
-  async claim(@Body() body: ClaimLootboxInputDto, @Req() req: any) {
-    await this.authService.verifyAddress(body.publicAddress, req.userData);
-    return this.lootBoxService.claimLootbox(body);
+  @ApiOkResponse({ type: ClaimableLootbox, isArray: true })
+  @Put("claim-lootbox/:publicAddress")
+  async claim(@Param("publicAddress") publicAddress: string, @Req() req: any) {
+    await this.authService.verifyAddress(publicAddress, req.userData);
+    return this.lootBoxService.claimLootbox(publicAddress);
   }
 }

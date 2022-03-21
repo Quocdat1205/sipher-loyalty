@@ -17,11 +17,7 @@ import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 import { LoggerService } from "../logger/logger.service";
 
-import {
-  ClaimLootboxInputDto,
-  MintBatchLootboxInput,
-  MintLootboxInput,
-} from "./lootbox.type";
+import { MintBatchLootboxInput, MintLootboxInput } from "./lootbox.type";
 
 @Injectable()
 export class LootBoxService {
@@ -221,7 +217,9 @@ export class LootBoxService {
     return Promise.all(promises);
   };
 
-  private flattenLootbox = async (lootboxs): Promise<Array<any>> => {
+  private flattenLootbox = async (
+    lootboxs: Array<Lootbox>
+  ): Promise<Array<any>> => {
     const flattern_lootbox = [];
     lootboxs.forEach((lootbox: Lootbox) => {
       const index = flattern_lootbox.findIndex(
@@ -235,28 +233,11 @@ export class LootBoxService {
     return flattern_lootbox;
   };
 
-  claimLootbox = async (claimLootboxInputDto: ClaimLootboxInputDto) => {
-    const { publicAddress, tokenId, expiredDate } = claimLootboxInputDto;
-    const claimableLootbox =
-      await this.getClaimableLootboxFromWalletAndTokenIdExpired(
-        publicAddress,
-        tokenId,
-        expiredDate
-      );
-    // verify
-    if (!claimableLootbox || claimableLootbox.quantity <= 0)
-      throw new HttpException(
-        `Don't have claimable lootbox id : ${tokenId}`,
-        HttpStatus.BAD_REQUEST
-      );
-
-    // update claimablelootbox quatity = 0
-    const { quantity } = claimableLootbox;
-    claimableLootbox.quantity = 0;
-    const resultClaimableLootbox = await this.claimableLootboxRepo.save(
-      claimableLootbox
-    );
-
+  private upsertLootbox = async (
+    publicAddress: string,
+    tokenId: number,
+    quantity: number
+  ) => {
     // create or update lootbox
     let lootbox = await this.getLootboxFromWalletAndTokenID(
       publicAddress,
@@ -272,8 +253,33 @@ export class LootBoxService {
       lootbox.quantity += quantity;
     }
     LoggerService.log(`save lootbox to  ${publicAddress}`);
-    const resultLootbox = this.lootboxRepo.save(lootbox);
-    return { resultClaimableLootbox, resultLootbox };
+    return this.lootboxRepo.save(lootbox);
+  };
+
+  claimLootbox = async (
+    publicAddress: string
+  ): Promise<Array<ClaimableLootbox>> => {
+    const claimableLootbox = await this.getClaimableLootboxFromWallet(
+      publicAddress
+    );
+
+    // update claimablelootbox quatity = 0
+    const promisesClaimableLootbox = [];
+    const promisesLootbox = [];
+    for (let i = 0; i < claimableLootbox.length; i++) {
+      const { quantity, tokenId } = claimableLootbox[i];
+      claimableLootbox[i].quantity = 0;
+      promisesClaimableLootbox.push(
+        this.claimableLootboxRepo.save(claimableLootbox)
+      );
+      promisesLootbox.push(
+        this.upsertLootbox(publicAddress, tokenId, quantity)
+      );
+    }
+
+    const resultClaimableLootbox = await Promise.all(promisesClaimableLootbox);
+    await Promise.all(promisesLootbox);
+    return resultClaimableLootbox;
   };
 
   weeklySnapshotForClaimableLootbox = async () => {
