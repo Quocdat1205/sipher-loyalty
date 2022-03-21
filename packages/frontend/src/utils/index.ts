@@ -31,7 +31,7 @@ export const capitalize = (str: string) => {
 }
 export const etherToWei = (amount: number | string) => ethers.utils.parseEther(amount.toString())
 
-export const weiToEther = (wei: string | BigNumber) => ethers.utils.formatEther(wei)
+export const weiToEther = (wei: string | BigNumber) => parseFloat(ethers.utils.formatEther(wei))
 
 export const setSignIn = (signIn: string) => {
   localStorage?.setItem(SIGNIN_KEY, signIn)

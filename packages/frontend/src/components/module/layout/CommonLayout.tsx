@@ -1,7 +1,5 @@
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode } from "react"
 import { Flex } from "@sipher.dev/sipher-ui"
-
-import { getSignIn } from "@utils"
 
 import { OnBoardModal } from "../modal"
 import { TopNavigationBar } from "../top-navigation-bar"

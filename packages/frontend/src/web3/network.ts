@@ -11,7 +11,7 @@ export const SUPPORTED_CHAINS_INFO = [
   },
 ]
 
-export const SUPPORTED_CHAINS = SUPPORTED_CHAINS_INFO.map(({ chainId }) => chainId)
+export const SUPPORTED_CHAINS = SUPPORTED_CHAINS_INFO.map(c => c.chainId)
 
 export const DEFAULT_CHAIN_ID = 1
 

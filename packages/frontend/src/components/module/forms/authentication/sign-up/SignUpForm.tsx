@@ -51,8 +51,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
   const [email, setEmail] = useState("")
   const [showVerify, setShowVerify] = useState(false)
   const [showEmailForm, setShowEmailForm] = useState(false)
-  const [show, setShow] = useState(false)
-
+  const [connectingMethod, setConnectingMethod] = useState<string | null>(null)
   const setAuthFlow = useStore(s => s.setAuthFlow)
 
   const {
@@ -77,17 +76,23 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
   const wallet = useWalletContext()
 
   const handleConnectWallet = async (connectorId: Parameters<typeof wallet["connect"]>["0"]) => {
+    setConnectingMethod(connectorId!)
     const account = await wallet.connect(connectorId)
 
     if (account) {
-      const user = await AtherIdAuth.signIn(account)
-      if (user)
-        toast({
-          status: "error",
-          title: "Address is already registered",
-        })
-      else setShowEmailForm(true)
+      try {
+        const user = await AtherIdAuth.signIn(account)
+        if (user)
+          toast({
+            status: "error",
+            title: "Address is already registered",
+          })
+        else setShowEmailForm(true)
+      } catch (e) {
+        setShowEmailForm(true)
+      }
     }
+    setConnectingMethod(null)
   }
 
   // show verify form after user has signed up
@@ -114,52 +119,12 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
           </FormControl>
           <FormControl mb={2} as="fieldset">
             <FormField error={errors?.password?.message}>
-              <InputGroup size="md">
-                <CustomInput
-                  pr="2.5rem"
-                  type={show ? "text" : "password"}
-                  placeholder="Password"
-                  {...register("password")}
-                />
-                <InputRightElement width="2.5rem">
-                  <IconButton
-                    variant="ghost"
-                    aria-label="eye-icon"
-                    color="neutral.400"
-                    _hover={{ bg: "neutral.500" }}
-                    _active={{ bg: "neutral.500" }}
-                    icon={show ? <BsEyeSlashFill size="1rem" /> : <BsEyeFill size="1rem" />}
-                    size="sm"
-                    h="1.75rem"
-                    onClick={() => setShow(!show)}
-                  />
-                </InputRightElement>
-              </InputGroup>
+              <CustomInput pr="2.5rem" type={"password"} placeholder="Password" {...register("password")} />
             </FormField>
           </FormControl>
           <FormControl mb={2} as="fieldset">
             <FormField error={errors?.confirmPassword?.message}>
-              <InputGroup size="md">
-                <CustomInput
-                  pr="2.5rem"
-                  type={show ? "text" : "password"}
-                  placeholder="Password"
-                  {...register("confirmPassword")}
-                />
-                <InputRightElement width="2.5rem">
-                  <IconButton
-                    variant="ghost"
-                    aria-label="eye-icon"
-                    color="neutral.400"
-                    _hover={{ bg: "neutral.500" }}
-                    _active={{ bg: "neutral.500" }}
-                    icon={show ? <BsEyeSlashFill size="1rem" /> : <BsEyeFill size="1rem" />}
-                    size="sm"
-                    h="1.75rem"
-                    onClick={() => setShow(!show)}
-                  />
-                </InputRightElement>
-              </InputGroup>
+              <CustomInput pr="2.5rem" type={"password"} placeholder="Password" {...register("confirmPassword")} />
             </FormField>
           </FormControl>
           <Text color="neutral.400">
@@ -179,16 +144,8 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
           <Box bg="neutral.600" h="1px" flex={1} />
         </Flex>
         <Flex flexDir="column" pb={2}>
-          <Box mb={4}>
-            <Text pb={2} color="neutral.400" fontSize="sm">
-              Social Account
-            </Text>
-            <HStack spacing={4}>
-              <WalletCard bg="#EA4336" src="/images/icons/google.svg" />
-            </HStack>
-          </Box>
           <Box>
-            <Flex pb={2} align="center">
+            <Flex mb={2} align="center">
               <Text mr={2} color="neutral.400" fontSize="sm">
                 Crypto-Wallet
               </Text>
@@ -221,12 +178,14 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
                 bg="white"
                 src="/images/icons/wallets/metamask.svg"
                 onClick={() => handleConnectWallet("injected")}
+                isLoading={connectingMethod === "injected"}
               />
               <WalletCard
                 text="ConnectWallet"
                 bg="white"
                 src="/images/icons/wallets/walletconnect.svg"
                 onClick={() => handleConnectWallet("walletConnect")}
+                isLoading={connectingMethod === "walletConnect"}
               />
             </HStack>
           </Box>

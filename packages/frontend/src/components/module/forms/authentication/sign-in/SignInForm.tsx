@@ -43,6 +43,7 @@ interface SignInFormProps {
 }
 
 const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
+  console.log(isOpen)
   const wallet = useWalletContext()
   const [show, setShow] = useState(false)
   const {
@@ -65,6 +66,10 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
   useEffect(() => {
     if (authenticated && !wallet.isActive) setConnectWallet(true)
   }, [authenticated, !wallet.isActive])
+
+  useEffect(() => {
+    if (connectWallet || verifyCode) setAuthFlow(null)
+  }, [connectWallet, verifyCode])
 
   const handleWalletChallenge = async (cogitoUser: CognitoUser, message: string) => {
     if (!wallet.scCaller.current) return
@@ -135,14 +140,6 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
     mutateSignIn({ emailOrWallet: account! })
   }
 
-  const { mutate: mutateSignInOauth } = useMutation<unknown, unknown, OauthProvider>(
-    provider => AtherIdAuth.signInWithOauth(provider),
-    {
-      onMutate: provider => setConnectingMethod(provider),
-      onSettled: () => setConnectingMethod(null),
-    },
-  )
-
   if (connectWallet) return <ConnectToWallet />
 
   if (verifyCode) return <VerifySignUpForm email={email} />
@@ -193,27 +190,6 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
             Forgot password?
           </Text>
           <Flex flexDir="column" pb={2}>
-            <Box mb={4}>
-              <Text pb={2} color="neutral.400" fontSize="sm">
-                Social Account
-              </Text>
-              <HStack spacing={4}>
-                <WalletCard bg="#1677EF" src="/images/icons/facebook.svg" onClick={() => alert("On Construction")} />
-                <WalletCard
-                  bg="#EA4336"
-                  src="/images/icons/google.svg"
-                  onClick={() => mutateSignInOauth(OauthProvider.Google)}
-                  isLoading={connectingMethod === OauthProvider.Google}
-                />
-                <WalletCard
-                  bg="#4053E4"
-                  src="/images/icons/discord.svg"
-                  onClick={() => mutateSignInOauth(OauthProvider.Discord)}
-                  isLoading={connectingMethod === OauthProvider.Discord}
-                />
-                <WalletCard bg="#479BE9" src="/images/icons/twitter.svg" onClick={() => alert("On Construction")} />
-              </HStack>
-            </Box>
             <Box>
               <Flex pb={2} align="center">
                 <Text mr={2} color="neutral.400" fontSize="sm">
