@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs"
 import { MdInfo } from "react-icons/md"
@@ -19,11 +19,10 @@ import {
   Stack,
   Text,
 } from "@sipher.dev/sipher-ui"
+import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
-import { CustomInput } from "@components/module/modal"
-import { WalletCard } from "@components/module/top-navigation-bar/user-info"
-import { ChakraModal, CustomPopover, Form, FormControl, FormField } from "@components/shared"
+import { ChakraModal, CustomInput, CustomPopover, Form, FormControl, FormField, WalletCard } from "@components/shared"
 import { useChakraToast } from "@hooks"
 
 import FillEmailForm from "./FillEmailForm"
@@ -54,6 +53,8 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
   const [showEmailForm, setShowEmailForm] = useState(false)
   const [show, setShow] = useState(false)
 
+  const setAuthFlow = useStore(s => s.setAuthFlow)
+
   const {
     register,
     handleSubmit,
@@ -75,11 +76,19 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
 
   const wallet = useWalletContext()
 
-  const handleConnectWallet = () => {}
+  const handleConnectWallet = async (connectorId: Parameters<typeof wallet["connect"]>["0"]) => {
+    const account = await wallet.connect(connectorId)
 
-  // useEffect(() => {
-  //   if (wallet.account) setShowEmailForm(true)
-  // }, [wallet.account])
+    if (account) {
+      const user = await AtherIdAuth.signIn(account)
+      if (user)
+        toast({
+          status: "error",
+          title: "Address is already registered",
+        })
+      else setShowEmailForm(true)
+    }
+  }
 
   // show verify form after user has signed up
   if (showVerify) return <VerifySignUpForm email={email} />
@@ -95,8 +104,8 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
           be withdrawn and no minimum balance required.
         </Text>
         <Form onSubmit={handleSubmit(d => mutate(d))}>
-          <FormControl as="fieldset">
-            <FormField error={errors.email}>
+          <FormControl mb={2} as="fieldset">
+            <FormField error={errors?.email?.message}>
               <CustomInput
                 placeholder="Email address"
                 {...register("email", { onChange: e => setEmail(e.target.value) })}
@@ -104,7 +113,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
             </FormField>
           </FormControl>
           <FormControl mb={2} as="fieldset">
-            <FormField error={errors.password}>
+            <FormField error={errors?.password?.message}>
               <InputGroup size="md">
                 <CustomInput
                   pr="2.5rem"
@@ -129,13 +138,13 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
             </FormField>
           </FormControl>
           <FormControl mb={2} as="fieldset">
-            <FormField error={errors.passwordConfirmation}>
+            <FormField error={errors?.confirmPassword?.message}>
               <InputGroup size="md">
                 <CustomInput
                   pr="2.5rem"
                   type={show ? "text" : "password"}
                   placeholder="Password"
-                  {...register("passwordConfirmation")}
+                  {...register("confirmPassword")}
                 />
                 <InputRightElement width="2.5rem">
                   <IconButton
@@ -207,14 +216,24 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
               </CustomPopover>
             </Flex>
             <HStack spacing={4}>
-              <WalletCard text="Metamask" bg="white" src="/images/icons/wallets/metamask.svg" />
-              <WalletCard text="ConnectWallet" bg="white" src="/images/icons/wallets/walletconnect.svg" />
+              <WalletCard
+                text="Metamask"
+                bg="white"
+                src="/images/icons/wallets/metamask.svg"
+                onClick={() => handleConnectWallet("injected")}
+              />
+              <WalletCard
+                text="ConnectWallet"
+                bg="white"
+                src="/images/icons/wallets/walletconnect.svg"
+                onClick={() => handleConnectWallet("walletConnect")}
+              />
             </HStack>
           </Box>
         </Flex>
         <Text color="neutral.400" textAlign="center">
           Already have an account?{" "}
-          <chakra.span textDecor="underline" cursor="pointer" color="cyan.600">
+          <chakra.span textDecor="underline" cursor="pointer" color="cyan.600" onClick={() => setAuthFlow("SIGN_IN")}>
             Sign In
           </chakra.span>
         </Text>

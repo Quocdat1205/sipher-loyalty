@@ -2,7 +2,6 @@ import { BigNumber, ethers } from "ethers"
 
 const SIGNIN_KEY = "SIGNIN"
 
-export * from "./constant"
 export * from "./urlQuery"
 export const currency = (
   amount: number,

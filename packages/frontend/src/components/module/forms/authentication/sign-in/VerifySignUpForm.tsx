@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { useMutation } from "react-query"
+import { useEffect, useState } from "react"
+import { useMutation, useQuery } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, Button, chakra, Divider, FormControl, Stack, Text } from "@sipher.dev/sipher-ui"
 
@@ -48,6 +48,10 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
       })
     },
   })
+
+  useEffect(() => {
+    mutateResendCode()
+  }, [])
 
   if (isConnectingWallet) return <ConnectToWallet />
 

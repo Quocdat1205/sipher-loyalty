@@ -1,5 +1,7 @@
 import React, { useState } from "react"
+import { useQuery } from "react-query"
 import { Button, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
+import { useWalletContext } from "@web3"
 
 import { EthereumIcon, SipherIcon } from "@components/shared"
 import { currency } from "@utils"
@@ -9,6 +11,8 @@ import { StakeModal } from "./modal"
 
 const GeneralContainer = () => {
   const [modalStake, setModalStake] = useState(false)
+  const { account, scCaller } = useWalletContext()
+  const { data: sipher } = useQuery(["sipher", account], () => scCaller.current?.getSipherBalance(account!))
 
   return (
     <>
@@ -20,7 +24,7 @@ const GeneralContainer = () => {
           rightChildren={<Text color="neutral.100">${currency(23455)}</Text>}
         />
         <CardGeneral
-          value="1,31"
+          value={currency(sipher ?? 0)}
           name="sipher token"
           icon={<SipherIcon />}
           popoverProps={{ label: "SIPHER TOKEN", content: "Description" }}

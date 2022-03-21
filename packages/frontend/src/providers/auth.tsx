@@ -1,4 +1,5 @@
 import { createContext, FC, useContext, useEffect, useMemo, useRef, useState } from "react"
+import { useMutation } from "react-query"
 import AtherIdAuth, {
   AtherIdEnviromment,
   CognitoUser,

@@ -22,9 +22,9 @@ export const StakeModal = ({ isOpen, onClose }: ChooseAvatarModalProps) => {
               <chakra.th fontSize="sm" fontWeight={600} color="neutral.400" py={2} textAlign="left">
                 Pool
               </chakra.th>
-              <chakra.th fontSize="sm" fontWeight={600} color="neutral.400" py={2} textAlign="center">
+              {/* <chakra.th fontSize="sm" fontWeight={600} color="neutral.400" py={2} textAlign="center">
                 APR
-              </chakra.th>
+              </chakra.th> */}
               <chakra.th py={2}></chakra.th>
             </chakra.tr>
           </chakra.thead>
@@ -39,9 +39,9 @@ export const StakeModal = ({ isOpen, onClose }: ChooseAvatarModalProps) => {
                     </Text>
                   </Flex>
                 </chakra.td>
-                <chakra.td fontWeight={600} py={4} textAlign="center">
+                {/* <chakra.td fontWeight={600} py={4} textAlign="center">
                   {(pool.APR * 100).toLocaleString(undefined, { maximumFractionDigits: 2 })}%
-                </chakra.td>
+                </chakra.td> */}
                 <chakra.td textAlign="right" py={4}>
                   <Button onClick={pool.onStake}>STAKE</Button>
                 </chakra.td>

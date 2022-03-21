@@ -4,7 +4,7 @@ import { Box, Button, Divider, Stack, Text } from "@sipher.dev/sipher-ui"
 import { CustomInput } from "@components/module/modal"
 import { Form, FormControl, FormField } from "@components/shared"
 
-import { ChangeFormProps } from "../top-navigation-bar/user-info"
+import { ChangeFormProps } from "../top-navigation-bar/sign-in-button"
 
 type ForgotPasswordProps = ChangeFormProps
 
