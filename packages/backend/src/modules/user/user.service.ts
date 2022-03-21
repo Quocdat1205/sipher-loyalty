@@ -28,6 +28,13 @@ export class UserService {
   );
 
   async uploadFile(file: Express.Multer.File) {
+    console.log(
+      this.configService.get("AWS_ACCESS_KEY_ID"),
+      this.configService.get("AWS_SECRET_ACCESS_KEY"),
+      this.configService.get("AWS_REGION"),
+      this.AWS_UPLOAD_FILE_URL_LINK
+    );
+
     // link save img
     const attachment = `${uuidv4()}-${file.originalname
       .toLowerCase()

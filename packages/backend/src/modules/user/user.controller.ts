@@ -1,18 +1,31 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from "@nestjs/common";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { ApiTags } from "@nestjs/swagger";
 
 import { bioDto } from "./user.dto";
 import { UserService } from "./user.service";
 
+@ApiTags("user")
 @Controller("user")
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Post("upload-image")
-  async uploadImg(file: Express.Multer.File): Promise<{ attachment: string }> {
-    return this.userService.uploadFile(file);
+  @UseInterceptors(FileInterceptor("file"))
+  async uploadImg(@UploadedFile() file: Express.Multer.File): Promise<any> {
+    const result = await this.userService.uploadFile(file);
+
+    return result;
   }
 
   @Post("update-bio")
+  @UseInterceptors(FileInterceptor("file"))
   async uploadBio(@Body() body: bioDto) {
     const { ather_id, bio } = body;
 

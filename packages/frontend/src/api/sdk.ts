@@ -494,6 +494,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags user
      * @name UserControllerUploadImg
      * @request POST:/api/sipher/loyalty/user/upload-image
      */
@@ -507,6 +508,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags user
      * @name UserControllerUploadBio
      * @request POST:/api/sipher/loyalty/user/update-bio
      */
