@@ -5,8 +5,8 @@ node_modules
 **/dist
 **/.next
 
-README.md
-
 # Docker volumes
 docker/postgres
 docker/redis
+
+README.md
