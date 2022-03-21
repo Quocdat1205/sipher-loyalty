@@ -1,9 +1,12 @@
+import { Repository } from "typeorm";
 import { ShopifyCode, ShopifyCodeStatus } from "@entity";
-import { MultiTokenService } from "@modules/multi-token/multi-token.service";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
-import { Repository } from "typeorm";
+
+import { LoggerService } from "@modules/logger/logger.service";
+import { MultiTokenService } from "@modules/multi-token/multi-token.service";
+
 import {
   RedeemShopifyCodeDto,
   SculptureBalanceDto,
@@ -25,7 +28,7 @@ export class SculptureService {
 
   async sculptureBalance(sculptureBalanceDto: SculptureBalanceDto) {
     const balance = await this.multiTokenService.balanceOf(
-      constant.SCULPTURE_ADDRESS,
+      constant.blockchain.contracts.erc1155Sculpture[constant.CHAIN_ID].address,
       {
         address: sculptureBalanceDto.address,
         tokenId: this.sculptureMap[sculptureBalanceDto.sculptureType],
@@ -50,7 +53,7 @@ export class SculptureService {
     const { amount, tokenId, address, txHash } = redeemShopifyCodeDto;
     const existed = await this.shopifyCodeRepo.findOne({
       where: {
-        txHash: txHash,
+        txHash,
       },
     });
     if (existed) {
@@ -64,8 +67,9 @@ export class SculptureService {
       .limit(amount)
       .printSql()
       .getMany();
+    // eslint-disable-next-line no-restricted-syntax
     for (const code of codeToRedeem) {
-      console.log(`Redeeem ${code.code}`);
+      LoggerService.log(`Redeeem ${code.code}`);
       code.status = ShopifyCodeStatus.REDEEMED;
       code.tokenId = tokenId;
       code.ownerAddress = address;

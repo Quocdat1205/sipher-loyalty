@@ -22,6 +22,7 @@
     "seed-lootbox": "ts-node -r tsconfig-paths/register src/scripts/seedLootbox.ts",
     "seed-airdrop": "ts-node -r tsconfig-paths/register src/scripts/seedAirdrop.ts",
     "dev:tracker:lootbox": "ts-node -r tsconfig-paths/register src/scripts/lootbox-tracker.ts",
+    "dev:tracker:sculpture": "ts-node -r tsconfig-paths/register src/scripts/sculpture-tracker.ts",
     "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
     "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
   },
