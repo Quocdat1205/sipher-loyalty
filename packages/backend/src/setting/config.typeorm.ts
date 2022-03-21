@@ -57,6 +57,8 @@ class ConfigService {
 
       synchronize: !constant.isProduction,
 
+      logging: this.getValue("NODE_ENV") === "develop",
+
       autoLoadEntities: true,
 
       ssl: constant.isProduction,

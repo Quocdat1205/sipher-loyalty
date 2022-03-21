@@ -1,19 +1,19 @@
-import { useCallback, useMemo, useReducer } from 'react';
+import { useCallback, useMemo, useReducer } from "react"
 
 interface IOption {
-  clearErrorOnValueChange: boolean;
+  clearErrorOnValueChange: boolean
 }
 
 type SetAction = {
-  type: 'SET';
-  field: string;
-  value: any;
-};
+  type: "SET"
+  field: string
+  value: any
+}
 
 type InitAction<T> = {
-  type: 'INIT';
-  payload: T;
-};
+  type: "INIT"
+  payload: T
+}
 
 export const useFormCoreWithError = <IForm extends Record<string, any>>(
   initialValues: IForm,
@@ -21,61 +21,58 @@ export const useFormCoreWithError = <IForm extends Record<string, any>>(
     clearErrorOnValueChange: true,
   },
 ) => {
-  type Action<T> = SetAction | InitAction<T>;
-  type IFormError = Record<keyof IForm, string>;
+  type Action<T> = SetAction | InitAction<T>
+  type IFormError = Record<keyof IForm, string>
 
-  const memoizedValues = useMemo(() => initialValues, [initialValues]);
+  const memoizedValues = useMemo(() => initialValues, [initialValues])
   const initialError: IFormError = useMemo(
-    () => Object.assign({}, ...Object.keys(memoizedValues).map(key => ({ [key]: '' }))),
+    () => Object.assign({}, ...Object.keys(memoizedValues).map(key => ({ [key]: "" }))),
     [memoizedValues],
-  );
+  )
 
   // generate reducer base on initial value input
-  const genReducer = <P extends Record<string, any>>(
-    initValues: P,
-  ): [(state: P, action: Action<P>) => P, P] => {
+  const genReducer = <P extends Record<string, any>>(initValues: P): [(state: P, action: Action<P>) => P, P] => {
     const reducer = (state: P, action: Action<P>) => {
       switch (action.type) {
-        case 'SET':
+        case "SET":
           return {
             ...state,
             [action.field]: action.value,
-          };
-        case 'INIT':
-          return action.payload;
+          }
+        case "INIT":
+          return action.payload
         default:
-          return state;
+          return state
       }
-    };
-    return [reducer, initValues];
-  };
+    }
+    return [reducer, initValues]
+  }
 
-  const [values, dispatch] = useReducer(...genReducer<IForm>(initialValues));
+  const [values, dispatch] = useReducer(...genReducer<IForm>(initialValues))
 
-  const [errors, dispatchError] = useReducer(...genReducer<IFormError>(initialError));
+  const [errors, dispatchError] = useReducer(...genReducer<IFormError>(initialError))
 
   const setError = useCallback(
-    (field: keyof IFormError, value: string) =>
-      dispatchError({ type: 'SET', field: field as string, value }),
+    (field: keyof IFormError, value: string) => dispatchError({ type: "SET", field: field as string, value }),
     [dispatchError],
-  );
+  )
   const setValue = useCallback(
     (field: keyof IForm, value: any) => {
-      dispatch({ type: 'SET', field: field as string, value });
-      if (options.clearErrorOnValueChange) setError(field, '');
+      dispatch({ type: "SET", field: field as string, value })
+      if (options.clearErrorOnValueChange) setError(field, "")
     },
     [dispatch, setError, options.clearErrorOnValueChange],
-  );
+  )
 
   const initForm = useCallback(
     (payload: IForm = memoizedValues) => {
-      dispatch({ type: 'INIT', payload });
-      dispatchError({ type: 'INIT', payload: initialError });
+      dispatch({ type: "INIT", payload })
+      dispatchError({ type: "INIT", payload: initialError })
     },
     [dispatch, dispatchError, initialError, memoizedValues],
-  );
+  )
 
-  return { values, setValue, initForm, errors, setError };
-};
+  return { values, setValue, initForm, errors, setError }
+}
 
-export default useFormCoreWithError;
+export default useFormCoreWithError

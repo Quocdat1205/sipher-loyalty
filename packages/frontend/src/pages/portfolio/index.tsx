@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react"
 
-import { Layout } from "@components/module/layout"
+import { CommonLayout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
 import ContentPortfolio from "@components/UI/portfolio"
 
@@ -15,6 +15,6 @@ const PortfolioPage: NextPageWithLayout = () => {
   )
 }
 
-PortfolioPage.getLayout = (page: ReactNode) => <Layout>{page}</Layout>
+PortfolioPage.getLayout = (page: ReactNode) => <CommonLayout>{page}</CommonLayout>
 
 export default PortfolioPage

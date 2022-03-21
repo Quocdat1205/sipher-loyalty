@@ -7,14 +7,9 @@ import { getSignIn } from "@utils"
 import { OnBoardModal } from "../modal"
 import { TopNavigationBar } from "../top-navigation-bar"
 
-interface StoreFrontLayoutProps {
-  children: ReactNode
-}
-
-export const Layout = ({ children }: StoreFrontLayoutProps) => {
+export const CommonLayout = ({ children }: { children: ReactNode }) => {
   const { account } = useWalletContext()
   const [isOnboard, setIsOnboard] = useState(false)
-  const [isSignUp, setIsSignUp] = useState(false)
 
   useEffect(() => {
     if (!getSignIn()) {
@@ -33,12 +28,8 @@ export const Layout = ({ children }: StoreFrontLayoutProps) => {
       bg="neutral.900"
     >
       <TopNavigationBar isSticky />
-      <Flex flexDir="column" zIndex={2} overflow="auto" flex={1} w="full">
-        {account ? (
-          children
-        ) : (
-          <OnBoardModal setIsSignUp={setIsSignUp} isOpen={isOnboard} onClose={() => setIsOnboard(false)} />
-        )}
+      <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
+        {account ? children : <OnBoardModal isOpen={isOnboard} onClose={() => setIsOnboard(false)} />}
       </Flex>
     </Flex>
   )

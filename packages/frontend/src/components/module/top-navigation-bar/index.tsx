@@ -10,8 +10,6 @@ import { ConnectWalletButton } from "./user-info"
 
 interface TopNavigationBarProps {
   isSticky?: boolean
-  isSignUp: boolean
-  setIsSignUp: (isSignUp: boolean) => void
 }
 
 const menus = [
@@ -19,13 +17,9 @@ const menus = [
   { path: "/portfolio", label: "PORTFOLIO" },
   { path: "/airdrop", label: "AIRDROP" },
   { path: "/spaceship", label: "SPACESHIP" },
-  // { path: "/quest", label: "QUEST" },
-  // { path: "/rewards", label: "REWARD" },
 ]
 
-export const TopNavigationBar = ({ isSticky = false, isSignUp, setIsSignUp }: TopNavigationBarProps) => {
-  const [modal, setModal] = useState<string>("")
-
+export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) => {
   return (
     <Box backdropFilter="blur(10px)" pos={isSticky ? "sticky" : "relative"} top={0} left={0} right={0} zIndex="sticky">
       <Flex
@@ -52,11 +46,9 @@ export const TopNavigationBar = ({ isSticky = false, isSignUp, setIsSignUp }: To
           </Flex>
         </Flex>
         <Box mr={8} ml={8}>
-          <ConnectWalletButton isSignUp={isSignUp} setIsSignUp={setIsSignUp} setModal={setModal} />
+          <ConnectWalletButton />
         </Box>
       </Flex>
-      <AccountModal isOpen={modal === "SETTING"} onClose={() => setModal("")} />
-      <BuySipherModal isOpen={modal === "BUY"} onClose={() => setModal("")} />
     </Box>
   )
 }

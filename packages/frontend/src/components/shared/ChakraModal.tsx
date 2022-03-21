@@ -11,10 +11,10 @@ import {
   ModalProps,
 } from "@sipher.dev/sipher-ui"
 
-interface ChakraModalProps extends ModalProps {
+interface ChakraModalProps extends Omit<ModalProps, "onClose"> {
   isOpen: boolean
-  onClose: () => void
-  isHiddenClose?: boolean
+  onClose?: () => void
+  hideCloseButton?: boolean
   title: string
   children: React.ReactNode
   titleProps?: HeadingProps
@@ -24,7 +24,7 @@ interface ChakraModalProps extends ModalProps {
 export const ChakraModal = ({
   isOpen,
   onClose,
-  isHiddenClose = false,
+  hideCloseButton = false,
   title,
   children,
   size = "xl",
@@ -35,14 +35,21 @@ export const ChakraModal = ({
   ...props
 }: ChakraModalProps) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={size} {...props}>
+    <Modal
+      isOpen={isOpen}
+      onClose={() => onClose && onClose()}
+      size={size}
+      isCentered
+      scrollBehavior="inside"
+      {...props}
+    >
       <ModalOverlay bg="blackAlpha.400" />
       <ModalContent pos="relative" overflow={"hidden"} {...styleProps}>
         <Flex backdropFilter="blur(20px)" px={6} pt={6} w="full" justify="space-between" align="center" mb={2}>
           <Heading fontWeight={600} {...titleProps}>
             {title}
           </Heading>
-          {!isHiddenClose && (
+          {!hideCloseButton && (
             <ModalCloseButton color="neutral.400" _focus={{ shadow: "none" }} position="static" size="sm" />
           )}
         </Flex>

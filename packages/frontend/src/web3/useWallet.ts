@@ -97,6 +97,8 @@ const useWallet = () => {
           })
         }
         setStatus("connected")
+        const account = await web3ReactConnector.getAccount()
+        return account
       } catch (err: any) {
         if (id !== activationId.current) return
         setConnectorName(null)

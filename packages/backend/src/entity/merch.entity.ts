@@ -8,24 +8,24 @@ import {
 @Entity()
 export class Merch {
   @PrimaryGeneratedColumn("uuid")
-  id_merch: string;
+  id_merch?: string;
 
-  @Column()
+  @Column({ nullable: false })
   publicAddress: string;
 
-  @Column()
-  attachment: string;
+  @Column({ default: "" })
+  imageUrl?: string;
 
   @Column()
   title: string;
 
-  @Column()
+  @Column({ default: "" })
   description: string;
 
-  @Column()
+  @Column({ default: false })
   isClaim: boolean;
 
-  @Column()
+  @Column({ nullable: false })
   promo_code: string;
 
   @CreateDateColumn({ default: new Date() })

@@ -31,20 +31,4 @@ describe("Sculpture unit test", () => {
       getRepositoryToken(ShopifyCode)
     );
   });
-
-  describe("claimSculptureCode()", () => {
-    it("should return an array of shopify codes", async () => {
-      const sculptureBalance = BigNumber.from(3);
-      jest
-        .spyOn(SculptureService.prototype as any, "sculptureBalance")
-        .mockImplementation(() => Promise.resolve(sculptureBalance));
-      jest.spyOn(shopifyCodeRepo, "find").mockResolvedValueOnce([]);
-      jest.spyOn(shopifyCodeRepo, "save").mockImplementation();
-      const result = await sculptureService.claimSculptureCode({
-        address: "0x0",
-        tokenId: "1",
-      });
-      expect(result.length).toEqual(3);
-    });
-  });
 });

@@ -1,16 +1,14 @@
-import React from "react";
+import React from "react"
 
-export const MetaMaskContext = React.createContext<any>(null);
+export const MetaMaskContext = React.createContext<any>(null)
 
 export const useMetaMask = () => {
-  const context = React.useContext(MetaMaskContext);
+  const context = React.useContext(MetaMaskContext)
 
   if (context === undefined) {
-    throw new Error(
-      "UseMetamask hook must be used with a MetaMask Provider component"
-    );
+    throw new Error("UseMetamask hook must be used with a MetaMask Provider component")
   }
-  return context;
-};
+  return context
+}
 
-export default useMetaMask;
+export default useMetaMask

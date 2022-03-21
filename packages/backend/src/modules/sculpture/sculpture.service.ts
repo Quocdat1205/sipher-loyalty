@@ -1,75 +1,76 @@
-import { getManager, getRepository, Repository } from "typeorm";
-import { ShopifyCode, User } from "@entity";
+import { ShopifyCode, ShopifyCodeStatus } from "@entity";
+import { MultiTokenService } from "@modules/multi-token/multi-token.service";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
-
-import { MultiTokenService } from "@modules/multi-token/multi-token.service";
-
-import { SculptureBalanceDto } from "./sculpture.dto";
+import { Repository } from "typeorm";
+import {
+  RedeemShopifyCodeDto,
+  SculptureBalanceDto,
+  SculptureType,
+} from "./sculpture.dto";
 
 @Injectable()
 export class SculptureService {
+  private sculptureMap: { [K in SculptureType]: string } = {
+    inu: "1",
+    neko: "2",
+  };
+
   constructor(
     private multiTokenService: MultiTokenService,
-    @InjectRepository(User) private userRepo: Repository<User>,
     @InjectRepository(ShopifyCode)
     private shopifyCodeRepo: Repository<ShopifyCode>
   ) {}
 
-  private async sculptureBalance(sculptureBalanceDto: SculptureBalanceDto) {
+  async sculptureBalance(sculptureBalanceDto: SculptureBalanceDto) {
     const balance = await this.multiTokenService.balanceOf(
       constant.SCULPTURE_ADDRESS,
-      sculptureBalanceDto
+      {
+        address: sculptureBalanceDto.address,
+        tokenId: this.sculptureMap[sculptureBalanceDto.sculptureType],
+      }
     );
     return balance;
   }
 
-  private generateShopifyCodes(): string {
-    return `YEET${Math.round(Math.random() * 10000)}`;
-  }
-
-  private async createShopifySculptureCode(
-    ownerAddress: string,
-    amount: number
-  ) {
-    if (amount <= 0) {
-      return [];
-    }
-    const codes: string[] = [];
-    const user = await this.userRepo.findOne(ownerAddress);
-    if (!user) {
-      // TODO: Should implement not found error later
-      return [];
-    }
-    const promises = [];
-    for (let i = 0; i < amount; i++) {
-      const code = this.generateShopifyCodes();
-      codes.push(code);
-      const shopifyCode = new ShopifyCode();
-      shopifyCode.code = code;
-      shopifyCode.user = user;
-      promises.push(this.shopifyCodeRepo.save(shopifyCode));
-    }
-    Promise.all(promises); // not waiting all done to response fe
-    return codes;
-  }
-
-  async claimSculptureCode(
-    sculptureBalanceDto: SculptureBalanceDto
-  ): Promise<string[]> {
-    const balance = await this.sculptureBalance(sculptureBalanceDto);
-    console.log(balance);
-    const currentlyOwnedCode = await this.shopifyCodeRepo.find({
+  async getAddressOwnedCode(address: string) {
+    const shopifycodes = await this.shopifyCodeRepo.find({
       where: {
-        user: sculptureBalanceDto.address,
+        ownerAddress: address,
       },
     });
-    const newCodeAmount = balance.toNumber() - currentlyOwnedCode.length;
-    const codes = await this.createShopifySculptureCode(
-      sculptureBalanceDto.address,
-      newCodeAmount
-    );
-    return codes;
+    if (!shopifycodes) {
+      return [];
+    }
+    return shopifycodes;
+  }
+
+  async redeemShopifyCode(redeemShopifyCodeDto: RedeemShopifyCodeDto) {
+    const { amount, tokenId, address, txHash } = redeemShopifyCodeDto;
+    const existed = await this.shopifyCodeRepo.findOne({
+      where: {
+        txHash: txHash,
+      },
+    });
+    if (existed) {
+      return;
+    }
+    const codeToRedeem = await this.shopifyCodeRepo
+      .createQueryBuilder("shopify_code")
+      .where("status = :status", {
+        status: ShopifyCodeStatus.AVAILABLE,
+      })
+      .limit(amount)
+      .printSql()
+      .getMany();
+    for (const code of codeToRedeem) {
+      console.log(`Redeeem ${code.code}`);
+      code.status = ShopifyCodeStatus.REDEEMED;
+      code.tokenId = tokenId;
+      code.ownerAddress = address;
+      code.txHash = txHash;
+      this.shopifyCodeRepo.save(code);
+    }
   }
 }

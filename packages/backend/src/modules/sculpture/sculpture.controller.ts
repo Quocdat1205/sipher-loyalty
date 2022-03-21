@@ -1,19 +1,19 @@
-import { Body, Controller, Post } from "@nestjs/common";
-
-import { SculptureBalanceDto } from "./sculpture.dto";
+import { Controller, Get, Param } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
 import { SculptureService } from "./sculpture.service";
 
+@ApiTags("sculpture")
 @Controller("sculpture")
 export class SculptureController {
   constructor(private sculptureService: SculptureService) {}
 
-  @Post("claim-code")
-  async claimShopifyCode(@Body() sculptureBalanceDto: SculptureBalanceDto) {
-    const codes = await this.sculptureService.claimSculptureCode(
-      sculptureBalanceDto
+  @Get("shopify-code/:ownerAddress")
+  async getUserOwnedCode(@Param("ownerAddress") ownerAddress: string) {
+    const shopifyCodes = await this.sculptureService.getAddressOwnedCode(
+      ownerAddress
     );
     return {
-      shopifyCode: codes,
+      shopifyCodes: shopifyCodes.map((code) => code.code),
     };
   }
 }

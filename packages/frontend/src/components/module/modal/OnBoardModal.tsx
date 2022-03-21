@@ -9,7 +9,6 @@ import { setSignIn } from "@utils"
 interface SettingAccountModalProps {
   isOpen: boolean
   onClose: () => void
-  setIsSignUp: (isSignUp: boolean) => void
 }
 
 // const slideData = [<Slide1 />, <Slide2 />, <Slide1 />]
@@ -32,33 +31,20 @@ const imageData = [
   },
 ]
 
-export const OnBoardModal = ({ isOpen, onClose, setIsSignUp }: SettingAccountModalProps) => {
-  // const [[page, direction], setPage] = useState([0, 0])
-
-  // const index = wrap(0, slideData.length, page)
-
-  // const paginate = (newDirection: number) => {
-  //   setPage([page + newDirection, newDirection])
-  // }
-
-  // const handleClick = (idx: number) => {
-  //   paginate(idx < index ? idx - index + slideData.length : idx - index)
-  // }
-
+export const OnBoardModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
   const { toggleWalletModal } = useStore(s => ({
     toggleWalletModal: s.toggleWalletModal,
   }))
 
   const handleClick = () => {
     toggleWalletModal(true)
-    setIsSignUp(true)
     setSignIn("true")
     onClose()
   }
 
   return (
     <ChakraModal
-      isHiddenClose
+      hideCloseButton
       closeOnOverlayClick={false}
       isCentered
       title={""}

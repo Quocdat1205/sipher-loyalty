@@ -42,9 +42,6 @@ export class User {
   @Column({ default: "bronze" })
   tier: string;
 
-  @OneToMany(() => ShopifyCode, (shopifyCode) => shopifyCode.user)
-  shopifyCode: ShopifyCode[];
-
   @CreateDateColumn({ default: new Date() })
   createdAt: Date;
 

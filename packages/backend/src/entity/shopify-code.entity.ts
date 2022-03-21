@@ -7,8 +7,11 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { User } from "./client.entity";
-
+export enum ShopifyCodeStatus {
+  REDEEMED = "redeemed",
+  AVAILABLE = "available",
+  PENDING = "pending",
+}
 @Entity()
 export class ShopifyCode {
   @PrimaryGeneratedColumn()
@@ -17,12 +20,34 @@ export class ShopifyCode {
   @Column()
   code: string;
 
+  @Column({
+    type: "enum",
+    enum: ShopifyCodeStatus,
+    default: ShopifyCodeStatus.AVAILABLE,
+  })
+  status: ShopifyCodeStatus;
+
+  @Column({
+    type: "character varying",
+    nullable: true,
+  })
+  tokenId: string;
+
+  @Column({
+    type: "character varying",
+    nullable: true,
+  })
+  ownerAddress: string;
+
+  @Column({
+    type: "character varying",
+    nullable: true,
+  })
+  txHash: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @ManyToOne(() => User, (user) => user.shopifyCode)
-  user: User;
 }

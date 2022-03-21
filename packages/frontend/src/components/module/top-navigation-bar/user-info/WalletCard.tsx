@@ -4,7 +4,7 @@ import { Flex, Text } from "@sipher.dev/sipher-ui"
 
 interface WalletCardProps {
   src: string
-  onClick: () => void
+  onClick?: () => void
   bg?: string
   text?: string
 }
