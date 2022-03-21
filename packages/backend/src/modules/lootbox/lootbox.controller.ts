@@ -17,7 +17,6 @@ import { LootBoxService } from "./lootbox.service";
 import {
   MintBatchLootboxInputDto,
   MintLootboxInputDto,
-  resClaimLootboxDto,
   resMintBatchDto,
   resMintSingleDto,
 } from "./lootbox.type";

@@ -47,7 +47,7 @@ export class Airdrop {
   @Column({ nullable: false })
   totalAmount: string;
 
-  @ApiProperty({ type: AirdropType })
+  @ApiProperty({ type: String, enum: AirdropType, enumName: "AirdropType" })
   @Column({
     type: "enum",
     enum: AirdropType,

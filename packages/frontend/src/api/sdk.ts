@@ -9,7 +9,32 @@
  * ---------------------------------------------------------------
  */
 
-export type PendingMint = object;
+export enum MintStatus {
+  Pending = 'Pending',
+  Minted = 'Minted',
+}
+
+export enum MintType {
+  Lootbox = 'Lootbox',
+  SpaceshipPart = 'SpaceshipPart',
+  Spaceship = 'Spaceship',
+}
+
+export interface PendingMint {
+  id: number;
+  to: string;
+  batchID: number;
+  amount: number;
+  batchIDs: number[];
+  amounts: number[];
+  salt: string;
+  status: MintStatus;
+  type: MintType;
+  signature: string;
+
+  /** @format date-time */
+  createdAt: string;
+}
 
 export interface Lootbox {
   id: number;
@@ -22,7 +47,56 @@ export interface Lootbox {
   createdAt: string;
 }
 
-export type Airdrop = object;
+export type ClaimableLootbox = object;
+
+export interface MintBatchLootboxInputDto {
+  publicAddress: string;
+  batchID: number[];
+  amount: number[];
+}
+
+export interface ResMintBatchDto {
+  signanture: string;
+  data: Lootbox[];
+  pending: PendingMint[];
+}
+
+export interface MintLootboxInputDto {
+  publicAddress: string;
+  batchID: number;
+  amount: number;
+}
+
+export interface ResMintSingleDto {
+  signanture: string;
+  data: Lootbox;
+  pending: PendingMint[];
+}
+
+export enum AirdropType {
+  NFT = 'NFT',
+  TOKEN = 'TOKEN',
+  MERCH = 'MERCH',
+  ALL = 'ALL',
+}
+
+export interface Airdrop {
+  id: string;
+  merkleRoot: string;
+  proof: string[];
+  leaf: string;
+  claimer: string;
+  addressContract: string;
+  imageUrl: string;
+  totalAmount: string;
+  type: AirdropType;
+  startTime: string;
+  vestingInterval: string;
+  numberOfVestingPoint: string;
+
+  /** @format date-time */
+  created: string;
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
 
@@ -190,6 +264,112 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<Lootbox[], any>({
         path: `/api/sipher/loyalty/lootbox/get-by-walllet/${publicAddress}`,
         method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerGetClaimableLootboxFromWallet
+     * @request GET:/api/sipher/loyalty/lootbox/get-by-walllet/claimable/{publicAddress}
+     * @secure
+     */
+    lootBoxControllerGetClaimableLootboxFromWallet: (publicAddress: string, params: RequestParams = {}) =>
+      this.request<ClaimableLootbox[], any>({
+        path: `/api/sipher/loyalty/lootbox/get-by-walllet/claimable/${publicAddress}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerGetLootboxFromUserId
+     * @request GET:/api/sipher/loyalty/lootbox/get-by-userID
+     * @secure
+     */
+    lootBoxControllerGetLootboxFromUserId: (params: RequestParams = {}) =>
+      this.request<Lootbox[], any>({
+        path: `/api/sipher/loyalty/lootbox/get-by-userID`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerGetClaimableLootboxFromUserId
+     * @request GET:/api/sipher/loyalty/lootbox/get-by-userID/claimable
+     * @secure
+     */
+    lootBoxControllerGetClaimableLootboxFromUserId: (params: RequestParams = {}) =>
+      this.request<ClaimableLootbox[], any>({
+        path: `/api/sipher/loyalty/lootbox/get-by-userID/claimable`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerMintBatchLootbox
+     * @request PUT:/api/sipher/loyalty/lootbox/mint-batch
+     * @secure
+     */
+    lootBoxControllerMintBatchLootbox: (data: MintBatchLootboxInputDto, params: RequestParams = {}) =>
+      this.request<ResMintBatchDto, any>({
+        path: `/api/sipher/loyalty/lootbox/mint-batch`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerMintLootbox
+     * @request PUT:/api/sipher/loyalty/lootbox/mint
+     * @secure
+     */
+    lootBoxControllerMintLootbox: (data: MintLootboxInputDto, params: RequestParams = {}) =>
+      this.request<ResMintSingleDto, any>({
+        path: `/api/sipher/loyalty/lootbox/mint`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerClaim
+     * @request PUT:/api/sipher/loyalty/lootbox/claim-lootbox/{publicAddress}
+     * @secure
+     */
+    lootBoxControllerClaim: (publicAddress: string, params: RequestParams = {}) =>
+      this.request<ClaimableLootbox[], any>({
+        path: `/api/sipher/loyalty/lootbox/claim-lootbox/${publicAddress}`,
+        method: 'PUT',
         secure: true,
         format: 'json',
         ...params,
