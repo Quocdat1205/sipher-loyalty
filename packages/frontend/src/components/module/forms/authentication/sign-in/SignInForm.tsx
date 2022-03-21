@@ -5,7 +5,7 @@ import { MdInfo } from "react-icons/md"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
-import AtherIdAuth, { CognitoUser } from "@sipher.dev/ather-id"
+import AtherIdAuth, { CognitoUser, OauthProvider } from "@sipher.dev/ather-id"
 import {
   Box,
   Button,
@@ -30,6 +30,7 @@ import { useAuth } from "src/providers/auth"
 import useSignInContext from "../useSignInContext"
 
 import ConnectToWallet from "./ConnectToWallet"
+import VerifySignUpForm from "./VerifySignUpForm"
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required("Email is required").email("Must be a valid email address"),
@@ -57,6 +58,8 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
   const setAuthFlow = useStore(s => s.setAuthFlow)
 
   const [connectWallet, setConnectWallet] = useState(false)
+  const [verifyCode, setVerifyCode] = useState(false)
+  const [email, setEmail] = useState("")
   const [connectingMethod, setConnectingMethod] = useState<string | null>(null)
 
   useEffect(() => {
@@ -112,6 +115,7 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
     {
       onSuccess: handleChallenge,
       onError: (e: any) => {
+        if (e?.message === "User is not confirmed.") setVerifyCode(true)
         toast({
           status: "error",
           title: "Signature Error",
@@ -131,7 +135,17 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
     mutateSignIn({ emailOrWallet: account! })
   }
 
+  const { mutate: mutateSignInOauth } = useMutation<unknown, unknown, OauthProvider>(
+    provider => AtherIdAuth.signInWithOauth(provider),
+    {
+      onMutate: provider => setConnectingMethod(provider),
+      onSettled: () => setConnectingMethod(null),
+    },
+  )
+
   if (connectWallet) return <ConnectToWallet />
+
+  if (verifyCode) return <VerifySignUpForm email={email} />
 
   return (
     <ChakraModal title={"SIGN IN"} size="lg" isOpen={isOpen} onClose={onClose}>
@@ -144,7 +158,10 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
         <Stack px={6} spacing={6} w="full">
           <FormControl as="fieldset">
             <FormField error={errors?.email?.message}>
-              <CustomInput placeholder="Email address" {...register("email", { required: true })} />
+              <CustomInput
+                placeholder="Email address"
+                {...register("email", { required: true, onChange: e => setEmail(e.target.value) })}
+              />
             </FormField>
           </FormControl>
           <FormControl mb={0} as="fieldset">
@@ -181,10 +198,20 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
                 Social Account
               </Text>
               <HStack spacing={4}>
-                <WalletCard bg="#1677EF" src="/images/icons/facebook.svg" />
-                <WalletCard bg="#EA4336" src="/images/icons/google.svg" />
-                <WalletCard bg="#4053E4" src="/images/icons/discord.svg" />
-                <WalletCard bg="#479BE9" src="/images/icons/twitter.svg" />
+                <WalletCard bg="#1677EF" src="/images/icons/facebook.svg" onClick={() => alert("On Construction")} />
+                <WalletCard
+                  bg="#EA4336"
+                  src="/images/icons/google.svg"
+                  onClick={() => mutateSignInOauth(OauthProvider.Google)}
+                  isLoading={connectingMethod === OauthProvider.Google}
+                />
+                <WalletCard
+                  bg="#4053E4"
+                  src="/images/icons/discord.svg"
+                  onClick={() => mutateSignInOauth(OauthProvider.Discord)}
+                  isLoading={connectingMethod === OauthProvider.Discord}
+                />
+                <WalletCard bg="#479BE9" src="/images/icons/twitter.svg" onClick={() => alert("On Construction")} />
               </HStack>
             </Box>
             <Box>
