@@ -1,25 +1,42 @@
 sipher-chart:
+  ingress:
+    enabled: true
+    annotations:
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      kubernetes.io/ingress.class: alb
+      service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    rules:
+    - host:  api-loyalty.sipher.gg
+      paths:
+      - path: /
+        serviceName: backend-ather-id-api
+        servicePort: 3001
+        pathType: ImplementationSpecific
   deploys:
     - name: backend
       replicasCount: 1
-      resources:
-        requests:
-          memory: 512Mi
-          cpu: 256m
-        limits:
-          memory: 512Mi
-          cpu: 256m
+      resources: {}
+      command: ['/bin/sh']
+      args:
+        - '-c'
+        - 'node ./dist/main.js'
       services:
         - name: api
           containerPort:
             api: 5500
-        # - name: health
-        #   type: ClusterIP
-        #   containerPort:
-        #     health: 5500
-        #   health:
-        #     live: /api/health
-        #     livenessPort: 5500
-        #     ready: /api/health
-        #     readinessPort: 5500
+    - name: lootbox-tracker
+      replicasCount: 1
+      resources: {}
+      command: ['/bin/sh']
+      args:
+        - '-c'
+        - 'node ./dist/scripts/lootbox-tracker.js'
+    - name: sculpture-tracker
+      replicasCount: 1
+      resources: {}
+      command: ['/bin/sh']
+      args:
+        - '-c'
+        - 'node ./dist/scripts/sculpture-tracker.js'
   env: {}
