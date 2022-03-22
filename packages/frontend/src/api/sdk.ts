@@ -317,7 +317,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     lootBoxControllerGetLootboxById: (publicAddress: string, id: string, params: RequestParams = {}) =>
-      this.request<Lootbox[], any>({
+      this.request<Lootbox, any>({
         path: `/api/sipher/loyalty/lootbox/get-by-walllet/${publicAddress}/${id}`,
         method: 'GET',
         secure: true,
