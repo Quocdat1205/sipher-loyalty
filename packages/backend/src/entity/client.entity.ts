@@ -8,10 +8,8 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import { ShopifyCode } from "./shopify-code.entity";
-
 @Entity()
-export class User {
+export class Client {
   @PrimaryColumn()
   publicAddress: string;
 

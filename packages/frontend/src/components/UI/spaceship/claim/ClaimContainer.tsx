@@ -5,7 +5,7 @@ import { ClaimCard } from "./ClaimCard"
 import { useClaim } from "./useClaim"
 
 export const ClaimContainer = () => {
-  const { claimData, mutateOnClaim, isLoading, totalQuantiy } = useClaim()
+  const { account, claimData, mutateOnClaim, isLoading, totalQuantiy, isCheckAccountClaim } = useClaim()
 
   return (
     <Flex
@@ -45,9 +45,15 @@ export const ClaimContainer = () => {
           ))}
         </HStack>
         <Flex w="full" justify="center">
-          <Button isLoading={isLoading} onClick={() => mutateOnClaim()}>
-            CLAIM LOOTBOXES ({totalQuantiy})
-          </Button>
+          {account && (
+            <Button
+              isDisabled={!isCheckAccountClaim || claimData.length === 0}
+              isLoading={isLoading}
+              onClick={() => mutateOnClaim()}
+            >
+              {isCheckAccountClaim ? `CLAIM LOOTBOXES (${totalQuantiy})` : "ACCOUNT NOT REGISTERED"}
+            </Button>
+          )}
         </Flex>
       </Box>
     </Flex>

@@ -1,13 +1,14 @@
 import { useState } from "react"
 import { useMutation, useQuery } from "react-query"
 import client from "@client"
+import { useWalletContext } from "@web3"
 
-import { ClaimLootboxInputDto } from "@sdk"
 import { useAuth } from "src/providers/auth"
 
 export const useClaim = () => {
   const { session, authenticated, user } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
+  const { account } = useWalletContext()
   const { data: boxData } = useQuery(
     ["lootBox", user],
     () =>
@@ -21,8 +22,8 @@ export const useClaim = () => {
     },
   )
 
-  const { mutate: mutateOnClaim } = useMutation<unknown, unknown, { tokenId: string; data: ClaimLootboxInputDto }>(
-    input => client.api.lootBoxControllerClaim(input.tokenId, input.data),
+  const { mutate: mutateOnClaim } = useMutation<unknown, unknown, string>(
+    () => client.api.lootBoxControllerClaim(account!),
     {
       onMutate: () => setIsLoading(true),
       onSuccess: () => setIsLoading(false),
@@ -38,5 +39,7 @@ export const useClaim = () => {
 
   const totalQuantiy = claimData.map(item => item.quantity).reduce((pre, val) => pre + val, 0)
 
-  return { claimData, isLoading, mutateOnClaim, totalQuantiy }
+  const isCheckAccountClaim = claimData.find(item => item.publicAddress)?.publicAddress === account
+
+  return { account, claimData, isLoading, mutateOnClaim, totalQuantiy, isCheckAccountClaim }
 }
