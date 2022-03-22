@@ -303,8 +303,8 @@ export class LootBoxService {
     await this.takeSnapshot(typeId);
   };
 
-  getLootboxById = async (id: string): Promise<Array<Lootbox>> => {
-    const lootboxs = await this.lootboxRepo.find({
+  getLootboxById = async (id: string): Promise<Lootbox> => {
+    const lootbox = await this.lootboxRepo.findOne({
       where: [
         {
           id,
@@ -312,7 +312,7 @@ export class LootBoxService {
       ],
       relations: ["propertyLootbox"],
     });
-    return lootboxs;
+    return lootbox;
   };
 
   getLootboxFromWallet = async (

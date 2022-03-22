@@ -31,7 +31,7 @@ export class LootBoxController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: Lootbox, isArray: true })
+  @ApiOkResponse({ type: Lootbox })
   @Get("get-by-walllet/:publicAddress/:id")
   async getLootboxById(
     @Param("publicAddress") publicAddress: string,
