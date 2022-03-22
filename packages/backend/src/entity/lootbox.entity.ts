@@ -33,7 +33,7 @@ export class Lootbox {
 
   @ApiProperty({ type: Number })
   @Column({ default: 1 })
-  minable: number;
+  mintable: number;
 
   @ApiProperty({ type: () => ERC1155SpaceShipPartLootbox })
   @ManyToOne(
