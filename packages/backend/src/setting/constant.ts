@@ -112,11 +112,11 @@ export class SystemConfigProvider {
         address: "0x1D5Db97aC0c865B6C01Cfe1309B6Ba8cB431805F",
       },
       [Chain.Mumbai]: {
-        address: "0x0c8f19A3496FDe87F55475ac652c7652093B16c7",
+        address: "0x890E002A6Bb11D0094d80f4C301CaF645D168333",
       },
 
       [Chain.Polygon]: {
-        address: "0x0c8f19A3496FDe87F55475ac652c7652093B16c7",
+        address: "0x890E002A6Bb11D0094d80f4C301CaF645D168333",
       },
     };
 
