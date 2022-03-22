@@ -306,8 +306,11 @@ export class LootBoxService {
   ): Promise<Array<Lootbox>> => {
     const lootboxs = await this.lootboxRepo.find({
       where: [
-        { publicAddress: toChecksumAddress(publicAddress) },
-        { publicAddress: publicAddress.toLowerCase() },
+        {
+          publicAddress: toChecksumAddress(publicAddress),
+          minable: MoreThan(0),
+        },
+        { publicAddress: publicAddress.toLowerCase(), minable: MoreThan(0) },
       ],
       relations: ["propertyLootbox"],
     });
@@ -392,6 +395,7 @@ export class LootBoxService {
       if (lootboxs[i].quantity - lootboxs[i].pending < amount[i])
         throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
       lootboxs[i].pending += amount[i];
+      lootboxs[i].minable -= amount[i];
     }
 
     // update batch lootbox
@@ -427,6 +431,7 @@ export class LootBoxService {
     if (lootbox.quantity - lootbox.pending < amount)
       throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
     lootbox.pending += amount;
+    lootbox.minable -= amount;
 
     // update lootbox
     const data = await this.lootboxRepo.save(lootbox);
@@ -515,6 +520,7 @@ export class LootBoxService {
       const promises = [];
       for (let i = 0; i < batchOrder.batchID.length; i++) {
         lootboxs[i].quantity += batchOrder.amount[i];
+        lootboxs[i].minable += batchOrder.amount[i];
       }
       // update batch lootbox
       const _burned = {
@@ -546,6 +552,7 @@ export class LootBoxService {
         order.batchID
       );
       lootbox.quantity += order.amount;
+      lootbox.minable += order.amount;
 
       const promises = [];
       // update burned lootbox
