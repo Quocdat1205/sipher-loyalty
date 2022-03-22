@@ -188,7 +188,7 @@ export class MintService {
     );
     if (!verifySignature)
       throw new HttpException("wrong signature", HttpStatus.BAD_REQUEST);
-    return signature;
+    return pendingMint;
   }
 
   async mint(mintLootboxInput: MintLootboxInput) {
@@ -219,6 +219,6 @@ export class MintService {
     );
     if (!verifySignature)
       throw new HttpException("wrong signature", HttpStatus.BAD_REQUEST);
-    return signature;
+    return pendingMint;
   }
 }

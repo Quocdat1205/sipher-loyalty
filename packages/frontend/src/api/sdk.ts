@@ -94,22 +94,10 @@ export interface MintBatchLootboxInputDto {
   amount: number[];
 }
 
-export interface ResMintBatchDto {
-  signanture: string;
-  data: Lootbox[];
-  pending: PendingMint[];
-}
-
 export interface MintLootboxInputDto {
   publicAddress: string;
   batchID: number;
   amount: number;
-}
-
-export interface ResMintSingleDto {
-  signanture: string;
-  data: Lootbox;
-  pending: PendingMint[];
 }
 
 export enum AirdropType {
@@ -402,7 +390,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     lootBoxControllerMintBatchLootbox: (data: MintBatchLootboxInputDto, params: RequestParams = {}) =>
-      this.request<ResMintBatchDto, any>({
+      this.request<PendingMint, any>({
         path: `/api/sipher/loyalty/lootbox/mint-batch`,
         method: 'PUT',
         body: data,
@@ -421,7 +409,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     lootBoxControllerMintLootbox: (data: MintLootboxInputDto, params: RequestParams = {}) =>
-      this.request<ResMintSingleDto, any>({
+      this.request<PendingMint, any>({
         path: `/api/sipher/loyalty/lootbox/mint`,
         method: 'PUT',
         body: data,

@@ -1,4 +1,4 @@
-import { ClaimableLootbox, Lootbox } from "@entity";
+import { ClaimableLootbox, Lootbox, PendingMint } from "@entity";
 import {
   Body,
   Controller,
@@ -94,7 +94,7 @@ export class LootBoxController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: resMintBatchDto })
+  @ApiOkResponse({ type: PendingMint })
   @Put("mint-batch")
   async mintBatchLootbox(
     @Body() body: MintBatchLootboxInputDto,
@@ -106,7 +106,7 @@ export class LootBoxController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: resMintSingleDto })
+  @ApiOkResponse({ type: PendingMint })
   @Put("mint")
   async mintLootbox(@Body() body: MintLootboxInputDto, @Req() req: any) {
     await this.authService.verifyAddress(body.publicAddress, req.userData);

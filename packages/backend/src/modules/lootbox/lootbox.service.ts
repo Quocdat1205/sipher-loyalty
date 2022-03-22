@@ -417,14 +417,12 @@ export class LootBoxService {
       promises.push(this.lootboxRepo.save(lootboxs[i]));
     }
 
+    await Promise.all(promises);
+
     // sign messages and save pending mint
-    const signanture = await this.mintService.mintBatch(mintBatchLootboxInput);
+    const pendingMint = await this.mintService.mintBatch(mintBatchLootboxInput);
 
-    // get pending mint
-    const pending = await this.mintService.getPendingLootbox(publicAddress);
-
-    const data = await Promise.all(promises);
-    return { signanture, data, pending };
+    return pendingMint;
   };
 
   mintLootbox = async (mintLootboxInput: MintLootboxInput) => {
@@ -448,15 +446,12 @@ export class LootBoxService {
     lootbox.mintable -= amount;
 
     // update lootbox
-    const data = await this.lootboxRepo.save(lootbox);
+    await this.lootboxRepo.save(lootbox);
 
     // sign messages and save pending mint
-    const signanture = await this.mintService.mint(mintLootboxInput);
+    const pendingMint = await this.mintService.mint(mintLootboxInput);
 
-    // get pending mint
-    const pending = await this.mintService.getPendingLootbox(publicAddress);
-
-    return { signanture, data, pending };
+    return pendingMint;
   };
 
   updateLootboxFromTrackerMintedBatchOrder = async (batchOrder: BatchOrder) => {
