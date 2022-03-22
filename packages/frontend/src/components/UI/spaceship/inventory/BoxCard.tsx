@@ -5,43 +5,57 @@ import { Box, Button, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomCheckbox } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
+import { ERC1155SpaceShipPartLootbox } from "@sdk"
 
 interface CardProps {
-  name: string
-  tokenId: number
-  imageUrl: string
+  isCheckAccountClaim: boolean
+  propertyLootbox: ERC1155SpaceShipPartLootbox
+  tokenId: string
   isChecked: boolean
-  onClick: (id: number, isChecked?: boolean) => void
-  handleView: (id: number | string) => void
+  mintable: number
+  onClick: (id: string, isChecked?: boolean) => void
+  handleView: (id: string) => void
 }
 
-export const BoxCard = ({ tokenId, name, isChecked, imageUrl, onClick, handleView }: CardProps) => {
+export const BoxCard = ({
+  isCheckAccountClaim,
+  tokenId,
+  isChecked,
+  propertyLootbox,
+  onClick,
+  handleView,
+  mintable,
+}: CardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
     <Box
-      onClick={() => onClick(tokenId, undefined)}
+      onClick={() => isCheckAccountClaim && onClick(tokenId, undefined)}
       _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
       role="group"
       overflow="hidden"
       rounded="lg"
-      cursor="pointer"
+      cursor={isCheckAccountClaim ? "pointer" : "unset"}
       bg="neutral.700"
       pos="relative"
     >
-      <Box
-        _groupHover={{ opacity: 1 }}
-        transition=".35s opacity"
-        pos="absolute"
-        left={3}
-        top={3}
-        zIndex={1}
-        opacity={isChecked ? 1 : 0}
-      >
-        <CustomCheckbox onChange={() => onClick(tokenId, isChecked)} isChecked={isChecked} />
-      </Box>
+      {isCheckAccountClaim && (
+        <Box
+          _groupHover={{ opacity: 1 }}
+          transition=".35s opacity"
+          pos="absolute"
+          left={3}
+          top={3}
+          zIndex={1}
+          opacity={isChecked ? 1 : 0}
+        >
+          <CustomCheckbox onChange={() => onClick(tokenId, isChecked)} isChecked={isChecked} />
+        </Box>
+      )}
+
       <Button
         transition=".35s opacity"
+        pointerEvents={isCheckAccountClaim ? "unset" : "none"}
         onClick={e => {
           e.stopPropagation()
           handleView(tokenId)
@@ -59,7 +73,7 @@ export const BoxCard = ({ tokenId, name, isChecked, imageUrl, onClick, handleVie
         opacity={0}
       >
         <Flex align="center">
-          <Text fontSize="sm">View</Text>
+          <Text fontSize="sm">{isCheckAccountClaim ? "View" : "Doesn't own"}</Text>
           <Box>
             <BiChevronRight size="1.2rem" />
           </Box>
@@ -67,8 +81,8 @@ export const BoxCard = ({ tokenId, name, isChecked, imageUrl, onClick, handleVie
       </Button>
       <Skeleton pos="relative" isLoaded={imageLoaded}>
         <Image
-          src={imageUrl || ""}
-          alt={name}
+          src={propertyLootbox.image ?? ""}
+          alt={propertyLootbox.name}
           loading="lazy"
           height={182 * 2}
           width={182 * 2}
@@ -77,13 +91,13 @@ export const BoxCard = ({ tokenId, name, isChecked, imageUrl, onClick, handleVie
         <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white" pos="absolute" bottom="1rem" left="0.5rem">
           <SpLayer />
           <Text fontSize="xs" color="neutral.900" fontWeight={600}>
-            5
+            {mintable}
           </Text>
         </Flex>
       </Skeleton>
       <Stack spacing={2} px={4} pt={2} pb={4}>
-        <Text fontWeight={600}>{name}</Text>
-        <Text color="neutral.400">Just for INU & NEKO holders</Text>
+        <Text fontWeight={600}>{propertyLootbox.name}</Text>
+        <Text color="neutral.400">{propertyLootbox.description}</Text>
       </Stack>
     </Box>
   )

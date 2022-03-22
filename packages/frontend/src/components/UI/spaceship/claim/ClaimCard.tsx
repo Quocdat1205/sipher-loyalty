@@ -5,11 +5,12 @@ import Image from "next/image"
 import { Box, Divider, Flex, Link, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
+import { ERC1155SpaceShipPartLootbox } from "@sdk"
 
 import CountDown from "../CountDown"
 
 interface CardProps {
-  propertyLootbox: any
+  propertyLootbox: ERC1155SpaceShipPartLootbox
   expiredDate: number
   isActive?: boolean
   quantity: number

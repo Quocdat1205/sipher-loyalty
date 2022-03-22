@@ -5,33 +5,29 @@ import { Box, Button, chakra, Divider, Flex, HStack, Link, Text } from "@sipher.
 import { ChakraModal } from "@components/shared"
 
 import QuantitySelector from "./details/QuantitySelector"
+import { InventoryProps } from "./useInventory"
 
-interface SettingAccountModalProps {
-  isSuccess: boolean
+interface MintModalProps {
+  isLoading: boolean
+  status: string
   handleMint: () => void
-  dataMint: Record<string, any>
+  dataMint: InventoryProps[]
   isOpen: boolean
   onClose: () => void
 }
 
-export const MintModal = ({
-  dataMint = [],
-  isOpen,
-  onClose,
-  isSuccess = false,
-  handleMint,
-}: SettingAccountModalProps) => {
+export const MintModal = ({ dataMint = [], isOpen, onClose, status, handleMint, isLoading }: MintModalProps) => {
   return (
     <ChakraModal
       scrollBehavior="inside"
       isCentered
-      title={isSuccess ? "MINT SUCCESSFUL!" : "CONFIRMATION"}
+      title={status === "MINT" ? "CONFIRMATION" : "MINT SUCCESSFUL!"}
       isOpen={isOpen}
       onClose={onClose}
       size="xl"
     >
       <Box px={6}>
-        {!isSuccess ? (
+        {status === "MINT" ? (
           <>
             <chakra.table w="full">
               <chakra.thead>
@@ -49,12 +45,22 @@ export const MintModal = ({
                   <chakra.tr borderTop="1px" borderColor="whiteAlpha.100" key={item.id}>
                     <chakra.td py={2}>
                       <Flex align="center">
-                        <Image src={item.imageUrl} alt={item.name} width={46} height={46} />
-                        <Text ml={4}>{item.name}</Text>
+                        <Image
+                          src={item.propertyLootbox.image ?? ""}
+                          alt={item.propertyLootbox.name}
+                          width={46}
+                          height={46}
+                        />
+                        <Text ml={4}>{item.propertyLootbox.name}</Text>
                       </Flex>
                     </chakra.td>
                     <chakra.td py={2}>
-                      <QuantitySelector onChange={v => item.onChange(item.id, v)} maxValue={5} value={item.slot} />
+                      <QuantitySelector
+                        onChange={v => item.onChange && item.onChange(item.id, v)}
+                        minValue={1}
+                        maxValue={item.mintable}
+                        value={item.slot}
+                      />
                     </chakra.td>
                   </chakra.tr>
                 ))}
@@ -84,9 +90,9 @@ export const MintModal = ({
         )}
         <Divider pt={4} borderColor="whiteAlpha.100" mb={6} />
         <HStack justify="center">
-          {!isSuccess ? (
+          {status === "MINT" ? (
             <>
-              <Button onClick={handleMint} fontSize="md" size="md" py={5}>
+              <Button isLoading={isLoading} onClick={handleMint} fontSize="md" size="md" py={5}>
                 MINT NFT
               </Button>
               <Button

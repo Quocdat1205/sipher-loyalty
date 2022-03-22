@@ -1,11 +1,28 @@
-import React, { useState } from "react"
+import React from "react"
 import { ImPriceTag } from "react-icons/im"
-import { Box, Button, chakra, HStack } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, HStack, Skeleton } from "@sipher.dev/sipher-ui"
+
+import { Lootbox } from "@sdk"
 
 import QuantitySelector from "./QuantitySelector"
 
-export const ActionContainer = () => {
-  const [slot, setSlot] = useState(0)
+interface ActionContainerProps {
+  isFetching: boolean
+  details: Lootbox | undefined
+  slot: number
+  setSlot: (v: number) => void
+  mutateMint: () => void
+  isLoading: boolean
+}
+
+export const ActionContainer = ({
+  details,
+  slot,
+  setSlot,
+  isLoading,
+  mutateMint,
+  isFetching,
+}: ActionContainerProps) => {
   return (
     <Box
       px={4}
@@ -18,11 +35,14 @@ export const ActionContainer = () => {
       borderColor="neutral.600"
     >
       <HStack spacing={4}>
-        <Box flex={1}>
-          <QuantitySelector onChange={setSlot} maxValue={5} value={slot} />
-        </Box>
-        <Box flex={1}>
+        <Skeleton isLoaded={isFetching} flex={1}>
+          <QuantitySelector onChange={setSlot} maxValue={details?.mintable ?? 0} value={slot} />
+        </Skeleton>
+        <Skeleton isLoaded={isFetching} flex={1}>
           <Button
+            isDisabled={slot === 0}
+            onClick={() => mutateMint()}
+            isLoading={isLoading}
             py={5}
             colorScheme="accent"
             w="full"
@@ -34,7 +54,7 @@ export const ActionContainer = () => {
           >
             MINT NFT
           </Button>
-        </Box>
+        </Skeleton>
       </HStack>
     </Box>
   )

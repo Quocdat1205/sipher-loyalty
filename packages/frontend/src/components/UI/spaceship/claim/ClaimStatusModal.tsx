@@ -1,7 +1,7 @@
 import React, { Fragment } from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { Box, Button, chakra, Divider, Text } from "@sipher.dev/sipher-ui"
+import { Button, chakra, Divider, Flex, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared/ChakraModal"
 
@@ -22,9 +22,9 @@ export const ClaimStatusModal = ({ isOpen, onClose, status }: ClaimStatusModalPr
       onClose={onClose}
       size="md"
     >
-      <Box px={6}>
-        <Image src="/images/spaceship/box-1.png" alt="box" height={280} width={280} />
-        <Text py={4} color="grey.400">
+      <Flex flexDir="column" align="center" px={6}>
+        <Image src="/images/spaceship/box-1.png" alt="box" height={400} width={400} />
+        <Text textAlign="center" py={4} color="grey.400">
           {status === "SUCCESS" ? (
             <Fragment>
               You can check the claimed box(es) at the{" "}
@@ -42,9 +42,11 @@ export const ClaimStatusModal = ({ isOpen, onClose, status }: ClaimStatusModalPr
             "Something went wrong, please try after sometime!"
           )}
         </Text>
-        <Divider borderColor="whiteAlpha.100" />
-        <Button onClick={onClose}>Done</Button>
-      </Box>
+        <Divider mb={4} borderColor="whiteAlpha.100" />
+        <Button w="10rem" onClick={onClose}>
+          Done
+        </Button>
+      </Flex>
     </ChakraModal>
   )
 }

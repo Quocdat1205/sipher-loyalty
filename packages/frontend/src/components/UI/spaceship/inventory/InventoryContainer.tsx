@@ -5,19 +5,28 @@ import { MintModal } from "./MintModal"
 import { BoxCard, useInventory } from "."
 
 export const InventoryContainer = () => {
-  const { handleMint, isSuccess, isModal, setIsModal, inventoryData, inventoryDataCheck, openModalMint, handleView } =
-    useInventory()
+  const {
+    isLoading,
+    isStatusModal,
+    handleMint,
+    inventoryData,
+    inventoryDataCheck,
+    setIsStatusModal,
+    handleView,
+    isCheckAccountClaim,
+  } = useInventory()
 
   const renderNFTs = () => {
-    return inventoryData.map(i => (
+    return inventoryData?.map(i => (
       <BoxCard
+        isCheckAccountClaim={isCheckAccountClaim}
         key={i.id}
         tokenId={i.id}
+        mintable={i.mintable}
         handleView={handleView}
         onClick={i.onSelect}
-        name={i.name}
-        imageUrl={i.imageUrl}
         isChecked={i.isChecked}
+        propertyLootbox={i.propertyLootbox}
       />
     ))
   }
@@ -25,21 +34,23 @@ export const InventoryContainer = () => {
   return (
     <Flex flexDir="column" align="center">
       <Box py={6} maxW="1200px" w="full">
-        {inventoryData.filter(i => i.isChecked).length !== 0 && (
-          <Button onClick={openModalMint} mb={4}>
-            MINT NFT({inventoryDataCheck.length})
-          </Button>
-        )}
+        {!isCheckAccountClaim ||
+          (inventoryDataCheck?.length !== 0 && (
+            <Button onClick={() => setIsStatusModal("MINT")} mb={4}>
+              MINT NFT({inventoryDataCheck?.length})
+            </Button>
+          ))}
         <SimpleGrid spacing={6} columns={[1, 3, 5]}>
           {renderNFTs()}
         </SimpleGrid>
       </Box>
       <MintModal
-        isSuccess={isSuccess}
+        isLoading={isLoading}
+        status={isStatusModal}
         handleMint={handleMint}
-        dataMint={inventoryDataCheck}
-        isOpen={isModal === "MINT"}
-        onClose={() => setIsModal("")}
+        dataMint={inventoryDataCheck ?? []}
+        isOpen={isStatusModal !== ""}
+        onClose={() => setIsStatusModal("")}
       />
     </Flex>
   )
