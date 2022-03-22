@@ -525,10 +525,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UserControllerUploadImg
      * @request POST:/api/sipher/loyalty/user/upload-image
      */
-    userControllerUploadImg: (params: RequestParams = {}) =>
+    userControllerUploadImg: (data: { file?: File }, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/user/upload-image`,
         method: 'POST',
+        body: data,
+        type: ContentType.FormData,
         ...params,
       }),
 
@@ -545,6 +547,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: 'POST',
         body: data,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name UserControllerGetPriceCoinMarketCap
+     * @request GET:/api/sipher/loyalty/user/get-price
+     */
+    userControllerGetPriceCoinMarketCap: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/user/get-price`,
+        method: 'GET',
         ...params,
       }),
   };
