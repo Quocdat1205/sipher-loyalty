@@ -1,7 +1,12 @@
 import { toChecksumAddress } from "ethereumjs-util";
 import { Contract, providers } from "ethers";
 import { MoreThan, MoreThanOrEqual, Repository } from "typeorm";
-import { BurnType, Lootbox, MintStatus } from "@entity";
+import {
+  BurnType,
+  ERC1155SpaceShipPartLootbox,
+  Lootbox,
+  MintStatus,
+} from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 // import { Cron } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -57,10 +62,10 @@ export class LootBoxService {
   private distributeClaimableLootbox = async (
     nftContract: Contract,
     i: number,
-    tokenId: number
+    tokenId: number,
+    expiredDate: Date
   ) => {
     try {
-      const expiredDate = new Date(new Date().getTime() / 1000 + 86400 * 7);
       const publicAddress: string = await nftContract.ownerOf(i);
       let lootbox = await this.getClaimableLootboxFromWalletAndTokenIdExpired(
         publicAddress,
@@ -90,10 +95,13 @@ export class LootBoxService {
     typeId: number
   ) => {
     const promises = [];
+    const expiredDate = new Date(new Date().getTime() / 1000 + 86400 * 7);
     if (typeId !== 6) {
       // random id if week 7 (typeID = 6 )
       for (let i = 1; i <= 10000; i++) {
-        promises.push(this.distributeClaimableLootbox(nftContract, i, typeId));
+        promises.push(
+          this.distributeClaimableLootbox(nftContract, i, typeId, expiredDate)
+        );
       }
     } else
       for (let i = 1; i <= 10000; i++) {
@@ -101,7 +109,8 @@ export class LootBoxService {
           this.distributeClaimableLootbox(
             nftContract,
             i,
-            Math.round(Math.random() * 5)
+            Math.round(Math.random() * 5),
+            expiredDate
           )
         );
       }
@@ -237,7 +246,8 @@ export class LootBoxService {
   private upsertLootbox = async (
     publicAddress: string,
     tokenId: number,
-    quantity: number
+    quantity: number,
+    propertyLootbox: ERC1155SpaceShipPartLootbox
   ) => {
     // create or update lootbox
     let lootbox = await this.getLootboxFromWalletAndTokenID(
@@ -249,6 +259,7 @@ export class LootBoxService {
         publicAddress,
         tokenId,
         quantity,
+        propertyLootbox,
       });
     } else {
       lootbox.quantity += quantity;
@@ -268,13 +279,13 @@ export class LootBoxService {
     const promisesClaimableLootbox = [];
     const promisesLootbox = [];
     for (let i = 0; i < claimableLootbox.length; i++) {
-      const { quantity, tokenId } = claimableLootbox[i];
+      const { quantity, tokenId, propertyLootbox } = claimableLootbox[i];
       claimableLootbox[i].quantity = 0;
       promisesClaimableLootbox.push(
         this.claimableLootboxRepo.save(claimableLootbox)
       );
       promisesLootbox.push(
-        this.upsertLootbox(publicAddress, tokenId, quantity)
+        this.upsertLootbox(publicAddress, tokenId, quantity, propertyLootbox)
       );
     }
 
@@ -557,7 +568,7 @@ export class LootBoxService {
     } else LoggerService.log("event resoved or in burned database");
   };
 
-  async upsertClaimedLootbox(
+  async addQuantityClaimedLootbox(
     claimableLootbox: ClaimableLootbox
   ): Promise<ClaimableLootbox> {
     try {

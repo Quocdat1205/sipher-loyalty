@@ -35,7 +35,7 @@ export class SeedLootboxService {
     const erclootbox = await this.erc1155SpaceShipPartLootboxRepo.findOne({
       tokenId: lootbox.tokenId,
     });
-    this.lootboxService.upsertClaimedLootbox({
+    this.lootboxService.addQuantityClaimedLootbox({
       publicAddress: lootbox.publicAddress,
       tokenId: lootbox.tokenId,
       quantity: lootbox.quantity,
