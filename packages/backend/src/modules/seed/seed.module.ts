@@ -1,4 +1,5 @@
 import {
+  ClaimableLootbox,
   ERC1155Sculpture,
   ERC1155SculptureAttribute,
   ERC1155SpaceShipPartLootbox,
@@ -28,6 +29,7 @@ import { SeedLootboxService } from "./seedLootbox.service";
       Lootbox,
       Airdrop,
       Merch,
+      ClaimableLootbox,
     ]),
   ],
   providers: [

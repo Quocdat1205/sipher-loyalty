@@ -1,6 +1,11 @@
 import { toChecksumAddress } from "ethereumjs-util";
 import { Contract, providers } from "ethers";
-import { Repository } from "typeorm";
+import {
+  LessThanOrEqual,
+  MoreThan,
+  MoreThanOrEqual,
+  Repository,
+} from "typeorm";
 import { BurnType, Lootbox, MintStatus } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 // import { Cron } from "@nestjs/schedule";
@@ -182,6 +187,7 @@ export class LootBoxService {
         { publicAddress: toChecksumAddress(publicAddress), tokenId },
         { publicAddress: publicAddress.toLowerCase(), tokenId },
       ],
+      relations: ["propertyLootbox"],
     });
     return lootboxs;
   };
@@ -297,6 +303,7 @@ export class LootBoxService {
         { publicAddress: toChecksumAddress(publicAddress) },
         { publicAddress: publicAddress.toLowerCase() },
       ],
+      relations: ["propertyLootbox"],
     });
     return lootboxs;
   };
@@ -320,9 +327,16 @@ export class LootBoxService {
   ): Promise<Array<ClaimableLootbox>> => {
     const lootboxs = await this.claimableLootboxRepo.find({
       where: [
-        { publicAddress: toChecksumAddress(publicAddress) },
-        { publicAddress: publicAddress.toLowerCase() },
+        {
+          publicAddress: toChecksumAddress(publicAddress),
+          expiredDate: MoreThan(new Date()),
+        },
+        {
+          publicAddress: publicAddress.toLowerCase(),
+          expiredDate: MoreThan(new Date()),
+        },
       ],
+      relations: ["propertyLootbox"],
     });
     return lootboxs;
   };

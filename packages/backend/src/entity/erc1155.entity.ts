@@ -10,6 +10,7 @@ import {
   ERC1155SculptureAttribute,
   ERC1155SpaceShipPartLootboxAttribute,
 } from "./erc1155Attributes.entity";
+import { Lootbox } from "./lootbox.entity";
 
 @Entity()
 export class ERC1155SpaceShipPartLootbox {
@@ -36,6 +37,15 @@ export class ERC1155SpaceShipPartLootbox {
     (attributes) => attributes.erc1155
   )
   attributes: ERC1155SpaceShipPartLootboxAttribute[];
+
+  @OneToMany(() => Lootbox, (Lootboxs) => Lootboxs.propertyLootbox)
+  lootboxs?: Lootbox[];
+
+  @OneToMany(
+    () => Lootbox,
+    (ClaimableLootboxs) => ClaimableLootboxs.propertyLootbox
+  )
+  claimableLootboxs?: Lootbox[];
 
   @CreateDateColumn({ default: new Date() })
   createdAt: Date;

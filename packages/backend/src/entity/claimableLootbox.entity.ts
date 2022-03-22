@@ -3,9 +3,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
+
+import { ERC1155SpaceShipPartLootbox } from "./erc1155.entity";
 
 @Entity()
 export class ClaimableLootbox {
@@ -25,8 +28,14 @@ export class ClaimableLootbox {
   @Column({ nullable: false })
   tokenId: number;
 
+  @ManyToOne(
+    () => ERC1155SpaceShipPartLootbox,
+    (PropertyLootbox) => PropertyLootbox.claimableLootboxs
+  )
+  propertyLootbox?: ERC1155SpaceShipPartLootbox;
+
   @ApiProperty()
-  @Column({ type: "timestamp", nullable: true })
+  @Column({ type: "timestamptz", nullable: true })
   @Transform(({ value }) => new Date(value))
   expiredDate: Date;
 
