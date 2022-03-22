@@ -312,6 +312,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags lootbox
+     * @name LootBoxControllerGetLootboxById
+     * @request GET:/api/sipher/loyalty/lootbox/get-by-walllet/{publicAddress}/{id}
+     * @secure
+     */
+    lootBoxControllerGetLootboxById: (publicAddress: string, id: string, params: RequestParams = {}) =>
+      this.request<Lootbox[], any>({
+        path: `/api/sipher/loyalty/lootbox/get-by-walllet/${publicAddress}/${id}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
      * @name LootBoxControllerGetLootboxFromWallet
      * @request GET:/api/sipher/loyalty/lootbox/get-by-walllet/{publicAddress}
      * @secure

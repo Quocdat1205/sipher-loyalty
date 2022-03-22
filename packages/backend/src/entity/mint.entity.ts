@@ -28,11 +28,11 @@ export class PendingMint {
   to: string;
 
   @ApiProperty({ type: Number })
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   batchID?: number;
 
   @ApiProperty({ type: Number })
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   amount?: number;
 
   @ApiProperty({ type: Number, isArray: true })

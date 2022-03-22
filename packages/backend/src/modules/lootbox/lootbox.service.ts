@@ -264,7 +264,6 @@ export class LootBoxService {
       });
     } else {
       lootbox.quantity += quantity;
-
       lootbox.mintable += quantity;
     }
     LoggerService.log(`save lootbox to  ${publicAddress}`);
@@ -302,6 +301,18 @@ export class LootBoxService {
       Math.floor(Math.abs(new Date().getTime() - 1648771200) / (86400 * 49)) %
       7;
     await this.takeSnapshot(typeId);
+  };
+
+  getLootboxById = async (id: string): Promise<Array<Lootbox>> => {
+    const lootboxs = await this.lootboxRepo.find({
+      where: [
+        {
+          id,
+        },
+      ],
+      relations: ["propertyLootbox"],
+    });
+    return lootboxs;
   };
 
   getLootboxFromWallet = async (
