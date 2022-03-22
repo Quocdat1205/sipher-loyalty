@@ -260,6 +260,7 @@ export class LootBoxService {
         tokenId,
         quantity,
         propertyLootbox,
+        mintable: quantity,
       });
     } else {
       lootbox.quantity += quantity;
