@@ -52,6 +52,7 @@ export interface Lootbox {
   quantity: number;
   tokenId: number;
   pending: number;
+  minable: number;
   propertyLootbox: ERC1155SpaceShipPartLootbox;
 
   /** @format date-time */
