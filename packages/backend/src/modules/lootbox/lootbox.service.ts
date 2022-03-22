@@ -1,11 +1,6 @@
 import { toChecksumAddress } from "ethereumjs-util";
 import { Contract, providers } from "ethers";
-import {
-  LessThanOrEqual,
-  MoreThan,
-  MoreThanOrEqual,
-  Repository,
-} from "typeorm";
+import { MoreThan, MoreThanOrEqual, Repository } from "typeorm";
 import { BurnType, Lootbox, MintStatus } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 // import { Cron } from "@nestjs/schedule";
@@ -329,11 +324,13 @@ export class LootBoxService {
       where: [
         {
           publicAddress: toChecksumAddress(publicAddress),
-          expiredDate: MoreThan(new Date()),
+          expiredDate: MoreThanOrEqual(new Date()),
+          quantity: MoreThan(0),
         },
         {
           publicAddress: publicAddress.toLowerCase(),
-          expiredDate: MoreThan(new Date()),
+          expiredDate: MoreThanOrEqual(new Date()),
+          quantity: MoreThan(0),
         },
       ],
       relations: ["propertyLootbox"],
