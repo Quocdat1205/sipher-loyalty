@@ -1,3 +1,4 @@
+import CoinMarketCap from "coinmarketcap-api";
 import {
   Body,
   Controller,
@@ -8,12 +9,13 @@ import {
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
+import constant from "@setting/constant";
 
 import { bioDto } from "./user.dto";
 import { UserService } from "./user.service";
-import CoinMarketCap from "coinmarketcap-api";
 
-const apiKey = "1f422488-4c3b-4914-8ba6-6f97607cec22";
+const apiKey = constant.API_KEY_CMC;
+const id_sipher = constant.ID_SIPHER;
 
 @ApiTags("user")
 @Controller("user")
@@ -49,27 +51,22 @@ export class UserController {
     return this.userService.updateBio(ather_id, bio);
   }
 
-  @Get("get-price")
+  @Get("get-sipher-statics")
   async getPriceCoinMarketCap() {
     const client = new CoinMarketCap(apiKey);
 
-    // client
-    //   .getIdMap({ symbol: ["BTC", "ETH"] })
-    //   .then(console.log)
-    //   .catch(console.error);
+    const sipher = await client.getQuotes({ id: id_sipher, convert: "USD" });
 
-    // return client
-    //   .getTickers({ convert: "USD", sort: "name", cryptocurrencyType: "coins" })
-    //   .then((result: any) => {
-    //     console.log(result);
-    //   })
-    //   .catch(console.error);
+    const sipher_data = sipher.data[id_sipher];
 
-    // client
-    //   .getIdMap({ symbol: "Sipher" })
-    //   .then(console.log)
-    //   .catch(console.error);
+    const data = {
+      sipher_price: sipher_data.quote.USD.price,
+      marketCap: sipher_data.self_reported_market_cap,
+      fullyDeluted: sipher_data.quote.USD.fully_diluted_market_cap,
+      circulatingSupply: sipher_data.circulating_supply,
+      maxSupply: sipher_data.max_supply,
+    };
 
-    client.getMetadata({ id: "15469" }).then(console.log).catch(console.error);
+    return data;
   }
 }
