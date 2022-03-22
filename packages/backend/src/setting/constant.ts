@@ -7,6 +7,7 @@ export enum Chain {
   Mainnet = 1,
   Rinkeby = 4,
   Mumbai = 80001,
+  Polygon = 137,
 }
 
 type BlockchainConfiguration = {
@@ -95,20 +96,12 @@ export class SystemConfigProvider {
     return this.get("NODE_ENV", "development") === "test";
   }
 
-  public get config(): ConfigMint {
-    return {
-      erc1155Spaceship: {
-        chainId: this.CHAIN_ID,
-        verifyingContract: this.get(`SC_ERC1155_SPACESHIP_${this.CHAIN_ID}`),
-      },
-    };
-  }
-
   public get blockchain(): BlockchainConfiguration {
     const rpcUrls = {
       [Chain.Mainnet]: `https://mainnet.infura.io/v3/${this.SC_INFURA}`,
       [Chain.Rinkeby]: `https://rinkeby.infura.io/v3/${this.SC_INFURA}`,
       [Chain.Mumbai]: `${this.POLYGON_RPC_URL}`,
+      [Chain.Polygon]: `${this.POLYGON_RPC_URL}`,
     };
 
     const erc1155Spaceship = {
@@ -121,6 +114,10 @@ export class SystemConfigProvider {
       [Chain.Mumbai]: {
         address: "0x0c8f19A3496FDe87F55475ac652c7652093B16c7",
       },
+
+      [Chain.Polygon]: {
+        address: "0x0c8f19A3496FDe87F55475ac652c7652093B16c7",
+      },
     };
 
     const erc1155Sculpture = {
@@ -131,11 +128,27 @@ export class SystemConfigProvider {
         address: "0x1D5Db97aC0c865B6C01Cfe1309B6Ba8cB431805F",
       },
       [Chain.Mumbai]: {
-        address: "0xF40FDc85Cbe6013b44D230a036770704FB92890c",
+        address: "0x3EdB954303D0A13ee347C6989189294B0422E7D6",
+      },
+
+      [Chain.Polygon]: {
+        address: "0x3EdB954303D0A13ee347C6989189294B0422E7D6",
       },
     };
 
     return { rpcUrls, contracts: { erc1155Spaceship, erc1155Sculpture } };
+  }
+
+  public get config(): ConfigMint {
+    return {
+      erc1155Spaceship: {
+        chainId: this.isProduction ? Chain.Polygon : Chain.Mumbai,
+        verifyingContract:
+          this.blockchain.contracts.erc1155Spaceship[
+            this.isProduction ? Chain.Polygon : Chain.Mumbai
+          ].address,
+      },
+    };
   }
 
   public get(key: string, defaultValue?: string) {

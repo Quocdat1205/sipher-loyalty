@@ -96,7 +96,7 @@ export class MintService {
   };
 
   getPendingLootboxByBatchOrder = async (batchOrder: BatchOrder) => {
-    const pending = await this.PendingMintRepo.find({
+    const pending = await this.PendingMintRepo.findOne({
       where: [
         {
           to: batchOrder.to.toLowerCase(),
@@ -169,24 +169,18 @@ export class MintService {
 
     const signature = await signBatchOrder(this.config, batchOrder);
     batchOrder.signature = signature;
-    const promises = [];
-    for (let i = 0; i < batchID.length; i++) {
-      const order = {
-        to: publicAddress,
-        batchID: batchID[i],
-        amount: amount[i],
-        batchIDs: batchID,
-        amounts: amount,
-        salt: batchOrder.salt,
-        signature,
-        type: MintType.Lootbox,
-        status: MintStatus.Pending,
-      };
-      const pendingMint = this.PendingMintRepo.create(order);
-      LoggerService.log("save pending mint to ", publicAddress);
-      promises.push(this.PendingMintRepo.save(pendingMint));
-    }
-    await Promise.all(promises);
+    const order = {
+      to: publicAddress,
+      batchIDs: batchID,
+      amounts: amount,
+      salt: batchOrder.salt,
+      signature,
+      type: MintType.Lootbox,
+      status: MintStatus.Pending,
+    };
+    const pendingMint = this.PendingMintRepo.create(order);
+    LoggerService.log("save pending mint to ", publicAddress);
+    await this.PendingMintRepo.save(pendingMint);
     const verifySignature = recoverBatchOrderSignature(
       batchOrder,
       signature,

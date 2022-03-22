@@ -265,12 +265,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name NftItemControllerGetAllNft
-     * @request GET:/api/sipher/loyalty/nft/get-all
+     * @tags nft
+     * @name NftItemControllerGetByOwner
+     * @request GET:/api/sipher/loyalty/nft/get-by-owner
      */
-    nftItemControllerGetAllNft: (params: RequestParams = {}) =>
+    nftItemControllerGetByOwner: (params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/nft/get-all`,
+        path: `/api/sipher/loyalty/nft/get-by-owner`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags nft
+     * @name NftItemControllerGetByCollection
+     * @request GET:/api/sipher/loyalty/nft/get-by-collection
+     */
+    nftItemControllerGetByCollection: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/nft/get-by-collection`,
         method: 'GET',
         ...params,
       }),
@@ -284,7 +299,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     mintControllerGetPendingLootbox: (publicAddress: string, params: RequestParams = {}) =>
-      this.request<PendingMint, any>({
+      this.request<PendingMint[], any>({
         path: `/api/sipher/loyalty/mint/pending/${publicAddress}`,
         method: 'GET',
         secure: true,

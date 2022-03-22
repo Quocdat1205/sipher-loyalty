@@ -5,7 +5,7 @@ import { Interval } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
 import { erc1155Abi } from "@setting/blockchain/abis";
 import { getContract, getProvider } from "@setting/blockchain/ethers";
-import constant from "@setting/constant";
+import constant, { Chain } from "@setting/constant";
 
 import { LootBoxService } from "@modules/lootbox/lootbox.service";
 import { ZERO_ADDRESS } from "@utils/constants";
@@ -33,7 +33,10 @@ export class LootboxTrackerService {
   ) {
     this.getStartMintedBlock();
     this.getStartBurnedBlock();
-    this.provider = getProvider(constant.CHAIN_ID);
+
+    this.provider = getProvider(
+      constant.isProduction ? Chain.Polygon : Chain.Mumbai
+    );
     this.contract = getContract(
       constant.config.erc1155Spaceship.verifyingContract,
       erc1155Abi,
@@ -173,7 +176,7 @@ export class LootboxTrackerService {
     _fromBlock: number,
     _currentBlock: number
   ) => {
-    const filter = this.contract.filters.MintRecord();
+    const filter = this.contract.filters.Minted();
     const pastEvents = await this.contract
       .queryFilter(filter, _fromBlock, _currentBlock)
       .catch((err) => {

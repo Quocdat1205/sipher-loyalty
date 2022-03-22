@@ -29,19 +29,19 @@ export class PendingMint {
 
   @ApiProperty({ type: Number })
   @Column({ nullable: false })
-  batchID: number;
+  batchID?: number;
 
   @ApiProperty({ type: Number })
   @Column({ nullable: false })
-  amount: number;
+  amount?: number;
 
   @ApiProperty({ type: Number, isArray: true })
   @Column("int", { array: true, default: [] })
-  batchIDs: number[];
+  batchIDs?: number[];
 
   @ApiProperty({ type: Number, isArray: true })
   @Column("int", { array: true, default: [] })
-  amounts: number[];
+  amounts?: number[];
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })

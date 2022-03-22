@@ -442,11 +442,10 @@ export class LootBoxService {
 
   updateLootboxFromTrackerMintedBatchOrder = async (batchOrder: BatchOrder) => {
     // get pending mint
-
     const pending = await this.mintService.getPendingLootboxByBatchOrder(
       batchOrder
     );
-    if (pending && pending.length > 0) {
+    if (pending) {
       LoggerService.log(`pending : ${pending}`);
       const lootboxs = await this.getLootboxFromWalletAndTokenIDs(
         batchOrder.to,
@@ -465,10 +464,10 @@ export class LootBoxService {
       }
       // update batch lootbox
       for (let i = 0; i < lootboxs.length; i++) {
-        pending[i].status = MintStatus.Minted;
-        promises.push(this.mintService.updatePendingMint(pending[i]));
+        pending.status = MintStatus.Minted;
         promises.push(this.lootboxRepo.save(lootboxs[i]));
       }
+      promises.push(this.mintService.updatePendingMint(pending));
       const result = await Promise.all(promises);
       LoggerService.log(
         `update lootboxs from tracker minted done :${JSON.stringify(result)}`
