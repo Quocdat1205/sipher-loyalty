@@ -8,7 +8,7 @@ import {
 @Entity()
 export class S3 {
   @PrimaryGeneratedColumn("increment")
-  id: number;
+  id: string;
 
   @Column()
   s3_key: string;

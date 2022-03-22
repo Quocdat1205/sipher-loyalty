@@ -11,9 +11,9 @@ import { ERC1155SpaceShipPartLootbox } from "./erc1155.entity";
 
 @Entity()
 export class Lootbox {
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String })
   @PrimaryGeneratedColumn("increment")
-  id: number;
+  id: string;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
@@ -31,6 +31,7 @@ export class Lootbox {
   @Column({ default: 0 })
   pending: number;
 
+  @ApiProperty({ type: () => ERC1155SpaceShipPartLootbox })
   @ManyToOne(
     () => ERC1155SpaceShipPartLootbox,
     (PropertyLootbox) => PropertyLootbox.lootboxs

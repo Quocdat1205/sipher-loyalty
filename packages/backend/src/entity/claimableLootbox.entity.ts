@@ -12,9 +12,9 @@ import { ERC1155SpaceShipPartLootbox } from "./erc1155.entity";
 
 @Entity()
 export class ClaimableLootbox {
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String })
   @PrimaryGeneratedColumn("increment")
-  id?: number;
+  id?: string;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
@@ -28,6 +28,7 @@ export class ClaimableLootbox {
   @Column({ nullable: false })
   tokenId: number;
 
+  @ApiProperty({ type: () => ERC1155SpaceShipPartLootbox })
   @ManyToOne(
     () => ERC1155SpaceShipPartLootbox,
     (PropertyLootbox) => PropertyLootbox.claimableLootboxs

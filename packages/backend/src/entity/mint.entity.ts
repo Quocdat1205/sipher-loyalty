@@ -19,9 +19,9 @@ export enum MintType {
 
 @Entity()
 export class PendingMint {
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String })
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })

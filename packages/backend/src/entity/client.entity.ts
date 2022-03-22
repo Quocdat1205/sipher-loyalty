@@ -77,7 +77,7 @@ export class Address {
 @Entity()
 export class TransactionLogs {
   @PrimaryGeneratedColumn("increment")
-  id: number;
+  id: string;
 
   @Column()
   publicAddress: string;
@@ -101,7 +101,7 @@ export class TransactionLogs {
 @Entity()
 export class ActivityLogs {
   @PrimaryGeneratedColumn("increment")
-  id: number;
+  id: string;
 
   @Column()
   publicAddress: string;
@@ -122,7 +122,7 @@ export class ActivityLogs {
 @Entity()
 export class NftOrder {
   @PrimaryGeneratedColumn("increment")
-  id: number;
+  id: string;
 
   @Column()
   id_sculpture: string;
