@@ -60,6 +60,10 @@ export class SystemConfigProvider {
 
   PW_WEB = this.get("PW_WEB");
 
+  ID_SIPHER = this.get("ID_SIPHER");
+
+  API_KEY_CMC = this.get("API_KEY_CMC");
+
   AWS_ACCESS_KEY_ID = this.get("AWS_ACCESS_KEY_ID");
 
   AWS_SECRET_ACCESS_KEY = this.get("AWS_SECRET_ACCESS_KEY");

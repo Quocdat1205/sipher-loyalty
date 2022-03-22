@@ -588,11 +588,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags user
      * @name UserControllerGetPriceCoinMarketCap
-     * @request GET:/api/sipher/loyalty/user/get-price
+     * @request GET:/api/sipher/loyalty/user/get-sipher-statics
      */
     userControllerGetPriceCoinMarketCap: (params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/user/get-price`,
+        path: `/api/sipher/loyalty/user/get-sipher-statics`,
         method: 'GET',
         ...params,
       }),
