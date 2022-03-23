@@ -19,6 +19,13 @@ export default class InsertSipherCollection implements Seeder {
           chainId: 1,
           contractAddress: "0x09E0dF4aE51111CA27d6B85708CFB3f1F7cAE982",
         },
+        {
+          name: "SIPHER SCULPTURE",
+          collectionType: CollectionType.ERC1155,
+          collectionSlug: "siphersculpture",
+          chainId: 80001,
+          contractAddress: "0xF40FDc85Cbe6013b44D230a036770704FB92890c",
+        },
       ])
       .execute();
   }

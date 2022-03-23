@@ -481,6 +481,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags collection
+     * @name CollectionControllerGetCollectionPorfolio
+     * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/portfolio/{ownerAddress}
+     */
+    collectionControllerGetCollectionPorfolio: (collectionSlug: string, ownerAddress: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/collection/${collectionSlug}/portfolio/${ownerAddress}`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags airdrop
      * @name AirdropControllerGetAirdropByType
      * @request GET:/api/sipher/loyalty/airdrop/{airdropType}/{publicAddress}

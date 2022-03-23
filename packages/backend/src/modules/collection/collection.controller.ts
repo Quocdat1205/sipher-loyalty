@@ -38,7 +38,7 @@ export class CollectionController {
   ) {
     return await this.collectionService.getCollectionPortfolio(
       collectionSlug,
-      ownerAddress
+      ownerAddress.toLowerCase()
     );
   }
 }
