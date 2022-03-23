@@ -13,7 +13,7 @@ export class InfoPendingMintDto {
 }
 
 export class ResPendingMintDto {
-  @ApiProperty({ type: PendingMint, isArray: true })
+  @ApiProperty({ type: PendingMint })
   pending: PendingMint;
 
   @ApiProperty({ type: PendingMint, isArray: true })

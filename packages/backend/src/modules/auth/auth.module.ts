@@ -10,6 +10,7 @@ import { AuthService } from "./auth.service";
       store: redisStore,
       host: constant.SESSION_HOST,
       port: constant.SESSION_PORT,
+      // password: constant.SESSION_PASS,
     }),
   ],
   providers: [AuthService],

@@ -37,7 +37,7 @@ export interface PendingMint {
 }
 
 export interface ResPendingMintDto {
-  pending: PendingMint[];
+  pending: PendingMint;
   info: PendingMint[];
 }
 

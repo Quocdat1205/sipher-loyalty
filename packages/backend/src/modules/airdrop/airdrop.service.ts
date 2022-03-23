@@ -14,13 +14,10 @@ export class AirdropService {
   ) {}
 
   private async getAllAirdrop(publicAddress: string) {
-    const data = await this.airdropRepos.findOne({
-      where: [
-        { claimer: publicAddress },
-        { claimer: publicAddress.toLowerCase() },
-      ],
-    });
-    return data;
+    const token = await this.getAirdropByType(publicAddress, AirdropType.TOKEN);
+    const nft = await this.getAirdropByType(publicAddress, AirdropType.NFT);
+    const merch = await this.getAirdropByType(publicAddress, AirdropType.MERCH);
+    return { token, nft, merch };
   }
 
   private async getTokenAirdrop(publicAddress: string) {

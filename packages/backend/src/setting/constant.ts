@@ -42,6 +42,8 @@ export class SystemConfigProvider {
 
   SESSION_PORT = this.get("SESSION_PORT");
 
+  SESSION_PASS = this.get("SESSION_PASS");
+
   SESSION_HOST = this.get("SESSION_HOST");
 
   SC_INFURA = this.get("SC_INFURA");

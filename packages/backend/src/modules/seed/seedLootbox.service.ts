@@ -36,6 +36,8 @@ export class SeedLootboxService {
     const erclootbox = await this.erc1155LootboxRepo.findOne({
       tokenId: lootbox.tokenId,
     });
+    console.log(erclootbox);
+
     this.lootboxService.addQuantityClaimedLootbox({
       publicAddress: lootbox.publicAddress,
       tokenId: lootbox.tokenId,
