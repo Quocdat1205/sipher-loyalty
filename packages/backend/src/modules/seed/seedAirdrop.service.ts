@@ -17,7 +17,7 @@ export class SeedAirdropService {
   private src = path.resolve(__dirname, "../../../src/data");
 
   private airdropDataHolder = JSON.parse(
-    fs.readFileSync(`${this.src}/AIRDROP/Holder.json`).toString()
+    fs.readFileSync(`${this.src}/AIRDROP/holder.json`).toString()
   );
 
   private airdropDataInvestorsCP1 = JSON.parse(
