@@ -82,7 +82,7 @@ export class MintService {
   getPendingLootbox = async (publicAddress: string) => {
     const imageBaseUrl =
       "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/lootbox";
-    const pending = await this.PendingMintRepo.find({
+    const pendings = await this.PendingMintRepo.find({
       where: [
         {
           to: publicAddress.toLowerCase(),
@@ -97,10 +97,10 @@ export class MintService {
       ],
     });
     const data = [];
-    pending.forEach((element) => {
-      if (element.batchID)
-        data.push({
-          pending: element,
+    pendings.forEach((element) => {
+      if (element.batchID) {
+        const pending = {
+          ...element,
           info: [
             {
               tokenId: element.batchID,
@@ -108,8 +108,9 @@ export class MintService {
               image: `${imageBaseUrl}_${element.batchID}.png`,
             },
           ],
-        });
-      else {
+        };
+        data.push(pending);
+      } else {
         const info = [];
         for (let i = 0; i < element.batchIDs.length; i++) {
           info.push({
@@ -118,10 +119,17 @@ export class MintService {
             image: `${imageBaseUrl}_${element.batchIDs[i]}.png`,
           });
         }
-        data.push({
-          pending: element,
-          info,
-        });
+        const pending = {
+          ...element,
+          info: [
+            {
+              tokenId: element.batchID,
+              quantity: element.amount,
+              image: `${imageBaseUrl}_${element.batchID}.png`,
+            },
+          ],
+        };
+        data.push(pending);
       }
     });
     return data;
