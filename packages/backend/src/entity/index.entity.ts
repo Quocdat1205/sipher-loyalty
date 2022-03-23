@@ -10,3 +10,4 @@ export * from "./program.entity";
 export * from "./S3.entity";
 export * from "./shopify-code.entity";
 export * from "./user.entity";
+export * from "./airdrop.entity";
