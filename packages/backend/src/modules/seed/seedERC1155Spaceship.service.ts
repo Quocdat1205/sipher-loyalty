@@ -59,11 +59,9 @@ export class SeedERC1155SpaceshipService {
 
   seedERC1155Lootboxs = async () => {
     await this.erc1155LootboxRepo.query(
-      `delete from erc1155_space_ship_part_lootbox_attribute`
+      `delete from erc1155_lootbox_attribute`
     );
-    await this.erc1155LootboxRepo.query(
-      `delete from erc1155_space_ship_part_lootbox`
-    );
+    await this.erc1155LootboxRepo.query(`delete from erc1155_lootbox`);
     const promises = [];
     for (let i = 0; i < this.erc1155Data.length; i++) {
       promises.push(this.seedERC1155Lootbox(this.erc1155Data[i]));
