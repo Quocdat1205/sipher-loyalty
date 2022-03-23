@@ -32,8 +32,6 @@ const SignInButton = () => {
     handler: () => setIsPopupOpen(false),
   })
 
-  console.log(authFlow)
-
   return (
     <SignInProvider>
       <Box minW="6rem" ref={popRef} pos="relative" zIndex={"modal"}>
@@ -54,7 +52,6 @@ const SignInButton = () => {
               cursor="pointer"
               onClick={() => {
                 setAuthFlow("SIGN_IN")
-                console.log("NICE")
               }}
               transform={"auto"}
             >

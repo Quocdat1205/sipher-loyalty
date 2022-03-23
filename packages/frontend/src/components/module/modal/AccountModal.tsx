@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 
 import { ChakraModal } from "@components/shared"
 
-import { AccountPassword } from "./AccountPassword"
 import { SettingModal } from "./SettingModal"
 import { ChooseAvatarModal } from "."
 
@@ -24,8 +23,6 @@ export const AccountModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
         <SettingModal setChangeForm={setChangeForm} onClose={onClose} />
       ) : changeForm === "AVATAR" ? (
         <ChooseAvatarModal setChangeForm={setChangeForm} />
-      ) : changeForm === "PASSWORD" ? (
-        <AccountPassword setChangeForm={setChangeForm} />
       ) : (
         ""
       )}
