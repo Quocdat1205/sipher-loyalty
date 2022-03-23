@@ -9,7 +9,7 @@ interface TimelineProps {
 }
 export const Timeline = ({ mappedData }: TimelineProps) => {
   return (
-    <Box pos="relative">
+    <Box mb={16} pos="relative">
       <svg viewBox="300 300 1200 75" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="grad1">

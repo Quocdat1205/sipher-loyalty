@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useMutation } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Box, Button, chakra, Divider, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Button, chakra, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useStore } from "@store"
 
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"

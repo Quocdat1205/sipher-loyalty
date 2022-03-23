@@ -15,10 +15,10 @@ export class LPSipherWethUniswap {
 
   async getBalance(address: string) {
     const value = await this.contract.balanceOf(address)
-    return parseFloat(weiToEther(value))
+    return weiToEther(value)
   }
 
   async totalSupply() {
-    return parseFloat(weiToEther(await this.contract.totalSupply()))
+    return weiToEther(await this.contract.totalSupply())
   }
 }

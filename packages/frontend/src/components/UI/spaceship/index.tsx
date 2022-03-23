@@ -3,12 +3,13 @@ import { useRouter } from "next/router"
 import { Box, Flex } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
-import { Banner } from "@components/shared"
+import { Banner, NotifyNetwork } from "@components/shared"
+import { POLYGON_NETWORK } from "@constant"
 
 import ClaimContainer from "./claim"
 import { InventoryContainer } from "./inventory"
 import OverviewContainer from "./overview"
-import { PendingContainer } from "./pending"
+// import { PendingContainer } from "./pending"
 
 export const spaceshipTabs = [
   { label: "Overview", name: "overview" },
@@ -31,15 +32,17 @@ const ContentSpaceship = () => {
     if (currentTab === "claim") {
       return <ClaimContainer />
     }
-    if (currentTab === "pending") {
-      return <PendingContainer />
-    }
+    // if (currentTab === "pending") {
+    //   return <PendingContainer />
+    // }
     return null
   }
 
   return (
-    <Flex flexDir="column" align="center" flex={1}>
+    <Flex pos="relative" flexDir="column" align="center" flex={1}>
+      <NotifyNetwork chainId={POLYGON_NETWORK} title="Polygon Mainnet" />
       <Banner
+        srcBg="/images/spaceship/banner.png"
         title="Spaceship"
         description="Transport yourself throughout the various dungeons and the World of Sipheria"
       />
