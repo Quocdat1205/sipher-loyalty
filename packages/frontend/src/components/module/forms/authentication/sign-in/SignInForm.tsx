@@ -29,7 +29,6 @@ interface SignInFormProps {
 
 const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
   const wallet = useWalletContext()
-  const [show, setShow] = useState(false)
   const {
     register,
     handleSubmit,

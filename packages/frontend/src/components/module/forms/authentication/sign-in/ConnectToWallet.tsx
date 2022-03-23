@@ -4,8 +4,7 @@ import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, chakra, Divider, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
-import { WalletConnectCard } from "@components/module/modal"
-import { ChakraModal } from "@components/shared"
+import { ChakraModal, WalletCard } from "@components/shared"
 import { useChakraToast } from "@hooks"
 
 const ConnectToWallet = () => {
@@ -43,19 +42,21 @@ const ConnectToWallet = () => {
     <ChakraModal title={"CONNECT TO A WALLET"} size="lg" isOpen={isOpen} hideCloseButton={true}>
       <Stack pos="relative" px={6} spacing={6} w="full">
         <HStack w="full" justify="space-between" align="center" spacing={6}>
-          <WalletConnectCard
+          <WalletCard
             onClick={() => {
               mutateAddWallet("injected")
             }}
             text={"Metamask"}
-            srcImage="/images/icons/wallets/metamask.svg"
+            src="/images/icons/wallets/metamask.svg"
+            colorScheme={"whiteAlpha"}
           />
-          <WalletConnectCard
+          <WalletCard
             onClick={() => {
               mutateAddWallet("walletConnect")
             }}
             text={"ConnectWallet"}
-            srcImage="/images/icons/wallets/walletconnect.svg"
+            src="/images/icons/wallets/walletconnect.svg"
+            colorScheme={"whiteAlpha"}
           />
         </HStack>
         <Box>
