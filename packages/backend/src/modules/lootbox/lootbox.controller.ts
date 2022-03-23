@@ -1,4 +1,4 @@
-import { ClaimableLootbox, Lootbox } from "@entity";
+import { ClaimableLootbox, Lootbox, PendingMint } from "@entity";
 import {
   Body,
   Controller,
@@ -15,10 +15,8 @@ import { AuthService } from "@modules/auth/auth.service";
 
 import { LootBoxService } from "./lootbox.service";
 import {
-  ClaimLootboxInputDto,
   MintBatchLootboxInputDto,
   MintLootboxInputDto,
-  resClaimLootboxDto,
   resMintBatchDto,
   resMintSingleDto,
 } from "./lootbox.type";
@@ -30,6 +28,19 @@ export class LootBoxController {
     private lootBoxService: LootBoxService,
     private authService: AuthService
   ) {}
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @ApiOkResponse({ type: Lootbox })
+  @Get("get-by-walllet/:publicAddress/:id")
+  async getLootboxById(
+    @Param("publicAddress") publicAddress: string,
+    @Param("id") id: string,
+    @Req() req: any
+  ) {
+    await this.authService.verifyAddress(publicAddress, req.userData);
+    return this.lootBoxService.getLootboxById(id);
+  }
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
@@ -83,7 +94,7 @@ export class LootBoxController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: resMintBatchDto })
+  @ApiOkResponse({ type: PendingMint })
   @Put("mint-batch")
   async mintBatchLootbox(
     @Body() body: MintBatchLootboxInputDto,
@@ -95,7 +106,7 @@ export class LootBoxController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: resMintSingleDto })
+  @ApiOkResponse({ type: PendingMint })
   @Put("mint")
   async mintLootbox(@Body() body: MintLootboxInputDto, @Req() req: any) {
     await this.authService.verifyAddress(body.publicAddress, req.userData);
@@ -104,10 +115,10 @@ export class LootBoxController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: resClaimLootboxDto })
-  @Put("claim/:tokenId")
-  async claim(@Body() body: ClaimLootboxInputDto, @Req() req: any) {
-    await this.authService.verifyAddress(body.publicAddress, req.userData);
-    return this.lootBoxService.claimLootbox(body);
+  @ApiOkResponse({ type: ClaimableLootbox, isArray: true })
+  @Put("claim-lootbox/:publicAddress")
+  async claim(@Param("publicAddress") publicAddress: string, @Req() req: any) {
+    await this.authService.verifyAddress(publicAddress, req.userData);
+    return this.lootBoxService.claimLootbox(publicAddress);
   }
 }

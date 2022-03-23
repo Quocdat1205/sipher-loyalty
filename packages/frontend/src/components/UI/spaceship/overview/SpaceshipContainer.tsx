@@ -1,5 +1,6 @@
 import React from "react"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import { Box, Button, Flex, Heading, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
 import { Timeline } from "./Timeline"
@@ -14,6 +15,7 @@ const dataShip = [
 ]
 
 export const SpaceshipContainer = () => {
+  const router = useRouter()
   return (
     <Flex
       flexDir="column"
@@ -43,7 +45,7 @@ export const SpaceshipContainer = () => {
               hidden, and use every tool at your disposal. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
               do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
             </Text>
-            <Button size="lg" mt={8} letterSpacing="1px">
+            <Button onClick={() => router.push({ query: { tab: "claim" } })} size="lg" mt={8} letterSpacing="1px">
               CLAIM LOOTBOX
             </Button>
           </Box>
@@ -66,10 +68,10 @@ export const SpaceshipContainer = () => {
                   pos="absolute"
                   top="0"
                   left="0"
-                  translateX="-10%"
+                  translateX="-15%"
                   translateY="5%"
                 >
-                  <Image src="/images/spaceship/plane.png" alt="plane" width={550} height={350} quality={100} />
+                  <Image src="/images/spaceship/ship/1.png" alt="plane" width={480} height={340} quality={100} />
                 </Box>
                 <Box
                   transform="auto"

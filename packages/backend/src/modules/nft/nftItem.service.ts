@@ -1,7 +1,7 @@
-import dotenv from "dotenv";
 import { omit } from "lodash";
 import { Injectable } from "@nestjs/common";
 import { ElasticsearchService } from "@nestjs/elasticsearch";
+import constant from "@setting/constant";
 
 import { LoggerService } from "../logger/logger.service";
 
@@ -11,8 +11,6 @@ import {
   NftItemFilterDto,
   NftItemFilterOrderBy,
 } from "./nft-item.dto";
-
-dotenv.config();
 
 @Injectable()
 export class NftItemService {
@@ -78,7 +76,7 @@ export class NftItemService {
       }
 
       const res = await this.searchSrv.search({
-        index: process.env.ELASTICSEARCH_INDEX,
+        index: constant.ELASTICSEARCH_INDEX,
         body: { from, size: take, query, sort },
       });
       return (

@@ -16,10 +16,21 @@ RUN yarn install
 RUN yarn build
 
 # DIST
-FROM mhart/alpine-node:14
+FROM mhart/alpine-node:14 AS app
 WORKDIR /app
 COPY --from=packages /packages/node_modules ./node_modules
 COPY --from=src /packages/backend/dist ./dist
 ENTRYPOINT ["node"]
+
+FROM app as backend-loyalty
 EXPOSE 5500
 CMD ["dist/main.js"]
+
+FROM app as lootbox-tracker-loyalty
+EXPOSE 5501
+CMD ["./dist/scripts/lootbox-tracker.js"]
+
+
+FROM app as sculpture-tracker-loyalty
+EXPOSE 5502
+CMD ["./dist/scripts/sculpture-tracker.js"]

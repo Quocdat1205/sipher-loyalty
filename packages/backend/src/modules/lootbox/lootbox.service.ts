@@ -1,7 +1,12 @@
 import { toChecksumAddress } from "ethereumjs-util";
 import { Contract, providers } from "ethers";
-import { Repository } from "typeorm";
-import { BurnType, Lootbox, MintStatus } from "@entity";
+import { MoreThan, MoreThanOrEqual, Repository } from "typeorm";
+import {
+  BurnType,
+  ERC1155SpaceShipPartLootbox,
+  Lootbox,
+  MintStatus,
+} from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 // import { Cron } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -17,11 +22,7 @@ import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 import { LoggerService } from "../logger/logger.service";
 
-import {
-  ClaimLootboxInputDto,
-  MintBatchLootboxInput,
-  MintLootboxInput,
-} from "./lootbox.type";
+import { MintBatchLootboxInput, MintLootboxInput } from "./lootbox.type";
 
 @Injectable()
 export class LootBoxService {
@@ -61,10 +62,10 @@ export class LootBoxService {
   private distributeClaimableLootbox = async (
     nftContract: Contract,
     i: number,
-    tokenId: number
+    tokenId: number,
+    expiredDate: Date
   ) => {
     try {
-      const expiredDate = new Date(new Date().getTime() / 1000 + 86400 * 7);
       const publicAddress: string = await nftContract.ownerOf(i);
       let lootbox = await this.getClaimableLootboxFromWalletAndTokenIdExpired(
         publicAddress,
@@ -94,10 +95,13 @@ export class LootBoxService {
     typeId: number
   ) => {
     const promises = [];
+    const expiredDate = new Date(new Date().getTime() / 1000 + 86400 * 7);
     if (typeId !== 6) {
       // random id if week 7 (typeID = 6 )
       for (let i = 1; i <= 10000; i++) {
-        promises.push(this.distributeClaimableLootbox(nftContract, i, typeId));
+        promises.push(
+          this.distributeClaimableLootbox(nftContract, i, typeId, expiredDate)
+        );
       }
     } else
       for (let i = 1; i <= 10000; i++) {
@@ -105,7 +109,8 @@ export class LootBoxService {
           this.distributeClaimableLootbox(
             nftContract,
             i,
-            Math.round(Math.random() * 5)
+            Math.round(Math.random() * 5),
+            expiredDate
           )
         );
       }
@@ -186,6 +191,7 @@ export class LootBoxService {
         { publicAddress: toChecksumAddress(publicAddress), tokenId },
         { publicAddress: publicAddress.toLowerCase(), tokenId },
       ],
+      relations: ["propertyLootbox"],
     });
     return lootboxs;
   };
@@ -221,7 +227,9 @@ export class LootBoxService {
     return Promise.all(promises);
   };
 
-  private flattenLootbox = async (lootboxs): Promise<Array<any>> => {
+  private flattenLootbox = async (
+    lootboxs: Array<Lootbox>
+  ): Promise<Array<any>> => {
     const flattern_lootbox = [];
     lootboxs.forEach((lootbox: Lootbox) => {
       const index = flattern_lootbox.findIndex(
@@ -235,28 +243,12 @@ export class LootBoxService {
     return flattern_lootbox;
   };
 
-  claimLootbox = async (claimLootboxInputDto: ClaimLootboxInputDto) => {
-    const { publicAddress, tokenId, expiredDate } = claimLootboxInputDto;
-    const claimableLootbox =
-      await this.getClaimableLootboxFromWalletAndTokenIdExpired(
-        publicAddress,
-        tokenId,
-        expiredDate
-      );
-    // verify
-    if (!claimableLootbox || claimableLootbox.quantity <= 0)
-      throw new HttpException(
-        `Don't have claimable lootbox id : ${tokenId}`,
-        HttpStatus.BAD_REQUEST
-      );
-
-    // update claimablelootbox quatity = 0
-    const { quantity } = claimableLootbox;
-    claimableLootbox.quantity = 0;
-    const resultClaimableLootbox = await this.claimableLootboxRepo.save(
-      claimableLootbox
-    );
-
+  private upsertLootbox = async (
+    publicAddress: string,
+    tokenId: number,
+    quantity: number,
+    propertyLootbox: ERC1155SpaceShipPartLootbox
+  ) => {
     // create or update lootbox
     let lootbox = await this.getLootboxFromWalletAndTokenID(
       publicAddress,
@@ -267,13 +259,41 @@ export class LootBoxService {
         publicAddress,
         tokenId,
         quantity,
+        propertyLootbox,
+        mintable: quantity,
       });
     } else {
       lootbox.quantity += quantity;
+      lootbox.mintable += quantity;
     }
     LoggerService.log(`save lootbox to  ${publicAddress}`);
-    const resultLootbox = this.lootboxRepo.save(lootbox);
-    return { resultClaimableLootbox, resultLootbox };
+    return this.lootboxRepo.save(lootbox);
+  };
+
+  claimLootbox = async (
+    publicAddress: string
+  ): Promise<Array<ClaimableLootbox>> => {
+    const claimableLootbox = await this.getClaimableLootboxFromWallet(
+      publicAddress
+    );
+
+    // update claimablelootbox quatity = 0
+    const promisesClaimableLootbox = [];
+    const promisesLootbox = [];
+    for (let i = 0; i < claimableLootbox.length; i++) {
+      const { quantity, tokenId, propertyLootbox } = claimableLootbox[i];
+      claimableLootbox[i].quantity = 0;
+      promisesClaimableLootbox.push(
+        this.claimableLootboxRepo.save(claimableLootbox)
+      );
+      promisesLootbox.push(
+        this.upsertLootbox(publicAddress, tokenId, quantity, propertyLootbox)
+      );
+    }
+
+    const resultClaimableLootbox = await Promise.all(promisesClaimableLootbox);
+    await Promise.all(promisesLootbox);
+    return resultClaimableLootbox;
   };
 
   weeklySnapshotForClaimableLootbox = async () => {
@@ -283,14 +303,30 @@ export class LootBoxService {
     await this.takeSnapshot(typeId);
   };
 
+  getLootboxById = async (id: string): Promise<Lootbox> => {
+    const lootbox = await this.lootboxRepo.findOne({
+      where: [
+        {
+          id,
+        },
+      ],
+      relations: ["propertyLootbox"],
+    });
+    return lootbox;
+  };
+
   getLootboxFromWallet = async (
     publicAddress: string
   ): Promise<Array<Lootbox>> => {
     const lootboxs = await this.lootboxRepo.find({
       where: [
-        { publicAddress: toChecksumAddress(publicAddress) },
-        { publicAddress: publicAddress.toLowerCase() },
+        {
+          publicAddress: toChecksumAddress(publicAddress),
+          mintable: MoreThan(0),
+        },
+        { publicAddress: publicAddress.toLowerCase(), mintable: MoreThan(0) },
       ],
+      relations: ["propertyLootbox"],
     });
     return lootboxs;
   };
@@ -314,9 +350,18 @@ export class LootBoxService {
   ): Promise<Array<ClaimableLootbox>> => {
     const lootboxs = await this.claimableLootboxRepo.find({
       where: [
-        { publicAddress: toChecksumAddress(publicAddress) },
-        { publicAddress: publicAddress.toLowerCase() },
+        {
+          publicAddress: toChecksumAddress(publicAddress),
+          expiredDate: MoreThanOrEqual(new Date()),
+          quantity: MoreThan(0),
+        },
+        {
+          publicAddress: publicAddress.toLowerCase(),
+          expiredDate: MoreThanOrEqual(new Date()),
+          quantity: MoreThan(0),
+        },
       ],
+      relations: ["propertyLootbox"],
     });
     return lootboxs;
   };
@@ -364,6 +409,7 @@ export class LootBoxService {
       if (lootboxs[i].quantity - lootboxs[i].pending < amount[i])
         throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
       lootboxs[i].pending += amount[i];
+      lootboxs[i].mintable -= amount[i];
     }
 
     // update batch lootbox
@@ -371,14 +417,12 @@ export class LootBoxService {
       promises.push(this.lootboxRepo.save(lootboxs[i]));
     }
 
+    await Promise.all(promises);
+
     // sign messages and save pending mint
-    const signanture = await this.mintService.mintBatch(mintBatchLootboxInput);
+    const pendingMint = await this.mintService.mintBatch(mintBatchLootboxInput);
 
-    // get pending mint
-    const pending = await this.mintService.getPendingLootbox(publicAddress);
-
-    const data = await Promise.all(promises);
-    return { signanture, data, pending };
+    return pendingMint;
   };
 
   mintLootbox = async (mintLootboxInput: MintLootboxInput) => {
@@ -399,26 +443,23 @@ export class LootBoxService {
     if (lootbox.quantity - lootbox.pending < amount)
       throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
     lootbox.pending += amount;
+    lootbox.mintable -= amount;
 
     // update lootbox
-    const data = await this.lootboxRepo.save(lootbox);
+    await this.lootboxRepo.save(lootbox);
 
     // sign messages and save pending mint
-    const signanture = await this.mintService.mint(mintLootboxInput);
+    const pendingMint = await this.mintService.mint(mintLootboxInput);
 
-    // get pending mint
-    const pending = await this.mintService.getPendingLootbox(publicAddress);
-
-    return { signanture, data, pending };
+    return pendingMint;
   };
 
   updateLootboxFromTrackerMintedBatchOrder = async (batchOrder: BatchOrder) => {
     // get pending mint
-
     const pending = await this.mintService.getPendingLootboxByBatchOrder(
       batchOrder
     );
-    if (pending && pending.length > 0) {
+    if (pending) {
       LoggerService.log(`pending : ${pending}`);
       const lootboxs = await this.getLootboxFromWalletAndTokenIDs(
         batchOrder.to,
@@ -437,10 +478,10 @@ export class LootBoxService {
       }
       // update batch lootbox
       for (let i = 0; i < lootboxs.length; i++) {
-        pending[i].status = MintStatus.Minted;
-        promises.push(this.mintService.updatePendingMint(pending[i]));
+        pending.status = MintStatus.Minted;
         promises.push(this.lootboxRepo.save(lootboxs[i]));
       }
+      promises.push(this.mintService.updatePendingMint(pending));
       const result = await Promise.all(promises);
       LoggerService.log(
         `update lootboxs from tracker minted done :${JSON.stringify(result)}`
@@ -488,6 +529,7 @@ export class LootBoxService {
       const promises = [];
       for (let i = 0; i < batchOrder.batchID.length; i++) {
         lootboxs[i].quantity += batchOrder.amount[i];
+        lootboxs[i].mintable += batchOrder.amount[i];
       }
       // update batch lootbox
       const _burned = {
@@ -519,6 +561,7 @@ export class LootBoxService {
         order.batchID
       );
       lootbox.quantity += order.amount;
+      lootbox.mintable += order.amount;
 
       const promises = [];
       // update burned lootbox
@@ -540,7 +583,7 @@ export class LootBoxService {
     } else LoggerService.log("event resoved or in burned database");
   };
 
-  async upsertClaimedLootbox(
+  async addQuantityClaimedLootbox(
     claimableLootbox: ClaimableLootbox
   ): Promise<ClaimableLootbox> {
     try {

@@ -21,7 +21,7 @@ export class AirdropController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: Airdrop || Merch })
+  @ApiOkResponse({ type: Airdrop || Merch, isArray: true })
   @Get("/:airdropType/:publicAddress")
   async getAirdropByType(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,

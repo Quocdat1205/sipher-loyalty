@@ -1,7 +1,10 @@
 // import library
 import fs from "fs";
 
+import { Repository } from "typeorm";
+import { ClaimableLootbox, ERC1155SpaceShipPartLootbox } from "@entity";
 import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 
 import { LootBoxService } from "@modules/lootbox/lootbox.service";
 
@@ -14,7 +17,13 @@ export class SeedLootboxService {
     fs.readFileSync("./src/data/LOOTBOX/data.json").toString()
   );
 
-  constructor(private lootboxService: LootBoxService) {}
+  constructor(
+    private lootboxService: LootBoxService,
+    @InjectRepository(ERC1155SpaceShipPartLootbox)
+    private erc1155SpaceShipPartLootboxRepo: Repository<ERC1155SpaceShipPartLootbox>,
+    @InjectRepository(ClaimableLootbox)
+    private claimableLootboxRepo: Repository<ClaimableLootbox>
+  ) {}
 
   seedLootboxWeekly = async () => {
     LoggerService.log("start disribute claimable lootbox");
@@ -22,24 +31,25 @@ export class SeedLootboxService {
     LoggerService.log("done disribute claimable lootbox");
   };
 
-  seedLootboxCustom = async () => {
-    const flaternLootbox = this.lootboxData.data.map((el) => ({
-      expiredDate: this.lootboxData.expiredDate,
-      ...el,
-    }));
+  private async createClaimableLootbox(lootbox: any) {
+    const erclootbox = await this.erc1155SpaceShipPartLootboxRepo.findOne({
+      tokenId: lootbox.tokenId,
+    });
+    this.lootboxService.addQuantityClaimedLootbox({
+      publicAddress: lootbox.publicAddress,
+      tokenId: lootbox.tokenId,
+      quantity: lootbox.quantity,
+      expiredDate: new Date(lootbox.expiredDate),
+      propertyLootbox: erclootbox,
+    });
+  }
 
+  seedLootboxCustom = async () => {
+    await this.claimableLootboxRepo.query(`delete from claimable_lootbox `);
     const promises = [];
-    const expiredDate = new Date().getTime();
-    for (let i = 0; i < flaternLootbox.length; i++) {
-      // LoggerService.log(query);
-      promises.push(
-        this.lootboxService.upsertClaimedLootbox({
-          publicAddress: flaternLootbox[i].publicAddress,
-          tokenId: flaternLootbox[i].tokenId,
-          quantity: flaternLootbox[i].quantity,
-          expiredDate: new Date(expiredDate),
-        })
-      );
+
+    for (let i = 0; i < this.lootboxData.length; i++) {
+      promises.push(this.createClaimableLootbox(this.lootboxData[i]));
     }
     await Promise.all(promises);
   };

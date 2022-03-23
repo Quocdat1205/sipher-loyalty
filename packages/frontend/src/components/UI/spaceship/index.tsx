@@ -8,11 +8,13 @@ import { Banner } from "@components/shared"
 import { ClaimContainer } from "./claim"
 import { InventoryContainer } from "./inventory"
 import { OverviewContainer } from "./overview"
+import { PendingContainer } from "./pending"
 
 const tabs = [
   { label: "Overview", name: "overview" },
   { label: "Claim", name: "claim" },
   { label: "Inventory", name: "inventory" },
+  { label: "Pending", name: "pending" },
 ]
 
 const ContentSpaceship = () => {
@@ -29,12 +31,18 @@ const ContentSpaceship = () => {
     if (currentTab === "claim") {
       return <ClaimContainer />
     }
+    if (currentTab === "pending") {
+      return <PendingContainer />
+    }
     return null
   }
 
   return (
     <Flex flexDir="column" align="center" flex={1}>
-      <Banner title="Portfolio" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit" />
+      <Banner
+        title="Spaceship"
+        description="Transport yourself throughout the various dungeons and the World of Sipheria"
+      />
       <Box px={[4, 0]} pt={8} w="full" maxW="1200px">
         <TabPage tabs={tabs} />
       </Box>

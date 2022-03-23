@@ -5,7 +5,7 @@ import { Interval } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
 import { sculptureAbi } from "@setting/blockchain/abis/sculpture";
 import { getContract, getProvider } from "@setting/blockchain/ethers";
-import constant from "@setting/constant";
+import constant, { Chain } from "@setting/constant";
 
 import { LoggerService } from "@modules/logger/logger.service";
 import { SculptureService } from "@modules/sculpture/sculpture.service";
@@ -22,7 +22,9 @@ export class ScupltureTrackerService {
     @InjectRepository(TrackedBlock)
     private trackBlockRepo: Repository<TrackedBlock>
   ) {
-    this.provider = getProvider(constant.CHAIN_ID);
+    this.provider = getProvider(
+      constant.isProduction ? Chain.Polygon : Chain.Mumbai
+    );
     this.sculptureContract = getContract(
       constant.blockchain.contracts.erc1155Sculpture[constant.CHAIN_ID].address,
       sculptureAbi,

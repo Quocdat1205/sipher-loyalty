@@ -5,26 +5,27 @@ import Image from "next/image"
 import { Box, Divider, Flex, Link, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
+import { ERC1155SpaceShipPartLootbox } from "@sdk"
 
 import CountDown from "../CountDown"
 
 interface CardProps {
-  name: string
-  imageUrl: string
+  propertyLootbox: ERC1155SpaceShipPartLootbox
   expiredDate: number
   isActive?: boolean
   quantity: number
+  isPopover?: boolean
 }
 
-export const ClaimCard = React.memo(({ name, imageUrl, expiredDate, quantity }: CardProps) => {
+export const ClaimCard = React.memo(({ propertyLootbox, expiredDate, quantity, isPopover }: CardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
     <Flex rounded="lg" align="center" justify="center" flexDir="column" pos="relative">
       <Skeleton overflow="hidden" display="flex" isLoaded={imageLoaded}>
         <Image
-          src={imageUrl || ""}
-          alt={name}
+          src={propertyLootbox.image || ""}
+          alt={propertyLootbox.name}
           loading="lazy"
           height={280}
           width={280}
@@ -35,31 +36,33 @@ export const ClaimCard = React.memo(({ name, imageUrl, expiredDate, quantity }: 
         <Divider mb={4} borderColor="whiteAlpha.200" />
         <Flex flexDir="column" align="center" mb={4} textAlign="center">
           <Flex mb={2} align="center">
-            <Text mr={2} fontWeight={600}>
-              LOOT BOX
+            <Text textTransform="uppercase" mr={2} fontWeight={600}>
+              {propertyLootbox.name}
             </Text>
-            <CustomPopover
-              placement="top"
-              label="Crypto-wallet"
-              icon={
-                <Box color="neutral.500">
-                  <MdInfo size="1.2rem" />
-                </Box>
-              }
-            >
-              <Text fontSize="sm" color="neutral.900">
-                Wallets are used to send, receive, and store digital assets like Ether. Wallets come in many forms. For
-                more infomation about wallets, see this{" "}
-                <Link
-                  isExternal
-                  href="https://docs.ethhub.io/using-ethereum/wallets/intro-to-ethereum-wallets/"
-                  color="cyan.500"
-                  textDecor="underline"
-                >
-                  explanation
-                </Link>
-              </Text>
-            </CustomPopover>
+            {isPopover && (
+              <CustomPopover
+                placement="top"
+                label="Crypto-wallet"
+                icon={
+                  <Box color="neutral.500">
+                    <MdInfo size="1.2rem" />
+                  </Box>
+                }
+              >
+                <Text fontSize="sm" color="neutral.900">
+                  Wallets are used to send, receive, and store digital assets like Ether. Wallets come in many forms.
+                  For more infomation about wallets, see this{" "}
+                  <Link
+                    isExternal
+                    href="https://docs.ethhub.io/using-ethereum/wallets/intro-to-ethereum-wallets/"
+                    color="cyan.500"
+                    textDecor="underline"
+                  >
+                    explanation
+                  </Link>
+                </Text>
+              </CustomPopover>
+            )}
           </Flex>
           <Flex align="center">
             <Box mr={2} color="neutral.400">
@@ -73,7 +76,7 @@ export const ClaimCard = React.memo(({ name, imageUrl, expiredDate, quantity }: 
         align="center"
         justify="center"
         bg="whiteAlpha.800"
-        boxSize="3.5rem"
+        boxSize="3rem"
         rounded="full"
         pos="absolute"
         top={4}

@@ -19,35 +19,35 @@ export enum MintType {
 
 @Entity()
 export class PendingMint {
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String })
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   to: string;
 
   @ApiProperty({ type: Number })
-  @Column({ nullable: false })
-  batchID: number;
+  @Column({ nullable: true })
+  batchID?: number;
 
   @ApiProperty({ type: Number })
-  @Column({ nullable: false })
-  amount: number;
+  @Column({ nullable: true })
+  amount?: number;
 
   @ApiProperty({ type: Number, isArray: true })
   @Column("int", { array: true, default: [] })
-  batchIDs: number[];
+  batchIDs?: number[];
 
   @ApiProperty({ type: Number, isArray: true })
   @Column("int", { array: true, default: [] })
-  amounts: number[];
+  amounts?: number[];
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   salt: string;
 
-  @ApiProperty({ type: MintStatus })
+  @ApiProperty({ type: String, enum: MintStatus, enumName: "MintStatus" })
   @Column({
     type: "enum",
     enum: MintStatus,
@@ -55,7 +55,7 @@ export class PendingMint {
   })
   status: MintStatus;
 
-  @ApiProperty({ type: MintType })
+  @ApiProperty({ type: String, enum: MintType, enumName: "MintType" })
   @Column({
     type: "enum",
     enum: MintType,

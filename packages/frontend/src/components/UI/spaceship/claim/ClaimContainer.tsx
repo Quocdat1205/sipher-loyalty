@@ -2,10 +2,20 @@ import React from "react"
 import { Box, Button, chakra, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 
 import { ClaimCard } from "./ClaimCard"
+import { ClaimStatusModal } from "./ClaimStatusModal"
 import { useClaim } from "./useClaim"
 
 export const ClaimContainer = () => {
-  const { claimData, mutateOnClaim, isLoading, totalQuantiy } = useClaim()
+  const {
+    account,
+    claimData,
+    mutateOnClaim,
+    isLoading,
+    totalQuantiy,
+    isCheckAccountClaim,
+    isStatusModal,
+    setIsStatusModal,
+  } = useClaim()
 
   return (
     <Flex
@@ -33,22 +43,29 @@ export const ClaimContainer = () => {
             <Text>Content for time</Text>
           </Box>
         </Flex>
-        <HStack spacing={4} mb={4} justify="center">
+        <HStack minH="20rem" spacing={4} mb={4} justify="center">
           {claimData.map(item => (
             <ClaimCard
               key={item.id}
-              name={item.name}
+              isPopover={false}
+              propertyLootbox={item.propertyLootbox}
               quantity={item.quantity}
               expiredDate={item.expiredDate}
-              imageUrl={"/images/spaceship/box.png"}
             />
           ))}
         </HStack>
         <Flex w="full" justify="center">
-          <Button isLoading={isLoading} onClick={() => mutateOnClaim()}>
-            CLAIM LOOTBOXES ({totalQuantiy})
-          </Button>
+          {claimData.length > 0 && (
+            <Button
+              isDisabled={!account || !isCheckAccountClaim || claimData.length === 0}
+              isLoading={isLoading}
+              onClick={() => mutateOnClaim()}
+            >
+              {isCheckAccountClaim ? `CLAIM LOOTBOXES (${totalQuantiy})` : "WALLET NOT REGISTERED"}
+            </Button>
+          )}
         </Flex>
+        <ClaimStatusModal isOpen={isStatusModal !== ""} onClose={() => setIsStatusModal("")} status={isStatusModal} />
       </Box>
     </Flex>
   )

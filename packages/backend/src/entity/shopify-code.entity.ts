@@ -15,7 +15,7 @@ export enum ShopifyCodeStatus {
 @Entity()
 export class ShopifyCode {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column()
   code: string;

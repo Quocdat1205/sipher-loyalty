@@ -2,7 +2,8 @@
   {
     "tokenId": "0",
     "name": "lootbox #1",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "description": "Just for INU & NEKO holders",
     "attributes": [
       {
         "trait_type": "background",
@@ -17,7 +18,8 @@
   {
     "tokenId": "1",
     "name": "lootbox #2",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "description": "Just for INU & NEKO holders",
     "attributes": [
       {
         "trait_type": "fur color",
@@ -28,7 +30,8 @@
   {
     "tokenId": "2",
     "name": "lootbox #3",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "description": "Just for INU & NEKO holders",
     "attributes": [
       {
         "trait_type": "costume",
@@ -39,7 +42,8 @@
   {
     "tokenId": "3",
     "name": "lootbox #4",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "description": "Just for NEKO holders",
     "attributes": [
       {
         "trait_type": "eye color",
@@ -50,7 +54,8 @@
   {
     "tokenId": "4",
     "name": "lootbox #5",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "description": "Just for NEKO holders",
     "attributes": [
       {
         "trait_type": "hair",
@@ -65,7 +70,8 @@
   {
     "tokenId": "5",
     "name": "lootbox #6",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "description": "Just for INU holders",
     "attributes": [
       {
         "trait_type": "weapon",
@@ -76,7 +82,8 @@
   {
     "tokenId": "6",
     "name": "lootbox #7",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "description": "Just for INU & NEKO holders",
     "attributes": [
       {
         "trait_type": "hair",

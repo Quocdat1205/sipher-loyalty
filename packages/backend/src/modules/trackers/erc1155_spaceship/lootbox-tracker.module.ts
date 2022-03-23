@@ -1,4 +1,10 @@
-import { Burned, Lootbox, PendingMint } from "@entity";
+import {
+  Burned,
+  ERC1155SpaceShipPartLootbox,
+  ERC1155SpaceShipPartLootboxAttribute,
+  Lootbox,
+  PendingMint,
+} from "@entity";
 import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -20,6 +26,8 @@ import { LootboxTrackerService } from "./lootbox-tracker.service";
       TrackedBlock,
       ClaimableLootbox,
       Burned,
+      ERC1155SpaceShipPartLootbox,
+      ERC1155SpaceShipPartLootboxAttribute,
     ]),
     MintModule,
     BurnModule,

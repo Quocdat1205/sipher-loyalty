@@ -1,87 +1,14 @@
 [
   {
     "tokenId": "0",
-    "name": "Sculpture #1",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-    "attributes": [
-      {
-        "trait_type": "background",
-        "value": "Japanese neko"
-      },
-      {
-        "trait_type": "sub-race",
-        "value": "Felis"
-      }
-    ]
+    "name": "Sculpture Inu",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/inu_sculpture.mp4",
+    "attributes": []
   },
   {
     "tokenId": "1",
-    "name": "Sculpture #2",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-    "attributes": [
-      {
-        "trait_type": "fur color",
-        "value": "Orange Tabby"
-      }
-    ]
-  },
-  {
-    "tokenId": "2",
-    "name": "Sculpture #3",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-    "attributes": [
-      {
-        "trait_type": "costume",
-        "value": "bomber jacket"
-      }
-    ]
-  },
-  {
-    "tokenId": "3",
-    "name": "Sculpture #4",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-    "attributes": [
-      {
-        "trait_type": "eye color",
-        "value": "baby blue"
-      }
-    ]
-  },
-  {
-    "tokenId": "4",
-    "name": "Sculpture #5",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-    "attributes": [
-      {
-        "trait_type": "hair",
-        "value": "pink ribbon"
-      },
-      {
-        "trait_type": "weapon",
-        "value": "steel knuckle"
-      }
-    ]
-  },
-  {
-    "tokenId": "5",
-    "name": "Sculpture #6",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-    "attributes": [
-      {
-        "trait_type": "weapon",
-        "value": "steel knuckle"
-      }
-    ]
-  },
-  {
-    "tokenId": "6",
-    "name": "Sculpture #7",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/imgs-neko/neko_004390_default.png",
-    "attributes": [
-      {
-        "trait_type": "hair",
-        "value": "pink ribbon"
-      }
-    ]
+    "name": "Sculpture Neko",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/neko_sculpture.mp4",
+    "attributes": []
   }
 ]

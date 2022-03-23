@@ -23,8 +23,10 @@
     "seed-airdrop": "ts-node -r tsconfig-paths/register src/scripts/seedAirdrop.ts",
     "dev:tracker:lootbox": "ts-node -r tsconfig-paths/register src/scripts/lootbox-tracker.ts",
     "dev:tracker:sculpture": "ts-node -r tsconfig-paths/register src/scripts/sculpture-tracker.ts",
-    "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
-    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
+    "start:tracker:lootbox": "node dist/scripts/lootbox-tracker.js",
+    "start:tracker:sculpture": "node dist/scripts/sculpture-tracker.js",
+    "seed:config": "ts-node ../../node_modules/typeorm-seeding/dist/cli.js config",
+    "seed:run": "ts-node ../../node_modules/typeorm-seeding/dist/cli.js seed"
   },
   "dependencies": {
     "@acuris/aws-es-connection": "^2.3.0",
@@ -46,6 +48,7 @@
     "axios": "^0.26.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "coinmarketcap-api": "^3.1.1",
     "connect-redis": "^6.1.1",
     "dotenv": "^16.0.0",
     "eth-sig-util": "^3.0.1",
@@ -76,6 +79,7 @@
     "@nestjs/testing": "^8.1.1",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.2",
+    "@types/multer": "^1.4.7",
     "@types/node": "^16.11.1",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^4.29.2",

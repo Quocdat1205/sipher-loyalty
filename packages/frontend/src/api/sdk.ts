@@ -9,20 +9,123 @@
  * ---------------------------------------------------------------
  */
 
-export type PendingMint = object;
+export enum MintStatus {
+  Pending = 'Pending',
+  Minted = 'Minted',
+}
 
-export interface Lootbox {
-  id: number;
-  publicAddress: string;
-  quantity: number;
-  tokenId: number;
-  pending: number;
+export enum MintType {
+  Lootbox = 'Lootbox',
+  SpaceshipPart = 'SpaceshipPart',
+  Spaceship = 'Spaceship',
+}
+
+export interface PendingMint {
+  id: string;
+  to: string;
+  batchID: number;
+  amount: number;
+  batchIDs: number[];
+  amounts: number[];
+  salt: string;
+  status: MintStatus;
+  type: MintType;
+  signature: string;
 
   /** @format date-time */
   createdAt: string;
 }
 
-export type Airdrop = object;
+export interface ERC1155SpaceShipPartLootboxAttribute {
+  id: string;
+  trait_type: string;
+  value: string;
+  erc1155: ERC1155SpaceShipPartLootbox;
+
+  /** @format date-time */
+  createdAt: string;
+}
+
+export interface Lootbox {
+  id: string;
+  publicAddress: string;
+  quantity: number;
+  tokenId: number;
+  pending: number;
+  mintable: number;
+  propertyLootbox: ERC1155SpaceShipPartLootbox;
+
+  /** @format date-time */
+  createdAt: string;
+}
+
+export interface ClaimableLootbox {
+  id: string;
+  publicAddress: string;
+  quantity: number;
+  tokenId: number;
+  propertyLootbox: ERC1155SpaceShipPartLootbox;
+
+  /** @format date-time */
+  expiredDate: string;
+
+  /** @format date-time */
+  createdAt: string;
+}
+
+export interface ERC1155SpaceShipPartLootbox {
+  id: string;
+  tokenId: string;
+  name: string;
+  description: string;
+  external_url: string;
+  image: string;
+  attributes: ERC1155SpaceShipPartLootboxAttribute[];
+  lootboxs: Lootbox[];
+  claimableLootboxs: ClaimableLootbox[];
+
+  /** @format date-time */
+  createdAt: string;
+}
+
+export interface MintBatchLootboxInputDto {
+  publicAddress: string;
+  batchID: number[];
+  amount: number[];
+}
+
+export interface MintLootboxInputDto {
+  publicAddress: string;
+  batchID: number;
+  amount: number;
+}
+
+export enum AirdropType {
+  NFT = 'NFT',
+  TOKEN = 'TOKEN',
+  MERCH = 'MERCH',
+  ALL = 'ALL',
+}
+
+export interface Airdrop {
+  id: string;
+  merkleRoot: string;
+  proof: string[];
+  leaf: string;
+  claimer: string;
+  addressContract: string;
+  imageUrl: string;
+  totalAmount: string;
+  type: AirdropType;
+  startTime: string;
+  vestingInterval: string;
+  numberOfVestingPoint: string;
+
+  /** @format date-time */
+  created: string;
+}
+
+export type BioDto = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
 
@@ -151,12 +254,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @name NftItemControllerGetAllNft
-     * @request GET:/api/sipher/loyalty/nft/get-all
+     * @tags nft
+     * @name NftItemControllerGetByOwner
+     * @request GET:/api/sipher/loyalty/nft/get-by-owner
      */
-    nftItemControllerGetAllNft: (params: RequestParams = {}) =>
+    nftItemControllerGetByOwner: (params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/nft/get-all`,
+        path: `/api/sipher/loyalty/nft/get-by-owner`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags nft
+     * @name NftItemControllerGetByCollection
+     * @request GET:/api/sipher/loyalty/nft/get-by-collection
+     */
+    nftItemControllerGetByCollection: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/nft/get-by-collection`,
         method: 'GET',
         ...params,
       }),
@@ -170,8 +288,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     mintControllerGetPendingLootbox: (publicAddress: string, params: RequestParams = {}) =>
-      this.request<PendingMint, any>({
+      this.request<PendingMint[], any>({
         path: `/api/sipher/loyalty/mint/pending/${publicAddress}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerGetLootboxById
+     * @request GET:/api/sipher/loyalty/lootbox/get-by-walllet/{publicAddress}/{id}
+     * @secure
+     */
+    lootBoxControllerGetLootboxById: (publicAddress: string, id: string, params: RequestParams = {}) =>
+      this.request<Lootbox, any>({
+        path: `/api/sipher/loyalty/lootbox/get-by-walllet/${publicAddress}/${id}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -190,6 +325,112 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<Lootbox[], any>({
         path: `/api/sipher/loyalty/lootbox/get-by-walllet/${publicAddress}`,
         method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerGetClaimableLootboxFromWallet
+     * @request GET:/api/sipher/loyalty/lootbox/get-by-walllet/claimable/{publicAddress}
+     * @secure
+     */
+    lootBoxControllerGetClaimableLootboxFromWallet: (publicAddress: string, params: RequestParams = {}) =>
+      this.request<ClaimableLootbox[], any>({
+        path: `/api/sipher/loyalty/lootbox/get-by-walllet/claimable/${publicAddress}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerGetLootboxFromUserId
+     * @request GET:/api/sipher/loyalty/lootbox/get-by-userID
+     * @secure
+     */
+    lootBoxControllerGetLootboxFromUserId: (params: RequestParams = {}) =>
+      this.request<Lootbox[], any>({
+        path: `/api/sipher/loyalty/lootbox/get-by-userID`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerGetClaimableLootboxFromUserId
+     * @request GET:/api/sipher/loyalty/lootbox/get-by-userID/claimable
+     * @secure
+     */
+    lootBoxControllerGetClaimableLootboxFromUserId: (params: RequestParams = {}) =>
+      this.request<ClaimableLootbox[], any>({
+        path: `/api/sipher/loyalty/lootbox/get-by-userID/claimable`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerMintBatchLootbox
+     * @request PUT:/api/sipher/loyalty/lootbox/mint-batch
+     * @secure
+     */
+    lootBoxControllerMintBatchLootbox: (data: MintBatchLootboxInputDto, params: RequestParams = {}) =>
+      this.request<PendingMint, any>({
+        path: `/api/sipher/loyalty/lootbox/mint-batch`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerMintLootbox
+     * @request PUT:/api/sipher/loyalty/lootbox/mint
+     * @secure
+     */
+    lootBoxControllerMintLootbox: (data: MintLootboxInputDto, params: RequestParams = {}) =>
+      this.request<PendingMint, any>({
+        path: `/api/sipher/loyalty/lootbox/mint`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lootbox
+     * @name LootBoxControllerClaim
+     * @request PUT:/api/sipher/loyalty/lootbox/claim-lootbox/{publicAddress}
+     * @secure
+     */
+    lootBoxControllerClaim: (publicAddress: string, params: RequestParams = {}) =>
+      this.request<ClaimableLootbox[], any>({
+        path: `/api/sipher/loyalty/lootbox/claim-lootbox/${publicAddress}`,
+        method: 'PUT',
         secure: true,
         format: 'json',
         ...params,
@@ -240,13 +481,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags collection
+     * @name CollectionControllerGetCollectionPorfolio
+     * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/portfolio/{ownerAddress}
+     */
+    collectionControllerGetCollectionPorfolio: (collectionSlug: string, ownerAddress: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/collection/${collectionSlug}/portfolio/${ownerAddress}`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags airdrop
      * @name AirdropControllerGetAirdropByType
      * @request GET:/api/sipher/loyalty/airdrop/{airdropType}/{publicAddress}
      * @secure
      */
     airdropControllerGetAirdropByType: (publicAddress: string, airdropType: string, params: RequestParams = {}) =>
-      this.request<Airdrop, any>({
+      this.request<Airdrop[], any>({
         path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}`,
         method: 'GET',
         secure: true,
@@ -294,6 +549,52 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     sculptureControllerGetUserOwnedCode: (ownerAddress: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/sculpture/shopify-code/${ownerAddress}`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name UserControllerUploadImg
+     * @request POST:/api/sipher/loyalty/user/upload-image
+     */
+    userControllerUploadImg: (data: { file?: File }, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/user/upload-image`,
+        method: 'POST',
+        body: data,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name UserControllerUploadBio
+     * @request POST:/api/sipher/loyalty/user/update-bio
+     */
+    userControllerUploadBio: (data: BioDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/user/update-bio`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags user
+     * @name UserControllerGetPriceCoinMarketCap
+     * @request GET:/api/sipher/loyalty/user/get-sipher-statics
+     */
+    userControllerGetPriceCoinMarketCap: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/user/get-sipher-statics`,
         method: 'GET',
         ...params,
       }),

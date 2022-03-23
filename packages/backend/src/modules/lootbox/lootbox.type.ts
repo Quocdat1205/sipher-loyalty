@@ -5,79 +5,59 @@ import { ApiProperty } from "@nestjs/swagger";
 import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 export class MintBatchLootboxInputDto {
-  @ApiProperty()
+  @ApiProperty({ type: String })
   @Matches(/^0x[a-fA-F0-9]{40}$/)
   publicAddress: string;
 
-  @ApiProperty({ type: [Number] })
+  @ApiProperty({ type: Number, isArray: true })
   batchID: number[];
 
-  @ApiProperty({ type: [Number] })
+  @ApiProperty({ type: Number, isArray: true })
   amount: number[];
 }
 
 export class MintLootboxInputDto {
-  @ApiProperty()
+  @ApiProperty({ type: String })
   @Matches(/^0x[a-fA-F0-9]{40}$/)
   publicAddress: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: Number })
   batchID: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: Number })
   amount: number;
 }
 
 export class resMintBatchDto {
-  @ApiProperty()
+  @ApiProperty({ type: String })
   signanture: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: Lootbox, isArray: true })
   data: Lootbox[];
 
-  @ApiProperty()
+  @ApiProperty({ type: PendingMint, isArray: true })
   pending: PendingMint[];
 }
 
 export class resMintSingleDto {
-  @ApiProperty()
+  @ApiProperty({ type: String })
   signanture: string;
 
-  @ApiProperty()
+  @ApiProperty({ type: Lootbox })
   data: Lootbox;
 
-  @ApiProperty()
+  @ApiProperty({ type: PendingMint, isArray: true })
   pending: PendingMint[];
 }
 
-export class resClaimLootboxDto {
-  @ApiProperty()
-  resultClaimableLootbox: ClaimableLootbox;
-
-  @ApiProperty()
-  resultLootbox: Lootbox;
-}
-
 export class resLootboxDto {
-  @ApiProperty()
+  @ApiProperty({ type: Lootbox, isArray: true })
   data: Lootbox[];
 }
 
 export class resClaimableLootboxDto {
-  @ApiProperty()
+  @ApiProperty({ type: ClaimableLootbox, isArray: true })
   data: ClaimableLootbox[];
-}
-
-export class ClaimLootboxInputDto {
-  @ApiProperty()
-  @Matches(/^0x[a-fA-F0-9]{40}$/)
-  publicAddress: string;
-
-  @ApiProperty()
-  tokenId: number;
-
-  @ApiProperty()
-  expiredDate: Date;
 }
 
 export interface MintLootboxInput {

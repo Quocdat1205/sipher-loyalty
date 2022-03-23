@@ -1,4 +1,8 @@
-import { Lootbox } from "@entity";
+import {
+  ClaimableLootbox,
+  ERC1155SpaceShipPartLootbox,
+  Lootbox,
+} from "@entity";
 import { Module, OnApplicationBootstrap } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
@@ -15,7 +19,11 @@ import { SeedLootboxService } from "@modules/seed/seedLootbox.service";
     LootBoxModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([Lootbox]),
+    TypeOrmModule.forFeature([
+      Lootbox,
+      ClaimableLootbox,
+      ERC1155SpaceShipPartLootbox,
+    ]),
   ],
   providers: [SeedLootboxService],
 })

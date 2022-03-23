@@ -1,15 +1,19 @@
 import { useState } from "react"
-import { useMutation, useQuery } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "react-query"
+import { useRouter } from "next/router"
 import client from "@client"
+import { useWalletContext } from "@web3"
 
-import { ClaimLootboxInputDto } from "@sdk"
 import { useAuth } from "src/providers/auth"
 
 export const useClaim = () => {
   const { session, authenticated, user } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
+  const [isStatusModal, setIsStatusModal] = useState("")
+  const query = useQueryClient()
+  const { account } = useWalletContext()
   const { data: boxData } = useQuery(
-    ["lootBox", user],
+    ["claimableLootBox", user],
     () =>
       client.api.lootBoxControllerGetClaimableLootboxFromUserId({
         headers: {
@@ -20,23 +24,43 @@ export const useClaim = () => {
       enabled: authenticated,
     },
   )
-
-  const { mutate: mutateOnClaim } = useMutation<unknown, unknown, { tokenId: string; data: ClaimLootboxInputDto }>(
-    input => client.api.lootBoxControllerClaim(input.tokenId, input.data),
+  const { mutate: mutateOnClaim } = useMutation(
+    () =>
+      client.api.lootBoxControllerClaim(account!, {
+        headers: {
+          Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
+        },
+      }),
     {
       onMutate: () => setIsLoading(true),
-      onSuccess: () => setIsLoading(false),
-      onError: () => setIsLoading(false),
+      onSuccess: () => {
+        setIsLoading(false)
+        setIsStatusModal("SUCCESS")
+        query.invalidateQueries(["claimableLootBox", user])
+      },
+      onError: () => {
+        setIsLoading(false), setIsStatusModal("FAILED")
+      },
     },
   )
 
   const claimData =
     boxData?.data.map(item => ({
       ...item,
-      expiredDate: new Date(item.expiredDate).getTime() * 1000,
+      expiredDate: new Date(item.expiredDate).getTime(),
     })) ?? []
 
   const totalQuantiy = claimData.map(item => item.quantity).reduce((pre, val) => pre + val, 0)
 
-  return { claimData, isLoading, mutateOnClaim, totalQuantiy }
+  const isCheckAccountClaim = claimData.find(item => item.publicAddress)?.publicAddress === account
+  return {
+    account,
+    claimData,
+    isLoading,
+    mutateOnClaim,
+    totalQuantiy,
+    isCheckAccountClaim,
+    isStatusModal,
+    setIsStatusModal,
+  }
 }
