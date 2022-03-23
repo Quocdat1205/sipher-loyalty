@@ -11,7 +11,7 @@ interface ClaimStatusModalProp {
   status: string
 }
 
-export const ClaimStatusModal = ({ isOpen, onClose, status }: ClaimStatusModalProp) => {
+const ClaimStatusModal = ({ isOpen, onClose, status }: ClaimStatusModalProp) => {
   const router = useRouter()
 
   return (
@@ -50,3 +50,5 @@ export const ClaimStatusModal = ({ isOpen, onClose, status }: ClaimStatusModalPr
     </ChakraModal>
   )
 }
+
+export default ClaimStatusModal

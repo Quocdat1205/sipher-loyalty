@@ -133,7 +133,7 @@ const useWallet = () => {
     [reset, toast, web3React],
   )
 
-  function decimalToHexString(number) {
+  function decimalToHexString(number: number) {
     if (number < 0) {
       number = 0xffffffff + number + 1
     }
@@ -141,15 +141,13 @@ const useWallet = () => {
     return "0x" + number.toString(16).toUpperCase()
   }
 
-  const switchNetwork = (chainId: number) => {
-    ethereum.request({
+  const switchNetwork = async (id: number) => {
+    await ethereum.request({
       method: "wallet_addEthereumChain",
       params: [
-        {
-          ...SUPPORTED_CHAINS_INFO.map(i => ({ ...i, chainId: decimalToHexString(i.chainId) })).find(
-            item => item.chainId === decimalToHexString(chainId),
-          ),
-        },
+        SUPPORTED_CHAINS_INFO.map(i => ({ ...i, chainId: decimalToHexString(i.chainId) })).find(
+          item => item.chainId === decimalToHexString(id),
+        ),
       ],
     })
   }

@@ -5,41 +5,28 @@ import { Box, Button, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomCheckbox } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
-import { ERC1155SpaceShipPartLootbox } from "@sdk"
+
+import { useInventory } from "./useInventory"
 
 interface CardProps {
-  isCheckAccountClaim: boolean
-  propertyLootbox: ERC1155SpaceShipPartLootbox
-  tokenId: string
-  isChecked: boolean
-  mintable: number
-  onClick: (id: string, isChecked?: boolean) => void
-  handleView: (id: string) => void
+  data: ReturnType<typeof useInventory>["inventoryData"][number]
 }
 
-export const BoxCard = ({
-  isCheckAccountClaim,
-  tokenId,
-  isChecked,
-  propertyLootbox,
-  onClick,
-  handleView,
-  mintable,
-}: CardProps) => {
+export const BoxCard = ({ data }: CardProps) => {
+  const { isChecked, onSelect, isDisabled, onView, propertyLootbox, mintable } = data
   const [imageLoaded, setImageLoaded] = useState(false)
-
   return (
     <Box
-      onClick={() => isCheckAccountClaim && onClick(tokenId, undefined)}
+      onClick={() => !isDisabled && onSelect(!isChecked)}
       _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
       role="group"
       overflow="hidden"
       rounded="lg"
-      cursor={isCheckAccountClaim ? "pointer" : "unset"}
+      cursor={!isDisabled ? "pointer" : "unset"}
       bg="neutral.700"
       pos="relative"
     >
-      {isCheckAccountClaim && (
+      {!isDisabled && (
         <Box
           _groupHover={{ opacity: 1 }}
           transition=".35s opacity"
@@ -49,16 +36,16 @@ export const BoxCard = ({
           zIndex={1}
           opacity={isChecked ? 1 : 0}
         >
-          <CustomCheckbox onChange={() => onClick(tokenId, isChecked)} isChecked={isChecked} />
+          <CustomCheckbox onChange={e => onSelect(!e.target.checked)} isChecked={isChecked} />
         </Box>
       )}
 
       <Button
         transition=".35s opacity"
-        pointerEvents={isCheckAccountClaim ? "unset" : "none"}
+        pointerEvents={!isDisabled ? "unset" : "none"}
         onClick={e => {
           e.stopPropagation()
-          handleView(tokenId)
+          onView()
         }}
         _groupHover={{ opacity: 1 }}
         size="sm"
@@ -73,7 +60,7 @@ export const BoxCard = ({
         opacity={0}
       >
         <Flex align="center">
-          <Text fontSize="sm">{isCheckAccountClaim ? "View" : "Doesn't own"}</Text>
+          <Text fontSize="sm">{!isDisabled ? "View" : "Doesn't own"}</Text>
           <Box>
             <BiChevronRight size="1.2rem" />
           </Box>
@@ -81,11 +68,11 @@ export const BoxCard = ({
       </Button>
       <Skeleton pos="relative" isLoaded={imageLoaded}>
         <Image
-          src={propertyLootbox.image ?? ""}
+          height={280}
+          width={280}
+          src={propertyLootbox.image}
           alt={propertyLootbox.name}
           loading="lazy"
-          height={182 * 2}
-          width={182 * 2}
           onLoad={() => setImageLoaded(true)}
         />
         <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white" pos="absolute" bottom="1rem" left="0.5rem">

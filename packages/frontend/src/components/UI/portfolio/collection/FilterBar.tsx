@@ -25,8 +25,6 @@ const initFilter = {
 const FilterBar = () => {
   const [filter, setFilter] = useState(initFilter)
 
-  console.log(filter)
-
   return (
     <Box pt={[4, 0]}>
       <HStack display={["none", "flex"]} w="full" align="center" justify="flex-end">

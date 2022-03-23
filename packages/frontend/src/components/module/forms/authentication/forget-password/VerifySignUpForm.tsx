@@ -41,7 +41,6 @@ const VerifySignUpForm = ({ email, isOpen, onClose }: VerifySignUpFormProps) => 
   const { mutate: mutateForgetPasswordSubmit, isLoading } = useMutation<unknown, unknown, FieldValues>(
     d => AtherIdAuth.forgotPasswordSubmit(email, d.code, d.password),
     {
-      onMutate: d => console.log(d),
       onSuccess: () => {
         toast({
           title: "Reset password successfully!",

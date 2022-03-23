@@ -293,7 +293,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     mintControllerGetPendingLootbox: (publicAddress: string, params: RequestParams = {}) =>
-      this.request<ResPendingMintDto, any>({
+      this.request<ResPendingMintDto[], any>({
         path: `/api/sipher/loyalty/mint/pending/lootbox/${publicAddress}`,
         method: 'GET',
         secure: true,

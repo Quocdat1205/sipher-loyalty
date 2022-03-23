@@ -35,7 +35,6 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
         title: "Error",
         message: e.message,
       })
-      console.log(e)
     },
   })
 

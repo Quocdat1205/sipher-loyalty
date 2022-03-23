@@ -5,6 +5,7 @@ import client from "@client"
 import { useWalletContext } from "@web3"
 
 import { POLYGON_NETWORK } from "@constant"
+import { useChakraToast } from "@hooks"
 import { Lootbox } from "@sdk"
 import { useAuth } from "src/providers/auth"
 
@@ -21,9 +22,9 @@ export const useInventory = () => {
   const { account, scCaller, chainId, switchNetwork } = useWalletContext()
   const router = useRouter()
   const [isFetched, setIsFetched] = useState(false)
-  const [data, setData] = useState<InventoryProps[]>()
-
-  const {} = useQuery(
+  const [data, setData] = useState<InventoryProps[]>([])
+  const toast = useChakraToast()
+  const { refetch } = useQuery(
     ["lootBoxs", account, user],
     () =>
       client.api
@@ -34,50 +35,39 @@ export const useInventory = () => {
         })
         .then(res => res.data),
     {
-      enabled: authenticated && !isFetched,
+      enabled: authenticated && !!account && !isFetched,
       onSuccess: data => {
         setData(data.map(item => ({ ...item, slot: item.mintable, isChecked: false }))), setIsFetched(true)
       },
+      initialData: [],
     },
   )
 
-  const inventoryData = data?.map(item => ({
+  const inventoryData = data!.map(item => ({
     ...item,
-    onSelect: (id: string, isChecked?: boolean) => {
-      setData(
-        data.map(item => {
-          if (item.id === id) {
-            return { ...item, isChecked: isChecked !== undefined ? isChecked : !item.isChecked }
-          }
-          return item
-        }),
-      )
+    isDisabled: item.publicAddress !== account,
+    onSelect: (isChecked = false) => {
+      const oldState = data
+      oldState.find(i => i.id === item.id)!.isChecked = isChecked
+      setData([...oldState])
     },
+    onView: () => router.push(`/spaceship/${item.id}`),
   }))
 
-  const inventoryDataCheck = data
-    ?.filter(i => i.isChecked)
+  const inventoryDataCheck = data!
+    .filter(i => i.isChecked)
     .map(item => ({
       ...item,
-      onChange: (id: string, slot: number) => {
-        setData(
-          data.map(item => {
-            if (item.id === id) {
-              return { ...item, slot: slot }
-            }
-            return item
-          }),
-        )
+      onChange: (slot: number) => {
+        const oldState = data
+        oldState.find(i => i.id === item.id)!.slot = slot
+        setData([...oldState])
       },
     }))
 
   useEffect(() => {
     setData(data?.map(item => ({ ...item, isChecked: false })))
   }, [account])
-
-  const handleView = (id: string) => {
-    router.push(`/spaceship/${id}`)
-  }
 
   const { mutate: mutateMintBatch, isLoading } = useMutation(
     async () => {
@@ -117,27 +107,28 @@ export const useInventory = () => {
     },
     {
       onSuccess: () => {
-        setIsFetched(false)
         setIsStatusModal("SUCCESS")
       },
       onSettled: () => {
-        setIsFetched(false)
-        query.invalidateQueries(["lootBoxs", account, user])
+        refetch()
         query.invalidateQueries(["pending", user])
       },
-      onError: err => {
-        console.log(err)
+      onError: (err: any) => {
+        toast({ status: "error", title: "Error", message: err?.message })
       },
     },
   )
 
-  const isCheckAccountClaim = inventoryData?.find(item => item.publicAddress)?.publicAddress === account
+  useEffect(() => {
+    setData(data.map(item => ({ ...item, slot: item.mintable })))
+  }, [isStatusModal])
 
-  const handleMint = () => {
-    if (chainId === POLYGON_NETWORK) {
-      mutateMintBatch()
+  const handleMint = async () => {
+    if (chainId !== POLYGON_NETWORK) {
+      toast({ status: "info", title: "Please switch to Polygon network!", duration: 5000 })
+      await switchNetwork(POLYGON_NETWORK)
     } else {
-      switchNetwork(POLYGON_NETWORK)
+      mutateMintBatch()
     }
   }
 
@@ -147,8 +138,6 @@ export const useInventory = () => {
     handleMint,
     inventoryDataCheck,
     inventoryData,
-    isCheckAccountClaim,
     setIsStatusModal,
-    handleView,
   }
 }

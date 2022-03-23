@@ -18,8 +18,6 @@ export const DetailNFT = ({ collectionId, tokenId }: DetailBoxProps) => {
   // right UI info details
   const widthContainer = 800
 
-  console.log(collectionId, tokenId)
-
   useEffect(() => {
     setBoxWidth(windowWidth.width - widthContainer)
   }, [windowWidth])

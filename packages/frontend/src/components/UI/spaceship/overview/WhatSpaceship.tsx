@@ -56,7 +56,6 @@ export const WhatSpaceship = () => {
         w="full"
         bgGradient="linear(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%)"
       />
-      <TutorialSpaceship />
       <Flex flexDir="column" align="center" zIndex={2} pt={24} pb={16} maxW="1200px" w="full">
         <Heading mb={4} fontWeight={600} fontSize="3xl">
           What are Spaceships?

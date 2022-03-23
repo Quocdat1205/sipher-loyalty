@@ -31,13 +31,15 @@ export const usePending = () => {
   const [mintId, setMintId] = useState<string | null>(null)
   const toast = useChakraToast()
   const { data: dataInit } = useQuery(
-    ["pending", user],
+    ["pending", account, user],
     () =>
-      client.api.mintControllerGetPendingLootbox(account!, {
-        headers: {
-          Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
-        },
-      }),
+      client.api
+        .mintControllerGetPendingLootbox(account!, {
+          headers: {
+            Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
+          },
+        })
+        .then(res => res.data),
 
     { enabled: authenticated && !!account },
   )
@@ -57,7 +59,7 @@ export const usePending = () => {
           message: "Please review your wallet notifications.",
           duration: 10000,
         })
-        query.invalidateQueries(["pending", user])
+        query.invalidateQueries(["pending", account, user])
       },
     },
   )
@@ -77,43 +79,45 @@ export const usePending = () => {
           message: "Please review your wallet notifications.",
           duration: 10000,
         })
-        query.invalidateQueries(["pending", user])
+        query.invalidateQueries(["pending", account, user])
       },
     },
   )
 
-  const pendingData = dataInit?.data.map(item => ({
-    ...item,
-    isMinting: mintId === item.id,
-    onMint: () => {
-      if (chainId === POLYGON_NETWORK) {
-        mutateMint({
-          id: item.id,
-          batchID: item.batchID,
-          amount: item.amount,
-          salt: item.salt,
-          signature: item.signature,
-        })
-      } else {
-        switchNetwork(POLYGON_NETWORK)
-      }
-    },
-    onMintBatch: () => {
-      if (chainId === POLYGON_NETWORK) {
-        mutateMintBatch({
-          id: item.id,
-          batchIDs: item.batchIDs,
-          amounts: item.amounts,
-          salt: item.salt,
-          signature: item.signature,
-        })
-      } else {
-        switchNetwork(POLYGON_NETWORK)
-      }
-    },
-  }))
+  console.log(dataInit)
+
+  // const pendingData = dataInit.map(item => ({
+  //   ...item,
+  //   isMinting: mintId === item.id,
+  //   onMint: () => {
+  //     if (chainId === POLYGON_NETWORK) {
+  //       mutateMint({
+  //         id: item.id,
+  //         batchID: item.batchID,
+  //         amount: item.amount,
+  //         salt: item.salt,
+  //         signature: item.signature,
+  //       })
+  //     } else {
+  //       switchNetwork(POLYGON_NETWORK)
+  //     }
+  //   },
+  //   onMintBatch: () => {
+  //     if (chainId === POLYGON_NETWORK) {
+  //       mutateMintBatch({
+  //         id: item.id,
+  //         batchIDs: item.batchIDs,
+  //         amounts: item.amounts,
+  //         salt: item.salt,
+  //         signature: item.signature,
+  //       })
+  //     } else {
+  //       switchNetwork(POLYGON_NETWORK)
+  //     }
+  //   },
+  // }))
 
   return {
-    pendingData,
+    // pendingData,
   }
 }

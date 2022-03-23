@@ -5,27 +5,25 @@ import Image from "next/image"
 import { Box, Divider, Flex, Link, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
-import { ERC1155SpaceShipPartLootbox } from "@sdk"
 
 import CountDown from "../CountDown"
 
+import { useClaim } from "./useClaim"
+
 interface CardProps {
-  propertyLootbox: ERC1155SpaceShipPartLootbox
-  expiredDate: number
-  isActive?: boolean
-  quantity: number
   isPopover?: boolean
+  data: ReturnType<typeof useClaim>["claimData"][number]
 }
 
-export const ClaimCard = React.memo(({ propertyLootbox, expiredDate, quantity, isPopover }: CardProps) => {
+const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
+  const { propertyLootbox, expiredDate, quantity } = data
   const [imageLoaded, setImageLoaded] = useState(false)
-
   return (
     <Flex rounded="lg" align="center" justify="center" flexDir="column" pos="relative">
       <Skeleton overflow="hidden" display="flex" isLoaded={imageLoaded}>
         <Image
-          src={propertyLootbox.image || ""}
-          alt={propertyLootbox.name}
+          src={propertyLootbox?.image ?? ""}
+          alt={propertyLootbox?.name}
           loading="lazy"
           height={280}
           width={280}
@@ -37,7 +35,7 @@ export const ClaimCard = React.memo(({ propertyLootbox, expiredDate, quantity, i
         <Flex flexDir="column" align="center" mb={4} textAlign="center">
           <Flex mb={2} align="center">
             <Text textTransform="uppercase" mr={2} fontWeight={600}>
-              {propertyLootbox.name}
+              {propertyLootbox?.name}
             </Text>
             {isPopover && (
               <CustomPopover
@@ -89,3 +87,5 @@ export const ClaimCard = React.memo(({ propertyLootbox, expiredDate, quantity, i
     </Flex>
   )
 })
+
+export default ClaimCard

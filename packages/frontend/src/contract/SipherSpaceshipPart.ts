@@ -12,20 +12,17 @@ export class SipherSpaceshipPart {
     this.contract = new ethers.Contract(SipherSpaceshipPartAddress, SipherSpaceshipPartAbi, provider)
   }
 
-  async DOMAIN_SEPARATOR() {
-    const value = await this.contract.DOMAIN_SEPARATOR()
-    console.log(value)
-  }
-
   async mintBatch(batchID: number[], amount: number[], salt: string, signature: string) {
     const signer = this.provider.getSigner()
 
-    await this.contract.connect(signer).mintBatch(batchID, amount, salt, signature)
+    const tx = await this.contract.connect(signer).mintBatch(batchID, amount, salt, signature)
+    await tx.wait()
   }
 
   async mint(batchID: number, amount: number, salt: string, signature: string) {
     const signer = this.provider.getSigner()
 
-    await this.contract.connect(signer).mint(batchID, amount, salt, signature)
+    const tx = await this.contract.connect(signer).mint(batchID, amount, salt, signature)
+    await tx.wait()
   }
 }

@@ -1,8 +1,6 @@
 import { useState } from "react"
 import { differenceInSeconds } from "date-fns"
 
-const ONE_DAY = 60 * 60 * 24
-
 export interface SpaceshipDataProps {
   id: string
   week: number
@@ -65,16 +63,17 @@ const initData: SpaceshipDataProps[] = [
   },
 ]
 
-export const useOverview = () => {
-  const [data, _] = useState(initData)
+const useOverview = () => {
+  const [data] = useState(initData)
+  const ONE_DAY = 60 * 60 * 24
   const startTime = 1647953250000
-  const weekTillNow = differenceInSeconds(new Date(), new Date(startTime)) / (ONE_DAY * 7)
-  const weekTillNowRounded = Math.floor(weekTillNow)
-  const weekNum = weekTillNowRounded % 6
+  const weekNum = Math.floor(differenceInSeconds(new Date(), new Date(startTime)) / (ONE_DAY * 7)) % 6
 
   const mappedData = data.map((item, index) => ({ ...item, isActive: index === weekNum }))
 
-  const activeData = mappedData.find(item => item.isActive)
+  const activeData = mappedData.find(item => item.isActive)!
 
   return { mappedData, activeData }
 }
+
+export default useOverview

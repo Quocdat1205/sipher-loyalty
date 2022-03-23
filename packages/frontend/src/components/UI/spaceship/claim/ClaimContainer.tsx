@@ -1,17 +1,17 @@
 import React from "react"
 import { Box, Button, chakra, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 
-import { ClaimCard } from "./ClaimCard"
-import { ClaimStatusModal } from "./ClaimStatusModal"
+import ClaimCard from "./ClaimCard"
+import ClaimStatusModal from "./ClaimStatusModal"
 import { useClaim } from "./useClaim"
 
-export const ClaimContainer = () => {
+const ClaimContainer = () => {
   const {
     account,
     claimData,
     mutateOnClaim,
     isLoading,
-    totalQuantiy,
+    totalQuantity,
     isCheckAccountClaim,
     isStatusModal,
     setIsStatusModal,
@@ -39,20 +39,17 @@ export const ClaimContainer = () => {
         <Flex mb={4} justify="center">
           <Box py={4} px={6} textAlign="center" bg="blackAlpha.500" borderRadius="0px 0px 16px 16px">
             <Text>
-              You have <chakra.span fontWeight={600}>{totalQuantiy} Lootboxes</chakra.span>
+              You have{" "}
+              <chakra.span fontWeight={600}>
+                {totalQuantity} {totalQuantity > 1 ? "Lootboxes" : "Lootbox"}
+              </chakra.span>
             </Text>
             <Text>Note the remaining time to claim</Text>
           </Box>
         </Flex>
         <HStack spacing={4} mb={4} justify="center">
           {claimData.map(item => (
-            <ClaimCard
-              key={item.id}
-              isPopover={false}
-              propertyLootbox={item.propertyLootbox}
-              quantity={item.quantity}
-              expiredDate={item.expiredDate}
-            />
+            <ClaimCard key={item.id} isPopover={false} data={item} />
           ))}
         </HStack>
         <Flex w="full" justify="center">
@@ -62,7 +59,9 @@ export const ClaimContainer = () => {
               isLoading={isLoading}
               onClick={() => mutateOnClaim()}
             >
-              {isCheckAccountClaim ? `CLAIM LOOTBOXES (${totalQuantiy})` : "WALLET NOT REGISTERED"}
+              {isCheckAccountClaim
+                ? `CLAIM ${totalQuantity > 1 ? "LOOTBOXES" : "LOOTBOX"} (${totalQuantity})`
+                : "WALLET IS NOT REGISTERED"}
             </Button>
           )}
         </Flex>
@@ -71,3 +70,5 @@ export const ClaimContainer = () => {
     </Flex>
   )
 }
+
+export default ClaimContainer
