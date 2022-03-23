@@ -1,7 +1,9 @@
 import { useQuery } from "react-query"
+import axios from "axios"
 import { useWalletContext } from "@web3"
 
-import { fetcher } from "@api"
+const baseURL = "https://be.sipher.xyz/api/"
+const fetcher = axios.create({ baseURL: baseURL })
 
 export const getSipherPrice = async (): Promise<number> => {
   const { data } = await fetcher.get("/price/sipher")

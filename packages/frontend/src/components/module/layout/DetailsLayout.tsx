@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode } from "react"
 import { BiChevronLeft } from "react-icons/bi"
 import { useRouter } from "next/router"
 import { Box, Button, Flex, Text } from "@sipher.dev/sipher-ui"
@@ -14,13 +14,6 @@ interface StoreFrontLayoutProps {
 export const DetailsLayout = ({ children }: StoreFrontLayoutProps) => {
   const { account } = useWalletContext()
   const router = useRouter()
-  const [isOnboard, setIsOnboard] = useState(false)
-  const [isSignUp, setIsSignUp] = useState(false)
-  useEffect(() => {
-    if (!account) {
-      setIsOnboard(true)
-    }
-  }, [account])
 
   return (
     <Flex
@@ -32,7 +25,7 @@ export const DetailsLayout = ({ children }: StoreFrontLayoutProps) => {
       color="whiteAlpha.900"
       bg="neutral.900"
     >
-      <TopNavigationBar isSticky isSignUp={isSignUp} setIsSignUp={setIsSignUp} />
+      <TopNavigationBar isSticky />
       <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
         <Flex zIndex={1} flexDir="column" align="center">
           <Box pt={8} px={8} w="full" maxW="1440px">
@@ -44,11 +37,7 @@ export const DetailsLayout = ({ children }: StoreFrontLayoutProps) => {
             </Button>
           </Box>
         </Flex>
-        {account ? (
-          children
-        ) : (
-          <OnBoardModal setIsSignUp={setIsSignUp} isOpen={isOnboard} onClose={() => setIsOnboard(false)} />
-        )}
+        {account ? children : <OnBoardModal />}
       </Flex>
     </Flex>
   )

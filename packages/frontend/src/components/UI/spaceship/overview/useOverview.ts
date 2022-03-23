@@ -1,65 +1,80 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { differenceInSeconds } from "date-fns"
 
 const ONE_DAY = 60 * 60 * 24
-const ONE_HOUR = 60 * 60
-const ONE_MINUTE = 60
 
-const initData = [
+export interface SpaceshipDataProps {
+  id: string
+  week: number
+  y: string
+  title: string
+  image: string
+  description: string
+  isActive?: boolean
+}
+
+const initData: SpaceshipDataProps[] = [
   {
-    id: "Chim Chim",
+    week: 1,
+    id: "THE WANDERING ALICE",
     y: "-40%",
     title: "The Wandering Alice - (both INUs and NEKOs can claim)",
-    image: "/images/spaceship/ship/1.png",
+    image: "/images/spaceship/ship/4.png",
+    description:
+      "The WANDERING ALICE has a knack for discovering the unknown. Benefits are tied to exploration and bringing treasures or loot back to the player.",
   },
   {
-    id: "Swordfish",
-    y: "50%",
+    week: 2,
+    id: "THE FLIK FLAK",
+    y: "60%",
     title: "The Flik Flak - (both INUs and NEKOs)",
-    image: "/images/spaceship/ship/2.png",
+    image: "/images/spaceship/ship/1.png",
+    description: `The FLIK FLAK is all about mobility.  Pilots that fly this ship understand that it's very important to avoid getting touched. As long as you’re alive, you’re a threat.`,
   },
   {
-    id: "Manta",
-    y: "95%",
+    week: 3,
+    id: "THE AKAGI",
+    y: "105%",
     title: "The Akagi - (both INUs and NEKOs)",
     image: "/images/spaceship/ship/3.png",
+    description: `The AKAGI is for those who have reached the peak of their craft. Why worry about being a glass cannon when you don’t take any damage? This ship is the definition of High Risk, High reward.`,
   },
   {
-    id: "Otter",
-    y: "110%",
+    week: 4,
+    id: "THE AHAB",
+    y: "105%",
     title: "The Ahab - (both INUs and NEKOs)",
-    image: "/images/spaceship/ship/4.png",
+    image: "/images/spaceship/ship/2.png",
+    description: `The only way to win is by going forward. The AHAB rewards agression and bringing the fight to the enemy.`,
   },
   {
-    id: "Dodo",
-    y: "95%",
+    week: 5,
+    id: "THE ZED LEP",
+    y: "60%",
     title: "The Zed Lep - NEKO-only limited edition Loot box claim (NEKO only claim)",
     image: "/images/spaceship/ship/5.png",
+    description: `The ZED LEPs are for NEKO mains. These ships confer bonuses to NEKO-specific weapons and their racial abilities. Only NEKO Pilots fully understand these ships.`,
   },
   {
-    id: "Tui",
-    y: "50%",
+    week: 6,
+    id: "THE BARKING BARON",
+    y: "-40%",
     title: "The Barking Baron - INU-only limited edition Loot box claim (INU only claim)",
     image: "/images/spaceship/ship/6.png",
-  },
-  {
-    id: "Ikan",
-    y: "-40%",
-    title:
-      "Two random ship types (any of the non-limited editions above) claimable only by INUs to compensate since they were expected to receive Spaceships before NEKO launch",
-    image: "/images/spaceship/ship/7.png",
+    description: `All INU fanatics sport this ship. Everyone wishes they could possess a BARKING BARON and reach the same acclaim as the legendary Red Baron, but only INUs are considered experts at flying these ships.`,
   },
 ]
 
 export const useOverview = () => {
-  const [data, setData] = useState(initData)
+  const [data, _] = useState(initData)
   const startTime = 1647953250000
-
-  const weekNum = Math.floor(((new Date().getTime() - 1647953250000) % (86400000 * 7)) / (86400000 * 7))
+  const weekTillNow = differenceInSeconds(new Date(), new Date(startTime)) / (ONE_DAY * 7)
+  const weekTillNowRounded = Math.floor(weekTillNow)
+  const weekNum = weekTillNowRounded % 6
 
   const mappedData = data.map((item, index) => ({ ...item, isActive: index === weekNum }))
 
-  console.log(mappedData)
+  const activeData = mappedData.find(item => item.isActive)
 
-  return { mappedData }
+  return { mappedData, activeData }
 }

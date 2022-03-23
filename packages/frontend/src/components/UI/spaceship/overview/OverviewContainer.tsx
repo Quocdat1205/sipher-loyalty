@@ -6,10 +6,10 @@ import { useOverview } from "./useOverview"
 import { WhatSpaceship } from "./WhatSpaceship"
 
 export const OverviewContainer = () => {
-  const { mappedData } = useOverview()
+  const { mappedData, activeData } = useOverview()
   return (
     <Box>
-      <SpaceshipContainer />
+      <SpaceshipContainer mappedData={mappedData} activeData={activeData!} />
       <WhatSpaceship />
     </Box>
   )

@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import { Box, Button, Flex, Heading, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
 import { Timeline } from "./Timeline"
+import { SpaceshipDataProps } from "./useOverview"
 
 const dataShip = [
   { id: "Mass", value: "975 t" },
@@ -14,7 +15,12 @@ const dataShip = [
   { id: "Spec", value: "Exploration" },
 ]
 
-export const SpaceshipContainer = () => {
+interface SpaceshipContainerProp {
+  mappedData: SpaceshipDataProps[]
+  activeData: SpaceshipDataProps
+}
+
+export const SpaceshipContainer = ({ activeData, mappedData }: SpaceshipContainerProp) => {
   const router = useRouter()
   return (
     <Flex
@@ -27,25 +33,18 @@ export const SpaceshipContainer = () => {
       bgSize="cover"
     >
       <Box py={4} maxW="1200px" w="full">
-        <Flex pt={16} pb={24} align="center">
+        <Flex pt={16} pb={24} align="flex-start">
           <Box flex={1} pr={32}>
             <Text color="whiteAlpha.700" fontWeight={600} mb={2}>
-              Week 1
+              Week {activeData.week}
             </Text>
             <Heading fontWeight={600} mb={4} fontSize="3xl">
-              Spaceship Astero
+              {activeData.title}
             </Heading>
-            <Text color="neutral.100" mb={4}>
-              An agile, tenacious ship that aptly adheres to the mantra of both rescuers and explorersL Stay safe, stay
-              hidden, and use every tool at your disposal. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+            <Text color="neutral.100" mb={16}>
+              {activeData.description}
             </Text>
-            <Text color="neutral.100">
-              An agile, tenacious ship that aptly adheres to the mantra of both rescuers and explorersL Stay safe, stay
-              hidden, and use every tool at your disposal. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-              do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-            </Text>
-            <Button onClick={() => router.push({ query: { tab: "claim" } })} size="lg" mt={8} letterSpacing="1px">
+            <Button onClick={() => router.push({ query: { tab: "claim" } })} size="lg" letterSpacing="1px">
               CLAIM LOOTBOX
             </Button>
           </Box>
@@ -71,7 +70,7 @@ export const SpaceshipContainer = () => {
                   translateX="-15%"
                   translateY="5%"
                 >
-                  <Image src="/images/spaceship/ship/1.png" alt="plane" width={480} height={340} quality={100} />
+                  <Image src={activeData.image || ""} alt="plane" width={480} height={340} quality={100} />
                 </Box>
                 <Box
                   transform="auto"
@@ -101,7 +100,7 @@ export const SpaceshipContainer = () => {
             </Flex>
           </Flex>
         </Flex>
-        <Timeline />
+        <Timeline mappedData={mappedData} />
       </Box>
     </Flex>
   )

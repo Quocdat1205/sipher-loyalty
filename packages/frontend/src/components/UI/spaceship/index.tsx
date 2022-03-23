@@ -46,7 +46,9 @@ const ContentSpaceship = () => {
       <Box px={[4, 0]} pt={8} w="full" maxW="1200px">
         <TabPage tabs={tabs} />
       </Box>
-      <Box w="full">{renderTabs()}</Box>
+      <Flex flexDir="column" flex={1} w="full">
+        {renderTabs()}
+      </Flex>
     </Flex>
   )
 }

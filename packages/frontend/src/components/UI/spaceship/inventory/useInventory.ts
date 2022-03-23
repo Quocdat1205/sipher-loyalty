@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
+import { POLYGON_NETWORK } from "@constant"
 import { Lootbox } from "@sdk"
 import { useAuth } from "src/providers/auth"
 
@@ -17,7 +18,7 @@ export const useInventory = () => {
   const { session, authenticated, user } = useAuth()
   const [isStatusModal, setIsStatusModal] = useState("")
   const query = useQueryClient()
-  const { account, scCaller } = useWalletContext()
+  const { account, scCaller, chainId, switchNetwork } = useWalletContext()
   const router = useRouter()
   const [isFetched, setIsFetched] = useState(false)
   const [data, setData] = useState<InventoryProps[]>()
@@ -133,7 +134,11 @@ export const useInventory = () => {
   const isCheckAccountClaim = inventoryData?.find(item => item.publicAddress)?.publicAddress === account
 
   const handleMint = () => {
-    mutateMintBatch()
+    if (chainId === POLYGON_NETWORK) {
+      mutateMintBatch()
+    } else {
+      switchNetwork(POLYGON_NETWORK)
+    }
   }
 
   return {

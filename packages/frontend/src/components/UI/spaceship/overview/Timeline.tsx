@@ -1,38 +1,20 @@
 import React from "react"
 import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 
-const data = [
-  { id: "Chim Chim", isActive: true, y: "-40%", i: 1 },
-  { id: "Swordfish", isActive: false, y: "50%", i: 2 },
-  { id: "Manta", isActive: false, y: "95%", i: 3 },
-  { id: "Otter", isActive: false, y: "110%", i: 4 },
-  { id: "Dodo", isActive: false, y: "95%", i: 5 },
-  { id: "Tui", isActive: false, y: "50%", i: 6 },
-  { id: "Ikan", isActive: false, y: "-40%", i: 7 },
-]
+import { SpaceshipDataProps } from "./useOverview"
 
-const opacityArr = [
-  { id: 0, opacity: "10%" },
-  { id: 1, opacity: "40%" },
-  { id: 2, opacity: "40%" },
-  { id: 3, opacity: "60%" },
-  { id: 4, opacity: "80%" },
-  { id: 5, opacity: "100%" },
-  { id: 6, opacity: "80%" },
-  { id: 7, opacity: "60%" },
-  { id: 8, opacity: "40%" },
-  { id: 9, opacity: "40%" },
-  { id: 10, opacity: "10%" },
-]
-
-export const Timeline = () => {
+const opacityArr = ["10%", "40%", "40%", "60%", "80%", "100%", "80%", "60%", "40%", "40%", "10%"]
+interface TimelineProps {
+  mappedData: SpaceshipDataProps[]
+}
+export const Timeline = ({ mappedData }: TimelineProps) => {
   return (
     <Box pos="relative">
       <svg viewBox="300 300 1200 75" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="grad1">
-            {opacityArr.map(item => (
-              <stop key={item.id} offset={`${item.id * 10}%`} stopColor={"#9091A0"} stopOpacity={item.opacity} />
+            {opacityArr.map((item, index) => (
+              <stop key={item} offset={`${index * 10}%`} stopColor={"#9091A0"} stopOpacity={item} />
             ))}
           </linearGradient>
         </defs>
@@ -47,7 +29,7 @@ export const Timeline = () => {
         w="full"
         justify="space-between"
       >
-        {data.map((item, idx) => (
+        {mappedData.map((item, idx) => (
           <Flex
             transform={`translateY(${item.y})`}
             justify="center"
