@@ -6,7 +6,6 @@ import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { configService } from "@setting/config.typeorm";
-import constant from "@setting/constant";
 import validation from "@setting/validationSchema";
 
 import { AirdropModule } from "@modules/airdrop/airdrop.module";

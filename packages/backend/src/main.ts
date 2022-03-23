@@ -10,7 +10,6 @@ import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import constant from "@setting/constant";
 import cors from "@setting/cors";
-import appSession from "@setting/session";
 
 import { AppModule } from "./modules/app/app.module";
 import { LoggerService } from "./modules/logger/logger.service";
@@ -67,7 +66,7 @@ async function bootstrap() {
       disableErrorMessages: false,
     })
   );
-  app.use(helmet(), appSession);
+  app.use(helmet());
   app.enableCors(cors);
   app.use(urlencoded({ extended: true, limit: "10mb" }));
 
