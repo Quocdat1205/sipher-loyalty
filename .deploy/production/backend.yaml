@@ -7,7 +7,7 @@ sipher-chart:
       kubernetes.io/ingress.class: alb
       service.beta.kubernetes.io/aws-load-balancer-internal: "true"
     rules:
-    - host:  api-loyalty.sipher.gg
+    - host:  api-loyalty.sipher.xyz
       paths:
       - path: /
         serviceName: loyalty-backend-api
