@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { ERC1155SpaceShipPartLootbox } from "./erc1155.entity";
+import { ERC1155Lootbox } from "./erc1155.entity";
 
 @Entity()
 export class Lootbox {
@@ -35,12 +35,12 @@ export class Lootbox {
   @Column({ default: 1 })
   mintable: number;
 
-  @ApiProperty({ type: () => ERC1155SpaceShipPartLootbox })
+  @ApiProperty({ type: () => ERC1155Lootbox })
   @ManyToOne(
-    () => ERC1155SpaceShipPartLootbox,
+    () => ERC1155Lootbox,
     (PropertyLootbox) => PropertyLootbox.lootboxs
   )
-  propertyLootbox?: ERC1155SpaceShipPartLootbox;
+  propertyLootbox?: ERC1155Lootbox;
 
   @ApiProperty()
   @CreateDateColumn({ default: new Date() })

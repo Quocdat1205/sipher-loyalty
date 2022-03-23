@@ -1,4 +1,3 @@
-import { PendingMint } from "@entity";
 import { Controller, Get, Param, Req, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
@@ -6,6 +5,7 @@ import { AtherGuard } from "@modules/auth/auth.guard";
 import { AuthService } from "@modules/auth/auth.service";
 
 import { MintService } from "./mint.service";
+import { ResPendingMintDto } from "./mint.type";
 
 @ApiTags("mint")
 @Controller("mint")
@@ -17,8 +17,8 @@ export class MintController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: PendingMint, isArray: true })
-  @Get("pending/:publicAddress")
+  @ApiOkResponse({ type: ResPendingMintDto })
+  @Get("pending/lootbox/:publicAddress")
   async getPendingLootbox(
     @Param("publicAddress") publicAddress: string,
     @Req() req: any

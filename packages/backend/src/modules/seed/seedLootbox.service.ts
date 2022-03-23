@@ -2,7 +2,7 @@
 import fs from "fs";
 
 import { Repository } from "typeorm";
-import { ClaimableLootbox, ERC1155SpaceShipPartLootbox } from "@entity";
+import { ClaimableLootbox, ERC1155Lootbox } from "@entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -19,8 +19,8 @@ export class SeedLootboxService {
 
   constructor(
     private lootboxService: LootBoxService,
-    @InjectRepository(ERC1155SpaceShipPartLootbox)
-    private erc1155SpaceShipPartLootboxRepo: Repository<ERC1155SpaceShipPartLootbox>,
+    @InjectRepository(ERC1155Lootbox)
+    private erc1155LootboxRepo: Repository<ERC1155Lootbox>,
     @InjectRepository(ClaimableLootbox)
     private claimableLootboxRepo: Repository<ClaimableLootbox>
   ) {}
@@ -32,7 +32,7 @@ export class SeedLootboxService {
   };
 
   private async createClaimableLootbox(lootbox: any) {
-    const erclootbox = await this.erc1155SpaceShipPartLootboxRepo.findOne({
+    const erclootbox = await this.erc1155LootboxRepo.findOne({
       tokenId: lootbox.tokenId,
     });
     this.lootboxService.addQuantityClaimedLootbox({

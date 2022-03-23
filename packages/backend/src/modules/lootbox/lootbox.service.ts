@@ -1,12 +1,7 @@
 import { toChecksumAddress } from "ethereumjs-util";
 import { Contract, providers } from "ethers";
 import { MoreThan, MoreThanOrEqual, Repository } from "typeorm";
-import {
-  BurnType,
-  ERC1155SpaceShipPartLootbox,
-  Lootbox,
-  MintStatus,
-} from "@entity";
+import { BurnType, ERC1155Lootbox, Lootbox, MintStatus } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 // import { Cron } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -247,7 +242,7 @@ export class LootBoxService {
     publicAddress: string,
     tokenId: number,
     quantity: number,
-    propertyLootbox: ERC1155SpaceShipPartLootbox
+    propertyLootbox: ERC1155Lootbox
   ) => {
     // create or update lootbox
     let lootbox = await this.getLootboxFromWalletAndTokenID(

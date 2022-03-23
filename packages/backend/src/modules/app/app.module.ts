@@ -1,10 +1,12 @@
 // import library
+import * as redisStore from "cache-manager-redis-store";
 import Joi from "joi";
 import { NftOrder, Program, SculpturesOrder, ShopifyCode, User } from "@entity";
-import { Module } from "@nestjs/common";
+import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { configService } from "@setting/config.typeorm";
+import constant from "@setting/constant";
 import validation from "@setting/validationSchema";
 
 import { AirdropModule } from "@modules/airdrop/airdrop.module";

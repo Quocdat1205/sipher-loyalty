@@ -9,13 +9,13 @@ import { ClaimableLootbox } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
 import {
+  ERC1155LootboxAttribute,
   ERC1155SculptureAttribute,
-  ERC1155SpaceShipPartLootboxAttribute,
 } from "./erc1155Attributes.entity";
 import { Lootbox } from "./lootbox.entity";
 
 @Entity()
-export class ERC1155SpaceShipPartLootbox {
+export class ERC1155Lootbox {
   @ApiProperty({ type: String })
   @PrimaryGeneratedColumn()
   id: string;
@@ -41,14 +41,11 @@ export class ERC1155SpaceShipPartLootbox {
   image: string;
 
   @ApiProperty({
-    type: () => ERC1155SpaceShipPartLootboxAttribute,
+    type: () => ERC1155LootboxAttribute,
     isArray: true,
   })
-  @OneToMany(
-    () => ERC1155SpaceShipPartLootboxAttribute,
-    (attributes) => attributes.erc1155
-  )
-  attributes: ERC1155SpaceShipPartLootboxAttribute[];
+  @OneToMany(() => ERC1155LootboxAttribute, (attributes) => attributes.erc1155)
+  attributes: ERC1155LootboxAttribute[];
 
   @ApiProperty({ type: () => Lootbox, isArray: true })
   @OneToMany(() => Lootbox, (Lootboxs) => Lootboxs.propertyLootbox)

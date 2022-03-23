@@ -2,10 +2,7 @@
 import fs from "fs";
 
 import { Repository } from "typeorm";
-import {
-  ERC1155SpaceShipPartLootbox,
-  ERC1155SpaceShipPartLootboxAttribute,
-} from "@entity";
+import { ERC1155Lootbox, ERC1155LootboxAttribute } from "@entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -19,34 +16,31 @@ export class SeedERC1155SpaceshipService {
   );
 
   constructor(
-    @InjectRepository(ERC1155SpaceShipPartLootbox)
-    private erc1155SpaceShipPartLootboxRepo: Repository<ERC1155SpaceShipPartLootbox>,
-    @InjectRepository(ERC1155SpaceShipPartLootboxAttribute)
-    private ERC1155SpaceShipPartLootboxAttributeRepo: Repository<ERC1155SpaceShipPartLootboxAttribute>
+    @InjectRepository(ERC1155Lootbox)
+    private erc1155LootboxRepo: Repository<ERC1155Lootbox>,
+    @InjectRepository(ERC1155LootboxAttribute)
+    private ERC1155LootboxAttributeRepo: Repository<ERC1155LootboxAttribute>
   ) {}
 
-  private seedERC1155SpaceShipPartLootbox = async (erc1155) => {
+  private seedERC1155Lootbox = async (erc1155) => {
     try {
-      const attributes = await this.seedERC1155SpaceShipPartLootboxAttributes(
+      const attributes = await this.seedERC1155LootboxAttributes(
         erc1155.attributes
       );
       erc1155.attributes = attributes;
-      const erc1155SpaceShipPartLootbox =
-        this.erc1155SpaceShipPartLootboxRepo.create(erc1155);
-      await this.erc1155SpaceShipPartLootboxRepo.save(
-        erc1155SpaceShipPartLootbox
-      );
+      const erc1155Lootbox = this.erc1155LootboxRepo.create(erc1155);
+      await this.erc1155LootboxRepo.save(erc1155Lootbox);
     } catch (err) {
       LoggerService.log(err);
     }
   };
 
-  private seedERC1155SpaceShipPartLootboxAttribute = async (attribute) => {
+  private seedERC1155LootboxAttribute = async (attribute) => {
     try {
-      const erc1155SpaceShipPartLootboxAttribute =
-        this.ERC1155SpaceShipPartLootboxAttributeRepo.create(attribute);
-      const result = await this.ERC1155SpaceShipPartLootboxAttributeRepo.save(
-        erc1155SpaceShipPartLootboxAttribute
+      const erc1155LootboxAttribute =
+        this.ERC1155LootboxAttributeRepo.create(attribute);
+      const result = await this.ERC1155LootboxAttributeRepo.save(
+        erc1155LootboxAttribute
       );
       return result;
     } catch (err) {
@@ -55,26 +49,24 @@ export class SeedERC1155SpaceshipService {
     }
   };
 
-  private seedERC1155SpaceShipPartLootboxAttributes = async (attributes) => {
+  private seedERC1155LootboxAttributes = async (attributes) => {
     const promises = [];
     for (let i = 0; i < attributes.length; i++) {
-      promises.push(
-        this.seedERC1155SpaceShipPartLootboxAttribute(attributes[i])
-      );
+      promises.push(this.seedERC1155LootboxAttribute(attributes[i]));
     }
     return Promise.all(promises);
   };
 
-  seedERC1155SpaceShipPartLootboxs = async () => {
-    await this.erc1155SpaceShipPartLootboxRepo.query(
+  seedERC1155Lootboxs = async () => {
+    await this.erc1155LootboxRepo.query(
       `delete from erc1155_space_ship_part_lootbox_attribute`
     );
-    await this.erc1155SpaceShipPartLootboxRepo.query(
+    await this.erc1155LootboxRepo.query(
       `delete from erc1155_space_ship_part_lootbox`
     );
     const promises = [];
     for (let i = 0; i < this.erc1155Data.length; i++) {
-      promises.push(this.seedERC1155SpaceShipPartLootbox(this.erc1155Data[i]));
+      promises.push(this.seedERC1155Lootbox(this.erc1155Data[i]));
     }
     await Promise.all(promises);
     LoggerService.log("Done");
