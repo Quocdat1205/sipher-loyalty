@@ -21,7 +21,7 @@ export class AirdropService {
   }
 
   private async getTokenAirdrop(publicAddress: string) {
-    const data = await this.airdropRepos.findOne({
+    const data = await this.airdropRepos.find({
       where: [
         { claimer: publicAddress, type: AirdropType.TOKEN },
         { claimer: publicAddress.toLowerCase(), type: AirdropType.TOKEN },
@@ -31,7 +31,7 @@ export class AirdropService {
   }
 
   private async getNFTAirdrop(publicAddress: string) {
-    const data = await this.airdropRepos.findOne({
+    const data = await this.airdropRepos.find({
       where: [
         { claimer: publicAddress, type: AirdropType.NFT },
         { claimer: publicAddress.toLowerCase(), type: AirdropType.NFT },
