@@ -1,4 +1,3 @@
-import { Merch } from "@entity";
 import { Controller, Get, Param, Put, Req, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 

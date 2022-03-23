@@ -130,23 +130,9 @@ export interface Airdrop {
   created: string;
 }
 
-export interface Merch {
-  id_merch: string;
-  publicAddress: string;
-  imageUrl: string;
-  title: string;
-  description: string;
-  isClaim: boolean;
-  promo_code: string;
-
-  /** @format date-time */
-  createdAt: string;
-}
-
 export interface ResAllAirdrop {
   token: Airdrop[];
   nft: Airdrop[];
-  merch: Merch[];
 }
 
 export type BioDto = object;
