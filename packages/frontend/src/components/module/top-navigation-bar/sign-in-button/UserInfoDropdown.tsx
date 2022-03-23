@@ -2,7 +2,7 @@ import { BiHeadphone } from "react-icons/bi"
 import { BsArrowRightShort } from "react-icons/bs"
 import { IoMdClose, IoMdSettings } from "react-icons/io"
 import { RiEarthFill } from "react-icons/ri"
-import { useMutation, useQuery } from "react-query"
+import { useMutation } from "react-query"
 import {
   Avatar,
   Box,
@@ -16,10 +16,12 @@ import {
   Stack,
   Text,
 } from "@sipher.dev/sipher-ui"
+import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
 import { EthereumIcon, SipherIcon } from "@components/shared"
 import { ClipboardCopy } from "@components/shared/ClipboardCopy"
+import { useBalanceContext } from "@hooks"
 import { currency, shortenAddress } from "@utils"
 import { useAuth } from "src/providers/auth"
 
@@ -28,20 +30,25 @@ import OptionCard from "./OptionCard"
 interface UserInfoDropdownProps {
   isOpen: boolean
   onClose: () => void
-  setModal: (v: string) => void
+  onSettingClick: () => void
+  onBuySipherClick: () => void
 }
 
-export const UserInfoDropdown = ({ isOpen, onClose, setModal }: UserInfoDropdownProps) => {
-  const { account, scCaller } = useWalletContext()
-  const { data: ethereum } = useQuery(["ethereum", account], () => scCaller.current?.getEtherBalance(account!))
-  const { data: sipher } = useQuery(["sipher", account], () => scCaller.current?.getSipherBalance(account!))
-  const { data: weth } = useQuery(["weth", account], () => scCaller.current?.getWETHBalance(account!))
+export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherClick }: UserInfoDropdownProps) => {
+  const { account } = useWalletContext()
+  const {
+    balance: { ethereum, sipher, weth },
+  } = useBalanceContext()
 
   const { signOut } = useAuth()
+  const setAuthFlow = useStore(s => s.setAuthFlow)
+  const authFlow = useStore(s => s.authFlow)
+  console.log(authFlow)
 
   const { mutate: mutateSignOut, isLoading } = useMutation(signOut, {
     onSuccess: () => {
       onClose()
+      setAuthFlow(null)
     },
   })
 
@@ -56,7 +63,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, setModal }: UserInfoDropdown
       overflow="auto"
       maxH={["35rem", "unset"]}
     >
-      <ScaleFade in={isOpen}>
+      <ScaleFade in={isOpen} unmountOnExit>
         <Flex
           w="20rem"
           direction={"column"}
@@ -93,7 +100,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, setModal }: UserInfoDropdown
               </Flex>
               <IconButton
                 ml={2}
-                onClick={() => setModal("SETTING")}
+                onClick={onSettingClick}
                 boxSize="40px"
                 rounded="base"
                 color="neutral.50"
@@ -123,7 +130,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, setModal }: UserInfoDropdown
                 </Text>
               </Flex>
             </HStack>
-            <Button w="full" onClick={() => setModal("BUY_SIPHER")}>
+            <Button w="full" onClick={onBuySipherClick}>
               BUY SIPHER
             </Button>
           </Stack>
@@ -141,8 +148,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, setModal }: UserInfoDropdown
                   <Text ml={2}>ETH</Text>
                 </Flex>
                 <Text>
-                  {currency(parseFloat(ethereum!))}{" "}
-                  <chakra.span color="neutral.400">(${currency(parseFloat(ethereum ?? "0") * 23)})</chakra.span>
+                  {currency(ethereum)} <chakra.span color="neutral.400">(${currency(ethereum)})</chakra.span>
                 </Text>
               </Flex>
               <Flex align="center" justify="space-between">
@@ -153,7 +159,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, setModal }: UserInfoDropdown
                   <Text ml={2}>WETH</Text>
                 </Flex>
                 <Text>
-                  {currency(weth ?? 0)} <chakra.span color="neutral.400">(${currency((weth ?? 0) * 23)})</chakra.span>
+                  {currency(weth)} <chakra.span color="neutral.400">(${currency(weth)})</chakra.span>
                 </Text>
               </Flex>
               <Flex align="center" justify="space-between">
@@ -164,8 +170,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, setModal }: UserInfoDropdown
                   <Text ml={2}>SIPHER</Text>
                 </Flex>
                 <Text>
-                  {currency(sipher ?? 0)}{" "}
-                  <chakra.span color="neutral.400">(${currency((sipher ?? 0) * 23)})</chakra.span>
+                  {currency(sipher)} <chakra.span color="neutral.400">(${currency(sipher)})</chakra.span>
                 </Text>
               </Flex>
             </Stack>
@@ -181,10 +186,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, setModal }: UserInfoDropdown
           </Stack>
           <Button
             isLoading={isLoading}
-            onClick={() => {
-              mutateSignOut()
-              onClose()
-            }}
+            onClick={() => mutateSignOut()}
             w="full"
             color="white"
             _hover={{ bg: "red.300" }}

@@ -36,11 +36,16 @@ export interface PendingMint {
   createdAt: string;
 }
 
-export interface ERC1155SpaceShipPartLootboxAttribute {
+export interface ResPendingMintDto {
+  pending: PendingMint[];
+  info: PendingMint[];
+}
+
+export interface ERC1155LootboxAttribute {
   id: string;
   trait_type: string;
   value: string;
-  erc1155: ERC1155SpaceShipPartLootbox;
+  erc1155: ERC1155Lootbox;
 
   /** @format date-time */
   createdAt: string;
@@ -53,7 +58,7 @@ export interface Lootbox {
   tokenId: number;
   pending: number;
   mintable: number;
-  propertyLootbox: ERC1155SpaceShipPartLootbox;
+  propertyLootbox: ERC1155Lootbox;
 
   /** @format date-time */
   createdAt: string;
@@ -64,7 +69,7 @@ export interface ClaimableLootbox {
   publicAddress: string;
   quantity: number;
   tokenId: number;
-  propertyLootbox: ERC1155SpaceShipPartLootbox;
+  propertyLootbox: ERC1155Lootbox;
 
   /** @format date-time */
   expiredDate: string;
@@ -73,14 +78,14 @@ export interface ClaimableLootbox {
   createdAt: string;
 }
 
-export interface ERC1155SpaceShipPartLootbox {
+export interface ERC1155Lootbox {
   id: string;
   tokenId: string;
   name: string;
   description: string;
   external_url: string;
   image: string;
-  attributes: ERC1155SpaceShipPartLootboxAttribute[];
+  attributes: ERC1155LootboxAttribute[];
   lootboxs: Lootbox[];
   claimableLootboxs: ClaimableLootbox[];
 
@@ -284,12 +289,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags mint
      * @name MintControllerGetPendingLootbox
-     * @request GET:/api/sipher/loyalty/mint/pending/{publicAddress}
+     * @request GET:/api/sipher/loyalty/mint/pending/lootbox/{publicAddress}
      * @secure
      */
     mintControllerGetPendingLootbox: (publicAddress: string, params: RequestParams = {}) =>
-      this.request<PendingMint[], any>({
-        path: `/api/sipher/loyalty/mint/pending/${publicAddress}`,
+      this.request<ResPendingMintDto, any>({
+        path: `/api/sipher/loyalty/mint/pending/lootbox/${publicAddress}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -474,6 +479,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     collectionControllerGetCollectionStat: (collectionSlug: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/collection/${collectionSlug}/stats`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags collection
+     * @name CollectionControllerGetCollectionPorfolio
+     * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/portfolio/{ownerAddress}
+     */
+    collectionControllerGetCollectionPorfolio: (collectionSlug: string, ownerAddress: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/collection/${collectionSlug}/portfolio/${ownerAddress}`,
         method: 'GET',
         ...params,
       }),

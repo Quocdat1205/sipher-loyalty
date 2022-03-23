@@ -39,19 +39,19 @@ export class ContractCaller {
     this.SipherSpaceshipPart = new SipherSpaceshipPart(this.provider)
   }
 
-  public async getEtherBalance(from: string): Promise<string> {
+  public async getEtherBalance(from: string) {
     const balance: BigNumber = await this.provider.getBalance(from)
     return weiToEther(balance.toString())
   }
 
-  public async getSipherBalance(from: string): Promise<number> {
+  public async getSipherBalance(from: string) {
     const balance = await this.SipherToken.getBalance(from)
-    return balance
+    return weiToEther(balance.toString())
   }
 
-  public async getWETHBalance(from: string): Promise<number> {
+  public async getWETHBalance(from: string) {
     const balance = await this.WETH.getBalance(from)
-    return balance
+    return weiToEther(balance.toString())
   }
 
   public async getLpUniswapTVL() {

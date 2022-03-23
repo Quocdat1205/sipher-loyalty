@@ -1,7 +1,7 @@
 // import library
 import { toChecksumAddress } from "ethereumjs-util";
 import { Repository } from "typeorm";
-import { MintStatus, MintType, PendingMint } from "@entity";
+import { ERC1155Lootbox, MintStatus, MintType, PendingMint } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
@@ -24,7 +24,9 @@ import { LoggerService } from "../logger/logger.service";
 export class MintService {
   constructor(
     @InjectRepository(PendingMint)
-    private PendingMintRepo: Repository<PendingMint>
+    private PendingMintRepo: Repository<PendingMint>,
+    @InjectRepository(ERC1155Lootbox)
+    private erc1155LootboxRepo: Repository<ERC1155Lootbox>
   ) {}
 
   private config = constant.config.erc1155Spaceship;
@@ -77,6 +79,13 @@ export class MintService {
   //   return { signature, signatureBatch };
   // }
 
+  private async dataPendingDetail(batchID: number, amount: number) {
+    const property = await this.erc1155LootboxRepo.findOne({
+      tokenId: batchID.toString(),
+    });
+    return { property, batchID, amount };
+  }
+
   getPendingLootbox = async (publicAddress: string) => {
     const pending = await this.PendingMintRepo.find({
       where: [
@@ -92,7 +101,20 @@ export class MintService {
         },
       ],
     });
-    return pending;
+    const promises = [];
+    pending.forEach((element) => {
+      if (element.batchID)
+        promises.push(this.dataPendingDetail(element.batchID, element.amount));
+      else {
+        for (let i = 0; i < element.batchIDs.length; i++) {
+          promises.push(
+            this.dataPendingDetail(element.batchIDs[i], element.amounts[i])
+          );
+        }
+      }
+    });
+    const info = await Promise.all(promises);
+    return { pending, info };
   };
 
   getPendingLootboxByBatchOrder = async (batchOrder: BatchOrder) => {

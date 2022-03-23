@@ -2,8 +2,8 @@ import {
   ClaimableLootbox,
   ERC1155Sculpture,
   ERC1155SculptureAttribute,
-  ERC1155SpaceShipPartLootbox,
-  ERC1155SpaceShipPartLootboxAttribute,
+  ERC1155Lootbox,
+  ERC1155LootboxAttribute,
   Lootbox,
   Merch,
 } from "@entity";
@@ -22,8 +22,8 @@ import { SeedLootboxService } from "./seedLootbox.service";
   imports: [
     LootBoxModule,
     TypeOrmModule.forFeature([
-      ERC1155SpaceShipPartLootbox,
-      ERC1155SpaceShipPartLootboxAttribute,
+      ERC1155Lootbox,
+      ERC1155LootboxAttribute,
       ERC1155Sculpture,
       ERC1155SculptureAttribute,
       Lootbox,

@@ -1,6 +1,6 @@
 import {
-  ERC1155SpaceShipPartLootbox,
-  ERC1155SpaceShipPartLootboxAttribute,
+  ERC1155Lootbox,
+  ERC1155LootboxAttribute,
   Lootbox,
   Merch,
 } from "@entity";

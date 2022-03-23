@@ -7,13 +7,10 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import {
-  ERC1155Sculpture,
-  ERC1155SpaceShipPartLootbox,
-} from "./erc1155.entity";
+import { ERC1155Lootbox, ERC1155Sculpture } from "./erc1155.entity";
 
 @Entity()
-export class ERC1155SpaceShipPartLootboxAttribute {
+export class ERC1155LootboxAttribute {
   @ApiProperty({ type: String })
   @PrimaryGeneratedColumn("increment")
   id: string;
@@ -26,9 +23,9 @@ export class ERC1155SpaceShipPartLootboxAttribute {
   @Column()
   value: string;
 
-  @ApiProperty({ type: () => ERC1155SpaceShipPartLootbox })
-  @ManyToOne(() => ERC1155SpaceShipPartLootbox, (erc1155) => erc1155.attributes)
-  erc1155: ERC1155SpaceShipPartLootbox;
+  @ApiProperty({ type: () => ERC1155Lootbox })
+  @ManyToOne(() => ERC1155Lootbox, (erc1155) => erc1155.attributes)
+  erc1155: ERC1155Lootbox;
 
   @ApiProperty()
   @CreateDateColumn({ default: new Date() })
@@ -49,7 +46,7 @@ export class ERC1155SculptureAttribute {
   @Column()
   value: string;
 
-  @ApiProperty({ type: () => ERC1155SpaceShipPartLootbox })
+  @ApiProperty({ type: () => ERC1155Sculpture })
   @ManyToOne(() => ERC1155Sculpture, (erc1155) => erc1155.attributes)
   erc1155: ERC1155Sculpture;
 

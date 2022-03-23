@@ -30,4 +30,15 @@ export class CollectionController {
       })
     );
   }
+
+  @Get(":collectionSlug/portfolio/:ownerAddress")
+  async getCollectionPorfolio(
+    @Param("collectionSlug") collectionSlug: string,
+    @Param("ownerAddress") ownerAddress: string
+  ) {
+    return await this.collectionService.getCollectionPortfolio(
+      collectionSlug,
+      ownerAddress.toLowerCase()
+    );
+  }
 }

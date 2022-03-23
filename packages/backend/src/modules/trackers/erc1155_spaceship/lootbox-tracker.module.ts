@@ -1,7 +1,7 @@
 import {
   Burned,
-  ERC1155SpaceShipPartLootbox,
-  ERC1155SpaceShipPartLootboxAttribute,
+  ERC1155Lootbox,
+  ERC1155LootboxAttribute,
   Lootbox,
   PendingMint,
 } from "@entity";
@@ -26,8 +26,8 @@ import { LootboxTrackerService } from "./lootbox-tracker.service";
       TrackedBlock,
       ClaimableLootbox,
       Burned,
-      ERC1155SpaceShipPartLootbox,
-      ERC1155SpaceShipPartLootboxAttribute,
+      ERC1155Lootbox,
+      ERC1155LootboxAttribute,
     ]),
     MintModule,
     BurnModule,

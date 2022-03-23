@@ -1,3 +1,4 @@
+export * from "./useBalance"
 export * from "./useChakraToast"
 export * from "./useDebounce"
 export * from "./useFormCoreWithError"

@@ -1,4 +1,4 @@
-import { PendingMint } from "@entity";
+import { ERC1155Lootbox, PendingMint } from "@entity";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
@@ -8,7 +8,10 @@ import { MintController } from "./mint.controller";
 import { MintService } from "./mint.service";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PendingMint]), AuthModule],
+  imports: [
+    TypeOrmModule.forFeature([PendingMint, ERC1155Lootbox]),
+    AuthModule,
+  ],
   providers: [MintService],
   controllers: [MintController],
   exports: [MintService],

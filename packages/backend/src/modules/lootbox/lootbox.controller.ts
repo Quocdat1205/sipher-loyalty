@@ -14,12 +14,7 @@ import { AtherGuard } from "@modules/auth/auth.guard";
 import { AuthService } from "@modules/auth/auth.service";
 
 import { LootBoxService } from "./lootbox.service";
-import {
-  MintBatchLootboxInputDto,
-  MintLootboxInputDto,
-  resMintBatchDto,
-  resMintSingleDto,
-} from "./lootbox.type";
+import { MintBatchLootboxInputDto, MintLootboxInputDto } from "./lootbox.type";
 
 @ApiTags("lootbox")
 @Controller("lootbox")
