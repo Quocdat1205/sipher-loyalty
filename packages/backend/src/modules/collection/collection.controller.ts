@@ -18,6 +18,27 @@ import { CollectionService } from "./collection.service";
 export class CollectionController {
   constructor(private collectionService: CollectionService) {}
 
+  @Get("")
+  async getAllCollections() {
+    return await this.collectionService.getAllCollection();
+  }
+
+  @Get("portfolio/:userAddress")
+  async getUserCollection(@Param("userAddress") userAddress: string) {
+    return await this.collectionService.getPortfolio(userAddress.toLowerCase());
+  }
+
+  @Get(":collectionSlug/portfolio/:userAddress")
+  async getPortfolioByCollection(
+    @Param("userAddress") userAddress: string,
+    @Param("collectionSlug") collectionSlug: string
+  ) {
+    return await this.collectionService.getPortfolioByCollection(
+      userAddress.toLowerCase(),
+      collectionSlug
+    );
+  }
+
   @Get(":collectionSlug/stats")
   getCollectionStat(@Param("collectionSlug") collectionSlug: string) {
     return this.collectionService.getCollectionStats(collectionSlug).pipe(
@@ -28,17 +49,6 @@ export class CollectionController {
         }
         throw new InternalServerErrorException();
       })
-    );
-  }
-
-  @Get(":collectionSlug/portfolio/:ownerAddress")
-  async getCollectionPorfolio(
-    @Param("collectionSlug") collectionSlug: string,
-    @Param("ownerAddress") ownerAddress: string
-  ) {
-    return await this.collectionService.getCollectionPortfolio(
-      collectionSlug,
-      ownerAddress.toLowerCase()
     );
   }
 }

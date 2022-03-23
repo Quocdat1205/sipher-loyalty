@@ -46,8 +46,7 @@ export const useStake = () => {
       poolName: "$SIPHER",
       APR: !dataFetch
         ? 0
-        : (((parseFloat(dataFetch.StakingPools.weight) / parseFloat(dataFetch.totalWeight)) * TOTAL_REWARDS_FOR_POOL) /
-            stakePoolTotalSupply!) *
+        : (((dataFetch.StakingPools.weight / dataFetch.totalWeight) * TOTAL_REWARDS_FOR_POOL) / stakePoolTotalSupply!) *
           2,
       onStake: () => window.open("https://sipher.xyz/stake/deposit/sipher", "_blank"),
     },
@@ -55,7 +54,7 @@ export const useStake = () => {
       poolName: "Uniswap LP $SIPHER-ETH",
       APR: !dataFetch
         ? 0
-        : (((parseFloat(dataFetch.StakingLPSipherWethUniswap.weight) / parseFloat(dataFetch.totalWeight)) *
+        : (((dataFetch.StakingLPSipherWethUniswap.weight / dataFetch.totalWeight) *
             TOTAL_REWARDS_FOR_POOL *
             sipherPrice) /
             (lpUniswapPoolTotalSupply! * lpUniswapPrice)) *
@@ -66,7 +65,7 @@ export const useStake = () => {
       poolName: "Kyber SLP $SIPHER-ETH",
       APR: !dataFetch
         ? 0
-        : (((parseFloat(dataFetch.StakingLPSipherWethKyber.weight) / parseFloat(dataFetch.totalWeight)) *
+        : (((dataFetch.StakingLPSipherWethKyber.weight / dataFetch.totalWeight) *
             TOTAL_REWARDS_FOR_POOL *
             sipherPrice) /
             (lpKyberPoolTotalSupply! * lpKyberPrice)) *

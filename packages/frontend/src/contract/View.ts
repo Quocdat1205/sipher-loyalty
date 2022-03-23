@@ -4,24 +4,24 @@ import { ViewAbi, ViewAddress } from "@constant"
 import { weiToEther } from "@utils"
 
 export interface Pool {
-  accountClaimedRewards: string
-  accountPendingRewards: string
-  accountPoolShares: string
-  accountTotalDeposit: string
+  accountClaimedRewards: number
+  accountPendingRewards: number
+  accountPoolShares: number
+  accountTotalDeposit: number
   depositToken: string
   deposits: Record<"amount" | "start" | "end", number>[]
   poolAddress: string
-  totalPoolShares: string
-  weight: string
+  totalPoolShares: number
+  weight: number
 }
 
 export interface IView {
-  pendingRewards: string
+  pendingRewards: number
   StakingPools: Pool
   StakingLPSipherWethUniswap: Pool
   StakingLPSipherWethKyber: Pool
   escrowPool: Pool
-  totalWeight: string
+  totalWeight: number
 }
 
 export class View {

@@ -1,4 +1,5 @@
 import { NftItemModule } from "@modules/nft/nftItem.module";
+import { URIModule } from "@modules/uri/uri.module";
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -11,6 +12,7 @@ import { CollectionService } from "./collection.service";
   imports: [
     HttpModule,
     NftItemModule,
+    URIModule,
     TypeOrmModule.forFeature([SipherCollection]),
   ],
   providers: [CollectionService],

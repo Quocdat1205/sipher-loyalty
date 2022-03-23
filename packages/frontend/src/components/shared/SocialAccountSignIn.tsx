@@ -1,7 +1,5 @@
-import { MdInfo } from "react-icons/md"
-import { Box, BoxProps, Flex, HStack, Link, Text } from "@sipher.dev/sipher-ui"
+import { Box, BoxProps, HStack, Text } from "@sipher.dev/sipher-ui"
 
-import { CustomPopover } from "./CustomPopover"
 import { WalletCard } from "./WalletCard"
 
 interface SocialAccountSignInProps extends BoxProps {

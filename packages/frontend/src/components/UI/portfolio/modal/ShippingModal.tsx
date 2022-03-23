@@ -14,8 +14,7 @@ import {
   Text,
 } from "@sipher.dev/sipher-ui"
 
-import { CustomInput } from "@components/module/modal"
-import { ChakraModal, CustomRadio, EthereumIcon, SipherIcon } from "@components/shared"
+import { ChakraModal, CustomInput, CustomRadio, EthereumIcon, SipherIcon } from "@components/shared"
 
 interface SettingAccountModalProps {
   isOpen: boolean

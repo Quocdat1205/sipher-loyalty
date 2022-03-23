@@ -14,6 +14,6 @@ export class StakingLPSipherWethUniswap {
   }
 
   async totalSupply() {
-    return parseFloat(weiToEther(await this.contract.totalSupply()))
+    return weiToEther(await this.contract.totalSupply())
   }
 }

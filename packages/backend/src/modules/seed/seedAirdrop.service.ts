@@ -3,7 +3,6 @@ import fs from "fs";
 import path from "path";
 
 import { Repository } from "typeorm";
-import { Merch } from "@entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -30,9 +29,7 @@ export class SeedAirdropService {
 
   constructor(
     @InjectRepository(Airdrop)
-    private airdropRepo: Repository<Airdrop>,
-    @InjectRepository(Merch)
-    private merchRepo: Repository<Merch>
+    private airdropRepo: Repository<Airdrop>
   ) {}
 
   seedAirdropHolder = async () => {
@@ -120,33 +117,6 @@ export class SeedAirdropService {
     LoggerService.log(
       `Check airdrop investors campaign 1: ${
         parseInt(airdropCount[0].count, 10) === flaternAirdrop.length
-          ? "OK"
-          : "Failed"
-      }
-        `
-    );
-  };
-
-  private async upsertMerch(_merch: Merch): Promise<Merch | null> {
-    LoggerService.log(`upsert merch`);
-    return this.merchRepo.save(_merch);
-  }
-
-  seedAirdropMerch = async () => {
-    await this.merchRepo.query(`delete from merch`);
-
-    const promises = [];
-    for (let i = 0; i < this.airdropDataMerch.length; i++) {
-      promises.push(this.upsertMerch(this.airdropDataMerch[i]));
-    }
-    await Promise.all(promises);
-
-    const airdropCount = await this.merchRepo.query(
-      `select count(*) from merch;`
-    );
-    LoggerService.log(
-      `Check airdrop Holder : ${
-        parseInt(airdropCount[0].count, 10) === this.airdropDataMerch.length
           ? "OK"
           : "Failed"
       }

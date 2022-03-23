@@ -142,23 +142,9 @@ export interface Airdrop {
   created: string;
 }
 
-export interface Merch {
-  id_merch: string;
-  publicAddress: string;
-  imageUrl: string;
-  title: string;
-  description: string;
-  isClaim: boolean;
-  promo_code: string;
-
-  /** @format date-time */
-  createdAt: string;
-}
-
 export interface ResAllAirdrop {
   token: Airdrop[];
   nft: Airdrop[];
-  merch: Merch[];
 }
 
 export type BioDto = object;
@@ -504,12 +490,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags collection
-     * @name CollectionControllerGetCollectionStat
-     * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/stats
+     * @name CollectionControllerGetAllCollections
+     * @request GET:/api/sipher/loyalty/collection
      */
-    collectionControllerGetCollectionStat: (collectionSlug: string, params: RequestParams = {}) =>
+    collectionControllerGetAllCollections: (params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/collection/${collectionSlug}/stats`,
+        path: `/api/sipher/loyalty/collection`,
         method: 'GET',
         ...params,
       }),
@@ -518,12 +504,40 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags collection
-     * @name CollectionControllerGetCollectionPorfolio
-     * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/portfolio/{ownerAddress}
+     * @name CollectionControllerGetUserCollection
+     * @request GET:/api/sipher/loyalty/collection/portfolio/{userAddress}
      */
-    collectionControllerGetCollectionPorfolio: (collectionSlug: string, ownerAddress: string, params: RequestParams = {}) =>
+    collectionControllerGetUserCollection: (userAddress: string, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/collection/${collectionSlug}/portfolio/${ownerAddress}`,
+        path: `/api/sipher/loyalty/collection/portfolio/${userAddress}`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags collection
+     * @name CollectionControllerGetPortfolioByCollection
+     * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/portfolio/{userAddress}
+     */
+    collectionControllerGetPortfolioByCollection: (userAddress: string, collectionSlug: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/collection/${collectionSlug}/portfolio/${userAddress}`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags collection
+     * @name CollectionControllerGetCollectionStat
+     * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/stats
+     */
+    collectionControllerGetCollectionStat: (collectionSlug: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/collection/${collectionSlug}/stats`,
         method: 'GET',
         ...params,
       }),
