@@ -5,9 +5,9 @@ import { Box, Flex } from "@sipher.dev/sipher-ui"
 import TabPage from "@components/module/TabPage"
 import { Banner } from "@components/shared"
 
-import { ClaimContainer } from "./claim"
+import ClaimContainer from "./claim"
 import { InventoryContainer } from "./inventory"
-import { OverviewContainer } from "./overview"
+import OverviewContainer from "./overview"
 import { PendingContainer } from "./pending"
 
 const tabs = [

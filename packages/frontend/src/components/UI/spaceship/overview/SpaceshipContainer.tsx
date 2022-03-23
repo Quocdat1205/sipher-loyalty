@@ -4,7 +4,8 @@ import { useRouter } from "next/router"
 import { Box, Button, Flex, Heading, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
 import { Timeline } from "./Timeline"
-import { SpaceshipDataProps } from "./useOverview"
+import { TutorialSpaceship } from "./TutorialSpaceship"
+import useOverview from "./useOverview"
 
 const dataShip = [
   { id: "Mass", value: "975 t" },
@@ -15,33 +16,30 @@ const dataShip = [
   { id: "Spec", value: "Exploration" },
 ]
 
-interface SpaceshipContainerProp {
-  mappedData: SpaceshipDataProps[]
-  activeData: SpaceshipDataProps
-}
-
-export const SpaceshipContainer = ({ activeData, mappedData }: SpaceshipContainerProp) => {
+export const SpaceshipContainer = () => {
+  const { mappedData, activeData } = useOverview()
   const router = useRouter()
+
   return (
     <Flex
       flexDir="column"
       align="center"
       w="full"
-      bg="url(/images/spaceship/bg-galaxy.png), linear-gradient(180deg, rgba(0, 0, 0, 0.5) 9.54%, rgba(0, 0, 0, 0.215) 59.01%, rgba(0, 0, 0, 0.5) 100%)"
+      backgroundImage="url(/images/spaceship/bg-galaxy.png), linear-gradient(180deg, rgba(41, 42, 64, 0.3) 5%, rgba(0, 0, 0, 0.215) 59.01%, rgba(0, 0, 0, 0.5) 100%)"
       bgRepeat="no-repeat"
       bgPos="100% 30%"
       bgSize="cover"
     >
-      <Box py={4} maxW="1200px" w="full">
-        <Flex pt={16} pb={24} align="flex-start">
-          <Box flex={1} pr={32}>
+      <Box py={16} maxW="1200px" w="full">
+        <Flex mb={24} justify="space-between" align="center">
+          <Box flex={1}>
             <Text color="whiteAlpha.700" fontWeight={600} mb={2}>
               Week {activeData.week}
             </Text>
-            <Heading fontWeight={600} mb={4} fontSize="3xl">
+            <Heading fontWeight={600} mb={4} fontSize="4xl" textTransform={"uppercase"}>
               {activeData.title}
             </Heading>
-            <Text color="neutral.100" mb={16}>
+            <Text color="neutral.100" mb={32} fontSize="lg">
               {activeData.description}
             </Text>
             <Button onClick={() => router.push({ query: { tab: "claim" } })} size="lg" letterSpacing="1px">
@@ -70,7 +68,13 @@ export const SpaceshipContainer = ({ activeData, mappedData }: SpaceshipContaine
                   translateX="-15%"
                   translateY="5%"
                 >
-                  <Image src={activeData.image || ""} alt="plane" width={480} height={340} quality={100} />
+                  <Image
+                    src={activeData.image || ""}
+                    alt={activeData.description}
+                    width={480}
+                    height={340}
+                    quality={100}
+                  />
                 </Box>
                 <Box
                   transform="auto"
@@ -101,6 +105,7 @@ export const SpaceshipContainer = ({ activeData, mappedData }: SpaceshipContaine
           </Flex>
         </Flex>
         <Timeline mappedData={mappedData} />
+        <TutorialSpaceship />
       </Box>
     </Flex>
   )

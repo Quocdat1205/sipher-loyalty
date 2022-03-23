@@ -5,7 +5,6 @@ import { Box, Button, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomCheckbox } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
-import { ERC1155SpaceShipPartLootbox } from "@sdk"
 
 interface CardProps {
   isCheckAccountClaim: boolean

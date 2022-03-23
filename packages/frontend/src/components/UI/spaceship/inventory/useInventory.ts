@@ -21,9 +21,9 @@ export const useInventory = () => {
   const { account, scCaller, chainId, switchNetwork } = useWalletContext()
   const router = useRouter()
   const [isFetched, setIsFetched] = useState(false)
-  const [data, setData] = useState<InventoryProps[]>()
+  const [data, setData] = useState<InventoryProps[]>([])
 
-  const {} = useQuery(
+  const { refetch } = useQuery(
     ["lootBoxs", account, user],
     () =>
       client.api
@@ -38,36 +38,28 @@ export const useInventory = () => {
       onSuccess: data => {
         setData(data.map(item => ({ ...item, slot: item.mintable, isChecked: false }))), setIsFetched(true)
       },
+      initialData: [],
     },
   )
 
-  const inventoryData = data?.map(item => ({
+  const inventoryData = data!.map(item => ({
     ...item,
-    onSelect: (id: string, isChecked?: boolean) => {
-      setData(
-        data.map(item => {
-          if (item.id === id) {
-            return { ...item, isChecked: isChecked !== undefined ? isChecked : !item.isChecked }
-          }
-          return item
-        }),
-      )
+    isDisabled: item.publicAddress !== account,
+    onSelect: (isChecked = false) => {
+      const oldState = data
+      oldState.find(i => i.id === item.id)!.isChecked = isChecked
+      setData([...oldState])
     },
   }))
 
-  const inventoryDataCheck = data
-    ?.filter(i => i.isChecked)
+  const inventoryDataCheck = data!
+    .filter(i => i.isChecked)
     .map(item => ({
       ...item,
-      onChange: (id: string, slot: number) => {
-        setData(
-          data.map(item => {
-            if (item.id === id) {
-              return { ...item, slot: slot }
-            }
-            return item
-          }),
-        )
+      onChange: (slot: number) => {
+        const oldState = data
+        oldState.find(i => i.id === item.id)!.slot = slot
+        setData([...oldState])
       },
     }))
 
@@ -117,12 +109,10 @@ export const useInventory = () => {
     },
     {
       onSuccess: () => {
-        setIsFetched(false)
         setIsStatusModal("SUCCESS")
       },
       onSettled: () => {
-        setIsFetched(false)
-        query.invalidateQueries(["lootBoxs", account, user])
+        refetch()
         query.invalidateQueries(["pending", user])
       },
       onError: err => {
@@ -130,8 +120,6 @@ export const useInventory = () => {
       },
     },
   )
-
-  const isCheckAccountClaim = inventoryData?.find(item => item.publicAddress)?.publicAddress === account
 
   const handleMint = () => {
     if (chainId === POLYGON_NETWORK) {
@@ -147,7 +135,6 @@ export const useInventory = () => {
     handleMint,
     inventoryDataCheck,
     inventoryData,
-    isCheckAccountClaim,
     setIsStatusModal,
     handleView,
   }
