@@ -17,7 +17,6 @@ export class AtherIDMiddleware implements NestMiddleware {
     //     },
     //   }
     // );
-    console.log(req);
     res.locals.user = true;
     next();
   }

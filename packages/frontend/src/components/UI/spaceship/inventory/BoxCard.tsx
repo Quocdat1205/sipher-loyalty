@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { BiChevronRight } from "react-icons/bi"
-import { Box, Button, Flex, Image, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import Image from "next/image"
+import { Box, Button, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomCheckbox } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
@@ -16,7 +17,7 @@ export const BoxCard = ({ data }: CardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false)
   return (
     <Box
-      onClick={() => !isDisabled && onSelect()}
+      onClick={() => !isDisabled && onSelect(!isChecked)}
       _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
       role="group"
       overflow="hidden"
@@ -35,7 +36,7 @@ export const BoxCard = ({ data }: CardProps) => {
           zIndex={1}
           opacity={isChecked ? 1 : 0}
         >
-          <CustomCheckbox onChange={e => onSelect(e.target.checked)} isChecked={isChecked} />
+          <CustomCheckbox onChange={e => onSelect(!e.target.checked)} isChecked={isChecked} />
         </Box>
       )}
 
@@ -67,6 +68,8 @@ export const BoxCard = ({ data }: CardProps) => {
       </Button>
       <Skeleton pos="relative" isLoaded={imageLoaded}>
         <Image
+          height={280}
+          width={280}
           src={propertyLootbox.image}
           alt={propertyLootbox.name}
           loading="lazy"

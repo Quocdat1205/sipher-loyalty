@@ -24,8 +24,6 @@ export const VerifyAccount = ({ isComplete, setIsComplete, changeForm, setChange
     } else setIsComplete(true)
   }
 
-  console.log(changeForm.status)
-
   return (
     <Stack pos="relative" px={6} spacing={6} w="full">
       <Text color="neutral.300">

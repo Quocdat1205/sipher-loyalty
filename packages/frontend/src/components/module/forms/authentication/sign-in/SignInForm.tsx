@@ -28,7 +28,6 @@ interface SignInFormProps {
 }
 
 const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
-  console.log(isOpen)
   const wallet = useWalletContext()
   const [show, setShow] = useState(false)
   const {

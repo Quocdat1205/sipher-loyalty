@@ -26,6 +26,5 @@ export const useAirdrops = () => {
       enabled: authenticated && !!account,
     },
   )
-  console.log(data)
   return { currentTab }
 }
