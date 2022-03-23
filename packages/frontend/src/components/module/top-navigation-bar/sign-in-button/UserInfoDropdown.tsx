@@ -62,7 +62,6 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
       zIndex={"modal"}
       overflow="auto"
       maxH={["35rem", "unset"]}
-      bg="red"
     >
       <ScaleFade in={isOpen} unmountOnExit>
         <Flex

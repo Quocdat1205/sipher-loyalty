@@ -4,6 +4,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { ApiProperty } from "@nestjs/swagger";
 
 export enum MintStatus {
   Pending = "Pending",
@@ -18,27 +19,35 @@ export enum MintType {
 
 @Entity()
 export class PendingMint {
+  @ApiProperty({ type: Number })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({ type: String })
   @Column({ nullable: false })
   to: string;
 
+  @ApiProperty({ type: Number })
   @Column({ nullable: false })
   batchID: number;
 
+  @ApiProperty({ type: Number })
   @Column({ nullable: false })
   amount: number;
 
+  @ApiProperty({ type: Number, isArray: true })
   @Column("int", { array: true, default: [] })
   batchIDs: number[];
 
+  @ApiProperty({ type: Number, isArray: true })
   @Column("int", { array: true, default: [] })
   amounts: number[];
 
+  @ApiProperty({ type: String })
   @Column({ nullable: false })
   salt: string;
 
+  @ApiProperty({ type: MintStatus })
   @Column({
     type: "enum",
     enum: MintStatus,
@@ -46,15 +55,18 @@ export class PendingMint {
   })
   status: MintStatus;
 
+  @ApiProperty({ type: MintType })
   @Column({
     type: "enum",
     enum: MintType,
   })
   type: MintType;
 
+  @ApiProperty({ type: String })
   @Column({ nullable: false })
   signature: string;
 
+  @ApiProperty()
   @CreateDateColumn({ default: new Date() })
   createdAt: Date;
 }

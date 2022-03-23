@@ -1,14 +1,16 @@
-import { LoggerService } from "@modules/logger/logger.service";
-import { SculptureService } from "@modules/sculpture/sculpture.service";
+import { BigNumber, Contract, providers } from "ethers";
+import { Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { Interval } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
 import { sculptureAbi } from "@setting/blockchain/abis/sculpture";
 import { getContract, getProvider } from "@setting/blockchain/ethers";
 import constant from "@setting/constant";
-import { BigNumber, Contract, providers } from "ethers";
+
+import { LoggerService } from "@modules/logger/logger.service";
+import { SculptureService } from "@modules/sculpture/sculpture.service";
 import { TrackedBlock } from "src/entity/tracking.entity";
-import { Repository } from "typeorm";
+
 @Injectable()
 export class ScupltureTrackerService {
   private sculptureContract: Contract;
@@ -22,7 +24,7 @@ export class ScupltureTrackerService {
   ) {
     this.provider = getProvider(constant.CHAIN_ID);
     this.sculptureContract = getContract(
-      constant.SCULPTURE_ADDRESS,
+      constant.blockchain.contracts.erc1155Sculpture[constant.CHAIN_ID].address,
       sculptureAbi,
       this.provider
     );
@@ -48,7 +50,7 @@ export class ScupltureTrackerService {
   }
 
   private async getFromBlock(): Promise<number> {
-    let currentTrackedBlock = await this.trackBlockRepo.findOne({
+    const currentTrackedBlock = await this.trackBlockRepo.findOne({
       where: {
         type: "tracker-sculpture",
       },
@@ -59,7 +61,7 @@ export class ScupltureTrackerService {
 
   private async getToBlock(currentFromBlock: number): Promise<number> {
     const chainLatestBlock = await this.provider.getBlockNumber();
-    const toBlock = currentFromBlock + 500;
+    const toBlock = currentFromBlock + 10000;
     if (toBlock <= chainLatestBlock) {
       return toBlock;
     }
@@ -76,6 +78,7 @@ export class ScupltureTrackerService {
       fromBlock,
       toBlock
     );
+    // eslint-disable-next-line no-restricted-syntax
     for (const event of events) {
       const ownerAddress = event.args[0];
       const tokenId = (event.args[1] as BigNumber).toString();

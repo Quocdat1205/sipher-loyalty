@@ -2,15 +2,18 @@ import { Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
+import { MerchService } from "@modules/merch/merch.service";
+
 import { Airdrop, AirdropType } from "../../entity/airdrop.entity";
 
 @Injectable()
 export class AirdropService {
   constructor(
-    @InjectRepository(Airdrop) private airdropRepos: Repository<Airdrop>
+    @InjectRepository(Airdrop) private airdropRepos: Repository<Airdrop>,
+    private merchService: MerchService
   ) {}
 
-  async getAllAirdrop(publicAddress: string) {
+  private async getAllAirdrop(publicAddress: string) {
     const data = await this.airdropRepos.findOne({
       where: [
         { claimer: publicAddress },
@@ -20,7 +23,7 @@ export class AirdropService {
     return data;
   }
 
-  async getTokenAirdrop(publicAddress: string) {
+  private async getTokenAirdrop(publicAddress: string) {
     const data = await this.airdropRepos.findOne({
       where: [
         { claimer: publicAddress, type: AirdropType.TOKEN },
@@ -28,5 +31,21 @@ export class AirdropService {
       ],
     });
     return data;
+  }
+
+  async getAirdropByType(publicAddress: string, type: AirdropType) {
+    switch (type) {
+      case AirdropType.TOKEN:
+        return this.getTokenAirdrop(publicAddress);
+        break;
+
+      case AirdropType.MERCH:
+        this.merchService.getAllMerch(publicAddress);
+        break;
+
+      default:
+        return this.getAllAirdrop(publicAddress);
+        break;
+    }
   }
 }

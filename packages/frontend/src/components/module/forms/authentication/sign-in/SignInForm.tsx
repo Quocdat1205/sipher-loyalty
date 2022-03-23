@@ -1,29 +1,14 @@
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs"
-import { MdInfo } from "react-icons/md"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
-import AtherIdAuth, { CognitoUser, OauthProvider } from "@sipher.dev/ather-id"
-import {
-  Box,
-  Button,
-  chakra,
-  Flex,
-  FormControl,
-  HStack,
-  IconButton,
-  InputGroup,
-  InputRightElement,
-  Link,
-  Stack,
-  Text,
-} from "@sipher.dev/sipher-ui"
+import AtherIdAuth, { CognitoUser } from "@sipher.dev/ather-id"
+import { Box, Button, chakra, Flex, FormControl, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
-import { ChakraModal, CustomInput, CustomPopover, Form, FormField, WalletCard } from "@components/shared"
+import { ChakraModal, CustomInput, Form, FormField, WalletSignIn } from "@components/shared"
 import { useChakraToast } from "@hooks"
 import { useAuth } from "src/providers/auth"
 
@@ -71,6 +56,13 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
     if (connectWallet || verifyCode) setAuthFlow(null)
   }, [connectWallet, verifyCode])
 
+  useEffect(() => {
+    if (isOpen) {
+      setConnectWallet(false)
+      setVerifyCode(false)
+    }
+  }, [isOpen])
+
   const handleWalletChallenge = async (cogitoUser: CognitoUser, message: string) => {
     if (!wallet.scCaller.current) return
 
@@ -91,7 +83,6 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
   }
 
   const handleChallenge = async (user: any) => {
-    console.log("USER", user)
     if (!user.challengeName) {
       if (!wallet.isActive) setConnectWallet(true)
       else onClose()
@@ -121,11 +112,13 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
       onSuccess: handleChallenge,
       onError: (e: any) => {
         if (e?.message === "User is not confirmed.") setVerifyCode(true)
-        toast({
-          status: "error",
-          title: "Signature Error",
-          message: e.message || "User denied to sign message.",
-        })
+        else {
+          toast({
+            status: "error",
+            title: "Signature Error",
+            message: e.message || "User denied to sign message.",
+          })
+        }
       },
       onSettled: () => setConnectingMethod(null),
     },
@@ -152,7 +145,7 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
           mutateSignIn({ emailOrWallet: d.email, password: d.password })
         })}
       >
-        <Stack px={6} spacing={6} w="full">
+        <Stack px={6} spacing={4} w="full">
           <FormControl as="fieldset">
             <FormField error={errors?.email?.message}>
               <CustomInput
@@ -163,92 +156,38 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
           </FormControl>
           <FormControl mb={0} as="fieldset">
             <FormField error={errors?.password?.message}>
-              <InputGroup size="md">
-                <CustomInput
-                  pr="2.5rem"
-                  type={show ? "text" : "password"}
-                  placeholder="Password"
-                  {...register("password", { required: true })}
-                />
-                <InputRightElement width="2.5rem">
-                  <IconButton
-                    variant="ghost"
-                    aria-label="eye-icon"
-                    color="neutral.400"
-                    _hover={{ bg: "neutral.500" }}
-                    _active={{ bg: "neutral.500" }}
-                    icon={show ? <BsEyeSlashFill size="1rem" /> : <BsEyeFill size="1rem" />}
-                    size="sm"
-                    h="1.75rem"
-                    onClick={() => setShow(!show)}
-                  />
-                </InputRightElement>
-              </InputGroup>
+              <CustomInput
+                pr="2.5rem"
+                type={"password"}
+                placeholder="Password"
+                {...register("password", { required: true })}
+              />
             </FormField>
           </FormControl>
-          <Text cursor="pointer" color="cyan.600">
+          <Text cursor="pointer" color="cyan.600" onClick={() => setAuthFlow("FORGET_PASSWORD")}>
             Forgot password?
           </Text>
-          <Flex flexDir="column" pb={2}>
-            <Box>
-              <Flex pb={2} align="center">
-                <Text mr={2} color="neutral.400" fontSize="sm">
-                  Crypto-Wallet
-                </Text>
-                <CustomPopover
-                  placement="top"
-                  label="Crypto-wallet"
-                  icon={
-                    <Box color="neutral.500">
-                      <MdInfo size="1.2rem" />
-                    </Box>
-                  }
-                >
-                  <Text fontSize="sm" color="neutral.900">
-                    Wallets are used to send, receive, and store digital assets like Ether. Wallets come in many forms.
-                    For more infomation about wallets, see this{" "}
-                    <Link
-                      isExternal
-                      href="https://docs.ethhub.io/using-ethereum/wallets/intro-to-ethereum-wallets/"
-                      color="cyan.500"
-                      textDecor="underline"
-                    >
-                      explanation
-                    </Link>
-                  </Text>
-                </CustomPopover>
-              </Flex>
-              <HStack spacing={4}>
-                <WalletCard
-                  text="Metamask"
-                  bg="white"
-                  src="/images/icons/wallets/metamask.svg"
-                  onClick={() => handleWalletSignin("injected")}
-                  isLoading={connectingMethod === "injected"}
-                  spinnerColor="black"
-                />
-                <WalletCard
-                  text="ConnectWallet"
-                  bg="white"
-                  src="/images/icons/wallets/walletconnect.svg"
-                  onClick={() => handleWalletSignin("walletConnect")}
-                  isLoading={connectingMethod === "walletConnect"}
-                  spinnerColor="black"
-                />
-              </HStack>
-            </Box>
-          </Flex>
           <Button fontSize="md" py={6} fontWeight={600} type="submit" isLoading={connectingMethod === "email"}>
             SIGN IN
           </Button>
+          <Flex align="center">
+            <Text fontWeight={600}>or Sign in With</Text>
+            <Box ml={2} flex={1} h="1px" bg="neutral.600" />
+          </Flex>
+          <WalletSignIn
+            onMetamaskConnect={() => handleWalletSignin("injected")}
+            onWalletConnectConnect={() => handleWalletSignin("walletConnect")}
+            connectingMethod={connectingMethod}
+          />
+
+          <Text color="neutral.400" textAlign="center">
+            Don't have an account?{" "}
+            <chakra.span textDecor="underline" cursor="pointer" color="cyan.600" onClick={() => setAuthFlow("SIGN_UP")}>
+              Sign Up
+            </chakra.span>
+          </Text>
         </Stack>
       </Form>
-      <Text color="neutral.400" textAlign="center" mt={4}>
-        Don't have an account?{" "}
-        <chakra.span textDecor="underline" cursor="pointer" color="cyan.600" onClick={() => setAuthFlow("SIGN_UP")}>
-          Sign Up
-        </chakra.span>
-      </Text>
     </ChakraModal>
   )
 }

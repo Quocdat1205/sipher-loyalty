@@ -4,6 +4,7 @@ import { Avatar, Box, Flex, Text, useOutsideClick } from "@sipher.dev/sipher-ui"
 import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
+import ForgetPassword from "@components/module/forms/authentication/forget-password"
 import SignInForm from "@components/module/forms/authentication/sign-in"
 import SignUpForm from "@components/module/forms/authentication/sign-up"
 import { SignInProvider } from "@components/module/forms/authentication/useSignInContext"
@@ -85,6 +86,7 @@ const SignInButton = () => {
       <BuySipherModal isOpen={modal === "BUY"} onClose={() => setModal("")} />
       <SignInForm isOpen={authFlow === "SIGN_IN"} onClose={() => setAuthFlow(null)} />
       <SignUpForm isOpen={authFlow === "SIGN_UP"} onClose={() => setAuthFlow(null)} />
+      <ForgetPassword isOpen={authFlow === "FORGET_PASSWORD"} onClose={() => setAuthFlow(null)} />
     </SignInProvider>
   )
 }

@@ -6,13 +6,17 @@ import { Box, Divider, Flex, Link, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
 
+import CountDown from "../CountDown"
+
 interface CardProps {
   name: string
   imageUrl: string
+  expiredDate: number
   isActive?: boolean
+  quantity: number
 }
 
-export const ClaimCard = React.memo(({ name, imageUrl }: CardProps) => {
+export const ClaimCard = React.memo(({ name, imageUrl, expiredDate, quantity }: CardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
@@ -61,7 +65,7 @@ export const ClaimCard = React.memo(({ name, imageUrl }: CardProps) => {
             <Box mr={2} color="neutral.400">
               <BsClockFill />
             </Box>
-            <Text>06D : 23H : 35M</Text>
+            <CountDown deadline={expiredDate} />
           </Flex>
         </Flex>
       </Box>
@@ -76,7 +80,7 @@ export const ClaimCard = React.memo(({ name, imageUrl }: CardProps) => {
         right={4}
       >
         <Text fontSize="lg" fontWeight={600} color="neutral.900">
-          x5
+          x{quantity}
         </Text>
       </Flex>
     </Flex>

@@ -1,4 +1,3 @@
-import { useRouter } from "next/router"
 import { Box, Flex } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
@@ -14,9 +13,7 @@ const tabs = [
 ]
 
 const AirdropUI = () => {
-  const {} = useAirdrops()
-  const router = useRouter()
-  const currentTab = router.query.tab || "all"
+  const { currentTab } = useAirdrops()
 
   return (
     <Flex flexDir="column" align="center" flex={1}>

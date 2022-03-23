@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import { useMutation, useQuery } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Box, Button, chakra, Divider, FormControl, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Divider, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
 import { useChakraToast } from "@hooks"
@@ -39,12 +39,12 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
     },
   })
 
-  const { mutate: mutateResendCode } = useMutation(() => AtherIdAuth.resendSignUp(email), {
+  const { mutate: mutateResendCode, isLoading: isResendingCode } = useMutation(() => AtherIdAuth.resendSignUp(email), {
     onSuccess: () => {
       toast({
         status: "success",
-        title: "Resend Code Successfully",
-        message: "Please check your email",
+        title: "Resend passcode successfully!",
+        message: "Please check your email.",
       })
     },
   })
@@ -55,13 +55,18 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
 
   if (isConnectingWallet) return <ConnectToWallet />
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    mutate()
+  }
+
   return (
     <ChakraModal title={"VERIFY YOUR ACCOUNT"} size="lg" isOpen={true} hideCloseButton={true}>
       <Stack pos="relative" px={6} spacing={6} w="full">
         <Text color="neutral.300">
           Please enter Passcode sent to <chakra.span fontWeight={600}>{email}</chakra.span>
         </Text>
-        <Form onSubmit={() => mutate()}>
+        <Form onSubmit={handleSubmit}>
           <FormControl mb={0} as="fieldset">
             <FormField>
               <CustomInput placeholder="Passcode" value={code} onChange={e => setCode(e.target.value)} />
@@ -72,6 +77,7 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
             <chakra.span textDecor="underline" cursor="pointer" color="cyan.600" onClick={() => mutateResendCode()}>
               Resend
             </chakra.span>
+            {isResendingCode && <Spinner size="xs" color="cyan.600" ml={2} />}
           </Text>
           <Box pb={2}>
             <Divider pos="absolute" left="0" w="full" borderColor="whiteAlpha.100" />

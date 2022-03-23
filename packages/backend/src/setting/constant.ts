@@ -15,6 +15,9 @@ type BlockchainConfiguration = {
     erc1155Spaceship: {
       [k in Chain]: { address: string };
     };
+    erc1155Sculpture: {
+      [k in Chain]: { address: string };
+    };
   };
 };
 
@@ -26,7 +29,7 @@ type ConfigMint = {
 };
 @Injectable()
 export class SystemConfigProvider {
-  PORT = this.get("PORT");
+  PORT = parseInt(this.get("PORT"), 10);
 
   MODE = this.get("MODE");
 
@@ -47,8 +50,6 @@ export class SystemConfigProvider {
   SC_NFT_INU = this.get("SC_NFT_INU");
 
   SC_NFT_NEKO = this.get("SC_NFT_NEKO");
-
-  SC_ERC1155_SPACESHIP = this.get("SC_ERC1155_SPACESHIP");
 
   USERNAME = this.get("USERNAME");
 
@@ -79,8 +80,6 @@ export class SystemConfigProvider {
   PRIVATE_KEY = this.get("PRIVATE_KEY");
 
   CHAIN_ID = parseInt(this.get("CHAIN_ID"), 10);
-
-  SCULPTURE_ADDRESS = this.get("SCULPTURE_ADDRESS");
 
   ATHER_ID_URL = this.get("ATHER_ID_URL");
 
@@ -114,17 +113,29 @@ export class SystemConfigProvider {
 
     const erc1155Spaceship = {
       [Chain.Mainnet]: {
-        address: this.get(`${this.SC_ERC1155_SPACESHIP}_${Chain.Mainnet}`),
+        address: "0x1D5Db97aC0c865B6C01Cfe1309B6Ba8cB431805F",
       },
       [Chain.Rinkeby]: {
-        address: this.get(`${this.SC_ERC1155_SPACESHIP}_${Chain.Rinkeby}`),
+        address: "0x1D5Db97aC0c865B6C01Cfe1309B6Ba8cB431805F",
       },
       [Chain.Mumbai]: {
-        address: this.get(`${this.SC_ERC1155_SPACESHIP}_${Chain.Mumbai}`),
+        address: "0x0c8f19A3496FDe87F55475ac652c7652093B16c7",
       },
     };
 
-    return { rpcUrls, contracts: { erc1155Spaceship } };
+    const erc1155Sculpture = {
+      [Chain.Mainnet]: {
+        address: "0x1D5Db97aC0c865B6C01Cfe1309B6Ba8cB431805F",
+      },
+      [Chain.Rinkeby]: {
+        address: "0x1D5Db97aC0c865B6C01Cfe1309B6Ba8cB431805F",
+      },
+      [Chain.Mumbai]: {
+        address: "0xF40FDc85Cbe6013b44D230a036770704FB92890c",
+      },
+    };
+
+    return { rpcUrls, contracts: { erc1155Spaceship, erc1155Sculpture } };
   }
 
   public get(key: string, defaultValue?: string) {

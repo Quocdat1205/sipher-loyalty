@@ -11,9 +11,9 @@ import { claimItem } from "./merch.type";
 export class MerchService {
   constructor(@InjectRepository(Merch) private merchRepo: Repository<Merch>) {}
 
-  async getAllMerch(publicAddress: string): Promise<Merch | null> {
+  async getAllMerch(publicAddress: string): Promise<Array<Merch> | null> {
     LoggerService.log(`Get all merch`);
-    return this.merchRepo.findOne({ where: { publicAddress } });
+    return this.merchRepo.find({ where: { publicAddress } });
   }
 
   async claimItems({
