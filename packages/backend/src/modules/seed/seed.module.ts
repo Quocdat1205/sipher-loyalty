@@ -1,9 +1,9 @@
 import {
   ClaimableLootbox,
-  ERC1155Sculpture,
-  ERC1155SculptureAttribute,
   ERC1155Lootbox,
   ERC1155LootboxAttribute,
+  ERC1155Sculpture,
+  ERC1155SculptureAttribute,
   Lootbox,
   Merch,
 } from "@entity";
@@ -14,8 +14,8 @@ import { LootBoxModule } from "@modules/lootbox/lootbox.module";
 import { Airdrop } from "src/entity/airdrop.entity";
 
 import { SeedAirdropService } from "./seedAirdrop.service";
+import { SeedERC1155LootboxService } from "./seedERC1155Lootbox.service";
 import { SeedERC1155SculptureService } from "./seedERC1155Sculpture.service";
-import { SeedERC1155SpaceshipService } from "./seedERC1155Spaceship.service";
 import { SeedLootboxService } from "./seedLootbox.service";
 
 @Module({
@@ -34,13 +34,13 @@ import { SeedLootboxService } from "./seedLootbox.service";
   ],
   providers: [
     SeedAirdropService,
-    SeedERC1155SpaceshipService,
+    SeedERC1155LootboxService,
     SeedERC1155SculptureService,
     SeedLootboxService,
   ],
   exports: [
     SeedAirdropService,
-    SeedERC1155SpaceshipService,
+    SeedERC1155LootboxService,
     SeedERC1155SculptureService,
     SeedLootboxService,
   ],

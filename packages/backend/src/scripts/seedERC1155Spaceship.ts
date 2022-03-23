@@ -6,7 +6,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { configService } from "@setting/config.typeorm";
 
 import { SeedModule } from "@modules/seed/seed.module";
-import { SeedERC1155SpaceshipService } from "@modules/seed/seedERC1155Spaceship.service";
+import { SeedERC1155LootboxService } from "@modules/seed/seedERC1155Lootbox.service";
 
 @Module({
   imports: [
@@ -15,10 +15,10 @@ import { SeedERC1155SpaceshipService } from "@modules/seed/seedERC1155Spaceship.
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
     TypeOrmModule.forFeature([ERC1155Lootbox, ERC1155LootboxAttribute]),
   ],
-  providers: [SeedERC1155SpaceshipService],
+  providers: [SeedERC1155LootboxService],
 })
 export class AppModule implements OnApplicationBootstrap {
-  constructor(private readonly seedingService: SeedERC1155SpaceshipService) {}
+  constructor(private readonly seedingService: SeedERC1155LootboxService) {}
 
   async onApplicationBootstrap(): Promise<void> {
     await this.seedingService.seedERC1155Lootboxs();

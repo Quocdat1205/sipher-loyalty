@@ -10,7 +10,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { LoggerService } from "../logger/logger.service";
 
 @Injectable()
-export class SeedERC1155SpaceshipService {
+export class SeedERC1155LootboxService {
   private erc1155Data = JSON.parse(
     fs.readFileSync("./src/data/ERC1155/LOOTBOX/data.json").toString()
   );
