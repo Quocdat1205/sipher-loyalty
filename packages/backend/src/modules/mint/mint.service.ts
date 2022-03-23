@@ -79,11 +79,43 @@ export class MintService {
   //   return { signature, signatureBatch };
   // }
 
-  private async dataPendingDetail(batchID: number, amount: number) {
+  private async dataPendingDetailBatchItem(batchID: number, amount: number) {
     const property = await this.erc1155LootboxRepo.findOne({
       tokenId: batchID.toString(),
     });
     return { property, batchID, amount };
+  }
+
+  private async dataPendingDetailSingle(
+    batchID: number,
+    amount: number,
+    pending: PendingMint
+  ) {
+    const property = await this.erc1155LootboxRepo.findOne({
+      tokenId: batchID.toString(),
+    });
+    const info = { property, batchID, amount };
+    return { pending, info: [info] };
+  }
+
+  private async dataPendingDetailBatch(
+    batchIDs: number[],
+    amounts: number[],
+    pending: PendingMint
+  ) {
+    try {
+      const promises = [];
+      for (let i = 0; i < batchIDs.length; i++) {
+        promises.push(this.dataPendingDetailBatchItem(batchIDs[i], amounts[i]));
+      }
+      const info = await Promise.all(promises);
+      return { pending, info };
+    } catch (err) {
+      throw new HttpException(
+        "can't gat pending mint batch info",
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 
   getPendingLootbox = async (publicAddress: string) => {
@@ -104,17 +136,20 @@ export class MintService {
     const promises = [];
     pending.forEach((element) => {
       if (element.batchID)
-        promises.push(this.dataPendingDetail(element.batchID, element.amount));
+        promises.push(
+          this.dataPendingDetailSingle(element.batchID, element.amount, element)
+        );
       else {
-        for (let i = 0; i < element.batchIDs.length; i++) {
-          promises.push(
-            this.dataPendingDetail(element.batchIDs[i], element.amounts[i])
-          );
-        }
+        promises.push(
+          this.dataPendingDetailBatch(
+            element.batchIDs,
+            element.amounts,
+            element
+          )
+        );
       }
     });
-    const info = await Promise.all(promises);
-    return { pending, info };
+    return Promise.all(promises);
   };
 
   getPendingLootboxByBatchOrder = async (batchOrder: BatchOrder) => {

@@ -5,6 +5,7 @@ import client from "@client"
 import { useWalletContext } from "@web3"
 
 import { POLYGON_NETWORK } from "@constant"
+import { useChakraToast } from "@hooks"
 import { Lootbox } from "@sdk"
 import { useAuth } from "src/providers/auth"
 
@@ -22,7 +23,7 @@ export const useInventory = () => {
   const router = useRouter()
   const [isFetched, setIsFetched] = useState(false)
   const [data, setData] = useState<InventoryProps[]>([])
-
+  const toast = useChakraToast()
   const { refetch } = useQuery(
     ["lootBoxs", account, user],
     () =>
@@ -34,7 +35,7 @@ export const useInventory = () => {
         })
         .then(res => res.data),
     {
-      enabled: authenticated && !isFetched,
+      enabled: authenticated && !!account && !isFetched,
       onSuccess: data => {
         setData(data.map(item => ({ ...item, slot: item.mintable, isChecked: false }))), setIsFetched(true)
       },
@@ -112,18 +113,22 @@ export const useInventory = () => {
         refetch()
         query.invalidateQueries(["pending", user])
       },
-      onError: err => {
-        console.log(err)
+      onError: (err: any) => {
+        toast({ status: "error", title: "Error", message: err?.message })
       },
     },
   )
 
+  useEffect(() => {
+    setData(data.map(item => ({ ...item, slot: item.mintable })))
+  }, [isStatusModal])
+
   const handleMint = async () => {
-    try {
-      if (chainId !== POLYGON_NETWORK) await switchNetwork(POLYGON_NETWORK)
+    if (chainId !== POLYGON_NETWORK) {
+      toast({ status: "info", title: "Please switch to Polygon network!", duration: 5000 })
+      await switchNetwork(POLYGON_NETWORK)
+    } else {
       mutateMintBatch()
-    } catch (e: any) {
-      console.log(e)
     }
   }
 

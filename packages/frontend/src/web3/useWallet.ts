@@ -141,12 +141,12 @@ const useWallet = () => {
     return "0x" + number.toString(16).toUpperCase()
   }
 
-  const switchNetwork = async (chainId: number) => {
+  const switchNetwork = async (id: number) => {
     await ethereum.request({
       method: "wallet_addEthereumChain",
       params: [
         SUPPORTED_CHAINS_INFO.map(i => ({ ...i, chainId: decimalToHexString(i.chainId) })).find(
-          item => item.chainId === decimalToHexString(chainId),
+          item => item.chainId === decimalToHexString(id),
         ),
       ],
     })

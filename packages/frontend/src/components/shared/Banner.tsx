@@ -10,8 +10,8 @@ interface BannerProps {
 export const Banner = ({ srcBg = "/images/portfolio/banner.png", title, description }: BannerProps) => {
   return (
     <Flex w="full" justify="center" bg={`url(${srcBg})`} bgRepeat="no-repeat" bgSize="100%" position="relative">
-      <Box py={14} maxW="1200px" w="full">
-        <Heading color="white" mb={2} fontWeight={600}>
+      <Box pt={8} pb={24} maxW="1200px" w="full">
+        <Heading fontSize="4xl" textTransform="uppercase" color="white" mb={2} fontWeight={600}>
           {title}
         </Heading>
         <Text color="neutral.100" maxW="25rem">

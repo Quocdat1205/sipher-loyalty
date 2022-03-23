@@ -7,6 +7,7 @@ import {
   Inject,
   Injectable,
 } from "@nestjs/common";
+import constant from "@setting/constant";
 
 import { UserData } from "./auth.types";
 

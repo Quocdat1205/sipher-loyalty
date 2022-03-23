@@ -57,7 +57,7 @@ class ConfigService {
 
       synchronize: !constant.isProduction,
 
-      logging: ["query", "error"],
+      // logging: ["query", "error"],
 
       autoLoadEntities: true,
 

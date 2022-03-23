@@ -17,7 +17,7 @@ export class MintController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: ResPendingMintDto })
+  @ApiOkResponse({ type: ResPendingMintDto, isArray: true })
   @Get("pending/lootbox/:publicAddress")
   async getPendingLootbox(
     @Param("publicAddress") publicAddress: string,

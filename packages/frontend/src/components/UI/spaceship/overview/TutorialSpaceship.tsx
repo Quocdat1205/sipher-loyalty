@@ -8,7 +8,7 @@ import { CustomPopover } from "@components/shared"
 
 export const TutorialSpaceship = () => {
   return (
-    <Flex pt={16} pos="relative" flexDir="column" align="center" w="full">
+    <Flex pt={24} pos="relative" flexDir="column" align="center" w="full">
       <Flex
         bgGradient="linear(180deg, #292A40 0%, rgba(41, 42, 64, 0) 100%)"
         flexDir="column"
