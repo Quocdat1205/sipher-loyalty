@@ -23,7 +23,7 @@ export const useInventory = () => {
   const [isFetched, setIsFetched] = useState(false)
   const [data, setData] = useState<InventoryProps[]>()
 
-  const {} = useQuery(
+  const { data: test } = useQuery(
     ["lootBoxs", account, user],
     () =>
       client.api
@@ -40,6 +40,7 @@ export const useInventory = () => {
       },
     },
   )
+  console.log(test)
 
   const inventoryData = data?.map(item => ({
     ...item,
@@ -123,7 +124,7 @@ export const useInventory = () => {
       onSettled: () => {
         setIsFetched(false)
         query.invalidateQueries(["lootBoxs", account, user])
-        query.invalidateQueries(["pending", user])
+        query.invalidateQueries(["pending", account, user])
       },
       onError: err => {
         console.log(err)

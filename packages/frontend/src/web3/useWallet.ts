@@ -142,14 +142,13 @@ const useWallet = () => {
   }
 
   const switchNetwork = (chainId: number) => {
+    console.log(chainId)
     ethereum.request({
       method: "wallet_addEthereumChain",
       params: [
-        {
-          ...SUPPORTED_CHAINS_INFO.map(i => ({ ...i, chainId: decimalToHexString(i.chainId) })).find(
-            item => item.chainId === decimalToHexString(chainId),
-          ),
-        },
+        SUPPORTED_CHAINS_INFO.map(i => ({ ...i, chainId: decimalToHexString(i.chainId) })).find(
+          item => item.chainId === decimalToHexString(chainId),
+        ),
       ],
     })
   }
