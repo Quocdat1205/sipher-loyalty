@@ -19,6 +19,7 @@ export const ClaimContainer = () => {
 
   return (
     <Flex
+      flex={1}
       pos="relative"
       bg="url(/images/spaceship/bg-claim.png)"
       bgRepeat="no-repeat"
@@ -40,10 +41,10 @@ export const ClaimContainer = () => {
             <Text>
               You have <chakra.span fontWeight={600}>{totalQuantiy} Lootboxes</chakra.span>
             </Text>
-            <Text>Content for time</Text>
+            <Text>Note the remaining time to claim</Text>
           </Box>
         </Flex>
-        <HStack minH="20rem" spacing={4} mb={4} justify="center">
+        <HStack spacing={4} mb={4} justify="center">
           {claimData.map(item => (
             <ClaimCard
               key={item.id}

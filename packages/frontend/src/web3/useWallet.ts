@@ -7,7 +7,7 @@ import { useChakraToast } from "@hooks"
 
 import { ConnectorId, connectors } from "./connectors"
 import { ChainUnsupportedError } from "./errors"
-import { getChainName } from "./network"
+import { getChainName, SUPPORTED_CHAINS_INFO } from "./network"
 import { Status } from "./types"
 import { clearLastActiveAccount, setLastActiveAccount, setLastConnector } from "./utils"
 
@@ -133,6 +133,27 @@ const useWallet = () => {
     [reset, toast, web3React],
   )
 
+  function decimalToHexString(number) {
+    if (number < 0) {
+      number = 0xffffffff + number + 1
+    }
+
+    return "0x" + number.toString(16).toUpperCase()
+  }
+
+  const switchNetwork = (chainId: number) => {
+    ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [
+        {
+          ...SUPPORTED_CHAINS_INFO.map(i => ({ ...i, chainId: decimalToHexString(i.chainId) })).find(
+            item => item.chainId === decimalToHexString(chainId),
+          ),
+        },
+      ],
+    })
+  }
+
   // auto connect on refresh
   //   useEffect(() => {
   //       const lastConnector = getLastConnector()
@@ -144,6 +165,7 @@ const useWallet = () => {
   //   }, [connect, account])
 
   const wallet = {
+    chainId,
     web3React,
     account: account || null,
     connect,
@@ -155,6 +177,7 @@ const useWallet = () => {
     isActive: web3React.active,
     ethereum,
     scCaller,
+    switchNetwork,
   }
 
   return wallet

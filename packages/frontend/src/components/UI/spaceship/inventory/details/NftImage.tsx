@@ -17,12 +17,13 @@ import {
 } from "@sipher.dev/sipher-ui"
 
 interface NftImageProps extends BoxProps {
+  isFetching: boolean
   windowHeight?: number
   src?: string
   alt?: string
 }
 
-export const NftImage = ({ windowHeight, src, alt, ...rest }: NftImageProps) => {
+export const NftImage = ({ isFetching, windowHeight, src, alt, ...rest }: NftImageProps) => {
   const [isImgLoaded, setIsImgLoaded] = useState(false)
   const [isOpen, setIsOpen] = useState("")
   const boxRef = useRef(null)
@@ -33,7 +34,7 @@ export const NftImage = ({ windowHeight, src, alt, ...rest }: NftImageProps) => 
   })
 
   return (
-    <Skeleton h="full" isLoaded={isImgLoaded} sx={{ span: { rounded: "md" } }}>
+    <Skeleton h="full" isLoaded={isFetching || isImgLoaded} sx={{ span: { rounded: "md" } }}>
       <Flex align="center" justify="center" h="full" {...rest}>
         <Box maxW="36rem" pos="relative">
           <Image

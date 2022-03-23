@@ -1,5 +1,6 @@
 import React from "react"
-import { Box, Button, chakra, Flex } from "@sipher.dev/sipher-ui"
+import Image from "next/image"
+import { Box, Button, chakra, Flex, Text } from "@sipher.dev/sipher-ui"
 
 import { usePending } from "./usePending"
 
@@ -14,9 +15,6 @@ export const PendingContainer = () => {
             <chakra.tr>
               <chakra.th fontSize="sm" fontWeight={600} color="neutral.400" py={2} textAlign="center">
                 #
-              </chakra.th>
-              <chakra.th fontSize="sm" fontWeight={600} color="neutral.400" py={2} textAlign="center">
-                Token ID
               </chakra.th>
               <chakra.th fontSize="sm" fontWeight={600} color="neutral.400" py={2} textAlign="center">
                 Amount
@@ -34,18 +32,27 @@ export const PendingContainer = () => {
                   {index + 1}
                 </chakra.td>
                 <chakra.td textAlign="center" py={4}>
-                  {item.batchIDs.length > 0 ? item.batchIDs.join(", ") : item.batchID}
-                </chakra.td>
-                <chakra.td textAlign="center" py={4}>
-                  {item.batchIDs.length > 0 ? item.amounts.join(", ") : item.amount}
+                  <Flex justify="center">
+                    {item.batchIDs.length > 0 ? (
+                      item.batchIDs.map(item => (
+                        <Flex align="center" key={item}>
+                          <Image src="/images/spaceship/box-1.png" alt={item.toString()} width={40} height={40} />
+                          <Text></Text>
+                        </Flex>
+                      ))
+                    ) : (
+                      <Image src="/images/spaceship/box-1.png" alt="box" width={40} height={40} />
+                    )}
+                  </Flex>
                 </chakra.td>
                 <chakra.td textAlign="center" py={4}>
                   {item.status}
                 </chakra.td>
                 <chakra.td textAlign="right" py={4}>
                   <Button
+                    isLoading={item.isMinting}
                     onClick={() => {
-                      item.batchIDs.length > 0 ? item.onMintBatch() : item.onMint()
+                      item.batchIDs.length > 1 ? item.onMintBatch() : item.onMint()
                     }}
                   >
                     MINT
