@@ -7,6 +7,7 @@ import { getETHPrice, getSipherPrice } from "src/api/price"
 import ERC20 from "./ERC20"
 import { LPSipherWethKyber } from "./LPSipherWethKyber"
 import { LPSipherWethUniswap } from "./LPSipherWethUniswap"
+import { SipherSpaceshipPart } from "./SipherSpaceshipPart"
 import { StakingLPSipherWethKyber } from "./StakingLPSipherWethKyber"
 import { StakingLPSipherWethUniswap } from "./StakingLPSipherWethUniswap"
 import { StakingPool } from "./StakingPool"
@@ -23,6 +24,7 @@ export class ContractCaller {
   StakingPool: StakingPool
   StakingLPSipherWethKyber: StakingLPSipherWethKyber
   StakingLPSipherWethUniswap: StakingLPSipherWethUniswap
+  SipherSpaceshipPart: SipherSpaceshipPart
 
   constructor(provider: any) {
     this.provider = new providers.Web3Provider(provider)
@@ -34,21 +36,22 @@ export class ContractCaller {
     this.StakingPool = new StakingPool(this.provider)
     this.StakingLPSipherWethKyber = new StakingLPSipherWethKyber(this.provider)
     this.StakingLPSipherWethUniswap = new StakingLPSipherWethUniswap(this.provider)
+    this.SipherSpaceshipPart = new SipherSpaceshipPart(this.provider)
   }
 
-  public async getEtherBalance(from: string): Promise<string> {
+  public async getEtherBalance(from: string) {
     const balance: BigNumber = await this.provider.getBalance(from)
     return weiToEther(balance.toString())
   }
 
-  public async getSipherBalance(from: string): Promise<number> {
+  public async getSipherBalance(from: string) {
     const balance = await this.SipherToken.getBalance(from)
-    return balance
+    return weiToEther(balance.toString())
   }
 
-  public async getWETHBalance(from: string): Promise<number> {
+  public async getWETHBalance(from: string) {
     const balance = await this.WETH.getBalance(from)
-    return balance
+    return weiToEther(balance.toString())
   }
 
   public async getLpUniswapTVL() {

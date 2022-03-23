@@ -11,8 +11,8 @@ type State = {
   setGridSize: (value: "small" | "medium") => void
   layoutType: "explorer" | "stats"
   setLayoutType: (value: "explorer" | "stats") => void
-  authFlow: "SIGN_IN" | "SIGN_UP" | null
-  setAuthFlow: (value: "SIGN_IN" | "SIGN_UP" | null) => void
+  authFlow: "SIGN_IN" | "SIGN_UP" | "FORGET_PASSWORD" | null
+  setAuthFlow: (value: "SIGN_IN" | "SIGN_UP" | "FORGET_PASSWORD" | null) => void
 }
 
 export const useStore = create<State>(set => ({

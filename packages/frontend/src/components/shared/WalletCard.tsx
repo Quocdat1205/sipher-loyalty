@@ -1,52 +1,35 @@
 import React from "react"
 import Image from "next/image"
-import { Flex, Spinner, Text } from "@sipher.dev/sipher-ui"
+import { Button, ButtonProps, Text } from "@sipher.dev/sipher-ui"
 
 interface WalletCardProps {
   src: string
   onClick?: () => void
-  bg?: string
+  colorScheme: ButtonProps["colorScheme"]
   text?: string
   isLoading?: boolean
   spinnerColor?: string
 }
 
-export const WalletCard = ({
-  bg = "neutral.600",
-  src,
-  text,
-  onClick,
-  isLoading = false,
-  spinnerColor,
-}: WalletCardProps) => {
+export const WalletCard = ({ colorScheme, src, text, onClick, isLoading = false }: WalletCardProps) => {
   return (
-    <Flex
+    <Button
       role="group"
-      align="center"
       flex={1}
       h="3rem"
       rounded="base"
-      bg={bg}
-      cursor="pointer"
-      userSelect="none"
-      _hover={{ bg: "accent.600" }}
-      _active={{ bg: "blackAlpha.900" }}
       onClick={onClick}
-      justify="center"
-      transition="all 0.2s ease-in-out"
+      colorScheme={colorScheme}
+      bg={colorScheme === "whiteAlpha" ? "white" : undefined}
+      fontWeight={400}
+      isLoading={isLoading}
     >
-      {!isLoading ? (
-        <>
-          <Image width={28} height={28} src={src} alt={src.split("/")[1]} />
-          {text && (
-            <Text fontSize="sm" color="neutral.900" ml={2}>
-              {text}
-            </Text>
-          )}
-        </>
-      ) : (
-        <Spinner size="sm" color={spinnerColor} />
+      <Image width={28} height={28} src={src} alt={src.split("/")[1]} />
+      {text && (
+        <Text fontSize="sm" color="neutral.900" ml={2}>
+          {text}
+        </Text>
       )}
-    </Flex>
+    </Button>
   )
 }

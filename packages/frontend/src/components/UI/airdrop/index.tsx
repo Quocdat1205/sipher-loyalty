@@ -7,8 +7,8 @@ import { useAirdrops } from "./useAirdrops"
 
 const tabs = [
   { label: "All", name: "all" },
-  { label: "NFTs", name: "nfts" },
-  { label: "Tokens", name: "tokens" },
+  { label: "NFTs", name: "nft" },
+  { label: "Tokens", name: "token" },
   { label: "Merch", name: "merch" },
 ]
 

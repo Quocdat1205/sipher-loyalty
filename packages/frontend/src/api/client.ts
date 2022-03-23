@@ -1,6 +1,6 @@
 import { Api } from "./sdk"
 
-const baseURL = "https://api-loyalty.sipher.gg/"
+const baseURL = "https://beloyalty.sipherion.com/"
 
 const client = new Api({
   format: "json",

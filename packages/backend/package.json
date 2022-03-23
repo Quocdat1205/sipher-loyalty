@@ -25,8 +25,8 @@
     "dev:tracker:sculpture": "ts-node -r tsconfig-paths/register src/scripts/sculpture-tracker.ts",
     "start:tracker:lootbox": "node dist/scripts/lootbox-tracker.js",
     "start:tracker:sculpture": "node dist/scripts/sculpture-tracker.js",
-    "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
-    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
+    "seed:config": "ts-node ../../node_modules/typeorm-seeding/dist/cli.js config",
+    "seed:run": "ts-node ../../node_modules/typeorm-seeding/dist/cli.js seed"
   },
   "dependencies": {
     "@acuris/aws-es-connection": "^2.3.0",

@@ -7,6 +7,7 @@ import { SipherProvider } from "@sipher.dev/sipher-ui"
 import { UseWalletProvider } from "@web3"
 import { Web3ReactProvider } from "@web3-react/core"
 
+import { BalanceProvider } from "@hooks"
 import { AuthProvider } from "src/providers/auth"
 
 import "../style.css"
@@ -31,19 +32,21 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
           <Web3ReactProvider getLibrary={e => e}>
             <UseWalletProvider>
               <AuthProvider>
-                <Head>
-                  <meta charSet="utf-8" />
-                  <link rel="icon" href="/favicon.ico" />
-                  <meta name="viewport" content="width=device-width, initial-scale=1" />
-                  <meta name="theme-color" content="#000000" />
-                  <link rel="apple-touch-icon" href="/favicon.ico" />
-                  <meta
-                    name="description"
-                    content="Sipher is a blockchain PvP PvE MOBA game for all age group. All players assets and achievements are NFTs. Exclusive characters launch coming soon!"
-                  />
-                  <title>Sipher Loyalty</title>
-                </Head>
-                {getLayout(<Component {...pageProps} />)}
+                <BalanceProvider>
+                  <Head>
+                    <meta charSet="utf-8" />
+                    <link rel="icon" href="/favicon.ico" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1" />
+                    <meta name="theme-color" content="#000000" />
+                    <link rel="apple-touch-icon" href="/favicon.ico" />
+                    <meta
+                      name="description"
+                      content="Sipher is a blockchain PvP PvE MOBA game for all age group. All players assets and achievements are NFTs. Exclusive characters launch coming soon!"
+                    />
+                    <title>Sipher Loyalty</title>
+                  </Head>
+                  {getLayout(<Component {...pageProps} />)}
+                </BalanceProvider>
               </AuthProvider>
             </UseWalletProvider>
           </Web3ReactProvider>

@@ -1,5 +1,6 @@
 export * from "./LPSipherWethKyber"
 export * from "./LPSipherWethUniswap"
+export * from "./SipherSpaceshipPart"
 export * from "./SipherToken"
 export * from "./StakingLPSipherWethKyber"
 export * from "./StakingLPSipherWethUniswap"

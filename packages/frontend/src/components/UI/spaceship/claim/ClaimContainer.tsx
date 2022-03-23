@@ -43,7 +43,7 @@ export const ClaimContainer = () => {
             <Text>Content for time</Text>
           </Box>
         </Flex>
-        <HStack spacing={4} mb={4} justify="center">
+        <HStack minH="20rem" spacing={4} mb={4} justify="center">
           {claimData.map(item => (
             <ClaimCard
               key={item.id}
@@ -55,9 +55,9 @@ export const ClaimContainer = () => {
           ))}
         </HStack>
         <Flex w="full" justify="center">
-          {account && (
+          {claimData.length > 0 && (
             <Button
-              isDisabled={!isCheckAccountClaim || claimData.length === 0}
+              isDisabled={!account || !isCheckAccountClaim || claimData.length === 0}
               isLoading={isLoading}
               onClick={() => mutateOnClaim()}
             >
