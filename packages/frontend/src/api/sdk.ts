@@ -130,6 +130,25 @@ export interface Airdrop {
   created: string;
 }
 
+export interface Merch {
+  id_merch: string;
+  publicAddress: string;
+  imageUrl: string;
+  title: string;
+  description: string;
+  isClaim: boolean;
+  promo_code: string;
+
+  /** @format date-time */
+  createdAt: string;
+}
+
+export interface ResAllAirdrop {
+  token: Airdrop[];
+  nft: Airdrop[];
+  merch: Merch[];
+}
+
 export type BioDto = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
@@ -506,7 +525,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     airdropControllerGetAirdropByType: (publicAddress: string, airdropType: string, params: RequestParams = {}) =>
-      this.request<Airdrop[], any>({
+      this.request<ResAllAirdrop, any>({
         path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}`,
         method: 'GET',
         secure: true,
@@ -528,19 +547,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: 'PUT',
         secure: true,
         format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name MultiTokenControllerGetBalance
-     * @request GET:/api/sipher/loyalty/erc1155/balance/{address}/{tokenId}
-     */
-    multiTokenControllerGetBalance: (address: string, tokenId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/sipher/loyalty/erc1155/balance/${address}/${tokenId}`,
-        method: 'GET',
         ...params,
       }),
 

@@ -8,8 +8,8 @@ import { MerchService } from "@modules/merch/merch.service";
 import { Airdrop, AirdropType } from "src/entity/airdrop.entity";
 import { ParseEthereumAddress } from "src/pipes/ethereum-address..pipe";
 
-import { ResAllAirdop } from "./airdop.type";
 import { AirdropService } from "./airdrop.service";
+import { ResAllAirdrop } from "./airdrop.type";
 
 @ApiTags("airdrop")
 @Controller("airdrop")
@@ -22,7 +22,7 @@ export class AirdropController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: Airdrop || Merch || ResAllAirdop, isArray: true })
+  @ApiOkResponse({ type: ResAllAirdrop })
   @Get("/:airdropType/:publicAddress")
   async getAirdropByType(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,

@@ -79,46 +79,9 @@ export class MintService {
   //   return { signature, signatureBatch };
   // }
 
-  private async dataPendingDetailBatchItem(batchID: number, amount: number) {
-    const property = await this.erc1155LootboxRepo.findOne({
-      tokenId: batchID.toString(),
-    });
-    return { property, batchID, amount };
-  }
-
-  private async dataPendingDetailSingle(
-    batchID: number,
-    amount: number,
-    pending: PendingMint
-  ) {
-    const property = await this.erc1155LootboxRepo.findOne({
-      tokenId: batchID.toString(),
-    });
-    const info = { property, batchID, amount };
-    return { pending, info: [info] };
-  }
-
-  private async dataPendingDetailBatch(
-    batchIDs: number[],
-    amounts: number[],
-    pending: PendingMint
-  ) {
-    try {
-      const promises = [];
-      for (let i = 0; i < batchIDs.length; i++) {
-        promises.push(this.dataPendingDetailBatchItem(batchIDs[i], amounts[i]));
-      }
-      const info = await Promise.all(promises);
-      return { pending, info };
-    } catch (err) {
-      throw new HttpException(
-        "can't gat pending mint batch info",
-        HttpStatus.BAD_REQUEST
-      );
-    }
-  }
-
   getPendingLootbox = async (publicAddress: string) => {
+    const imageBaseUrl =
+      "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/lootbox";
     const pending = await this.PendingMintRepo.find({
       where: [
         {
@@ -133,23 +96,35 @@ export class MintService {
         },
       ],
     });
-    const promises = [];
+    const data = [];
     pending.forEach((element) => {
       if (element.batchID)
-        promises.push(
-          this.dataPendingDetailSingle(element.batchID, element.amount, element)
-        );
+        data.push({
+          pending: element,
+          info: [
+            {
+              tokenId: element.batchID,
+              quantity: element.amount,
+              image: `${imageBaseUrl}_${element.batchID}.png`,
+            },
+          ],
+        });
       else {
-        promises.push(
-          this.dataPendingDetailBatch(
-            element.batchIDs,
-            element.amounts,
-            element
-          )
-        );
+        const info = [];
+        for (let i = 0; i < element.batchIDs.length; i++) {
+          info.push({
+            tokenId: element.batchIDs[i],
+            quantity: element.amounts[i],
+            image: `${imageBaseUrl}_${element.batchIDs[i]}.png`,
+          });
+        }
+        data.push({
+          pending: element,
+          info,
+        });
       }
     });
-    return Promise.all(promises);
+    return data;
   };
 
   getPendingLootboxByBatchOrder = async (batchOrder: BatchOrder) => {
