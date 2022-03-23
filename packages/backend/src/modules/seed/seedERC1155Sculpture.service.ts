@@ -1,5 +1,6 @@
 // import library
 import fs from "fs";
+import path from "path";
 
 import { Repository } from "typeorm";
 import { ERC1155Sculpture, ERC1155SculptureAttribute } from "@entity";
@@ -11,9 +12,12 @@ import { LoggerService } from "../logger/logger.service";
 
 @Injectable()
 export class SeedERC1155SculptureService {
-  private erc1155Data = JSON.parse(
-    fs.readFileSync("./src/data/ERC1155/SCULPTURE/data.json").toString()
+  private src = path.resolve(
+    __dirname,
+    "../../../src/data/ERC1155/SCULPTURE/data.json"
   );
+
+  private erc1155Data = JSON.parse(fs.readFileSync(this.src).toString());
 
   constructor(
     @InjectRepository(ERC1155Sculpture)

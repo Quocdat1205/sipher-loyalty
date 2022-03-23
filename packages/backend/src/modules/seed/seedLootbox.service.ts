@@ -1,5 +1,6 @@
 // import library
 import fs from "fs";
+import path from "path";
 
 import { Repository } from "typeorm";
 import { ClaimableLootbox, ERC1155Lootbox } from "@entity";
@@ -13,9 +14,9 @@ import { LoggerService } from "../logger/logger.service";
 
 @Injectable()
 export class SeedLootboxService {
-  private lootboxData = JSON.parse(
-    fs.readFileSync("./src/data/LOOTBOX/data.json").toString()
-  );
+  private src = path.resolve(__dirname, "../../../src/data/LOOTBOX/data.json");
+
+  private lootboxData = JSON.parse(fs.readFileSync(this.src).toString());
 
   constructor(
     private lootboxService: LootBoxService,

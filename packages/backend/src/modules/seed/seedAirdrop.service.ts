@@ -1,5 +1,6 @@
 // import library
 import fs from "fs";
+import path from "path";
 
 import { Repository } from "typeorm";
 import { Merch } from "@entity";
@@ -13,16 +14,18 @@ import { LoggerService } from "../logger/logger.service";
 
 @Injectable()
 export class SeedAirdropService {
+  private src = path.resolve(__dirname, "../../../src/data");
+
   private airdropDataHolder = JSON.parse(
-    fs.readFileSync("./src/data/AIRDROP/Holder.json").toString()
+    fs.readFileSync(`${this.src}/AIRDROP/Holder.json`).toString()
   );
 
   private airdropDataInvestorsCP1 = JSON.parse(
-    fs.readFileSync("./src/data/AIRDROP/investors_CP1.json").toString()
+    fs.readFileSync(`${this.src}/AIRDROP/investors_CP1.json`).toString()
   );
 
   private airdropDataMerch = JSON.parse(
-    fs.readFileSync("./src/data/AIRDROP/merch.json").toString()
+    fs.readFileSync(`${this.src}/AIRDROP/merch.json`).toString()
   );
 
   constructor(

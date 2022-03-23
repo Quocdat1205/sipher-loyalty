@@ -1,5 +1,6 @@
 // import library
 import fs from "fs";
+import path from "path";
 
 import { Repository } from "typeorm";
 import { ERC1155Lootbox, ERC1155LootboxAttribute } from "@entity";
@@ -11,9 +12,12 @@ import { LoggerService } from "../logger/logger.service";
 
 @Injectable()
 export class SeedERC1155LootboxService {
-  private erc1155Data = JSON.parse(
-    fs.readFileSync("./src/data/ERC1155/LOOTBOX/data.json").toString()
+  private src = path.resolve(
+    __dirname,
+    "../../../src/data/ERC1155/LOOTBOX/data.json"
   );
+
+  private erc1155Data = JSON.parse(fs.readFileSync(this.src).toString());
 
   constructor(
     @InjectRepository(ERC1155Lootbox)
