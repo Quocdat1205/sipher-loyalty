@@ -5,18 +5,18 @@ import { Box, Button, chakra, Divider, Flex, HStack, Link, Text } from "@sipher.
 import { ChakraModal } from "@components/shared"
 
 import QuantitySelector from "./details/QuantitySelector"
-import { InventoryProps } from "./useInventory"
+import { useInventory } from "./useInventory"
 
 interface MintModalProps {
   isLoading: boolean
   status: string
   handleMint: () => void
-  dataMint: InventoryProps[]
+  dataMint: ReturnType<typeof useInventory>["inventoryDataCheck"]
   isOpen: boolean
   onClose: () => void
 }
 
-export const MintModal = ({ dataMint = [], isOpen, onClose, status, handleMint, isLoading }: MintModalProps) => {
+export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoading }: MintModalProps) => {
   return (
     <ChakraModal
       scrollBehavior="inside"
@@ -56,7 +56,7 @@ export const MintModal = ({ dataMint = [], isOpen, onClose, status, handleMint, 
                     </chakra.td>
                     <chakra.td py={2}>
                       <QuantitySelector
-                        onChange={v => item.onChange && item.onChange(item.id, v)}
+                        onChange={item.onChange}
                         minValue={1}
                         maxValue={item.mintable}
                         value={item.slot}
@@ -69,7 +69,7 @@ export const MintModal = ({ dataMint = [], isOpen, onClose, status, handleMint, 
             <Divider borderColor="whiteAlpha.100" mb={2} />
             <Flex mb={6} align="center" justify="space-between">
               <Text fontWeight={600}>SUM QTY(s)</Text>
-              <Text fontWeight={600}>{dataMint.map(item => item.slot).reduce((acc, val) => acc + val, 0)}</Text>
+              <Text fontWeight={600}>{dataMint.reduce((acc, val) => acc + val.slot, 0)}</Text>
             </Flex>
             <Text color="grey.400">
               Minting Lootbox(es) to NFT(s) will be processed on Polygon and require you to change Blockchain network.

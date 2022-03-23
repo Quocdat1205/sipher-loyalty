@@ -1,5 +1,6 @@
 // import library
 import fs from "fs";
+import path from "path";
 
 import { Repository } from "typeorm";
 import { ERC1155Lootbox, ERC1155LootboxAttribute } from "@entity";
@@ -10,10 +11,13 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { LoggerService } from "../logger/logger.service";
 
 @Injectable()
-export class SeedERC1155SpaceshipService {
-  private erc1155Data = JSON.parse(
-    fs.readFileSync("./src/data/ERC1155/LOOTBOX/data.json").toString()
+export class SeedERC1155LootboxService {
+  private src = path.resolve(
+    __dirname,
+    "../../../src/data/ERC1155/LOOTBOX/data.json"
   );
+
+  private erc1155Data = JSON.parse(fs.readFileSync(this.src).toString());
 
   constructor(
     @InjectRepository(ERC1155Lootbox)
@@ -59,11 +63,9 @@ export class SeedERC1155SpaceshipService {
 
   seedERC1155Lootboxs = async () => {
     await this.erc1155LootboxRepo.query(
-      `delete from erc1155_space_ship_part_lootbox_attribute`
+      `delete from erc1155_lootbox_attribute`
     );
-    await this.erc1155LootboxRepo.query(
-      `delete from erc1155_space_ship_part_lootbox`
-    );
+    await this.erc1155LootboxRepo.query(`delete from erc1155_lootbox`);
     const promises = [];
     for (let i = 0; i < this.erc1155Data.length; i++) {
       promises.push(this.seedERC1155Lootbox(this.erc1155Data[i]));

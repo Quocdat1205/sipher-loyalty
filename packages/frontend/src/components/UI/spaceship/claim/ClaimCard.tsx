@@ -18,13 +18,12 @@ interface CardProps {
 const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
   const { propertyLootbox, expiredDate, quantity } = data
   const [imageLoaded, setImageLoaded] = useState(false)
-
   return (
     <Flex rounded="lg" align="center" justify="center" flexDir="column" pos="relative">
       <Skeleton overflow="hidden" display="flex" isLoaded={imageLoaded}>
         <Image
-          src={propertyLootbox.image || ""}
-          alt={propertyLootbox.name}
+          src={propertyLootbox?.image ?? ""}
+          alt={propertyLootbox?.name}
           loading="lazy"
           height={280}
           width={280}
@@ -36,7 +35,7 @@ const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
         <Flex flexDir="column" align="center" mb={4} textAlign="center">
           <Flex mb={2} align="center">
             <Text textTransform="uppercase" mr={2} fontWeight={600}>
-              {propertyLootbox.name}
+              {propertyLootbox?.name}
             </Text>
             {isPopover && (
               <CustomPopover

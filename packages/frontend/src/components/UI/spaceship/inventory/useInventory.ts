@@ -50,6 +50,7 @@ export const useInventory = () => {
       oldState.find(i => i.id === item.id)!.isChecked = isChecked
       setData([...oldState])
     },
+    onView: () => router.push(`/spaceship/${item.id}`),
   }))
 
   const inventoryDataCheck = data!
@@ -66,10 +67,6 @@ export const useInventory = () => {
   useEffect(() => {
     setData(data?.map(item => ({ ...item, isChecked: false })))
   }, [account])
-
-  const handleView = (id: string) => {
-    router.push(`/spaceship/${id}`)
-  }
 
   const { mutate: mutateMintBatch, isLoading } = useMutation(
     async () => {
@@ -121,11 +118,12 @@ export const useInventory = () => {
     },
   )
 
-  const handleMint = () => {
-    if (chainId === POLYGON_NETWORK) {
+  const handleMint = async () => {
+    try {
+      if (chainId !== POLYGON_NETWORK) await switchNetwork(POLYGON_NETWORK)
       mutateMintBatch()
-    } else {
-      switchNetwork(POLYGON_NETWORK)
+    } catch (e: any) {
+      console.log(e)
     }
   }
 
@@ -136,6 +134,5 @@ export const useInventory = () => {
     inventoryDataCheck,
     inventoryData,
     setIsStatusModal,
-    handleView,
   }
 }
