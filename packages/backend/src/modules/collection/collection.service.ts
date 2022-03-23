@@ -9,20 +9,26 @@ import {
 } from "src/entity/sipher-collection.entity";
 import { FindOneOptions, Repository } from "typeorm";
 import { NftItemService } from "@modules/nft/nftItem.service";
-import { ElasticsearchService } from "@nestjs/elasticsearch";
 import { LoggerService } from "@modules/logger/logger.service";
+import { isSculptureContract, isSpaceshipContract } from "@utils/utils";
+import { URIService } from "@modules/uri/uri.service";
 
 @Injectable()
 export class CollectionService {
   constructor(
     private httpService: HttpService,
     private nftService: NftItemService,
+    private uriService: URIService,
     @InjectRepository(SipherCollection)
-    private sipherCollectionRepo: Repository<SipherCollection>,
-    private searchSrv: ElasticsearchService
+    private sipherCollectionRepo: Repository<SipherCollection>
   ) {}
 
   private openseaApiBaseUrl = "https://api.opensea.io/api/v1";
+
+  async getAllCollection() {
+    const collections = await this.sipherCollectionRepo.find();
+    return collections;
+  }
 
   getCollectionStats(collectionSlug: string): Observable<any> {
     const data = this.httpService.get(
@@ -42,6 +48,81 @@ export class CollectionService {
         return camelCaseStats;
       })
     );
+  }
+
+  async getPortfolio(userAddress: string) {
+    const inventory = await this.nftService.search({
+      owner: userAddress,
+    });
+    const groupedInventoryByCollectionId = _.groupBy(inventory, "collectionId");
+    let portfolio: (SipherCollection & { total: number })[] = [];
+    for (const collectionId of Object.keys(groupedInventoryByCollectionId)) {
+      const collection = await this.sipherCollectionRepo.findOne({
+        where: {
+          contractAddress: collectionId,
+        },
+      });
+
+      if (!collection) continue;
+      let total = 0;
+      if (collection.collectionType === CollectionType.ERC721) {
+        total = groupedInventoryByCollectionId[collectionId].length;
+      } else {
+        total = groupedInventoryByCollectionId[collectionId].reduce(
+          (prev, curr) => prev + curr.value,
+          0
+        );
+      }
+      portfolio.push({
+        ...collection,
+        total,
+      });
+    }
+
+    return portfolio;
+  }
+
+  async getPortfolioByCollection(userAddress: string, collectionSlug: string) {
+    const collection = await this.sipherCollectionRepo.findOne({
+      where: {
+        collectionSlug: collectionSlug,
+      },
+    });
+    if (!collection) {
+      return [];
+    }
+    const inventory = await this.nftService.search({
+      owner: userAddress,
+      collections: [collection.contractAddress],
+    });
+    return {
+      total: inventory.length,
+      items: await this.addUriToItem(inventory),
+    };
+  }
+
+  private async addUriToItem(items: any) {
+    const newItems = [];
+    for (const item of items) {
+      const newItem = await this.addUriToSculptureOrSpaceship(item);
+      newItems.push(newItem);
+    }
+    return newItems;
+  }
+  // Best practice? Never heard of him 💀
+  private async addUriToSculptureOrSpaceship(item: any) {
+    const newItem = { ...item };
+    if (isSpaceshipContract(item.collectionId)) {
+      newItem.uri = await this.uriService.getDataERC1155Spaceship(item.tokenId);
+    }
+    if (isSculptureContract(item.collectionId)) {
+      newItem.uri = await this.uriService.getDataERC1155Sculpture(item.tokenId);
+    }
+    if (newItem.uri) {
+      delete newItem.uri.id;
+      delete newItem.uri.tokenId;
+    }
+    return newItem;
   }
 
   private async getCollectionDetail(slugOrId: string | number) {
