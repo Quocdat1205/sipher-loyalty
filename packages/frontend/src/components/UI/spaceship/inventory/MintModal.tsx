@@ -1,5 +1,6 @@
 import React from "react"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import { Box, Button, chakra, Divider, Flex, HStack, Link, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
@@ -17,11 +18,20 @@ interface MintModalProps {
 }
 
 export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoading }: MintModalProps) => {
+  const router = useRouter()
   return (
     <ChakraModal
       scrollBehavior="inside"
       isCentered
-      title={status === "MINT" ? "CONFIRMATION" : "MINT SUCCESSFUL!"}
+      title={
+        status === "MINT"
+          ? "CONFIRMATION"
+          : status === "SUCCESS"
+          ? "MINT SUCCESSFUL!"
+          : status === "PENDING"
+          ? "MINT PENDING"
+          : "MINT ERROR"
+      }
       isOpen={isOpen}
       onClose={onClose}
       size="xl"
@@ -79,7 +89,7 @@ export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoa
               </Link>
             </Text>
           </>
-        ) : (
+        ) : status === "SUCCESS" ? (
           <Text color="grey.400">
             You have successfully minted 02 Lootbox Astero to NFT(s). Now you can list your NFT(s) on{" "}
             <Link textDecor="underline" isExternal color="cyan.600">
@@ -87,6 +97,10 @@ export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoa
             </Link>{" "}
             for trading.
           </Text>
+        ) : status === "PENDING" ? (
+          <Text color="grey.400">Because you reject, your nft is on the pending list. Please check!</Text>
+        ) : (
+          <Text color="grey.400">Something went wrong. Please try again!</Text>
         )}
         <Divider pt={4} borderColor="whiteAlpha.100" mb={6} />
         <HStack justify="center">
@@ -108,15 +122,30 @@ export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoa
                 Cancel
               </Button>
             </>
-          ) : (
+          ) : status === "SUCCESS" ? (
             <>
-              <Button variant="secondary" colorScheme="cyan" onClick={handleMint} fontSize="md" size="md" py={5}>
+              <Button variant="secondary" colorScheme="cyan" fontSize="md" size="md" py={5}>
                 VIEW YOUR NFT
               </Button>
               <Button onClick={onClose} py={5} fontSize="md" size="md">
                 MINT ANOTHER NFT
               </Button>
             </>
+          ) : status === "PENDING" ? (
+            <Button
+              variant="secondary"
+              colorScheme="cyan"
+              onClick={() => router.push({ query: { tab: "pending" } })}
+              fontSize="md"
+              size="md"
+              py={5}
+            >
+              VIEW YOUR NFT PENDING
+            </Button>
+          ) : (
+            <Button variant="secondary" colorScheme="cyan" onClick={onClose} fontSize="md" size="md" py={5}>
+              Done
+            </Button>
           )}
         </HStack>
       </Box>

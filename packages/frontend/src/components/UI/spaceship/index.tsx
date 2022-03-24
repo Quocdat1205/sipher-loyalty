@@ -9,7 +9,7 @@ import { POLYGON_NETWORK } from "@constant"
 import ClaimContainer from "./claim"
 import { InventoryContainer } from "./inventory"
 import OverviewContainer from "./overview"
-// import { PendingContainer } from "./pending"
+import { PendingContainer } from "./pending"
 
 export const spaceshipTabs = [
   { label: "Overview", name: "overview" },
@@ -32,9 +32,9 @@ const ContentSpaceship = () => {
     if (currentTab === "claim") {
       return <ClaimContainer />
     }
-    // if (currentTab === "pending") {
-    //   return <PendingContainer />
-    // }
+    if (currentTab === "pending") {
+      return <PendingContainer />
+    }
     return null
   }
 

@@ -115,6 +115,11 @@ export const useInventory = () => {
       },
       onError: (err: any) => {
         toast({ status: "error", title: "Error", message: err?.message })
+        if (err.code === 4001) {
+          setIsStatusModal("PENDING")
+        } else {
+          setIsStatusModal("ERROR")
+        }
       },
     },
   )
