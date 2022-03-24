@@ -12,13 +12,13 @@ import {
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 
+import { AtherGuard } from "@modules/auth/auth.guard";
+import { AuthService } from "@modules/auth/auth.service";
 import { LoggerService } from "@modules/logger/logger.service";
+import { CollectionCategory } from "src/entity/sipher-collection.entity";
 
 import { PortfolioQuery } from "./collection.dto";
 import { CollectionService } from "./collection.service";
-import { CollectionCategory } from "src/entity/sipher-collection.entity";
-import { AtherGuard } from "@modules/auth/auth.guard";
-import { AuthService } from "@modules/auth/auth.service";
 
 @ApiTags("collection")
 @Controller("collection")
@@ -51,7 +51,7 @@ export class CollectionController {
     @Req() req: any
   ) {
     await this.authService.verifyAddress(userAddress, req.userData);
-    return await this.collectionService.getPortfolio(
+    return this.collectionService.getPortfolio(
       userAddress.toLowerCase(),
       query
     );
@@ -66,7 +66,7 @@ export class CollectionController {
     @Req() req: any
   ) {
     await this.authService.verifyAddress(userAddress, req.userData);
-    return await this.collectionService.getPortfolioByCollection(
+    return this.collectionService.getPortfolioByCollection(
       userAddress.toLowerCase(),
       collectionSlug
     );

@@ -6,6 +6,9 @@ const randomSalt = () =>
     (Math.random() * 1000000000000000).toString()
   );
 
+const getDeadline3Day = () =>
+  Math.round(new Date().getTime() / 1000) + constant.PENDING_TIME_LOOTBOX_MINT;
+
 const isSculptureContract = (contractAddress: string) => {
   const contractRegistry = constant.blockchain.contracts;
   const isMumbaiSculpture =
@@ -28,4 +31,9 @@ const isSpaceshipContract = (contractAddress: string) => {
   return isMumbaiSpaceship || isPolygonSpaceship;
 };
 
-export { isSculptureContract, isSpaceshipContract, randomSalt };
+export {
+  getDeadline3Day,
+  isSculptureContract,
+  isSpaceshipContract,
+  randomSalt,
+};

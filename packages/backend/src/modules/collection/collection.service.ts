@@ -1,17 +1,19 @@
 import _ from "lodash";
 import { lastValueFrom, map, Observable } from "rxjs";
+import { FindOneOptions, Repository } from "typeorm";
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+
+import { LoggerService } from "@modules/logger/logger.service";
+import { NftItemService } from "@modules/nft/nftItem.service";
+import { URIService } from "@modules/uri/uri.service";
+import { isSculptureContract, isSpaceshipContract } from "@utils/utils";
 import {
   CollectionType,
   SipherCollection,
 } from "src/entity/sipher-collection.entity";
-import { FindOneOptions, Repository } from "typeorm";
-import { NftItemService } from "@modules/nft/nftItem.service";
-import { LoggerService } from "@modules/logger/logger.service";
-import { isSculptureContract, isSpaceshipContract } from "@utils/utils";
-import { URIService } from "@modules/uri/uri.service";
+
 import { PortfolioQuery } from "./collection.dto";
 
 @Injectable()
@@ -56,7 +58,7 @@ export class CollectionService {
       owner: userAddress,
     });
     const groupedInventoryByCollectionId = _.groupBy(inventory, "collectionId");
-    let portfolio: (SipherCollection & { total: number })[] = [];
+    const portfolio: (SipherCollection & { total: number })[] = [];
     for (const collectionId of Object.keys(groupedInventoryByCollectionId)) {
       const collection = await this.sipherCollectionRepo.findOne({
         where: {
@@ -97,7 +99,7 @@ export class CollectionService {
   async getPortfolioByCollection(userAddress: string, collectionSlug: string) {
     const collection = await this.sipherCollectionRepo.findOne({
       where: {
-        collectionSlug: collectionSlug,
+        collectionSlug,
       },
     });
     if (!collection) {
@@ -121,6 +123,7 @@ export class CollectionService {
     }
     return newItems;
   }
+
   // Best practice? Never heard of him 💀
   private async addUriToSculptureOrSpaceship(item: any) {
     const newItem = { ...item };

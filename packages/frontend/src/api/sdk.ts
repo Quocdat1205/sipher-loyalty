@@ -473,11 +473,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags uri
      * @name UriControllerGetDataErc1155Spaceship
-     * @request GET:/api/sipher/loyalty/uri/erc1155-spaceship/{tokenId}
+     * @request GET:/api/sipher/loyalty/uri/erc1155-lootbox/{tokenId}
      */
     uriControllerGetDataErc1155Spaceship: (tokenId: number, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/uri/erc1155-spaceship/${tokenId}`,
+        path: `/api/sipher/loyalty/uri/erc1155-lootbox/${tokenId}`,
         method: 'GET',
         ...params,
       }),

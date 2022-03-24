@@ -1,4 +1,5 @@
 import { IsEnum, IsNumberString, IsOptional } from "class-validator";
+
 import { CollectionCategory } from "src/entity/sipher-collection.entity";
 
 export class PortfolioQuery {

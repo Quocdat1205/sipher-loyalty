@@ -31,7 +31,6 @@ const signOrder = async (
   );
 
   const types = EIP712_LOOTBOX_ORDER_TYPES;
-  order.deadline = new Date().getTime() + constant.PENDING_TIME_LOOTBOX_MINT;
   console.log(order);
 
   const signature = await signer._signTypedData(domain, types, order);
@@ -56,8 +55,6 @@ const signBatchOrder = async (
   );
 
   const types = EIP712_LOOTBOX_BATCH_ORDER_TYPES;
-  batchOrder.deadline =
-    new Date().getTime() + constant.PENDING_TIME_LOOTBOX_MINT;
 
   console.log(batchOrder);
   const signature = await signer._signTypedData(

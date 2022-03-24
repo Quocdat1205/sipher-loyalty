@@ -1,6 +1,5 @@
 // import library
 import { toChecksumAddress } from "ethereumjs-util";
-import { date } from "joi";
 import { Repository } from "typeorm";
 import { ERC1155Lootbox, MintStatus, MintType, PendingMint } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
@@ -17,7 +16,7 @@ import {
 } from "@utils/recover";
 import { signBatchOrder, signOrder } from "@utils/signer";
 import { BatchOrder, Order } from "@utils/type";
-import { randomSalt } from "@utils/utils";
+import { getDeadline3Day, randomSalt } from "@utils/utils";
 
 import { LoggerService } from "../logger/logger.service";
 
@@ -146,8 +145,7 @@ export class MintService {
   }
 
   async mintBatch(mintBatchLootboxInput: MintBatchLootboxInput) {
-    mintBatchLootboxInput.deadline =
-      new Date().getTime() / 1000 + constant.PENDING_TIME_LOOTBOX_MINT;
+    mintBatchLootboxInput.deadline = getDeadline3Day();
     const { publicAddress, batchID, amount, deadline } = mintBatchLootboxInput;
     LoggerService.log(
       `sign mint data for ${publicAddress},${batchID},${amount},${deadline}`
@@ -174,7 +172,7 @@ export class MintService {
       deadline,
     };
     const pendingMint = this.PendingMintRepo.create(pendingBatchOrder);
-    LoggerService.log("save pending mint to ", publicAddress);
+    LoggerService.log(`save pending mint batch to ${publicAddress}`);
     await this.PendingMintRepo.save(pendingMint);
     const verifySignature = recoverBatchOrderSignature(
       batchOrder,
@@ -187,8 +185,7 @@ export class MintService {
   }
 
   async mint(mintLootboxInput: MintLootboxInput) {
-    mintLootboxInput.deadline =
-      new Date().getTime() / 1000 + constant.PENDING_TIME_LOOTBOX_MINT;
+    mintLootboxInput.deadline = getDeadline3Day();
     const { publicAddress, batchID, amount, deadline } = mintLootboxInput;
     LoggerService.log(
       `sign mint data for ${publicAddress},${batchID},${amount},${deadline}`
@@ -207,7 +204,7 @@ export class MintService {
     const signature = await signOrder(this.config, order);
     order.signature = signature;
     const pendingMint = this.PendingMintRepo.create(order);
-    LoggerService.log("save pending mint to ", publicAddress);
+    LoggerService.log(`save pending mint to ${publicAddress}`);
     await this.PendingMintRepo.save(pendingMint);
 
     const verifySignature = recoverOrderSignature(
