@@ -602,18 +602,21 @@ export class LootBoxService {
       LoggerService.log(
         `recover canceled with signature: ${JSON.stringify(canceled)}`
       );
-      const pendingmint = await this.mintService.getPendingLootboxBySignature(
+      const pendingMint = await this.mintService.getPendingLootboxBySignature(
         signature
       );
-      if (pendingmint && pendingmint.status === MintStatus.Pending) {
-        const tokenIds = pendingmint.batchID
-          ? [pendingmint.batchID]
-          : pendingmint.batchIDs;
-        const amounts = pendingmint.batchID
-          ? [pendingmint.amount]
-          : pendingmint.amounts;
+
+      if (pendingMint && pendingMint.status === MintStatus.Pending) {
+        pendingMint.status = MintStatus.Canceled;
+        await this.mintService.updatePendingMint(pendingMint);
+        const tokenIds = pendingMint.batchID
+          ? [pendingMint.batchID]
+          : pendingMint.batchIDs;
+        const amounts = pendingMint.batchID
+          ? [pendingMint.amount]
+          : pendingMint.amounts;
         const lootboxs = await this.getLootboxFromWalletAndTokenIDs(
-          pendingmint.to,
+          pendingMint.to,
           tokenIds
         );
 

@@ -9,6 +9,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export enum MintStatus {
   Pending = "Pending",
   Minted = "Minted",
+  Canceled = "Canceled",
 }
 
 export enum MintType {
