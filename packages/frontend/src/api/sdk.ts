@@ -507,10 +507,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name CollectionControllerGetUserCollection
      * @request GET:/api/sipher/loyalty/collection/portfolio/{userAddress}
      */
-    collectionControllerGetUserCollection: (userAddress: string, params: RequestParams = {}) =>
+    collectionControllerGetUserCollection: (
+      userAddress: string,
+      query?: { chainId?: any; category?: 'character' | 'scuplture' | 'lootbox' | 'spaceship' },
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/collection/portfolio/${userAddress}`,
         method: 'GET',
+        query: query,
         ...params,
       }),
 

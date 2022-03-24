@@ -1,6 +1,7 @@
 import { Factory, Seeder } from "typeorm-seeding";
 import { Connection } from "typeorm";
 import {
+  CollectionCategory,
   CollectionType,
   SipherCollection,
 } from "../entity/sipher-collection.entity";
@@ -19,6 +20,7 @@ export default class InsertSipherCollection implements Seeder {
           chainId: 1,
           contractAddress:
             "0x09E0dF4aE51111CA27d6B85708CFB3f1F7cAE982".toLowerCase(),
+          category: CollectionCategory.CHARACTER,
         },
         {
           name: "SIPHER SCULPTURE",
@@ -27,6 +29,7 @@ export default class InsertSipherCollection implements Seeder {
           chainId: 80001,
           contractAddress:
             "0x3EdB954303D0A13ee347C6989189294B0422E7D6".toLowerCase(),
+          category: CollectionCategory.SCULPTURE,
         },
         {
           name: "SIPHER SPACESHIP",
@@ -35,6 +38,7 @@ export default class InsertSipherCollection implements Seeder {
           chainId: 80001,
           contractAddress:
             "0x890E002A6Bb11D0094d80f4C301CaF645D168333".toLowerCase(),
+          category: CollectionCategory.SPACESHIP,
         },
       ])
       .execute();

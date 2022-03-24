@@ -5,6 +5,13 @@ export enum CollectionType {
   ERC1155 = "ERC1155",
 }
 
+export enum CollectionCategory {
+  CHARACTER = "character",
+  SCULPTURE = "scuplture",
+  LOOTBOXE = "lootbox",
+  SPACESHIP = "spaceship",
+}
+
 @Entity()
 export class SipherCollection {
   @PrimaryGeneratedColumn("increment")
@@ -34,6 +41,13 @@ export class SipherCollection {
     default: CollectionType.ERC721,
   })
   collectionType: CollectionType;
+
+  @Column({
+    type: "enum",
+    enum: CollectionCategory,
+    default: CollectionCategory.CHARACTER,
+  })
+  category: CollectionCategory;
 
   @Column({
     type: "decimal",
