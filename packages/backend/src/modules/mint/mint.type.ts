@@ -6,10 +6,10 @@ export class InfoPendingMintDto {
   image: string;
 
   @ApiProperty({ type: Number })
-  batchID: number;
+  tokenId: number;
 
   @ApiProperty({ type: Number })
-  amount: number;
+  quantity: number;
 }
 
 export class ResPendingMintDto extends PendingMint {
