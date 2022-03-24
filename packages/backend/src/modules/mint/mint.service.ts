@@ -105,6 +105,11 @@ export class MintService {
     return pending;
   };
 
+  getPendingLootboxBySignature = async (signature: string) => {
+    const pending = await this.PendingMintRepo.findOne({ signature });
+    return pending;
+  };
+
   getPendingLootboxByOrder = async (order: Order) => {
     const pending = await this.PendingMintRepo.findOne({
       where: [

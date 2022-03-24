@@ -11,10 +11,10 @@ import {
 import { ApiQuery, ApiTags } from "@nestjs/swagger";
 
 import { LoggerService } from "@modules/logger/logger.service";
-
-import { CollectionService } from "./collection.service";
-import { PortfolioQuery } from "./collection.dto";
 import { CollectionCategory } from "src/entity/sipher-collection.entity";
+
+import { PortfolioQuery } from "./collection.dto";
+import { CollectionService } from "./collection.service";
 
 @ApiTags("collection")
 @Controller("collection")
@@ -23,7 +23,7 @@ export class CollectionController {
 
   @Get("")
   async getAllCollections() {
-    return await this.collectionService.getAllCollection();
+    return this.collectionService.getAllCollection();
   }
 
   @ApiQuery({
@@ -40,7 +40,7 @@ export class CollectionController {
     @Query() query: PortfolioQuery,
     @Param("userAddress") userAddress: string
   ) {
-    return await this.collectionService.getPortfolio(
+    return this.collectionService.getPortfolio(
       userAddress.toLowerCase(),
       query
     );
@@ -51,7 +51,7 @@ export class CollectionController {
     @Param("userAddress") userAddress: string,
     @Param("collectionSlug") collectionSlug: string
   ) {
-    return await this.collectionService.getPortfolioByCollection(
+    return this.collectionService.getPortfolioByCollection(
       userAddress.toLowerCase(),
       collectionSlug
     );

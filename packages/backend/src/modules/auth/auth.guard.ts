@@ -31,7 +31,7 @@ export class AtherGuard implements CanActivate {
           }
         );
         const userData = {
-          userID: data[0].userId,
+          userId: data[0].userId,
           publicAddress: data.map((el: any) => toChecksumAddress(el.address)),
         };
         await this.authService.set(req.headers.authorization, userData);

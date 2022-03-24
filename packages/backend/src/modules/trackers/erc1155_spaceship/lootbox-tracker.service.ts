@@ -26,6 +26,8 @@ export class LootboxTrackerService {
 
   private fromBlockBurned: number;
 
+  private fromBlockCanceled: number;
+
   constructor(
     private lootBoxService: LootBoxService,
     @InjectRepository(TrackedBlock)
@@ -33,6 +35,7 @@ export class LootboxTrackerService {
   ) {
     this.getStartMintedBlock();
     this.getStartBurnedBlock();
+    this.getStartCanceledBlock();
 
     this.provider = getProvider(
       constant.isProduction ? Chain.Polygon : Chain.Mumbai
@@ -65,6 +68,16 @@ export class LootboxTrackerService {
     this.trackedBlockRepo.save(trackedBlock);
   }
 
+  @Interval("tracking lootbox canceled", 15000)
+  async TrackingCanceledInterval() {
+    // this.fromBlockBurned = await this.trackingCancel(this.fromBlockCanceled);
+    const trackedBlock = await this.trackedBlockRepo.findOne({
+      where: { type: "cancel" },
+    });
+    trackedBlock.tracked = this.fromBlockCanceled;
+    this.trackedBlockRepo.save(trackedBlock);
+  }
+
   private getStartMintedBlock = async () => {
     try {
       const trackedBlock = await this.trackedBlockRepo.findOne({
@@ -93,7 +106,23 @@ export class LootboxTrackerService {
       }
     } catch (err) {
       LoggerService.error(err);
-      this.fromBlockMinted = 0;
+      this.fromBlockBurned = 0;
+    }
+  };
+
+  private getStartCanceledBlock = async () => {
+    try {
+      const trackedBlock = await this.trackedBlockRepo.findOne({
+        where: { type: "cancel" },
+      });
+      if (trackedBlock) this.fromBlockCanceled = trackedBlock.tracked;
+      else {
+        this.fromBlockCanceled = 0;
+        this.trackedBlockRepo.save({ type: "cancel", tracked: 0 });
+      }
+    } catch (err) {
+      LoggerService.error(err);
+      this.fromBlockCanceled = 0;
     }
   };
 
@@ -207,7 +236,7 @@ export class LootboxTrackerService {
     _fromBlock: number,
     _currentBlock: number
   ) => {
-    const filter = this.contract.filters.MintedBatch();
+    const filter = this.contract.filters.BurnedBatch();
     const pastEvents = await this.contract
       .queryFilter(filter, _fromBlock, _currentBlock)
       .catch((err) => {
@@ -219,13 +248,14 @@ export class LootboxTrackerService {
     }
     const promises = [];
     pastEvents.forEach((event) => {
-      const { minter, batchID, amount, salt } = event.args;
+      const { burner, batchID, amount, salt } = event.args;
       const batchOrder = {
-        to: minter,
+        to: burner,
         batchID: batchID.map((id: BigNumber) => Number(id)),
         amount: amount.map((num: BigNumber) => Number(num)),
         salt,
       };
+
       promises.push(
         this.lootBoxService.updateLootboxFromTrackerBurnedBatchOrder(batchOrder)
       );
@@ -238,7 +268,7 @@ export class LootboxTrackerService {
     _fromBlock: number,
     _currentBlock: number
   ) => {
-    const filter = this.contract.filters.Minted();
+    const filter = this.contract.filters.Burned();
     const pastEvents = await this.contract
       .queryFilter(filter, _fromBlock, _currentBlock)
       .catch((err) => {
@@ -250,9 +280,9 @@ export class LootboxTrackerService {
     }
     const promises = [];
     pastEvents.forEach((event) => {
-      const { minter, batchID, amount, salt } = event.args;
+      const { burner, batchID, amount, salt } = event.args;
       const order = {
-        to: minter,
+        to: burner,
         batchID: Number(batchID),
         amount: Number(amount),
         salt,
@@ -297,5 +327,34 @@ export class LootboxTrackerService {
     const _toBlock = result.sort((a, b) => a - b)[0];
     LoggerService.log(`End tracking burned at ${_toBlock}`);
     return _toBlock;
+  };
+
+  private trackingCancel = async (_fromBlock: number) => {
+    const _currentBlock = await this.currentBlock();
+    if (this.fromBlockBurned === undefined || _fromBlock >= _currentBlock) {
+      return _fromBlock; // retry
+    }
+    LoggerService.log(
+      `Start tracking burned from ${_fromBlock} to ${_currentBlock}`
+    );
+    const filter = this.contract.filters.CancelOrder();
+    const pastEvents = await this.contract
+      .queryFilter(filter, _fromBlock, _currentBlock)
+      .catch((err) => {
+        LoggerService.error(err, "Failed to get events");
+      });
+
+    if (!pastEvents) {
+      return _fromBlock; // retry
+    }
+    const promises = [];
+    pastEvents.forEach((event) => {
+      const { signature } = event.args;
+      promises.push(
+        this.lootBoxService.updateLootboxFromTrackerCancelOrder(signature)
+      );
+    });
+    await Promise.all(promises);
+    return _currentBlock + 1;
   };
 }

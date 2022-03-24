@@ -1,7 +1,13 @@
 import { toChecksumAddress } from "ethereumjs-util";
 import { Contract, providers } from "ethers";
 import { MoreThan, MoreThanOrEqual, Repository } from "typeorm";
-import { BurnType, ERC1155Lootbox, Lootbox, MintStatus } from "@entity";
+import {
+  BurnType,
+  CancelType,
+  ERC1155Lootbox,
+  Lootbox,
+  MintStatus,
+} from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 // import { Cron } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -11,6 +17,7 @@ import constant from "@setting/constant";
 
 import { UserData } from "@modules/auth/auth.types";
 import { BurnService } from "@modules/burn/burn.service";
+import { CancelService } from "@modules/cancel/cancel.service";
 import { MintService } from "@modules/mint/mint.service";
 import { BatchOrder, Order } from "@utils/type";
 import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
@@ -32,7 +39,8 @@ export class LootBoxService {
     @InjectRepository(ClaimableLootbox)
     private claimableLootboxRepo: Repository<ClaimableLootbox>,
     private mintService: MintService,
-    private burnService: BurnService
+    private burnService: BurnService,
+    private cancelService: CancelService
   ) {
     this.provider = getProvider(constant.CHAIN_ID);
     this.InuContract = getContract(
@@ -329,8 +337,8 @@ export class LootBoxService {
   getLootboxFromUserID = async (
     userData: UserData
   ): Promise<Array<Lootbox>> => {
-    const { userID, publicAddress } = userData;
-    LoggerService.log(`userID:  ${userID}`);
+    const { userId, publicAddress } = userData;
+    LoggerService.log(`userId:  ${userId}`);
     const promises = [];
     publicAddress.forEach((wAddress) => {
       promises.push(this.getLootboxFromWallet(wAddress));
@@ -364,8 +372,8 @@ export class LootBoxService {
   getClaimableLootboxFromUserID = async (
     userData: UserData
   ): Promise<Array<ClaimableLootbox>> => {
-    const { userID, publicAddress } = userData;
-    LoggerService.log(`userID:  ${userID}`);
+    const { userId, publicAddress } = userData;
+    LoggerService.log(`userId:  ${userId}`);
     const promises = [];
     publicAddress.forEach((wAddress) => {
       promises.push(this.getClaimableLootboxFromWallet(wAddress));
@@ -512,11 +520,13 @@ export class LootBoxService {
   };
 
   updateLootboxFromTrackerBurnedBatchOrder = async (batchOrder: BatchOrder) => {
-    // get pending mint
-
-    const burned = await this.burnService.getBurnedBatchOrder(batchOrder);
+    // get burned item
+    const burned = await this.burnService.getBurnedBatchOrder(
+      batchOrder,
+      BurnType.Lootbox
+    );
     if (!burned) {
-      LoggerService.log(`recover burned : ${burned}`);
+      LoggerService.log(`recover burned batch: ${JSON.stringify(batchOrder)}`);
       const lootboxs = await this.getLootboxFromWalletAndTokenIDs(
         batchOrder.to,
         batchOrder.batchID
@@ -540,7 +550,9 @@ export class LootBoxService {
       }
       const result = await Promise.all(promises);
       LoggerService.log(
-        `update lootbox from tracker burned done :${JSON.stringify(result)}`
+        `update lootbox from tracker burned batch done :${JSON.stringify(
+          result
+        )}`
       );
     } else LoggerService.log("event resoved or in burned database");
   };
@@ -548,9 +560,12 @@ export class LootBoxService {
   updateLootboxFromTrackerBurnedOrder = async (order: Order) => {
     // get burned tracked with salt
 
-    const burned = await this.burnService.getBurnedSingle(order);
+    const burned = await this.burnService.getBurnedSingle(
+      order,
+      BurnType.Lootbox
+    );
     if (!burned) {
-      LoggerService.log(`burned : ${burned}`);
+      LoggerService.log(`recover burned: ${JSON.stringify(order)}`);
       const lootbox = await this.getLootboxFromWalletAndTokenID(
         order.to,
         order.batchID
@@ -576,6 +591,56 @@ export class LootBoxService {
         `update lootbox from tracker burned done :${JSON.stringify(result)}`
       );
     } else LoggerService.log("event resoved or in burned database");
+  };
+
+  updateLootboxFromTrackerCancelOrder = async (signature: string) => {
+    // get canceled tracked with signature
+
+    const canceled = await this.cancelService.getCanceled(
+      signature,
+      CancelType.Lootbox
+    );
+    if (!canceled) {
+      LoggerService.log(
+        `recover canceled with signature: ${JSON.stringify(canceled)}`
+      );
+      const pendingmint = await this.mintService.getPendingLootboxBySignature(
+        signature
+      );
+      if (pendingmint && pendingmint.status === MintStatus.Pending) {
+        const tokenIds = pendingmint.batchID
+          ? [pendingmint.batchID]
+          : pendingmint.batchIDs;
+        const amounts = pendingmint.batchID
+          ? [pendingmint.amount]
+          : pendingmint.amounts;
+        const lootboxs = await this.getLootboxFromWalletAndTokenIDs(
+          pendingmint.to,
+          tokenIds
+        );
+
+        const promises = [];
+        // update canceled lootbox
+        const _canceled = {
+          signature,
+          type: CancelType.Lootbox,
+        };
+        promises.push(this.cancelService.createCanceled(_canceled));
+        for (let i = 0; i < tokenIds.length; i++) {
+          lootboxs[i].quantity += amounts[i];
+          lootboxs[i].mintable += amounts[i];
+          lootboxs[i].pending =
+            lootboxs[i].pending > amounts[i]
+              ? lootboxs[i].pending - amounts[i]
+              : 0;
+          promises.push(this.lootboxRepo.save(lootboxs[i]));
+        }
+        const result = await Promise.all(promises);
+        LoggerService.log(
+          `update lootbox from tracker canceled done :${JSON.stringify(result)}`
+        );
+      } else LoggerService.log("not recover lootbox cause lootbox minted");
+    } else LoggerService.log("event resoved or in cancel database");
   };
 
   async addQuantityClaimedLootbox(

@@ -12,7 +12,7 @@ export const useAirdrops = () => {
   const { session, authenticated, user } = useAuth()
   const { account } = useWalletContext()
 
-  const { data } = useQuery(
+  useQuery(
     ["airdrops", currentTab, user, account],
     () =>
       client.api

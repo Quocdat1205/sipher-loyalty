@@ -1,7 +1,7 @@
 import React from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { Box, Button, Flex, Heading, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
 
@@ -10,15 +10,6 @@ import { spaceshipTabs } from ".."
 import { Timeline } from "./Timeline"
 import { TutorialSpaceship } from "./TutorialSpaceship"
 import useOverview from "./useOverview"
-
-const dataShip = [
-  { id: "Mass", value: "975 t" },
-  { id: "Cargo", value: "210 m3" },
-  { id: "Est. Value", value: "94m isk" },
-  { id: "Hitpoints", value: "1740" },
-  { id: "Velocity", value: "321 m/2" },
-  { id: "Spec", value: "Exploration" },
-]
 
 export const SpaceshipContainer = () => {
   const { mappedData, activeData } = useOverview()

@@ -17,12 +17,12 @@ export class BurnService {
     private burnedRepo: Repository<Burned>
   ) {}
 
-  getBurnedSingle = async (order: Order) => {
+  getBurnedSingle = async (order: Order, type: BurnType) => {
     const burned = await this.burnedRepo.findOne({
       where: [
         {
           to: order.to.toLowerCase(),
-          type: BurnType.Lootbox,
+          type,
           salt: order.salt,
           batchID: order.batchID,
           amount: order.amount,
@@ -31,7 +31,7 @@ export class BurnService {
         },
         {
           to: toChecksumAddress(order.to),
-          type: BurnType.Lootbox,
+          type,
           salt: order.salt,
           batchID: order.batchID,
           amount: order.amount,
@@ -43,19 +43,19 @@ export class BurnService {
     return burned;
   };
 
-  getBurnedBatchOrder = async (batchOrder: BatchOrder) => {
-    const burneds = await this.burnedRepo.find({
+  getBurnedBatchOrder = async (batchOrder: BatchOrder, type: BurnType) => {
+    const burneds = await this.burnedRepo.findOne({
       where: [
         {
           to: batchOrder.to.toLowerCase(),
-          type: BurnType.Lootbox,
+          type,
           salt: batchOrder.salt,
           batchIDs: batchOrder.batchID,
           amounts: batchOrder.amount,
         },
         {
           to: toChecksumAddress(batchOrder.to),
-          type: BurnType.Lootbox,
+          type,
           salt: batchOrder.salt,
           batchIDs: batchOrder.batchID,
           amounts: batchOrder.amount,
@@ -66,12 +66,12 @@ export class BurnService {
   };
 
   async updateBurned(burned: Burned) {
-    LoggerService.log(`update burned : ${burned}`);
+    LoggerService.log(`update burned batch: ${JSON.stringify(burned)}`);
     return this.burnedRepo.save(burned);
   }
 
   async createBurned(burned: Burned) {
-    LoggerService.log(`create burned : ${burned}`);
+    LoggerService.log(`create burned : ${JSON.stringify(burned)}`);
     return this.burnedRepo.save(burned);
   }
 }

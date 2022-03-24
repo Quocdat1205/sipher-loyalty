@@ -1,5 +1,6 @@
-import { Factory, Seeder } from "typeorm-seeding";
 import { Connection } from "typeorm";
+import { Factory, Seeder } from "typeorm-seeding";
+
 import {
   CollectionCategory,
   CollectionType,
@@ -19,7 +20,7 @@ export default class InsertSipherCollection implements Seeder {
           collectionSlug: "sipherianflash",
           chainId: 1,
           contractAddress:
-            "0x09E0dF4aE51111CA27d6B85708CFB3f1F7cAE982".toLowerCase(),
+            "0x09e0df4ae51111ca27d6b85708cfb3f1f7cae982".toLowerCase(),
           category: CollectionCategory.CHARACTER,
         },
         {
@@ -37,7 +38,7 @@ export default class InsertSipherCollection implements Seeder {
           collectionSlug: "sipherspaceship",
           chainId: 80001,
           contractAddress:
-            "0x890E002A6Bb11D0094d80f4C301CaF645D168333".toLowerCase(),
+            "0x890e002a6bb11d0094d80f4c301caf645d168333".toLowerCase(),
           category: CollectionCategory.SPACESHIP,
         },
       ])

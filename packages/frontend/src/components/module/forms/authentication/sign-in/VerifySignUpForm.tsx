@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react"
-import { useMutation, useQuery } from "react-query"
+import { useMutation } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, Button, chakra, Divider, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
 

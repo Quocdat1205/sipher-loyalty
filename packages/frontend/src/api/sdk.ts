@@ -20,20 +20,10 @@ export enum MintType {
   Spaceship = 'Spaceship',
 }
 
-export interface PendingMint {
-  id: string;
-  to: string;
+export interface InfoPendingMintDto {
+  image: string;
   batchID: number;
   amount: number;
-  batchIDs: number[];
-  amounts: number[];
-  salt: string;
-  status: MintStatus;
-  type: MintType;
-  signature: string;
-
-  /** @format date-time */
-  createdAt: string;
 }
 
 export interface ResPendingMintDto {
@@ -50,7 +40,7 @@ export interface ResPendingMintDto {
 
   /** @format date-time */
   createdAt: string;
-  info: PendingMint[];
+  info: InfoPendingMintDto[];
 }
 
 export interface ERC1155LootboxAttribute {
@@ -109,6 +99,22 @@ export interface MintBatchLootboxInputDto {
   publicAddress: string;
   batchID: number[];
   amount: number[];
+}
+
+export interface PendingMint {
+  id: string;
+  to: string;
+  batchID: number;
+  amount: number;
+  batchIDs: number[];
+  amounts: number[];
+  salt: string;
+  status: MintStatus;
+  type: MintType;
+  signature: string;
+
+  /** @format date-time */
+  createdAt: string;
 }
 
 export interface MintLootboxInputDto {
@@ -376,12 +382,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags lootbox
      * @name LootBoxControllerGetLootboxFromUserId
-     * @request GET:/api/sipher/loyalty/lootbox/get-by-userID
+     * @request GET:/api/sipher/loyalty/lootbox/get-by-userId
      * @secure
      */
     lootBoxControllerGetLootboxFromUserId: (params: RequestParams = {}) =>
       this.request<Lootbox[], any>({
-        path: `/api/sipher/loyalty/lootbox/get-by-userID`,
+        path: `/api/sipher/loyalty/lootbox/get-by-userId`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -393,12 +399,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags lootbox
      * @name LootBoxControllerGetClaimableLootboxFromUserId
-     * @request GET:/api/sipher/loyalty/lootbox/get-by-userID/claimable
+     * @request GET:/api/sipher/loyalty/lootbox/get-by-userId/claimable
      * @secure
      */
     lootBoxControllerGetClaimableLootboxFromUserId: (params: RequestParams = {}) =>
       this.request<ClaimableLootbox[], any>({
-        path: `/api/sipher/loyalty/lootbox/get-by-userID/claimable`,
+        path: `/api/sipher/loyalty/lootbox/get-by-userId/claimable`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -511,7 +517,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     collectionControllerGetUserCollection: (
       userAddress: string,
-      query?: { chainId?: any; category?: 'character' | 'scuplture' | 'lootbox' | 'spaceship' },
+      query?: { chainId?: any; category?: 'character' | 'sculpture' | 'lootbox' | 'spaceship' },
       params: RequestParams = {},
     ) =>
       this.request<void, any>({

@@ -74,7 +74,7 @@ export class LootBoxController {
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: Lootbox, isArray: true })
-  @Get("get-by-userID")
+  @Get("get-by-userId")
   async getLootboxFromUserID(@Req() req: any) {
     return this.lootBoxService.getLootboxFromUserID(req.userData);
   }
@@ -82,7 +82,7 @@ export class LootBoxController {
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: ClaimableLootbox, isArray: true })
-  @Get("get-by-userID/claimable")
+  @Get("get-by-userId/claimable")
   async getClaimableLootboxFromUserID(@Req() req: any) {
     return this.lootBoxService.getClaimableLootboxFromUserID(req.userData);
   }

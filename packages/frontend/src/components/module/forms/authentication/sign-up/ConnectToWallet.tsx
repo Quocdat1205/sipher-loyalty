@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useMutation } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Box, chakra, Divider, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
+import { chakra, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
 import { ChakraModal, WalletCard } from "@components/shared"

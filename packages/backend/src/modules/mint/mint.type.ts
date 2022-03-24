@@ -13,6 +13,6 @@ export class InfoPendingMintDto {
 }
 
 export class ResPendingMintDto extends PendingMint {
-  @ApiProperty({ type: PendingMint, isArray: true })
+  @ApiProperty({ type: InfoPendingMintDto, isArray: true })
   info: InfoPendingMintDto;
 }
