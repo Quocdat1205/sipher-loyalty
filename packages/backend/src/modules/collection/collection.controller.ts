@@ -59,6 +59,22 @@ export class CollectionController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
+  @Get("portfolio/:userAddress/nft-item/:itemId")
+  async getItemById(
+    @Param("userAddress") userAddress: string,
+    @Param("itemId") itemId: string,
+    @Req() req: any
+  ) {
+    await this.authService.verifyAddress(userAddress, req.userData);
+    const result = await this.collectionService.getItemById(itemId);
+    if (!result) {
+      throw new HttpException("Item not found", 404);
+    }
+    return result;
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
   @Get(":collectionSlug/portfolio/:userAddress")
   async getPortfolioByCollection(
     @Param("userAddress") userAddress: string,
