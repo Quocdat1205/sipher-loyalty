@@ -4,7 +4,11 @@ import {
   EIP712_LOOTBOX_BATCH_ORDER_TYPES,
   EIP712_LOOTBOX_ORDER_TYPES,
 } from "./constants";
-import { createEIP712_LOOTBOXDomain, encodeBatchOrder, signer } from "./signer";
+import {
+  createEIP712_LOOTBOX_Domain,
+  encodeBatchOrder,
+  signer,
+} from "./signer";
 import { Order } from "./type";
 import { BatchOrder } from ".";
 
@@ -14,7 +18,7 @@ const recoverOrderSignature = (
   config: { chainId: number; verifyingContract: string }
 ) => {
   const expectedSignerAddress = signer.address;
-  const domain = createEIP712_LOOTBOXDomain(
+  const domain = createEIP712_LOOTBOX_Domain(
     config.chainId,
     config.verifyingContract
   );
@@ -34,7 +38,7 @@ const recoverBatchOrderSignature = (
   config: { chainId: number; verifyingContract: string }
 ) => {
   const expectedSignerAddress = signer.address;
-  const domain = createEIP712_LOOTBOXDomain(
+  const domain = createEIP712_LOOTBOX_Domain(
     config.chainId,
     config.verifyingContract
   );

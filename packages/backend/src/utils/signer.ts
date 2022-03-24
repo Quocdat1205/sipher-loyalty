@@ -10,7 +10,7 @@ import {
 import { Order } from "./type";
 import { BatchOrder } from ".";
 
-const createEIP712_LOOTBOXDomain = (
+const createEIP712_LOOTBOX_Domain = (
   chainId: number,
   verifyingContract: string
 ) => ({
@@ -25,7 +25,7 @@ const signOrder = async (
   config: { chainId: number; verifyingContract: string },
   order: Order
 ): Promise<any> => {
-  const domain = createEIP712_LOOTBOXDomain(
+  const domain = createEIP712_LOOTBOX_Domain(
     config.chainId,
     config.verifyingContract
   );
@@ -43,20 +43,21 @@ const encodeBatchOrder = (batchOrder: BatchOrder) => ({
   batchID: defaultAbiCoder.encode(["uint256[]"], [batchOrder.batchID]),
   amount: defaultAbiCoder.encode(["uint256[]"], [batchOrder.amount]),
   salt: batchOrder.salt,
+  deadline: batchOrder.deadline,
 });
 
 const signBatchOrder = async (
   config: { chainId: number; verifyingContract: string },
   batchOrder: BatchOrder
 ): Promise<any> => {
-  const domain = createEIP712_LOOTBOXDomain(
+  const domain = createEIP712_LOOTBOX_Domain(
     config.chainId,
     config.verifyingContract
   );
 
   const types = EIP712_LOOTBOX_BATCH_ORDER_TYPES;
 
-  console.log(batchOrder);
+  console.log(encodeBatchOrder(batchOrder));
   const signature = await signer._signTypedData(
     domain,
     types,
@@ -67,7 +68,7 @@ const signBatchOrder = async (
 };
 
 export {
-  createEIP712_LOOTBOXDomain,
+  createEIP712_LOOTBOX_Domain,
   encodeBatchOrder,
   signBatchOrder,
   signer,
