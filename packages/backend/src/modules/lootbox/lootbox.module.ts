@@ -10,6 +10,7 @@ import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 import { LootBoxController } from "./lootbox.controller";
 import { LootBoxService } from "./lootbox.service";
+import { CancelModule } from "@modules/cancel/cancel.module";
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { LootBoxService } from "./lootbox.service";
     MintModule,
     BurnModule,
     AuthModule,
+    CancelModule,
   ],
   providers: [LootBoxService],
   controllers: [LootBoxController],
