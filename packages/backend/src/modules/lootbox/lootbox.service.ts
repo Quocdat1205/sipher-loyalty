@@ -512,8 +512,7 @@ export class LootBoxService {
   };
 
   updateLootboxFromTrackerBurnedBatchOrder = async (batchOrder: BatchOrder) => {
-    // get pending mint
-
+    // get burned item
     const burned = await this.burnService.getBurnedBatchOrder(batchOrder);
     if (!burned) {
       LoggerService.log(`recover burned : ${burned}`);

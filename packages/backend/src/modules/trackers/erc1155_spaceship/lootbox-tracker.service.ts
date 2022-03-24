@@ -207,7 +207,7 @@ export class LootboxTrackerService {
     _fromBlock: number,
     _currentBlock: number
   ) => {
-    const filter = this.contract.filters.BurnedBacth();
+    const filter = this.contract.filters.BurnedBatch();
     const pastEvents = await this.contract
       .queryFilter(filter, _fromBlock, _currentBlock)
       .catch((err) => {
@@ -226,6 +226,8 @@ export class LootboxTrackerService {
         amount: amount.map((num: BigNumber) => Number(num)),
         salt,
       };
+      console.log(batchOrder);
+
       promises.push(
         this.lootBoxService.updateLootboxFromTrackerBurnedBatchOrder(batchOrder)
       );
@@ -250,9 +252,9 @@ export class LootboxTrackerService {
     }
     const promises = [];
     pastEvents.forEach((event) => {
-      const { minter, batchID, amount, salt } = event.args;
+      const { burner, batchID, amount, salt } = event.args;
       const order = {
-        to: minter,
+        to: burner,
         batchID: Number(batchID),
         amount: Number(amount),
         salt,
