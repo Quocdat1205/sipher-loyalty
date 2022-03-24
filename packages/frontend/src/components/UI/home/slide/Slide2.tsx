@@ -9,6 +9,7 @@ const Slide2 = () => {
     <Flex
       align="center"
       justify="center"
+      pos="relative"
       bg={`url(/images/home/banner2.png)`}
       h={["20rem", "22.5rem"]}
       w="full"

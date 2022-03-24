@@ -32,8 +32,6 @@ const usePortFolioHome = () => {
     onView: () => router.push(`/portfolio/${item.collectionSlug}`),
   }))
 
-  console.log(collectionData)
-
   return { collectionData }
 }
 export default usePortFolioHome
