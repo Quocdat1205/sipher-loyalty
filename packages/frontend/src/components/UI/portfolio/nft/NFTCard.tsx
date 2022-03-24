@@ -5,7 +5,7 @@ import { Box, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 import { SpLayer } from "@components/shared/icons"
 import { NftContracts } from "@constant"
 
-import { useNFTs } from "./useNFTs"
+import useNFTs from "./useNFTs"
 
 interface CardProps {
   data: ReturnType<typeof useNFTs>["nftsData"][number]

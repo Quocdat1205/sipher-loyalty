@@ -7,14 +7,11 @@ import { useStore } from "@store"
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
 import { useChakraToast } from "@hooks"
 
-import ConnectToWallet from "./ConnectToWallet"
-
 interface VerifySignUpFormProps {
   email: string
-  isWalletConnected?: boolean
 }
 
-const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpFormProps) => {
+const VerifySignUpForm = ({ email }: VerifySignUpFormProps) => {
   const toast = useChakraToast()
   const [code, setCode] = useState("")
   const [isOpen, setIsOpen] = useState(false)
@@ -58,8 +55,6 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
       })
     },
   })
-
-  // if (isConnectingWallet) return <ConnectToWallet />
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()

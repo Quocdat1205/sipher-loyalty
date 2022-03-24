@@ -49,7 +49,7 @@ const FillEmailForm = () => {
     },
   )
 
-  if (showVerify) return <VerifySignUpForm email={email} isWalletConnected={true} />
+  if (showVerify) return <VerifySignUpForm email={email} />
 
   return (
     <ChakraModal title={"YOU ARE ALMOST THERE"} size="lg" isOpen={true} hideCloseButton={true}>

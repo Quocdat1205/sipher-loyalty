@@ -44,7 +44,7 @@ export const useDetailBox = id => {
     async () => {
       if (chainId !== POLYGON_NETWORK) {
         toast({ status: "info", title: "Please switch to Polygon network!", duration: 5000 })
-        await switchNetwork(POLYGON_NETWORK)
+        switchNetwork(POLYGON_NETWORK)
       } else {
         const data = await client.api
           .lootBoxControllerMintLootbox(
@@ -60,7 +60,13 @@ export const useDetailBox = id => {
             },
           )
           .then(res => res.data)
-        await scCaller.current!.SipherSpaceshipLootBox.mint(data.batchID, data.amount, data.salt, data.signature)
+        await scCaller.current!.SipherSpaceshipLootBox.mint(
+          data.deadline,
+          data.batchID,
+          data.amount,
+          data.salt,
+          data.signature,
+        )
       }
     },
     {
