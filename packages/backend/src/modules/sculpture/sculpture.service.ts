@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { ShopifyCode, ShopifyCodeStatus } from "@entity";
+import { SculptureTransaction } from "@entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
@@ -8,7 +8,7 @@ import { LoggerService } from "@modules/logger/logger.service";
 import { MultiTokenService } from "@modules/multi-token/multi-token.service";
 
 import {
-  RedeemShopifyCodeDto,
+  RedeemTxDto,
   SculptureBalanceDto,
   SculptureType,
 } from "./sculpture.dto";
@@ -22,8 +22,8 @@ export class SculptureService {
 
   constructor(
     private multiTokenService: MultiTokenService,
-    @InjectRepository(ShopifyCode)
-    private shopifyCodeRepo: Repository<ShopifyCode>
+    @InjectRepository(SculptureTransaction)
+    private sculptureTxRepo: Repository<SculptureTransaction>
   ) {}
 
   async sculptureBalance(sculptureBalanceDto: SculptureBalanceDto) {
@@ -37,44 +37,38 @@ export class SculptureService {
     return balance;
   }
 
-  async getAddressOwnedCode(address: string) {
-    const shopifycodes = await this.shopifyCodeRepo.find({
+  async getAddressTx(address: string) {
+    const transactions = await this.sculptureTxRepo.find({
       where: {
         ownerAddress: address,
       },
     });
-    if (!shopifycodes) {
+    if (!transactions) {
       return [];
     }
-    return shopifycodes;
+    return transactions;
   }
 
-  async redeemShopifyCode(redeemShopifyCodeDto: RedeemShopifyCodeDto) {
+  async saveRedeemTransaction(redeemShopifyCodeDto: RedeemTxDto) {
     const { amount, tokenId, address, txHash } = redeemShopifyCodeDto;
-    const existed = await this.shopifyCodeRepo.findOne({
+    const existed = await this.sculptureTxRepo.findOne({
       where: {
-        txHash,
+        id: txHash,
       },
     });
     if (existed) {
       return;
     }
-    const codeToRedeem = await this.shopifyCodeRepo
-      .createQueryBuilder("shopify_code")
-      .where("status = :status", {
-        status: ShopifyCodeStatus.AVAILABLE,
-      })
-      .limit(amount)
-      .printSql()
-      .getMany();
-    // eslint-disable-next-line no-restricted-syntax
-    for (const code of codeToRedeem) {
-      LoggerService.log(`Redeeem ${code.code}`);
-      code.status = ShopifyCodeStatus.REDEEMED;
-      code.tokenId = tokenId;
-      code.ownerAddress = address;
-      code.txHash = txHash;
-      this.shopifyCodeRepo.save(code);
-    }
+
+    const newTransaction = new SculptureTransaction();
+    newTransaction.event = "RedeemRecord";
+    newTransaction.id = txHash;
+    newTransaction.amount = amount;
+    newTransaction.tokenId = tokenId;
+    newTransaction.ownerAddress = address;
+    LoggerService.debug(
+      `Saving sculpture transactions: ${JSON.stringify(newTransaction)}`
+    );
+    await this.sculptureTxRepo.save(newTransaction);
   }
 }

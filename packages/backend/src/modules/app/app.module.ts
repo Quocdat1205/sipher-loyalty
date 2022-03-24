@@ -1,7 +1,13 @@
 // import library
 import * as redisStore from "cache-manager-redis-store";
 import Joi from "joi";
-import { NftOrder, Program, SculpturesOrder, ShopifyCode, User } from "@entity";
+import {
+  NftOrder,
+  Program,
+  SculpturesOrder,
+  SculptureTransaction,
+  User,
+} from "@entity";
 import { CacheModule, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -38,7 +44,7 @@ import { AppService } from "./app.service";
       Program,
       SculpturesOrder,
       NftOrder,
-      ShopifyCode,
+      SculptureTransaction,
     ]),
     SearchModule,
     LoggerModule,

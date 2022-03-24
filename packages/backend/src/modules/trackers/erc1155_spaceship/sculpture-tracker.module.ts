@@ -1,4 +1,4 @@
-import { ShopifyCode } from "@entity";
+import { SculptureTransaction } from "@entity";
 import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -12,7 +12,7 @@ import { ScupltureTrackerService } from "./sculpture-tracker.service";
 @Module({
   imports: [
     ScheduleModule.forRoot(),
-    TypeOrmModule.forFeature([ShopifyCode, TrackedBlock]),
+    TypeOrmModule.forFeature([SculptureTransaction, TrackedBlock]),
   ],
   providers: [ScupltureTrackerService, SculptureService, MultiTokenService],
   exports: [ScupltureTrackerService],
