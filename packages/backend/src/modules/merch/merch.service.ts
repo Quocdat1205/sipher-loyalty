@@ -1,4 +1,5 @@
 import { Repository } from "typeorm";
+import { Item, Transaction } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -8,13 +9,35 @@ import { claimItem } from "./merch.type";
 
 @Injectable()
 export class MerchService {
-  // constructor() {}
+  constructor(
+    @InjectRepository(Transaction)
+    private transactionRepo: Repository<Transaction>
+  ) {}
 
   async getAllMerch(publicAddress: string) {
-    console.log(publicAddress);
+    LoggerService.log(`Get all merch`);
 
-    // LoggerService.log(`Get all merch`);
-    // return this.merchRepo.find({ where: { publicAddress } });
+    // const result = await this.transactionRepo
+    //   .createQueryBuilder("transaction")
+    //   .innerJoin("transaction.publicAddress", "item.publicAddress")
+    //   .where("transaction.publicAddress = :publicAddress", { publicAddress })
+    //   .getRawMany();
+
+    // console.log(result);
+
+    const result = await this.transactionRepo.findOne({
+      // join: {
+      //   alias: "transaction",
+      //   innerJoin: {
+      //     publicAddress: "item.publicAddress",
+      //   },
+      // },
+      where: { publicAddress },
+      relations: ["item"],
+    });
+    console.log(result);
+
+    // return this.transactionRepo.find({ where: { publicAddress } });
   }
 
   // eslint-disable-next-line no-empty-pattern
