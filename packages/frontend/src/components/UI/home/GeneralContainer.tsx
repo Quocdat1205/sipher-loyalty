@@ -12,8 +12,11 @@ import { StakeModal } from "./modal"
 const GeneralContainer = () => {
   const [modalStake, setModalStake] = useState(false)
   const { account, scCaller } = useWalletContext()
-  const { data: sipher } = useQuery(["sipher", account], () => scCaller.current?.getSipherBalance(account!))
-
+  const { data: sipher } = useQuery(["sipher", account], () => scCaller.current?.getSipherBalance(account!), {
+    enabled: !!account,
+    initialData: 0,
+  })
+  console.log(sipher)
   return (
     <>
       <SimpleGrid mb={8} columns={[2, 4]} spacing={8}>

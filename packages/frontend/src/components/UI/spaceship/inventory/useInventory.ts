@@ -7,6 +7,7 @@ import { useWalletContext } from "@web3"
 import { POLYGON_NETWORK } from "@constant"
 import { useChakraToast } from "@hooks"
 import { Lootbox } from "@sdk"
+import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 export interface InventoryProps extends Lootbox {
@@ -28,11 +29,7 @@ export const useInventory = () => {
     ["lootBoxs", account, user],
     () =>
       client.api
-        .lootBoxControllerGetLootboxFromUserId({
-          headers: {
-            Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
-          },
-        })
+        .lootBoxControllerGetLootboxFromUserId(setBearerToken(session?.getIdToken().getJwtToken() as string))
         .then(res => res.data),
     {
       enabled: authenticated && !!account && !isFetched,
@@ -79,11 +76,7 @@ export const useInventory = () => {
               batchID: inventoryDataCheck!.map(item => item.tokenId)!,
               amount: inventoryDataCheck!.map(item => item.slot)!,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
-              },
-            },
+            setBearerToken(session?.getIdToken().getJwtToken() as string),
           )
           .then(res => res.data)
         await scCaller.current!.SipherSpaceshipPart.mintBatch(data.batchIDs, data.amounts, data.salt, data.signature)
@@ -95,11 +88,7 @@ export const useInventory = () => {
               batchID: inventoryDataCheck![0].tokenId,
               amount: inventoryDataCheck![0].slot,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
-              },
-            },
+            setBearerToken(session?.getIdToken().getJwtToken() as string),
           )
           .then(res => res.data)
         await scCaller.current!.SipherSpaceshipPart.mint(data.batchID, data.amount, data.salt, data.signature)

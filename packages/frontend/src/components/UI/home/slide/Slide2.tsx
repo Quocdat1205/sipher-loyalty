@@ -1,15 +1,33 @@
 import React from "react"
-import { Box } from "@sipher.dev/sipher-ui"
+import { Box, Button, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
 
 export const Slide2 = () => {
   return (
-    <Box
-      display="inline-block"
-      bg={`url(/images/general/dashboard-banner.jpg)`}
+    <Flex
+      align="center"
+      justify="center"
+      bg={`url(/images/home/banner2.png)`}
       h={["20rem", "22.5rem"]}
       w="full"
       bgSize="cover"
       bgRepeat="no-repeat"
-    ></Box>
+    >
+      <Box pos="relative" w="full" maxW="1200px" display={["none", "block"]}>
+        <Box textAlign="center" pos="absolute" top="50%" left="0%" transform="translateY(-50%)">
+          <Heading fontSize="4xl" fontWeight={600}>
+            EXCLUSIVE SCULPTURES
+          </Heading>
+          <Text lineHeight={1.2} color="whiteAlpha.700" fontSize="xl">
+            LOOTBOXES ARE READY TO BE
+          </Text>
+          <Text lineHeight={1.2} color="whiteAlpha.700" fontSize="xl" mb={6}>
+            MINTED AND TRADEABLE
+          </Text>
+          <Button bg="transparent" border="1px" borderColor="white" size="lg" variant="secondary">
+            CHECK IT OUT
+          </Button>
+        </Box>
+      </Box>
+    </Flex>
   )
 }

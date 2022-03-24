@@ -22,7 +22,7 @@ interface NftImageProps extends BoxProps {
   alt?: string
 }
 
-export const NftImage = ({ windowHeight, src, alt, ...rest }: NftImageProps) => {
+const NftImage = ({ windowHeight, src, alt, ...rest }: NftImageProps) => {
   const [isImgLoaded, setIsImgLoaded] = useState(false)
   const [isOpen, setIsOpen] = useState("")
   const boxRef = useRef(null)
@@ -83,3 +83,4 @@ export const NftImage = ({ windowHeight, src, alt, ...rest }: NftImageProps) => 
     </Skeleton>
   )
 }
+export default NftImage

@@ -5,12 +5,20 @@ import { currency } from "@utils"
 
 import CardGeneral from "../home/CardGeneral"
 
-const General = () => {
+interface GeneralProps {
+  totalNFTs: number
+}
+
+const General = ({ totalNFTs }: GeneralProps) => {
   return (
     <SimpleGrid mb={8} columns={[2, 4]} spacing={8}>
-      <CardGeneral value={"23"} name={"Total NFTs"} icon={<Image src="/images/icons/coin1.png" h="1.3rem" />} />
       <CardGeneral
-        value={"12"}
+        value={totalNFTs.toString()}
+        name={"Total NFTs"}
+        icon={<Image src="/images/icons/coin1.png" h="1.3rem" />}
+      />
+      <CardGeneral
+        value={"2"}
         name={"Total Tokens"}
         icon={<Image src="/images/icons/coin.png" h="1.3rem" />}
         rightChildren={

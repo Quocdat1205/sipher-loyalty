@@ -37,6 +37,7 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
           textAlign="center"
         >
           <NftImage
+            mintable={details?.mintable ?? 0}
             isFetching={isFetching}
             windowHeight={windowWidth.height}
             src={details?.propertyLootbox.image}
@@ -46,7 +47,12 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
         <Flex flex={1} pl={[0, `${boxWidth - 8}px`]} flexDir="column">
           <Box flex={1} py={8} px={[4, 0]}>
             <Box mb={4} display={["block", "block", "none"]} textAlign="center">
-              <NftImage isFetching={isFetching} src={details?.propertyLootbox.image} alt={"box"} />
+              <NftImage
+                mintable={details?.mintable ?? 0}
+                isFetching={isFetching}
+                src={details?.propertyLootbox.image}
+                alt={"box"}
+              />
             </Box>
             <Box maxWidth={`${widthContainer}px`} flex={1}>
               <HeaderDetails details={details} isFetching={isFetching} />
