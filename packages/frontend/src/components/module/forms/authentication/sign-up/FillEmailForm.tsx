@@ -104,52 +104,24 @@ const FillEmailForm = () => {
           </FormControl>
           <FormControl mb={2} as="fieldset">
             <FormField error={errors.password}>
-              <InputGroup size="md">
-                <CustomInput
-                  pr="2.5rem"
-                  type={show ? "text" : "password"}
-                  placeholder="Password"
-                  {...register("password")}
-                />
-                <InputRightElement width="2.5rem">
-                  <IconButton
-                    variant="ghost"
-                    aria-label="eye-icon"
-                    color="neutral.400"
-                    _hover={{ bg: "neutral.500" }}
-                    _active={{ bg: "neutral.500" }}
-                    icon={show ? <BsEyeSlashFill size="1rem" /> : <BsEyeFill size="1rem" />}
-                    size="sm"
-                    h="1.75rem"
-                    onClick={() => setShow(!show)}
-                  />
-                </InputRightElement>
-              </InputGroup>
+              <CustomInput
+                pr="2.5rem"
+                type={"password"}
+                placeholder="Password"
+                autoComplete="new-password"
+                {...register("password")}
+              />
             </FormField>
           </FormControl>
           <FormControl mb={2} as="fieldset">
             <FormField error={errors.confirmPassword}>
-              <InputGroup size="md">
-                <CustomInput
-                  pr="2.5rem"
-                  type={show ? "text" : "password"}
-                  placeholder="Password"
-                  {...register("confirmPassword")}
-                />
-                <InputRightElement width="2.5rem">
-                  <IconButton
-                    variant="ghost"
-                    aria-label="eye-icon"
-                    color="neutral.400"
-                    _hover={{ bg: "neutral.500" }}
-                    _active={{ bg: "neutral.500" }}
-                    icon={show ? <BsEyeSlashFill size="1rem" /> : <BsEyeFill size="1rem" />}
-                    size="sm"
-                    h="1.75rem"
-                    onClick={() => setShow(!show)}
-                  />
-                </InputRightElement>
-              </InputGroup>
+              <CustomInput
+                pr="2.5rem"
+                type={"password"}
+                placeholder="Confirm your password"
+                autoComplete="new-password"
+                {...register("confirmPassword")}
+              />
             </FormField>
           </FormControl>
           <Button fontSize="md" py={6} fontWeight={600} type="submit" isLoading={isLoading}>

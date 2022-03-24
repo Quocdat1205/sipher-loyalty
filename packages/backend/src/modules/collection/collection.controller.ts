@@ -6,12 +6,15 @@ import {
   HttpStatus,
   InternalServerErrorException,
   Param,
+  Query,
 } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiQuery, ApiTags } from "@nestjs/swagger";
 
 import { LoggerService } from "@modules/logger/logger.service";
 
 import { CollectionService } from "./collection.service";
+import { PortfolioQuery } from "./collection.dto";
+import { CollectionCategory } from "src/entity/sipher-collection.entity";
 
 @ApiTags("collection")
 @Controller("collection")
@@ -23,9 +26,24 @@ export class CollectionController {
     return await this.collectionService.getAllCollection();
   }
 
+  @ApiQuery({
+    name: "category",
+    enum: CollectionCategory,
+    required: false,
+  })
+  @ApiQuery({
+    name: "chainId",
+    required: false,
+  })
   @Get("portfolio/:userAddress")
-  async getUserCollection(@Param("userAddress") userAddress: string) {
-    return await this.collectionService.getPortfolio(userAddress.toLowerCase());
+  async getUserCollection(
+    @Query() query: PortfolioQuery,
+    @Param("userAddress") userAddress: string
+  ) {
+    return await this.collectionService.getPortfolio(
+      userAddress.toLowerCase(),
+      query
+    );
   }
 
   @Get(":collectionSlug/portfolio/:userAddress")

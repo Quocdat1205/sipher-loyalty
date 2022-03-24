@@ -16,7 +16,7 @@ export const useAirdrops = () => {
     ["airdrops", currentTab, user, account],
     () =>
       client.api
-        .airdropControllerGetAirdropByType(account!, currentTab.toString().toUpperCase(), {
+        .airdropControllerGetAirdropByType(account!, "ALL".toUpperCase(), {
           headers: {
             Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
           },
@@ -26,6 +26,6 @@ export const useAirdrops = () => {
       enabled: authenticated && !!account,
     },
   )
-  console.log(currentTab, data)
+
   return { currentTab }
 }

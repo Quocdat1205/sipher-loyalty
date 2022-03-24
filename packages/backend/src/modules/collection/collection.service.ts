@@ -12,6 +12,7 @@ import { NftItemService } from "@modules/nft/nftItem.service";
 import { LoggerService } from "@modules/logger/logger.service";
 import { isSculptureContract, isSpaceshipContract } from "@utils/utils";
 import { URIService } from "@modules/uri/uri.service";
+import { PortfolioQuery } from "./collection.dto";
 
 @Injectable()
 export class CollectionService {
@@ -50,7 +51,7 @@ export class CollectionService {
     );
   }
 
-  async getPortfolio(userAddress: string) {
+  async getPortfolio(userAddress: string, query: PortfolioQuery) {
     const inventory = await this.nftService.search({
       owner: userAddress,
     });
@@ -78,8 +79,19 @@ export class CollectionService {
         total,
       });
     }
+    let filteredPortfolio = [...portfolio];
+    if (query.category) {
+      filteredPortfolio = filteredPortfolio.filter(
+        (col) => col.category === query.category
+      );
+    }
+    if (query.chainId) {
+      filteredPortfolio = filteredPortfolio.filter(
+        (col) => col.chainId.toString() === query.chainId
+      );
+    }
 
-    return portfolio;
+    return filteredPortfolio;
   }
 
   async getPortfolioByCollection(userAddress: string, collectionSlug: string) {
