@@ -514,6 +514,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags collection
      * @name CollectionControllerGetUserCollection
      * @request GET:/api/sipher/loyalty/collection/portfolio/{userAddress}
+     * @secure
      */
     collectionControllerGetUserCollection: (
       userAddress: string,
@@ -524,6 +525,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/sipher/loyalty/collection/portfolio/${userAddress}`,
         method: 'GET',
         query: query,
+        secure: true,
         ...params,
       }),
 
@@ -533,11 +535,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags collection
      * @name CollectionControllerGetPortfolioByCollection
      * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/portfolio/{userAddress}
+     * @secure
      */
     collectionControllerGetPortfolioByCollection: (userAddress: string, collectionSlug: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/collection/${collectionSlug}/portfolio/${userAddress}`,
         method: 'GET',
+        secure: true,
         ...params,
       }),
 

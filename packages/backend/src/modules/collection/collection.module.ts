@@ -1,3 +1,4 @@
+import { AuthModule } from "@modules/auth/auth.module";
 import { NftItemModule } from "@modules/nft/nftItem.module";
 import { URIModule } from "@modules/uri/uri.module";
 import { HttpModule } from "@nestjs/axios";
@@ -13,6 +14,7 @@ import { CollectionService } from "./collection.service";
     HttpModule,
     NftItemModule,
     URIModule,
+    AuthModule,
     TypeOrmModule.forFeature([SipherCollection]),
   ],
   providers: [CollectionService],
