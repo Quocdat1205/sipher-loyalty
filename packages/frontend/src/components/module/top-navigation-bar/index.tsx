@@ -1,9 +1,4 @@
 import { Box, Flex } from "@sipher.dev/sipher-ui"
-import { useStore } from "@store"
-
-import SignInForm from "../forms/authentication/sign-in"
-import SignUpForm from "../forms/authentication/sign-up"
-import { GradientBox } from "../layout"
 
 import Logo from "./logo"
 import NavMenus from "./NavMenus"

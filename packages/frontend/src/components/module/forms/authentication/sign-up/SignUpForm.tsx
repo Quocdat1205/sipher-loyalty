@@ -1,36 +1,20 @@
 import React, { useEffect, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
-import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs"
-import { MdInfo } from "react-icons/md"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import {
-  Box,
-  Button,
-  chakra,
-  Flex,
-  HStack,
-  IconButton,
-  InputGroup,
-  InputRightElement,
-  Link,
-  Stack,
-  Text,
-} from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Flex, Link, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
 import {
   ChakraModal,
   CustomInput,
-  CustomPopover,
   Form,
   FormControl,
   FormField,
   SocialAccountSignIn,
-  WalletCard,
   WalletSignIn,
 } from "@components/shared"
 import { useChakraToast } from "@hooks"
@@ -105,6 +89,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
     if (account) {
       try {
         const user = await AtherIdAuth.signIn(account)
+        console.log(account, user)
         if (user)
           toast({
             status: "error",
