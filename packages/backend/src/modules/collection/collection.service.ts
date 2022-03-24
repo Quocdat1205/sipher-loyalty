@@ -59,7 +59,9 @@ export class CollectionService {
     });
     const groupedInventoryByCollectionId = _.groupBy(inventory, "collectionId");
     const portfolio: (SipherCollection & { total: number })[] = [];
+    // eslint-disable-next-line no-restricted-syntax
     for (const collectionId of Object.keys(groupedInventoryByCollectionId)) {
+      // eslint-disable-next-line no-await-in-loop
       const collection = await this.sipherCollectionRepo.findOne({
         where: {
           contractAddress: collectionId,

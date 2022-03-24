@@ -135,40 +135,7 @@ export class LootboxTrackerService {
     }
   };
 
-  private trackingTranserBatch = async (_fromBlock: number) => {
-    const tokenCheckers = [];
-    const _currentBlock = await this.currentBlock();
-    if (_fromBlock === _currentBlock) {
-      return _fromBlock; // retry
-    }
-    const filter = this.contract.filters.TransferBatch();
-    const pastEvents = await this.contract
-      .queryFilter(filter, _fromBlock, _currentBlock)
-      .catch((err) => {
-        LoggerService.error(err, "Failed to get events");
-      });
-    if (!pastEvents) {
-      return _fromBlock; // retry
-    }
-    pastEvents.forEach((event) => {
-      const { from, to, ids } = event.args;
-      if (from !== ZERO_ADDRESS) {
-        const index = tokenCheckers.findIndex(
-          (token) => token.publicAddress === from
-        );
-        if (index === -1) tokenCheckers.push({ publicAddress: from, ids });
-        else tokenCheckers[index].ids.concat(ids);
-      }
-      if (to !== ZERO_ADDRESS) {
-        const index = tokenCheckers.findIndex(
-          (token) => token.publicAddress === to
-        );
-        if (index === -1) tokenCheckers.push({ publicAddress: to, ids });
-        else tokenCheckers[index].ids.concat(ids);
-      }
-    });
-    return _currentBlock;
-  };
+  /// /////////// MINT
 
   private trackingMintedBatch = async (
     _fromBlock: number,
@@ -184,8 +151,9 @@ export class LootboxTrackerService {
     if (!pastEvents) {
       return _fromBlock; // retry
     }
-    const promises = [];
-    pastEvents.forEach((event) => {
+
+    await pastEvents.reduce(async (promise, event) => {
+      await promise;
       const { minter, batchID, amount, salt } = event.args;
       const batchOrder = {
         to: minter,
@@ -193,11 +161,9 @@ export class LootboxTrackerService {
         amount: amount.map((num: BigNumber) => Number(num)),
         salt,
       };
-      promises.push(
-        this.lootBoxService.updateLootboxFromTrackerMintedBatchOrder(batchOrder)
-      );
-    });
-    await Promise.all(promises);
+      this.lootBoxService.updateLootboxFromTrackerMintedBatchOrder(batchOrder);
+    }, Promise.resolve());
+
     return _currentBlock + 1;
   };
 
@@ -215,8 +181,9 @@ export class LootboxTrackerService {
     if (!pastEvents) {
       return _fromBlock; // retry
     }
-    const promises = [];
-    pastEvents.forEach((event) => {
+
+    await pastEvents.reduce(async (promise, event) => {
+      await promise;
       const { minter, batchID, amount, salt } = event.args;
       const order = {
         to: minter,
@@ -224,13 +191,37 @@ export class LootboxTrackerService {
         amount: Number(amount),
         salt,
       };
-      promises.push(
-        this.lootBoxService.updateLootboxFromTrackerMintedOrder(order)
-      );
-    });
-    await Promise.all(promises);
+      this.lootBoxService.updateLootboxFromTrackerMintedOrder(order);
+    }, Promise.resolve());
+
     return _currentBlock + 1;
   };
+
+  private trackingMinted = async (_fromBlock: number) => {
+    const _currentBlock = await this.currentBlock();
+    if (this.fromBlockMinted === undefined || _fromBlock >= _currentBlock) {
+      return _fromBlock; // retry
+    }
+    LoggerService.log(
+      `Start tracking minted from ${_fromBlock} to ${_currentBlock}`
+    );
+    const blockMintedSingle = await this.trackingMintedBatch(
+      _fromBlock,
+      _currentBlock
+    );
+    const blockMintedBatch = await this.trackingMintedSingle(
+      _fromBlock,
+      _currentBlock
+    );
+    const _toBlock =
+      blockMintedSingle > blockMintedBatch
+        ? blockMintedBatch
+        : blockMintedSingle;
+    LoggerService.log(`End tracking minted at ${_toBlock}`);
+    return _toBlock;
+  };
+
+  /// /////////// BURN
 
   private trackingBurnedBatch = async (
     _fromBlock: number,
@@ -246,8 +237,9 @@ export class LootboxTrackerService {
     if (!pastEvents) {
       return _fromBlock; // retry
     }
-    const promises = [];
-    pastEvents.forEach((event) => {
+
+    await pastEvents.reduce(async (promise, event) => {
+      await promise;
       const { burner, batchID, amount, salt } = event.args;
       const batchOrder = {
         to: burner,
@@ -255,12 +247,9 @@ export class LootboxTrackerService {
         amount: amount.map((num: BigNumber) => Number(num)),
         salt,
       };
+      this.lootBoxService.updateLootboxFromTrackerBurnedBatchOrder(batchOrder);
+    }, Promise.resolve());
 
-      promises.push(
-        this.lootBoxService.updateLootboxFromTrackerBurnedBatchOrder(batchOrder)
-      );
-    });
-    await Promise.all(promises);
     return _currentBlock + 1;
   };
 
@@ -278,8 +267,9 @@ export class LootboxTrackerService {
     if (!pastEvents) {
       return _fromBlock; // retry
     }
-    const promises = [];
-    pastEvents.forEach((event) => {
+
+    await pastEvents.reduce(async (promise, event) => {
+      await promise;
       const { burner, batchID, amount, salt } = event.args;
       const order = {
         to: burner,
@@ -287,29 +277,10 @@ export class LootboxTrackerService {
         amount: Number(amount),
         salt,
       };
-      promises.push(
-        this.lootBoxService.updateLootboxFromTrackerBurnedOrder(order)
-      );
-    });
-    await Promise.all(promises);
-    return _currentBlock + 1;
-  };
+      await this.lootBoxService.updateLootboxFromTrackerBurnedOrder(order);
+    }, Promise.resolve());
 
-  private trackingMinted = async (_fromBlock: number) => {
-    const _currentBlock = await this.currentBlock();
-    if (this.fromBlockMinted === undefined || _fromBlock >= _currentBlock) {
-      return _fromBlock; // retry
-    }
-    LoggerService.log(
-      `Start tracking minted from ${_fromBlock} to ${_currentBlock}`
-    );
-    const promises = [];
-    promises.push(this.trackingMintedBatch(_fromBlock, _currentBlock));
-    promises.push(this.trackingMintedSingle(_fromBlock, _currentBlock));
-    const result = await Promise.all(promises);
-    const _toBlock = result.sort((a, b) => a - b)[0];
-    LoggerService.log(`End tracking minted at ${_toBlock}`);
-    return _toBlock;
+    return _currentBlock + 1;
   };
 
   private trackingBurned = async (_fromBlock: number) => {
@@ -320,14 +291,23 @@ export class LootboxTrackerService {
     LoggerService.log(
       `Start tracking burned from ${_fromBlock} to ${_currentBlock}`
     );
-    const promises = [];
-    promises.push(this.trackingBurnedBatch(_fromBlock, _currentBlock));
-    promises.push(this.trackingBurnedSingle(_fromBlock, _currentBlock));
-    const result = await Promise.all(promises);
-    const _toBlock = result.sort((a, b) => a - b)[0];
+    const blockBurnedBatch = await this.trackingBurnedBatch(
+      _fromBlock,
+      _currentBlock
+    );
+    const blockBurnedSinggle = await this.trackingBurnedSingle(
+      _fromBlock,
+      _currentBlock
+    );
+    const _toBlock =
+      blockBurnedBatch > blockBurnedSinggle
+        ? blockBurnedSinggle
+        : blockBurnedBatch;
     LoggerService.log(`End tracking burned at ${_toBlock}`);
     return _toBlock;
   };
+
+  /// /////////// CANCEL
 
   private trackingCancel = async (_fromBlock: number) => {
     const _currentBlock = await this.currentBlock();
@@ -343,18 +323,14 @@ export class LootboxTrackerService {
       .catch((err) => {
         LoggerService.error(err, "Failed to get events");
       });
-
     if (!pastEvents) {
       return _fromBlock; // retry
     }
-    const promises = [];
-    pastEvents.forEach((event) => {
+    await pastEvents.reduce(async (promise, event) => {
+      await promise;
       const { signature } = event.args;
-      promises.push(
-        this.lootBoxService.updateLootboxFromTrackerCancelOrder(signature)
-      );
-    });
-    await Promise.all(promises);
+      await this.lootBoxService.updateLootboxFromTrackerCancelOrder(signature);
+    }, Promise.resolve());
     LoggerService.log(`End tracking minted at ${_currentBlock + 1}`);
     return _currentBlock + 1;
   };
