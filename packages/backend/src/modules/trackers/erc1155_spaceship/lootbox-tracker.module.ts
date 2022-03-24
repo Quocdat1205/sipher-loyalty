@@ -1,5 +1,6 @@
 import {
   Burned,
+  Canceled,
   ERC1155Lootbox,
   ERC1155LootboxAttribute,
   Lootbox,
@@ -10,6 +11,7 @@ import { ScheduleModule } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { BurnModule } from "@modules/burn/burn.module";
+import { CancelModule } from "@modules/cancel/cancel.module";
 import { LootBoxService } from "@modules/lootbox/lootbox.service";
 import { MintModule } from "@modules/mint/mint.module";
 import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
@@ -26,11 +28,13 @@ import { LootboxTrackerService } from "./lootbox-tracker.service";
       TrackedBlock,
       ClaimableLootbox,
       Burned,
+      Canceled,
       ERC1155Lootbox,
       ERC1155LootboxAttribute,
     ]),
     MintModule,
     BurnModule,
+    CancelModule,
   ],
   providers: [LootboxTrackerService, LootBoxService],
   exports: [LootboxTrackerService],
