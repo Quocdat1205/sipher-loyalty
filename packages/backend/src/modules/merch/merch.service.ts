@@ -23,6 +23,8 @@ export class MerchService {
     //   .where("transaction.publicAddress = :publicAddress", { publicAddress })
     //   .getRawMany();
 
+    // console.log(result);
+
     const result = await this.transactionRepo.findOne({
       // join: {
       //   alias: "transaction",
@@ -33,6 +35,7 @@ export class MerchService {
       where: { publicAddress },
       relations: ["item"],
     });
+    console.log(result);
 
     // return this.transactionRepo.find({ where: { publicAddress } });
   }
