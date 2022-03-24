@@ -51,7 +51,7 @@ export const PendingContainer = () => {
                   <Button
                     isLoading={item.isMinting}
                     onClick={() => {
-                      item.batchIDs.length > 1 ? item.onMintBatch() : item.onMint()
+                      item.batchIDs && item.batchIDs.length > 0 ? item.onMintBatch() : item.onMint()
                     }}
                   >
                     MINT
