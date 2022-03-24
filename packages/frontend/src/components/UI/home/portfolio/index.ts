@@ -1,4 +1,3 @@
-export * from "./Carousel"
-export * from "./NFTsContainer"
-export * from "./PortfolioHome"
-export * from "./TabContainer"
+import PortfolioHome from "./PortfolioHome"
+
+export default PortfolioHome

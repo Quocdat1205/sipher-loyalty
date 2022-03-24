@@ -1,5 +1,4 @@
 import React from "react"
-import { BsArrowRightShort } from "react-icons/bs"
 import { Box, Button, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
 
 export const Slide1 = () => {
@@ -8,44 +7,27 @@ export const Slide1 = () => {
       align="center"
       justify="center"
       pos="relative"
-      bg={`url(/images/general/dashboard-banner.jpg)`}
+      bg={`url(/images/home/banner2.png)`}
       h={["20rem", "22.5rem"]}
       w="full"
       bgSize="cover"
       bgRepeat="no-repeat"
     >
-      <Box
-        display={["none", "block"]}
-        textAlign="center"
-        pos="absolute"
-        top="50%"
-        left="25%"
-        transform="translate(-50%, -50%)"
-      >
-        <Heading fontSize="4xl" fontWeight={600}>
-          SIPHERIAN SURGE
-        </Heading>
-        <Text mb={2}>by John Doe</Text>
-        <Button>
-          View Collection
-          <Box ml={2}>
-            <BsArrowRightShort size="1.5rem" />
-          </Box>
-        </Button>
-      </Box>
-      <Box p={4} display={["block", "none"]} textAlign="center">
-        <Heading fontSize="4xl" fontWeight={600}>
-          SIPHERIAN
-        </Heading>
-        <Heading fontSize="4xl" fontWeight={600}>
-          SURGE
-        </Heading>
-        <Button>
-          View Collection
-          <Box ml={2}>
-            <BsArrowRightShort size="1.5rem" />
-          </Box>
-        </Button>
+      <Box pos="relative" w="full" maxW="1200px" display={["none", "block"]}>
+        <Box textAlign="center" pos="absolute" top="50%" left="0%" transform="translateY(-50%)">
+          <Heading fontSize="4xl" fontWeight={600}>
+            SPACESHIP ASTERO
+          </Heading>
+          <Text lineHeight={1.2} color="whiteAlpha.700" fontSize="xl">
+            LOOTBOXES ARE READY TO BE
+          </Text>
+          <Text lineHeight={1.2} color="whiteAlpha.700" fontSize="xl" mb={6}>
+            MINTED AND TRADEABLE
+          </Text>
+          <Button bg="transparent" border="1px" borderColor="white" size="lg" variant="secondary">
+            EXPLORER
+          </Button>
+        </Box>
       </Box>
     </Flex>
   )

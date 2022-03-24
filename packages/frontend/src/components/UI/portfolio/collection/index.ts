@@ -1,5 +1,3 @@
-export * from "./CollectionCard"
-export * from "./CollectionContainer"
-export * from "./DetailsCollection"
-export * from "./FilterBar"
-export * from "./useCollection"
+import CollectionContainer from "./CollectionContainer"
+
+export default CollectionContainer

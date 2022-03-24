@@ -3,9 +3,9 @@ import { BiChevronRight } from "react-icons/bi"
 import { useRouter } from "next/router"
 import { Box, Button, Flex, Text } from "@sipher.dev/sipher-ui"
 
-import { TabContainer } from "."
+import TabContainer from "./TabContainer"
 
-export const PortfolioHome = () => {
+const PortfolioHome = () => {
   const router = useRouter()
 
   return (
@@ -25,3 +25,4 @@ export const PortfolioHome = () => {
     </Box>
   )
 }
+export default PortfolioHome

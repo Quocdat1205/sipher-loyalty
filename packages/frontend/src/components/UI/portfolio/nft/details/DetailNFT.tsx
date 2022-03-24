@@ -3,16 +3,17 @@ import { Box, Flex } from "@sipher.dev/sipher-ui"
 
 import { useWidth } from "@hooks"
 
-import { HeaderDetails } from "./HeaderDetails"
+import ActionContainer from "./ActionContainer"
+import HeaderDetails from "./HeaderDetails"
+import NftImage from "./NftImage"
 import TabContainer from "./TabContainer"
-import { ActionContainer, NftImage } from "."
 
 interface DetailBoxProps {
   collectionId: string
   tokenId: string
 }
 
-export const DetailNFT = ({ collectionId, tokenId }: DetailBoxProps) => {
+const DetailNFT = ({ collectionId, tokenId }: DetailBoxProps) => {
   const [boxWidth, setBoxWidth] = useState(0)
   const windowWidth = useWidth()
   // right UI info details
@@ -64,3 +65,4 @@ export const DetailNFT = ({ collectionId, tokenId }: DetailBoxProps) => {
     </Flex>
   )
 }
+export default DetailNFT

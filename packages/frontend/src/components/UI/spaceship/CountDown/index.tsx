@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useQueryClient } from "react-query"
 import { differenceInSeconds } from "date-fns"
-import { HStack } from "@sipher.dev/sipher-ui"
 
 import Colon from "./Colon"
 import TimeCell from "./TimeCell"

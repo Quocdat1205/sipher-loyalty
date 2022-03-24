@@ -1,24 +1,11 @@
 import { useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
-import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs"
 import { MdInfo } from "react-icons/md"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import {
-  Box,
-  Button,
-  chakra,
-  Divider,
-  Flex,
-  FormControl,
-  IconButton,
-  InputGroup,
-  InputRightElement,
-  Stack,
-  Text,
-} from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Flex, FormControl, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal, CustomInput, CustomPopover, Form, FormField } from "@components/shared"
 import { useChakraToast } from "@hooks"
@@ -39,7 +26,6 @@ const validationSchema = Yup.object().shape({
 })
 
 const FillEmailForm = () => {
-  const [show, setShow] = useState(false)
   const [showVerify, setShowVerify] = useState(false)
   const toast = useChakraToast()
   const [email, setEmail] = useState("")

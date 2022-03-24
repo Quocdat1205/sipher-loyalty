@@ -42,7 +42,6 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
 
   const { signOut } = useAuth()
   const setAuthFlow = useStore(s => s.setAuthFlow)
-  const authFlow = useStore(s => s.authFlow)
 
   const { mutate: mutateSignOut, isLoading } = useMutation(signOut, {
     onSuccess: () => {

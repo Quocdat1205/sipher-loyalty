@@ -4,7 +4,7 @@ import { Box, Button, chakra, HStack } from "@sipher.dev/sipher-ui"
 
 import QuantitySelector from "./QuantitySelector"
 
-export const ActionContainer = () => {
+const ActionContainer = () => {
   const [slot, setSlot] = useState(0)
   return (
     <Box
@@ -39,3 +39,4 @@ export const ActionContainer = () => {
     </Box>
   )
 }
+export default ActionContainer

@@ -1,13 +1,13 @@
 import React from "react"
-import { useRouter } from "next/router"
 import { Box, Flex } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
 import { Banner } from "@components/shared"
 
-import { CollectionContainer } from "./collection"
+import CollectionContainer from "./collection"
 import General from "./General"
 import { TokensContainer } from "./tokens"
+import usePortfolio from "./usePortfolio"
 
 const tabs = [
   { label: "NFTs", name: "nfts" },
@@ -15,12 +15,11 @@ const tabs = [
 ]
 
 const ContentPortfolio = () => {
-  const router = useRouter()
-  const currentTab = router.query.tab || "nfts"
+  const { totalNFTs, currentTab, collectionData, filter, setFilter } = usePortfolio()
 
   const renderTabs = () => {
     if (currentTab === "nfts") {
-      return <CollectionContainer />
+      return <CollectionContainer filter={filter} setFilter={setFilter} collectionData={collectionData} />
     }
     if (currentTab === "tokens") {
       return <TokensContainer />
@@ -36,8 +35,8 @@ const ContentPortfolio = () => {
         title="Portfolio"
         description="Where to find your digital assets & balance"
       />
-      <Box px={[4, 0]} py={12} flex={1} w="full" maxW="1200px">
-        <General />
+      <Box px={[4, 4, 4, 0, 0]} py={12} flex={1} w="full" maxW="1200px">
+        <General totalNFTs={totalNFTs} />
         <TabPage tabs={tabs} />
         <Box py={6}>{renderTabs()}</Box>
       </Box>
