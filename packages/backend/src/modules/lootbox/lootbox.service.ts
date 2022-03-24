@@ -329,8 +329,8 @@ export class LootBoxService {
   getLootboxFromUserID = async (
     userData: UserData
   ): Promise<Array<Lootbox>> => {
-    const { userID, publicAddress } = userData;
-    LoggerService.log(`userID:  ${userID}`);
+    const { userId, publicAddress } = userData;
+    LoggerService.log(`userId:  ${userId}`);
     const promises = [];
     publicAddress.forEach((wAddress) => {
       promises.push(this.getLootboxFromWallet(wAddress));
@@ -364,8 +364,8 @@ export class LootBoxService {
   getClaimableLootboxFromUserID = async (
     userData: UserData
   ): Promise<Array<ClaimableLootbox>> => {
-    const { userID, publicAddress } = userData;
-    LoggerService.log(`userID:  ${userID}`);
+    const { userId, publicAddress } = userData;
+    LoggerService.log(`userId:  ${userId}`);
     const promises = [];
     publicAddress.forEach((wAddress) => {
       promises.push(this.getClaimableLootboxFromWallet(wAddress));

@@ -1,5 +1,5 @@
 export type UserData = {
-  userID: string;
+  userId: string;
   publicAddress: string[];
   currentpublicAddress?: string;
 };
