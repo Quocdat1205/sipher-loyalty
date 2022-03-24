@@ -10,7 +10,7 @@ export const useCollection = () => {
   const { session, authenticated, user } = useAuth()
   const { account } = useWalletContext()
 
-  const { data } = useQuery(
+  useQuery(
     ["collection", user, account],
     () =>
       client.api
@@ -24,7 +24,6 @@ export const useCollection = () => {
       enabled: authenticated && !!account,
     },
   )
-
 
   const handleClick = (collectionId: string | number) => {
     router.push(`/portfolio/${collectionId}`)
