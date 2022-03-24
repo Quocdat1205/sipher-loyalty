@@ -103,16 +103,15 @@ export const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: Sli
           </Box>
         </motion.div>
       </AnimatePresence>
-      <HStack pos="absolute" bottom={0} left="50%" transform="translate(-50%, -1rem)" align="center">
+      <HStack spacing={4} pos="absolute" bottom={0} left="50%" transform="translate(-50%, -1rem)" align="center">
         {slideData.map((_, idx) => (
           <Box
             cursor="pointer"
             onClick={() => handleClick(idx)}
             key={idx}
             bg={index === idx ? "white" : "whiteAlpha.500"}
-            w="20px"
-            h={index === idx ? "6px" : "3px"}
-            rounded="full"
+            w="88px"
+            h={"8px"}
           />
         ))}
       </HStack>

@@ -4,13 +4,13 @@ import { Avatar, Box, Flex, Heading, Link, SimpleGrid, Stack, Text } from "@siph
 
 import { SpVerified } from "@components/shared/icons"
 
-import { NFTCard, useNFTs } from "../nft"
+import { NFTCard, useNFTs } from "."
 
 interface DetailsCollectionProps {
   collectionId: string
 }
 
-export const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
+const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
   const { handleClick } = useNFTs()
 
   const renderNFTs = () => {
@@ -55,3 +55,4 @@ export const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
     </Box>
   )
 }
+export default DetailsCollection

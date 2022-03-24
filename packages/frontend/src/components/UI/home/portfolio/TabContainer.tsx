@@ -3,12 +3,12 @@ import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 
 import { TokensContainer } from "@components/UI/portfolio/tokens"
 
-import { NFTsContainer } from "./NFTsContainer"
+import NFTsContainer from "./NFTsContainer"
 
 const tabs = ["NFTs", "Tokens"] as const
 type Tab = typeof tabs[number]
 
-export const TabContainer = () => {
+const TabContainer = () => {
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
 
   const renderTabs = () => {
@@ -44,3 +44,4 @@ export const TabContainer = () => {
     </Flex>
   )
 }
+export default TabContainer

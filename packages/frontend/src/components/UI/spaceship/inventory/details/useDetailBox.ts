@@ -68,7 +68,7 @@ export const useDetailBox = id => {
         setIsFetched(false)
         toast({
           status: "success",
-          title: "Transaction pending",
+          title: "Transaction Successful",
           message: "Please review your wallet notifications.",
           duration: 10000,
         })
@@ -77,8 +77,17 @@ export const useDetailBox = id => {
         setIsFetched(false)
         query.invalidateQueries(["detailsLootBox", account, user])
       },
-      onError: err => {
-        console.log(err)
+      onError: (err: any) => {
+        if (err.code === 4001) {
+          toast({
+            status: "error",
+            title: "Transaction rejected",
+            message: "Please check pending tab if you want minted again",
+            duration: 10000,
+          })
+        } else {
+          toast({ status: "error", title: "Error", message: err?.message })
+        }
       },
     },
   )

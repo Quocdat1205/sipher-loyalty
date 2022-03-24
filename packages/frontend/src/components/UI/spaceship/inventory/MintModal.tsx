@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { Box, Button, chakra, Divider, Flex, HStack, Link, Text } from "@sipher.dev/sipher-ui"
@@ -19,6 +19,12 @@ interface MintModalProps {
 
 export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoading }: MintModalProps) => {
   const router = useRouter()
+  const [dataMinted, setDataMinted] = useState<ReturnType<typeof useInventory>["inventoryDataCheck"]>([])
+
+  useEffect(() => {
+    setDataMinted(dataMint)
+  }, [isLoading])
+
   return (
     <ChakraModal
       scrollBehavior="inside"
@@ -29,7 +35,7 @@ export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoa
           : status === "SUCCESS"
           ? "MINT SUCCESSFUL!"
           : status === "PENDING"
-          ? "MINT PENDING"
+          ? "ITEMS SIGNED"
           : "MINT ERROR"
       }
       isOpen={isOpen}
@@ -38,7 +44,7 @@ export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoa
     >
       <Box px={6}>
         {status === "MINT" ? (
-          <>
+          <Fragment>
             <chakra.table w="full">
               <chakra.thead>
                 <chakra.tr>
@@ -81,24 +87,43 @@ export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoa
               <Text fontWeight={600}>SUM QTY(s)</Text>
               <Text fontWeight={600}>{dataMint.reduce((acc, val) => acc + val.slot, 0)}</Text>
             </Flex>
-            <Text color="grey.400">
+            <Text mb={4} color="grey.400">
               Minting Lootbox(es) to NFT(s) will be processed on Polygon and require you to change Blockchain network.
               For more information, please check{" "}
               <Link textDecor="underline" isExternal color="cyan.600">
                 here.
               </Link>
             </Text>
-          </>
+            <Text fontSize="sm" color="red.500">
+              After "Confirm", your items will be moved to the "Pending" section. It will require an on-chain
+              transaction to cancel pending items, otherwise, you have to wait 3 days for the pending order to be
+              automatically canceled.
+            </Text>
+          </Fragment>
         ) : status === "SUCCESS" ? (
-          <Text color="grey.400">
-            You have successfully minted 02 Lootbox Astero to NFT(s). Now you can list your NFT(s) on{" "}
-            <Link textDecor="underline" isExternal color="cyan.600">
-              Marketplace{" "}
-            </Link>{" "}
-            for trading.
-          </Text>
+          <Fragment>
+            <Text textAlign="center" color="grey.400">
+              You have successfully minted to NFT(s).
+            </Text>
+            {dataMinted.map(item => (
+              <Text textAlign="center" color="white" fontWeight={600} key={item.id}>
+                {item.slot} {item.propertyLootbox.name}
+              </Text>
+            ))}
+            <Text color="grey.400" textAlign="center" mt={4}>
+              Now you can list your NFT(s) on{" "}
+              <Link href="https://opensea.io/assets" textDecor="underline" isExternal color="cyan.600">
+                Marketplace{" "}
+              </Link>
+              for trading.
+            </Text>
+          </Fragment>
         ) : status === "PENDING" ? (
-          <Text color="grey.400">Because you reject, your nft is on the pending list. Please check!</Text>
+          <Text color="grey.400">
+            You have rejected the transaction but your items are already signed and moved to the "Pending" section. It
+            will require an on-chain transaction to cancel pending items, otherwise, you have to wait 3 days for the
+            pending order to be automatically canceled.
+          </Text>
         ) : (
           <Text color="grey.400">Something went wrong. Please try again!</Text>
         )}
@@ -124,7 +149,14 @@ export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoa
             </>
           ) : status === "SUCCESS" ? (
             <>
-              <Button variant="secondary" colorScheme="cyan" fontSize="md" size="md" py={5}>
+              <Button
+                onClick={() => window.open("https://opensea.io/assets", "_blank")}
+                variant="secondary"
+                colorScheme="cyan"
+                fontSize="md"
+                size="md"
+                py={5}
+              >
                 VIEW YOUR NFT
               </Button>
               <Button onClick={onClose} py={5} fontSize="md" size="md">

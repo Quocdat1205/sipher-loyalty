@@ -47,11 +47,11 @@ const ContentSpaceship = () => {
         description="Transport yourself throughout the various dungeons and the World of Sipheria"
       />
       {currentTab !== "overview" && (
-        <Box px={[4, 0]} pt={12} w="full" maxW="1200px">
+        <Box px={[4, 4, 4, 0, 0]} pt={12} w="full" maxW="1200px">
           <TabPage tabs={spaceshipTabs} />
         </Box>
       )}
-      <Flex flexDir="column" flex={1} w="full">
+      <Flex px={[4, 4, 4, 0, 0]} flexDir="column" flex={1} w="full">
         {renderTabs()}
       </Flex>
     </Flex>

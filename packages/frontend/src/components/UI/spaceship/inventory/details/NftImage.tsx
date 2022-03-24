@@ -5,7 +5,6 @@ import {
   Box,
   BoxProps,
   Flex,
-  HStack,
   IconButton,
   Modal,
   ModalBody,
@@ -13,17 +12,21 @@ import {
   ModalContent,
   ModalOverlay,
   Skeleton,
+  Text,
   useOutsideClick,
 } from "@sipher.dev/sipher-ui"
 
+import { SpLayer } from "@components/shared/icons"
+
 interface NftImageProps extends BoxProps {
+  mintable: number
   isFetching: boolean
   windowHeight?: number
   src?: string
   alt?: string
 }
 
-export const NftImage = ({ isFetching, windowHeight, src, alt, ...rest }: NftImageProps) => {
+export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest }: NftImageProps) => {
   const [isImgLoaded, setIsImgLoaded] = useState(false)
   const [isOpen, setIsOpen] = useState("")
   const boxRef = useRef(null)
@@ -44,17 +47,15 @@ export const NftImage = ({ isFetching, windowHeight, src, alt, ...rest }: NftIma
             height={windowHeight ? windowHeight - 200 : 574}
             onLoad={() => setIsImgLoaded(true)}
           />
-          <HStack pos="absolute" bottom="0" right="0" transform="translate(-1rem, -1.5rem)">
-            {/* <IconButton
-              onClick={() => setIsOpen("CHANGE_PICTURE")}
-              size="lg"
-              color="white"
-              bg="rgba(41, 42, 64, 0.6)"
-              aria-label="resize"
-              _focus={{ boxShadow: "none" }}
-              _hover={{ bg: "accent.600", color: "neutral.900" }}
-              icon={<CgProfile size="1.4rem" />}
-            /> */}
+          <Box pos="absolute" bottom="0" left="0" transform="translate(1rem, -2rem)">
+            <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white">
+              <SpLayer />
+              <Text fontSize="xs" color="neutral.900" fontWeight={600}>
+                {mintable}
+              </Text>
+            </Flex>
+          </Box>
+          <Box pos="absolute" bottom="0" right="0" transform="translate(-1rem, -1.5rem)">
             <IconButton
               onClick={() => setIsOpen("FULL_SCREEN")}
               size="lg"
@@ -65,7 +66,7 @@ export const NftImage = ({ isFetching, windowHeight, src, alt, ...rest }: NftIma
               aria-label="resize"
               icon={<BiFullscreen size="1.4rem" />}
             />
-          </HStack>
+          </Box>
         </Box>
       </Flex>
       <Modal isOpen={isOpen === "FULL_SCREEN"} onClose={() => setIsOpen("")} isCentered size="3xl">

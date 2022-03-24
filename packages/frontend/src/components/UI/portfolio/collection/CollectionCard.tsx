@@ -6,30 +6,18 @@ import { EthereumIcon } from "@components/shared"
 import { SpLayer, SpVerified } from "@components/shared/icons"
 import { currency } from "@utils"
 
+import usePortfolio from "../usePortfolio"
+
 interface CardProps {
-  collectionName: string
-  collectionId: string
-  isVerified: boolean
-  imageUrl: string
-  volume: number
-  floorPrice: number
-  onClick: (id: number | string) => void
+  data: ReturnType<typeof usePortfolio>["collectionData"]
 }
 
-export const CollectionCard = ({
-  collectionName,
-  collectionId,
-  isVerified = false,
-  imageUrl,
-  volume,
-  floorPrice,
-  onClick,
-}: CardProps) => {
+const CollectionCard = ({ data }: CardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
     <Box
-      onClick={() => onClick(collectionId)}
+      // onClick={() => onClick(collectionId)}
       _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
       overflow="hidden"
       rounded="lg"
@@ -39,8 +27,8 @@ export const CollectionCard = ({
     >
       <Skeleton pos="relative" display="flex" isLoaded={imageLoaded}>
         <Image
-          src={imageUrl || ""}
-          alt={collectionName}
+          src={"/images/nft/sipher1.png" || ""}
+          alt={data.name}
           loading="lazy"
           height={170}
           width={383}
@@ -49,18 +37,18 @@ export const CollectionCard = ({
         <Flex align="center" py={0.5} px={2} rounded="full" bg="white" pos="absolute" bottom="0.5rem" left="0.5rem">
           <SpLayer />
           <Text ml={1} color="neutral.900" fontWeight={600}>
-            25
+            {data.total}
           </Text>
         </Flex>
       </Skeleton>
       <Flex p={4} align="center">
-        <Avatar size="lg" src={imageUrl || ""} />
+        <Avatar size="lg" src={"/images/nft/sipher1.png" || ""} />
         <Box flex={1} ml={6}>
           <Flex mb={2} align="center">
             <Text fontWeight={600} mr={1} fontSize="lg">
-              {collectionName}
+              {data.name}
             </Text>
-            <Box pt="2px">{isVerified && <SpVerified />}</Box>
+            <Box pt="2px">{<SpVerified />}</Box>
           </Flex>
           <Flex align="center">
             <Box>
@@ -70,7 +58,7 @@ export const CollectionCard = ({
               <Flex align="center">
                 <EthereumIcon />
                 <Text color="neutral.50">
-                  {volume} {""}M
+                  {0} {""}M
                 </Text>
               </Flex>
             </Box>
@@ -80,7 +68,7 @@ export const CollectionCard = ({
               </Text>
               <Flex align="center">
                 <EthereumIcon />
-                <Text color="neutral.50">{currency(floorPrice)} </Text>
+                <Text color="neutral.50">{currency(data.floorPrice ? data.floorPrice : 0)} </Text>
               </Flex>
             </Box>
           </Flex>
@@ -89,3 +77,4 @@ export const CollectionCard = ({
     </Box>
   )
 }
+export default CollectionCard
