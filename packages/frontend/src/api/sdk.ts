@@ -37,7 +37,19 @@ export interface PendingMint {
 }
 
 export interface ResPendingMintDto {
-  pending: PendingMint;
+  id: string;
+  to: string;
+  batchID: number;
+  amount: number;
+  batchIDs: number[];
+  amounts: number[];
+  salt: string;
+  status: MintStatus;
+  type: MintType;
+  signature: string;
+
+  /** @format date-time */
+  createdAt: string;
   info: PendingMint[];
 }
 
