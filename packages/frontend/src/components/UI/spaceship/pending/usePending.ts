@@ -43,7 +43,6 @@ export const usePending = () => {
 
   //   { enabled: authenticated && !!account },
   // )
-
   // const { mutate: mutateMintBatch } = useMutation<unknown, unknown, InputLootBoxProp>(
   //   ({ batchIDs, amounts, salt, signature }) =>
   //     scCaller.current!.SipherSpaceshipPart.mintBatch(batchIDs!, amounts!, salt, signature),
@@ -114,6 +113,7 @@ export const usePending = () => {
   //     }
   //   },
   // }))
+  // console.log(dataInit)
 
   return {
     pendingData: [],

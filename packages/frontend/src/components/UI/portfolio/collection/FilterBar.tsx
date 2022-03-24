@@ -3,13 +3,13 @@ import { Box, HStack } from "@sipher.dev/sipher-ui"
 
 import FilterSelector from "../FilterSelector"
 
-const categoriesSort = [
-  { value: "characters", text: "Characters" },
-  { value: "weapons", text: "Weapons" },
-  { value: "accessories", text: "Accessories" },
-  { value: "armor", text: "Armor" },
-  { value: "other", text: "Other" },
-]
+// const categoriesSort = [
+//   { value: "characters", text: "Characters" },
+//   { value: "weapons", text: "Weapons" },
+//   { value: "accessories", text: "Accessories" },
+//   { value: "armor", text: "Armor" },
+//   { value: "other", text: "Other" },
+// ]
 
 const collectionSort = [
   { value: "NEKO", text: "SIPHER NEKO" },
@@ -33,11 +33,11 @@ const FilterBar = () => {
           text="Collection"
           data={collectionSort}
         />
-        <FilterSelector
+        {/* <FilterSelector
           onSelectChange={v => setFilter({ ...filter, categories: v })}
           text="Categories"
           data={categoriesSort}
-        />
+        /> */}
       </HStack>
       {/* <Stack spacing={[2, 4]} display={["flex", "none"]}>
         <HStack w="full" align="center" justify={["flex-start", "flex-end"]}>

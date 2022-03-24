@@ -7,7 +7,7 @@ sipher-chart:
       kubernetes.io/ingress.class: alb
       service.beta.kubernetes.io/aws-load-balancer-internal: "true"
     rules:
-    - host:  api-loyalty.sipher.gg
+    - host:  api-loyalty.sipher.xyz
       paths:
       - path: /
         serviceName: loyalty-backend-api
@@ -15,8 +15,17 @@ sipher-chart:
         pathType: ImplementationSpecific
   deploys:
     - name: backend
-      replicasCount: 1
-      resources: {}
+      replicasCount: 2
+      autoScale:
+        min: 2
+        max: 5
+      resources:
+        requests:
+          memory: 256Mi
+          cpu: 128m
+        limits:
+          memory: 512Mi
+          cpu: 512m
       command: ['/bin/sh']
       args:
         - '-c'

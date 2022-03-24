@@ -195,12 +195,12 @@ jobs:
     uses: sipherxyz/sipher-loyalty/.github/workflows/default-build_deploy.yml@template
     with:
       module: backend
-      aws_region: us-east-1
-      argocd_host: argocd.sipher.gg
+      aws_region: ap-southeast-1
+      argocd_host: argocd01.sipher.gg
       argocd_user: admin
     secrets:
-      aws_accesskey: ${{ secrets.AWS_ACCESS_KEY_ID }} # plaintext in github secret
-      aws_secret: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # plaintext in github secret
+      aws_accesskey: ${{ secrets.AWS_WEB_ACCESS_KEY_ID }} # plaintext in github secret
+      aws_secret: ${{ secrets.AWS_WEB_SECRET_ACCESS_KEY }} # plaintext in github secret
       webhook: ${{ secrets.SLACK_WEBHOOK_URL }} # plaintext in github secret
       argocd_secret: ${{ secrets.ARGOCD_SECRET }} # plaintext in github secret
   #-----------------------------------
@@ -237,8 +237,8 @@ jobs:
           cd packages/frontend && terraform init -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_PROD }}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_WEB_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_WEB_SECRET_ACCESS_KEY }}
 
       - name: Terraform Validate
         run: cd packages/frontend && terraform validate
@@ -248,8 +248,8 @@ jobs:
           cd packages/frontend && terraform plan -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_WEB_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_WEB_SECRET_ACCESS_KEY }}
 
       - name: Notification
         uses: 8398a7/action-slack@v3
@@ -291,8 +291,8 @@ jobs:
           cd packages/frontend && terraform init -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_PROD }}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_WEB_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_WEB_SECRET_ACCESS_KEY }}
 
       - name: Terraform Validate
         run: cd packages/frontend && terraform validate
@@ -302,8 +302,8 @@ jobs:
           cd packages/frontend && terraform apply -auto-approve -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_WEB_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_WEB_SECRET_ACCESS_KEY }}
 
       - name: Notification
         uses: 8398a7/action-slack@v3
