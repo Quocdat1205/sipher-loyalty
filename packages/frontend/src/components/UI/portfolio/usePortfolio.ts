@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
+import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 export const collectionSort = [
@@ -31,18 +32,23 @@ const usePortfolio = () => {
   const { account } = useWalletContext()
   const [filter, setFilter] = useState(initFilter)
 
-  const { data: collectionData } = useQuery(
+  const currentTab = router.query.tab || "nfts"
+
+  const { data: initData } = useQuery(
     ["collection", user, account, filter],
     () =>
       client.api
         .collectionControllerGetUserCollection(
           account!,
-          { category: filter.categories as "character" | "scuplture" | "lootbox" | "spaceship" | undefined },
           {
-            headers: {
-              Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
-            },
+            category: (filter.categories !== "" ? filter.categories : undefined) as
+              | "character"
+              | "lootbox"
+              | "spaceship"
+              | "sculpture"
+              | undefined,
           },
+          setBearerToken(session?.getIdToken().getJwtToken() as string),
         )
         .then(res => res.data),
     {
@@ -51,12 +57,13 @@ const usePortfolio = () => {
     },
   )
 
-  console.log(collectionData)
+  const collectionData = initData?.map(item => ({
+    ...item,
+    onView: () => router.push(`/portfolio/${item.collectionSlug}`),
+  }))
 
-  const handleClick = (collectionId: string | number) => {
-    router.push(`/portfolio/${collectionId}`)
-  }
+  const totalNFTs = collectionData.reduce((accu, curr) => accu + curr.total, 0)
 
-  return { collectionData, handleClick, filter, setFilter }
+  return { totalNFTs, collectionData, filter, setFilter, currentTab, router }
 }
 export default usePortfolio

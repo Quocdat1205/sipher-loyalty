@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { wrap } from "popmotion"
 import { Box, HStack, SimpleGrid } from "@sipher.dev/sipher-ui"
 
-import { CollectionCard } from "@components/UI/portfolio/collection"
+import CollectionCard from "@components/UI/portfolio/collection/CollectionCard"
 
 interface SlideshowProps {
   isAuto?: boolean

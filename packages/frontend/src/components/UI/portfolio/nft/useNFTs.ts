@@ -1,11 +1,38 @@
+import { useQuery } from "react-query"
 import { useRouter } from "next/router"
+import client from "@client"
+import { useStore } from "@store"
+import { useWalletContext } from "@web3"
 
-export const useNFTs = () => {
+import { setBearerToken } from "@utils"
+import { useAuth } from "src/providers/auth"
+
+export const useNFTs = collectionSlug => {
   const router = useRouter()
+  const { session, authenticated, user } = useAuth()
+  const { account } = useWalletContext()
+  const gridSize = useStore(state => state.gridSize)
+  const columns = gridSize === "small" ? [2, 3, 4, 5, 5] : [1, 2, 3, 4, 4]
 
-  const handleClick = (collectionId: string, tokenId: string | number) => {
-    router.push(`/portfolio/${collectionId}/${tokenId}`)
-  }
+  const { data: initData } = useQuery(
+    ["collection", user, account],
+    () =>
+      client.api
+        .collectionControllerGetPortfolioByCollection(
+          account!,
+          collectionSlug,
+          setBearerToken(session?.getIdToken().getJwtToken() as string),
+        )
+        .then(res => res.data),
+    {
+      enabled: authenticated && !!account,
+      initialData: [],
+    },
+  )
 
-  return { handleClick }
+  const nftsData = initData!.items?.map(item => ({
+    ...item,
+    onView: () => router.push(`/portfolio/${item.collectionSlug}`),
+  }))
+  return { columns, total: initData!.total, nftsData }
 }

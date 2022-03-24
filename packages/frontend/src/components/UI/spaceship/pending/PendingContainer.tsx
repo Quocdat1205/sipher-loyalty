@@ -30,14 +30,14 @@ export const PendingContainer = () => {
           </chakra.thead>
           <chakra.tbody>
             {pendingData?.map((item, index) => (
-              <chakra.tr borderTop="1px" borderColor="whiteAlpha.100" key={item.id}>
+              <chakra.tr borderTop="1px" borderColor="whiteAlpha.100" key={index}>
                 <chakra.td textAlign="center" py={4}>
                   {index + 1}
                 </chakra.td>
                 <chakra.td textAlign="center" py={4}>
                   <Wrap spacing={3} justify="center">
-                    {item.info.map(i => (
-                      <WrapItem key={i.id}>
+                    {item.info.map((i, idx) => (
+                      <WrapItem key={idx}>
                         <Flex align="center">
                           <Image src={i.image} alt={i.tokenId} width={40} height={40} />
                           <Text>x{i.quantity}</Text>

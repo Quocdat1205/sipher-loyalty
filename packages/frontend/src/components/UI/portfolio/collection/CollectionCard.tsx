@@ -17,7 +17,7 @@ const CollectionCard = ({ data }: CardProps) => {
 
   return (
     <Box
-      // onClick={() => onClick(collectionId)}
+      onClick={data.onView}
       _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
       overflow="hidden"
       rounded="lg"

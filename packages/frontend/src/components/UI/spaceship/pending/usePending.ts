@@ -6,6 +6,7 @@ import { useWalletContext } from "@web3"
 import { POLYGON_NETWORK } from "@constant"
 import { useChakraToast } from "@hooks"
 import { Lootbox } from "@sdk"
+import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 export interface InventoryProps extends Lootbox {
@@ -34,11 +35,7 @@ export const usePending = () => {
     ["pending", account, user],
     () =>
       client.api
-        .mintControllerGetPendingLootbox(account!, {
-          headers: {
-            Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
-          },
-        })
+        .mintControllerGetPendingLootbox(account!, setBearerToken(session?.getIdToken().getJwtToken() as string))
         .then(res => res.data),
     { enabled: authenticated && !!account, initialData: [] },
   )

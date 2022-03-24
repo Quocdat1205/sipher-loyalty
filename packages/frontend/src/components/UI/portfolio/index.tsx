@@ -1,5 +1,4 @@
 import React from "react"
-import { useRouter } from "next/router"
 import { Box, Flex } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
@@ -16,9 +15,7 @@ const tabs = [
 ]
 
 const ContentPortfolio = () => {
-  const router = useRouter()
-  const currentTab = router.query.tab || "nfts"
-  const { collectionData, filter, setFilter } = usePortfolio()
+  const { totalNFTs, currentTab, collectionData, filter, setFilter } = usePortfolio()
 
   const renderTabs = () => {
     if (currentTab === "nfts") {
@@ -39,7 +36,7 @@ const ContentPortfolio = () => {
         description="Where to find your digital assets & balance"
       />
       <Box px={[4, 4, 4, 0, 0]} py={12} flex={1} w="full" maxW="1200px">
-        <General />
+        <General totalNFTs={totalNFTs} />
         <TabPage tabs={tabs} />
         <Box py={6}>{renderTabs()}</Box>
       </Box>

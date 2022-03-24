@@ -1,5 +1,7 @@
 import { BigNumber, ethers } from "ethers"
 
+import { RequestParams } from "@sdk"
+
 const SIGNIN_KEY = "SIGNIN"
 
 export * from "./urlQuery"
@@ -44,3 +46,9 @@ export const getSignIn = (): string | null => {
 export const clearSignIn = () => {
   localStorage?.removeItem(SIGNIN_KEY)
 }
+
+export const setBearerToken = (token: string): RequestParams => ({
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+})

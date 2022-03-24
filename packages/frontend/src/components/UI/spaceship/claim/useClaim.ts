@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
+import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 export const useClaim = () => {
@@ -15,11 +16,7 @@ export const useClaim = () => {
     ["claimableLootBox", user],
     () =>
       client.api
-        .lootBoxControllerGetClaimableLootboxFromUserId({
-          headers: {
-            Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
-          },
-        })
+        .lootBoxControllerGetClaimableLootboxFromUserId(setBearerToken(session?.getIdToken().getJwtToken() as string))
         .then(res => res.data),
     {
       enabled: authenticated,

@@ -20,7 +20,7 @@ interface HeaderDetailsProps {
   viewFavorite: number
 }
 
-export const HeaderDetails = ({
+const HeaderDetails = ({
   user,
   owner,
   creator,
@@ -89,3 +89,4 @@ export const HeaderDetails = ({
     </>
   )
 }
+export default HeaderDetails

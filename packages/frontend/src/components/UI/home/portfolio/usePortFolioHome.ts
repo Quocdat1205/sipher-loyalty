@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
+import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 const usePortFolioHome = () => {
@@ -18,11 +19,7 @@ const usePortFolioHome = () => {
         .collectionControllerGetUserCollection(
           account!,
           {},
-          {
-            headers: {
-              Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
-            },
-          },
+          setBearerToken(session?.getIdToken().getJwtToken() as string),
         )
         .then(res => res.data),
     {
@@ -31,7 +28,10 @@ const usePortFolioHome = () => {
     },
   )
 
-  const collectionData = dataInit!.map(item => ({ ...item, onView: () => router.push(`/spaceship/${item.id}`) }))
+  const collectionData = dataInit?.map(item => ({
+    ...item,
+    onView: () => router.push(`/portfolio/${item.collectionSlug}`),
+  }))
 
   console.log(collectionData)
 
