@@ -27,11 +27,12 @@ const CollectionCard = ({ data }: CardProps) => {
     >
       <Skeleton pos="relative" display="flex" isLoaded={imageLoaded}>
         <Image
-          src={"/images/nft/sipher1.png" || ""}
+          src={data.bannerImage || ""}
           alt={data.name}
           loading="lazy"
           height={170}
           width={383}
+          objectFit="cover"
           onLoad={() => setImageLoaded(true)}
         />
         <Flex align="center" py={0.5} px={2} rounded="full" bg="white" pos="absolute" bottom="0.5rem" left="0.5rem">
@@ -42,13 +43,13 @@ const CollectionCard = ({ data }: CardProps) => {
         </Flex>
       </Skeleton>
       <Flex p={4} align="center">
-        <Avatar size="lg" src={"/images/nft/sipher1.png" || ""} />
+        <Avatar size="lg" src={data.logoImage || ""} />
         <Box flex={1} ml={6}>
           <Flex mb={2} align="center">
             <Text fontWeight={600} mr={1} fontSize="lg">
               {data.name}
             </Text>
-            <Box pt="2px">{<SpVerified />}</Box>
+            <Box pt="2px">{data.isVerified && <SpVerified />}</Box>
           </Flex>
           <Flex align="center">
             <Box>

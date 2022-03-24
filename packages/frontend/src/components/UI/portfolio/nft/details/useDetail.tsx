@@ -17,14 +17,14 @@ const useDetail = () => {
     data: tokenDetails,
     isLoading,
     refetch,
-  } = useQuery(
-    ["character", collectionId, tokenId, wallet.account],
+  } = useQuery<any>(
+    ["character", user, tokenId, wallet.account],
     () =>
       client.api
         .nftItemControllerGetByCollection(setBearerToken(session?.getIdToken().getJwtToken() as string))
         .then(res => res.data),
     {
-      enabled: router.isReady,
+      enabled: router.isReady && authenticated,
       retry: false,
       onSuccess: data => console.log(data),
     },

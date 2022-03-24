@@ -6,7 +6,8 @@ import { SpVerified } from "@components/shared/icons"
 
 import GridSelector from "../GridSelector"
 
-import { NFTCard, useNFTs } from "."
+import NFTCard from "./NFTCard"
+import useNFTs from "./useNFTs"
 
 interface DetailsCollectionProps {
   collectionSlug: string

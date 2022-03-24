@@ -16,7 +16,6 @@ const GeneralContainer = () => {
     enabled: !!account,
     initialData: 0,
   })
-  console.log(sipher)
   return (
     <>
       <SimpleGrid mb={8} columns={[2, 4]} spacing={8}>

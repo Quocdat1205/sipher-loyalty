@@ -25,6 +25,9 @@ export const PendingContainer = () => {
               <chakra.th fontSize="sm" fontWeight={600} color="neutral.400" py={2} textAlign="center">
                 Status
               </chakra.th>
+              <chakra.th fontSize="sm" fontWeight={600} color="neutral.400" py={2} textAlign="center">
+                Deadline
+              </chakra.th>
               <chakra.th w="20%" py={2}></chakra.th>
             </chakra.tr>
           </chakra.thead>
@@ -39,7 +42,7 @@ export const PendingContainer = () => {
                     {item.info.map((i, idx) => (
                       <WrapItem key={idx}>
                         <Flex align="center">
-                          <Image src={i.image} alt={i.tokenId} width={40} height={40} />
+                          <Image src={i.image} alt={`Box ${i.tokenId.toString()}`} width={40} height={40} />
                           <Text>x{i.quantity}</Text>
                         </Flex>
                       </WrapItem>
@@ -48,6 +51,9 @@ export const PendingContainer = () => {
                 </chakra.td>
                 <chakra.td textAlign="center" py={4}>
                   {item.status}
+                </chakra.td>
+                <chakra.td textAlign="center" py={4}>
+                  {new Date(item.deadline * 1000).toLocaleDateString()}
                 </chakra.td>
                 <chakra.td w="20%" textAlign="right" py={4}>
                   <Button
@@ -58,7 +64,15 @@ export const PendingContainer = () => {
                   >
                     RE-MINT
                   </Button>
-                  <Button ml={2} colorScheme="neutral" border="1px" borderColor="whiteAlpha.100" variant="secondary">
+                  <Button
+                    onClick={item.onCancel}
+                    isLoading={item.isCancel}
+                    ml={2}
+                    colorScheme="neutral"
+                    border="1px"
+                    borderColor="whiteAlpha.100"
+                    variant="secondary"
+                  >
                     CANCEL
                   </Button>
                 </chakra.td>

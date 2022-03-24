@@ -1,3 +1,3 @@
-export * from "./Slide1"
-export * from "./Slide2"
-export * from "./SlideComponent"
+import SlideComponent from "./SlideComponent"
+
+export default SlideComponent

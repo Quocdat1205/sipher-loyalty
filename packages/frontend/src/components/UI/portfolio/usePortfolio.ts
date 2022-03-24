@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
+import { CollectionCategory } from "@sdk"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
@@ -34,19 +35,14 @@ const usePortfolio = () => {
 
   const currentTab = router.query.tab || "nfts"
 
-  const { data: initData } = useQuery(
+  const { data: initData } = useQuery<any>(
     ["collection", user, account, filter],
     () =>
       client.api
         .collectionControllerGetUserCollection(
           account!,
           {
-            category: (filter.categories !== "" ? filter.categories : undefined) as
-              | "character"
-              | "lootbox"
-              | "spaceship"
-              | "sculpture"
-              | undefined,
+            category: (filter.categories !== "" ? filter.categories : undefined) as CollectionCategory,
           },
           setBearerToken(session?.getIdToken().getJwtToken() as string),
         )

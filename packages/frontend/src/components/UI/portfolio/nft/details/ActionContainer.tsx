@@ -1,10 +1,14 @@
 import React, { useState } from "react"
 import { ImPriceTag } from "react-icons/im"
-import { Box, Button, chakra, HStack } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, HStack, Skeleton } from "@sipher.dev/sipher-ui"
 
 import QuantitySelector from "./QuantitySelector"
 
-const ActionContainer = () => {
+interface ActionContainerProps {
+  isFetched: boolean
+}
+
+const ActionContainer = ({ isFetched }: ActionContainerProps) => {
   const [slot, setSlot] = useState(0)
   return (
     <Box
@@ -18,10 +22,10 @@ const ActionContainer = () => {
       borderColor="neutral.600"
     >
       <HStack spacing={4}>
-        <Box flex={1}>
+        <Skeleton isLoaded={isFetched} flex={1}>
           <QuantitySelector onChange={setSlot} maxValue={5} value={slot} />
-        </Box>
-        <Box flex={1}>
+        </Skeleton>
+        <Skeleton isLoaded={isFetched} flex={1}>
           <Button
             py={5}
             colorScheme="accent"
@@ -34,7 +38,7 @@ const ActionContainer = () => {
           >
             MINT NFT
           </Button>
-        </Box>
+        </Skeleton>
       </HStack>
     </Box>
   )

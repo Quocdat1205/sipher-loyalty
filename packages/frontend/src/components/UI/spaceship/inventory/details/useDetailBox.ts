@@ -60,7 +60,7 @@ export const useDetailBox = id => {
             },
           )
           .then(res => res.data)
-        await scCaller.current!.SipherSpaceshipPart.mint(data.batchID, data.amount, data.salt, data.signature)
+        await scCaller.current!.SipherSpaceshipLootBox.mint(data.batchID, data.amount, data.salt, data.signature)
       }
     },
     {

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react"
 import { Box, Flex } from "@sipher.dev/sipher-ui"
 
+import { NftImage } from "@components/UI/spaceship/inventory"
 import { useWidth } from "@hooks"
 
 import ActionContainer from "./ActionContainer"
 import HeaderDetails from "./HeaderDetails"
-import NftImage from "./NftImage"
 import TabContainer from "./TabContainer"
 
 interface DetailBoxProps {
@@ -36,12 +36,18 @@ const DetailNFT = ({ collectionId, tokenId }: DetailBoxProps) => {
           display={["none", "none", "block"]}
           textAlign="center"
         >
-          <NftImage windowHeight={windowWidth.height} src={"/images/spaceship/box.png"} alt={"a"} />
+          <NftImage
+            isFetching={false}
+            mintable={1}
+            windowHeight={windowWidth.height}
+            src={"/images/spaceship/box.png"}
+            alt={"a"}
+          />
         </Box>
         <Flex flex={1} pl={[0, `${boxWidth - 8}px`]} flexDir="column">
           <Box flex={1} py={8} px={[4, 0]}>
             <Box mb={4} display={["block", "block", "none"]} textAlign="center">
-              <NftImage src={"/images/spaceship/box.png"} alt={"a"} />
+              <NftImage mintable={1} isFetching={false} src={"/images/spaceship/box.png"} alt={"a"} />
             </Box>
             <Box maxWidth={`${widthContainer}px`} flex={1}>
               <HeaderDetails
@@ -59,7 +65,7 @@ const DetailNFT = ({ collectionId, tokenId }: DetailBoxProps) => {
               <TabContainer isFetched={false} tokenId={tokenId} contractAddress={collectionId} />
             </Box>
           </Box>
-          <ActionContainer />
+          <ActionContainer isFetched={false} />
         </Flex>
       </Flex>
     </Flex>

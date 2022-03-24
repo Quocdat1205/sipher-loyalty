@@ -2,10 +2,12 @@ import React from "react"
 import Image from "next/image"
 import { Box, Flex, Text } from "@sipher.dev/sipher-ui"
 
+import { Slide2 } from "@components/module/modal/slide"
 import GeneralContainer from "@components/UI/home/GeneralContainer"
 
+import Slide1 from "./slide/Slide1"
 import PortfolioHome from "./portfolio"
-import { Slide1, Slide2, SlideComponent } from "./slide"
+import SlideComponent from "./slide"
 
 const slideData = [<Slide1 />, <Slide2 />]
 
