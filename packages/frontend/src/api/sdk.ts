@@ -22,8 +22,8 @@ export enum MintType {
 
 export interface InfoPendingMintDto {
   image: string;
-  batchID: number;
-  amount: number;
+  tokenId: number;
+  quantity: number;
 }
 
 export interface ResPendingMintDto {
