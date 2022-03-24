@@ -20,20 +20,10 @@ export enum MintType {
   Spaceship = 'Spaceship',
 }
 
-export interface PendingMint {
-  id: string;
-  to: string;
+export interface InfoPendingMintDto {
+  image: string;
   batchID: number;
   amount: number;
-  batchIDs: number[];
-  amounts: number[];
-  salt: string;
-  status: MintStatus;
-  type: MintType;
-  signature: string;
-
-  /** @format date-time */
-  createdAt: string;
 }
 
 export interface ResPendingMintDto {
@@ -50,7 +40,7 @@ export interface ResPendingMintDto {
 
   /** @format date-time */
   createdAt: string;
-  info: PendingMint[];
+  info: InfoPendingMintDto[];
 }
 
 export interface ERC1155LootboxAttribute {
@@ -109,6 +99,22 @@ export interface MintBatchLootboxInputDto {
   publicAddress: string;
   batchID: number[];
   amount: number[];
+}
+
+export interface PendingMint {
+  id: string;
+  to: string;
+  batchID: number;
+  amount: number;
+  batchIDs: number[];
+  amounts: number[];
+  salt: string;
+  status: MintStatus;
+  type: MintType;
+  signature: string;
+
+  /** @format date-time */
+  createdAt: string;
 }
 
 export interface MintLootboxInputDto {
