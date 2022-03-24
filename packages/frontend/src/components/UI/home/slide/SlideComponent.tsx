@@ -35,7 +35,7 @@ const swipePower = (offset: number, velocity: number) => {
   return Math.abs(offset) * velocity
 }
 
-export const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: SlideshowProps) => {
+const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: SlideshowProps) => {
   const [[page, direction], setPage] = useState([0, 0])
   const index = wrap(0, slideData.length, page)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -118,3 +118,4 @@ export const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: Sli
     </Box>
   )
 }
+export default SlideComponent

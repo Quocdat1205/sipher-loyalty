@@ -1,6 +1,7 @@
-export const SipherSpaceshipPartAbi: any = [
+export const SipherSpaceshipLootBoxAbi: any = [
   {
     inputs: [
+      { internalType: "address", name: "_admin", type: "address" },
       { internalType: "address", name: "_signer", type: "address" },
       { internalType: "string", name: "uri_", type: "string" },
       { internalType: "string", name: "_name", type: "string" },
@@ -23,7 +24,7 @@ export const SipherSpaceshipPartAbi: any = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: "address", name: "minter", type: "address" },
+      { indexed: true, internalType: "address", name: "burner", type: "address" },
       { indexed: false, internalType: "uint256", name: "batchID", type: "uint256" },
       { indexed: false, internalType: "uint256", name: "amount", type: "uint256" },
       { indexed: false, internalType: "uint256", name: "salt", type: "uint256" },
@@ -34,12 +35,18 @@ export const SipherSpaceshipPartAbi: any = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: "address", name: "minter", type: "address" },
+      { indexed: true, internalType: "address", name: "burner", type: "address" },
       { indexed: false, internalType: "uint256[]", name: "batchID", type: "uint256[]" },
       { indexed: false, internalType: "uint256[]", name: "amount", type: "uint256[]" },
       { indexed: false, internalType: "uint256", name: "salt", type: "uint256" },
     ],
     name: "BurnedBatch",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [{ indexed: false, internalType: "bytes", name: "signature", type: "bytes" }],
+    name: "CancelOrder",
     type: "event",
   },
   {
@@ -124,6 +131,13 @@ export const SipherSpaceshipPartAbi: any = [
   },
   {
     inputs: [],
+    name: "admin",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "authorizedSigner",
     outputs: [{ internalType: "address", name: "", type: "address" }],
     stateMutability: "view",
@@ -170,6 +184,13 @@ export const SipherSpaceshipPartAbi: any = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "bytes", name: "signature", type: "bytes" }],
+    name: "cancelOrder",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "currentBatchId",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -195,6 +216,7 @@ export const SipherSpaceshipPartAbi: any = [
   },
   {
     inputs: [
+      { internalType: "uint256", name: "_deadline", type: "uint256" },
       { internalType: "uint256", name: "_batchID", type: "uint256" },
       { internalType: "uint256", name: "_amount", type: "uint256" },
       { internalType: "string", name: "_salt", type: "string" },
@@ -207,6 +229,7 @@ export const SipherSpaceshipPartAbi: any = [
   },
   {
     inputs: [
+      { internalType: "uint256", name: "_deadline", type: "uint256" },
       { internalType: "uint256[]", name: "_batchID", type: "uint256[]" },
       { internalType: "uint256[]", name: "_amount", type: "uint256[]" },
       { internalType: "string", name: "_salt", type: "string" },
@@ -247,6 +270,13 @@ export const SipherSpaceshipPartAbi: any = [
       { internalType: "bytes", name: "data", type: "bytes" },
     ],
     name: "safeTransferFrom",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "_admin", type: "address" }],
+    name: "setAdmin",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

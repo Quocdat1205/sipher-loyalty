@@ -2,9 +2,9 @@ import React, { useState } from "react"
 import { Box, Flex, HStack, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import DetailsTab from "./details-tab"
-import PromoCode from "./promo-tab"
+import HistoryTab from "./history-tab"
 
-const tabs = ["Details", "Promo Code"] as const
+const tabs = ["Details", "History"] as const
 type Tab = typeof tabs[number]
 
 interface TabContainerProps {
@@ -18,7 +18,7 @@ const TabContainer = ({ tokenId, contractAddress, isFetched }: TabContainerProps
 
   const renderTabs = () => {
     if (currentTab === "Details") return <DetailsTab tokenId={tokenId} contractAddress={contractAddress} />
-    if (currentTab === "Promo Code") return <PromoCode />
+    if (currentTab === "History") return <HistoryTab />
   }
 
   return (

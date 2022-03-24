@@ -25,7 +25,7 @@ export const Timeline = ({ mappedData }: TimelineProps) => {
         left="50%"
         transform="translate(-50%, -50%)"
         pos="absolute"
-        px={16}
+        px={24}
         w="full"
         justify="space-between"
       >

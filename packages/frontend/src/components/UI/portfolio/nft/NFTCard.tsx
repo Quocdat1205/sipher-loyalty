@@ -11,11 +11,10 @@ interface CardProps {
   data: ReturnType<typeof useNFTs>["nftsData"][number]
 }
 
-export const NFTCard = ({ data }: CardProps) => {
+const NFTCard = ({ data }: CardProps) => {
   const collectionName = NftContracts.find(property => property.address === data.collectionId)?.name
 
   const [imageLoaded, setImageLoaded] = useState(false)
-
   return (
     <Box
       onClick={data.onView}
@@ -28,11 +27,12 @@ export const NFTCard = ({ data }: CardProps) => {
     >
       <Skeleton pos="relative" isLoaded={imageLoaded}>
         <Image
-          src={"/images/nft/sipher1.png" || ""}
+          src={data.imageUrl || "/images/nft/sipher1.png"}
           alt={data.tokenId}
           loading="lazy"
           height={480}
           width={436}
+          objectFit="cover"
           onLoad={() => setImageLoaded(true)}
         />
         {data.type === "ERC1155" && (
@@ -45,9 +45,10 @@ export const NFTCard = ({ data }: CardProps) => {
         )}
       </Skeleton>
       <Stack spacing={1} pt={2} pb={4} px={4}>
-        <Text fontWeight={600}>{data.type}</Text>
+        <Text fontWeight={600}>{data.name}</Text>
         <Text color="neutral.400">{collectionName}</Text>
       </Stack>
     </Box>
   )
 }
+export default NFTCard

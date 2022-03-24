@@ -16,7 +16,7 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 1,
     id: "THE WANDERING ALICE",
-    y: "-40%",
+    y: "-0.5rem",
     title: "The Wandering Alice",
     image: "/images/spaceship/ship/4.png",
     mainDescription: "On every adventure, THE WANDERING ALICE grows more and more curious.",
@@ -26,7 +26,7 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 2,
     id: "THE FLIK FLAK",
-    y: "60%",
+    y: "1.2rem",
     title: "The Flik Flak",
     image: "/images/spaceship/ship/1.png",
     mainDescription: "This acrobatic trickster feels right at home in the air.",
@@ -35,7 +35,7 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 3,
     id: "THE AKAGI",
-    y: "105%",
+    y: "2rem",
     title: "The Akagi",
     image: "/images/spaceship/ship/3.png",
     mainDescription: "High risk, high reward - there’s no gamble too large for the AKAGI",
@@ -44,7 +44,7 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 4,
     id: "THE AHAB",
-    y: "105%",
+    y: "2.25rem",
     title: "The Ahab",
     image: "/images/spaceship/ship/2.png",
     mainDescription: "This wicked whirlwind is a ceaseless pursuer.",
@@ -53,7 +53,7 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 5,
     id: "THE ZED LEP",
-    y: "60%",
+    y: "2rem",
     title: "The Zed Lep",
     image: "/images/spaceship/ship/5.png",
     mainDescription: "This NEKO ship will send enemies up the stairway to heaven.",
@@ -62,7 +62,16 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 6,
     id: "THE BARKING BARON",
-    y: "-40%",
+    y: "1.2rem",
+    title: "The Barking Baron - INU-only limited edition Loot box claim (INU only claim)",
+    image: "/images/spaceship/ship/6.png",
+    mainDescription: "This INU ship is named after the legendary dogfighter pilot - the Red Baron",
+    additionalDescription: `All INU fanatics sport this ship. Everyone wishes they could possess a BARKING BARON and reach the same acclaim as the legendary Red Baron, but only INUs are considered experts at flying these ships.`,
+  },
+  {
+    week: 7,
+    id: "THE BARKING BARON",
+    y: "-0.5rem",
     title: "The Barking Baron - INU-only limited edition Loot box claim (INU only claim)",
     image: "/images/spaceship/ship/6.png",
     mainDescription: "This INU ship is named after the legendary dogfighter pilot - the Red Baron",
@@ -74,7 +83,7 @@ const useOverview = () => {
   const [data] = useState(initData)
   const ONE_DAY = 60 * 60 * 24
   const startTime = 1647953250000
-  const weekNum = Math.floor(differenceInSeconds(new Date(), new Date(startTime)) / (ONE_DAY * 7)) % 6
+  const weekNum = Math.floor(differenceInSeconds(new Date(), new Date(startTime)) / (ONE_DAY * 7)) % 7
 
   const mappedData = data.map((item, index) => ({ ...item, isActive: index === weekNum }))
 

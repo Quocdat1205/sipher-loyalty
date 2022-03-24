@@ -175,7 +175,16 @@ export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoa
               VIEW YOUR NFT PENDING
             </Button>
           ) : (
-            <Button variant="secondary" colorScheme="cyan" onClick={onClose} fontSize="md" size="md" py={5}>
+            <Button
+              onClick={onClose}
+              py={5}
+              fontSize="md"
+              size="md"
+              colorScheme="neutral"
+              border="1px"
+              borderColor="neutral.600"
+              variant="secondary"
+            >
               Done
             </Button>
           )}

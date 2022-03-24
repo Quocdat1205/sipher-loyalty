@@ -1,2 +1,3 @@
-export * from "./NFTCard"
-export * from "./useNFTs"
+import DetailsCollection from "./DetailsCollection"
+
+export default DetailsCollection

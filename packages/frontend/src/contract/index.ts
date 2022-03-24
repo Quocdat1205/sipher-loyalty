@@ -7,7 +7,7 @@ import { getETHPrice, getSipherPrice } from "src/api/price"
 import ERC20 from "./ERC20"
 import { LPSipherWethKyber } from "./LPSipherWethKyber"
 import { LPSipherWethUniswap } from "./LPSipherWethUniswap"
-import { SipherSpaceshipPart } from "./SipherSpaceshipPart"
+import { SipherSpaceshipLootBox } from "./SipherSpaceshipLootBox"
 import { StakingLPSipherWethKyber } from "./StakingLPSipherWethKyber"
 import { StakingLPSipherWethUniswap } from "./StakingLPSipherWethUniswap"
 import { StakingPool } from "./StakingPool"
@@ -24,7 +24,7 @@ export class ContractCaller {
   StakingPool: StakingPool
   StakingLPSipherWethKyber: StakingLPSipherWethKyber
   StakingLPSipherWethUniswap: StakingLPSipherWethUniswap
-  SipherSpaceshipPart: SipherSpaceshipPart
+  SipherSpaceshipLootBox: SipherSpaceshipLootBox
 
   constructor(provider: any) {
     this.provider = new providers.Web3Provider(provider)
@@ -36,7 +36,7 @@ export class ContractCaller {
     this.StakingPool = new StakingPool(this.provider)
     this.StakingLPSipherWethKyber = new StakingLPSipherWethKyber(this.provider)
     this.StakingLPSipherWethUniswap = new StakingLPSipherWethUniswap(this.provider)
-    this.SipherSpaceshipPart = new SipherSpaceshipPart(this.provider)
+    this.SipherSpaceshipLootBox = new SipherSpaceshipLootBox(this.provider)
   }
 
   public async getEtherBalance(from: string) {

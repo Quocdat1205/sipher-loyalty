@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 
 import { DetailsLayout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
-import { DetailNFT } from "@components/UI/portfolio/nft/details"
+import DetailNFT from "@components/UI/portfolio/nft/details"
 import { NextPageWithLayout } from "src/pages/_app"
 
 const SpaceshipDetailPage: NextPageWithLayout = () => {

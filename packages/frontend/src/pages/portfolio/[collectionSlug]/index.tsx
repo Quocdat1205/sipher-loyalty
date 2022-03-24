@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 
 import { CommonLayout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
-import DetailsCollection from "@components/UI/portfolio/nft/DetailsCollection"
+import DetailsCollection from "@components/UI/portfolio/nft"
 import { NextPageWithLayout } from "src/pages/_app"
 
 const CollectionDetailsPage: NextPageWithLayout = () => {

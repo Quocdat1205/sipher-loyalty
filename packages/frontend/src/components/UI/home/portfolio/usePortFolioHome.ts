@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { useQuery } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
@@ -12,7 +11,7 @@ const usePortFolioHome = () => {
   const { session, authenticated, user } = useAuth()
   const { account } = useWalletContext()
 
-  const { data: dataInit } = useQuery(
+  const { data: dataInit } = useQuery<any>(
     ["collection", user, account],
     () =>
       client.api

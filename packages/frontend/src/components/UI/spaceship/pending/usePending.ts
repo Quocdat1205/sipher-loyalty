@@ -17,6 +17,7 @@ export interface InventoryProps extends Lootbox {
 
 export interface InputLootBoxProp {
   id: string
+  deadline: number
   batchID?: number
   amount?: number
   batchIDs?: number[]
@@ -30,6 +31,8 @@ export const usePending = () => {
   const query = useQueryClient()
   const { account, scCaller, switchNetwork, chainId } = useWalletContext()
   const [mintId, setMintId] = useState<string | null>(null)
+  const [cancelId, setCancelId] = useState<string | null>(null)
+
   const toast = useChakraToast()
   const { data: dataInit } = useQuery(
     ["pending", account, user],
@@ -41,8 +44,8 @@ export const usePending = () => {
   )
 
   const { mutate: mutateMintBatch } = useMutation<unknown, unknown, InputLootBoxProp>(
-    ({ batchIDs, amounts, salt, signature }) =>
-      scCaller.current!.SipherSpaceshipPart.mintBatch(batchIDs!, amounts!, salt, signature),
+    ({ deadline, batchIDs, amounts, salt, signature }) =>
+      scCaller.current!.SipherSpaceshipLootBox.mintBatch(deadline, batchIDs!, amounts!, salt, signature),
     {
       onMutate: ({ id }) => {
         setMintId(id)
@@ -61,8 +64,8 @@ export const usePending = () => {
   )
 
   const { mutate: mutateMint } = useMutation<unknown, unknown, InputLootBoxProp>(
-    ({ batchID, amount, salt, signature }) =>
-      scCaller.current!.SipherSpaceshipPart.mint(batchID!, amount!, salt, signature),
+    ({ deadline, batchID, amount, salt, signature }) =>
+      scCaller.current!.SipherSpaceshipLootBox.mint(deadline, batchID!, amount!, salt, signature),
     {
       onMutate: ({ id }) => {
         setMintId(id)
@@ -80,13 +83,41 @@ export const usePending = () => {
     },
   )
 
+  const { mutate: mutateCancel } = useMutation<unknown, unknown, { id: string; signature: string }>(
+    ({ signature }) => scCaller.current!.SipherSpaceshipLootBox.cancelOrder(signature),
+    {
+      onMutate: ({ id }) => {
+        setCancelId(id)
+      },
+      onSettled: () => setCancelId(null),
+      onSuccess: () => {
+        toast({
+          status: "success",
+          title: "Transaction pending",
+          message: "Please review your wallet notifications.",
+          duration: 10000,
+        })
+        query.invalidateQueries(["pending", account, user])
+      },
+    },
+  )
+
   const pendingData = dataInit!.map(item => ({
     ...item,
     isMinting: mintId === item.id,
+    isCancel: cancelId === item.id,
+    onCancel: () => {
+      if (chainId === POLYGON_NETWORK) {
+        mutateCancel({ id: item.id, signature: item.signature })
+      } else {
+        switchNetwork(POLYGON_NETWORK)
+      }
+    },
     onMint: () => {
       if (chainId === POLYGON_NETWORK) {
         mutateMint({
           id: item.id,
+          deadline: item.deadline,
           batchID: item.batchID,
           amount: item.amount,
           salt: item.salt,
@@ -100,6 +131,7 @@ export const usePending = () => {
       if (chainId === POLYGON_NETWORK) {
         mutateMintBatch({
           id: item.id,
+          deadline: item.deadline,
           batchIDs: item.batchIDs,
           amounts: item.amounts,
           salt: item.salt,

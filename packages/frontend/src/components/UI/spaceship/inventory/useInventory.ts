@@ -79,7 +79,13 @@ export const useInventory = () => {
             setBearerToken(session?.getIdToken().getJwtToken() as string),
           )
           .then(res => res.data)
-        await scCaller.current!.SipherSpaceshipPart.mintBatch(data.batchIDs, data.amounts, data.salt, data.signature)
+        await scCaller.current!.SipherSpaceshipLootBox.mintBatch(
+          data.deadline,
+          data.batchIDs,
+          data.amounts,
+          data.salt,
+          data.signature,
+        )
       } else {
         const data = await client.api
           .lootBoxControllerMintLootbox(
@@ -91,7 +97,13 @@ export const useInventory = () => {
             setBearerToken(session?.getIdToken().getJwtToken() as string),
           )
           .then(res => res.data)
-        await scCaller.current!.SipherSpaceshipPart.mint(data.batchID, data.amount, data.salt, data.signature)
+        await scCaller.current!.SipherSpaceshipLootBox.mint(
+          data.deadline,
+          data.batchID,
+          data.amount,
+          data.salt,
+          data.signature,
+        )
       }
     },
     {

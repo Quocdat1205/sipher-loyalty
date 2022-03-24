@@ -1,7 +1,10 @@
 import React from "react"
+import { useRouter } from "next/router"
 import { Box, Button, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
 
-export const Slide1 = () => {
+const Slide1 = () => {
+  const router = useRouter()
+
   return (
     <Flex
       align="center"
@@ -16,7 +19,7 @@ export const Slide1 = () => {
       <Box pos="relative" w="full" maxW="1200px" display={["none", "block"]}>
         <Box textAlign="center" pos="absolute" top="50%" left="0%" transform="translateY(-50%)">
           <Heading fontSize="4xl" fontWeight={600}>
-            SPACESHIP ASTERO
+            SPACESIP ASTERO
           </Heading>
           <Text lineHeight={1.2} color="whiteAlpha.700" fontSize="xl">
             LOOTBOXES ARE READY TO BE
@@ -24,7 +27,14 @@ export const Slide1 = () => {
           <Text lineHeight={1.2} color="whiteAlpha.700" fontSize="xl" mb={6}>
             MINTED AND TRADEABLE
           </Text>
-          <Button bg="transparent" border="1px" borderColor="white" size="lg" variant="secondary">
+          <Button
+            onClick={() => router.push("/spaceship")}
+            bg="transparent"
+            border="1px"
+            borderColor="white"
+            size="lg"
+            variant="secondary"
+          >
             EXPLORER
           </Button>
         </Box>
@@ -32,3 +42,4 @@ export const Slide1 = () => {
     </Flex>
   )
 }
+export default Slide1

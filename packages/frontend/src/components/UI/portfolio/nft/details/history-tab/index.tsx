@@ -1,7 +1,7 @@
 import React from "react"
 import { Stack } from "@sipher.dev/sipher-ui"
 
-const PromoCode = () => {
+const HistoryTab = () => {
   return <Stack>ahihi</Stack>
 }
-export default PromoCode
+export default HistoryTab

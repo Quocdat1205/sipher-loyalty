@@ -1,7 +1,10 @@
 import React from "react"
+import { useRouter } from "next/router"
 import { Box, Button, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
 
-export const Slide2 = () => {
+const Slide2 = () => {
+  const router = useRouter()
+
   return (
     <Flex
       align="center"
@@ -23,7 +26,14 @@ export const Slide2 = () => {
           <Text lineHeight={1.2} color="whiteAlpha.700" fontSize="xl" mb={6}>
             MINTED AND TRADEABLE
           </Text>
-          <Button bg="transparent" border="1px" borderColor="white" size="lg" variant="secondary">
+          <Button
+            onClick={() => router.push("/portfolio")}
+            bg="transparent"
+            border="1px"
+            borderColor="white"
+            size="lg"
+            variant="secondary"
+          >
             CHECK IT OUT
           </Button>
         </Box>
@@ -31,3 +41,4 @@ export const Slide2 = () => {
     </Flex>
   )
 }
+export default Slide2
