@@ -511,7 +511,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     collectionControllerGetUserCollection: (
       userAddress: string,
-      query?: { chainId?: any; category?: 'character' | 'scuplture' | 'lootbox' | 'spaceship' },
+      query?: { chainId?: any; category?: 'character' | 'sculpture' | 'lootbox' | 'spaceship' },
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
