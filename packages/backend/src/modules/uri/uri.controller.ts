@@ -9,7 +9,7 @@ import { URIService } from "./uri.service";
 export class URIController {
   constructor(private uriService: URIService) {}
 
-  @Get("erc1155-spaceship/:tokenId")
+  @Get("erc1155-lootbox/:tokenId")
   async getDataERC1155Spaceship(@Param("tokenId") tokenId: number) {
     return this.uriService.getDataERC1155Spaceship(tokenId);
   }

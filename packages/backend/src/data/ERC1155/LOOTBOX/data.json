@@ -2,7 +2,7 @@
   {
     "tokenId": "0",
     "name": "lootbox #1",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/lootbox_0.png",
     "description": "Just for INU & NEKO holders",
     "attributes": [
       {
@@ -18,7 +18,7 @@
   {
     "tokenId": "1",
     "name": "lootbox #2",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/lootbox_1.png",
     "description": "Just for INU & NEKO holders",
     "attributes": [
       {
@@ -30,7 +30,7 @@
   {
     "tokenId": "2",
     "name": "lootbox #3",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/lootbox_2.png",
     "description": "Just for INU & NEKO holders",
     "attributes": [
       {
@@ -42,7 +42,7 @@
   {
     "tokenId": "3",
     "name": "lootbox #4",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/lootbox_3.png",
     "description": "Just for NEKO holders",
     "attributes": [
       {
@@ -54,7 +54,7 @@
   {
     "tokenId": "4",
     "name": "lootbox #5",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/lootbox_4.png",
     "description": "Just for NEKO holders",
     "attributes": [
       {
@@ -70,7 +70,7 @@
   {
     "tokenId": "5",
     "name": "lootbox #6",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/lootbox_5.png",
     "description": "Just for INU holders",
     "attributes": [
       {
@@ -82,7 +82,7 @@
   {
     "tokenId": "6",
     "name": "lootbox #7",
-    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/box.png",
+    "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/lootbox_6.png",
     "description": "Just for INU & NEKO holders",
     "attributes": [
       {
