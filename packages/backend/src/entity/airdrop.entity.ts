@@ -2,12 +2,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
+
+import { Transaction } from "./transaction.entity";
 
 export enum AirdropType {
   NFT = "NFT",
@@ -94,37 +95,6 @@ export class ItemOrder {
   @CreateDateColumn({ default: new Date() })
   createdAt: Date;
 }
-@Entity()
-export class Transaction {
-  @PrimaryGeneratedColumn("increment")
-  id_transaction: number;
-
-  @Column()
-  publicAddress: string;
-
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
-  @OneToOne(() => ItemOrder)
-  @JoinColumn()
-  item: ItemOrder;
-
-  @Column()
-  quantity: number;
-
-  @Column()
-  quantity_shipped: number;
-
-  @Column()
-  isShipped: boolean;
-}
-
-@Entity()
-export class Tier {
-  @PrimaryGeneratedColumn("increment")
-  id_tier: number;
-
-  @Column()
-  tier: string;
-}
 
 @Entity()
 export class Item {
@@ -136,6 +106,19 @@ export class Item {
 
   @Column()
   id_tier: number;
+
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  @OneToOne(() => Transaction, (transaction) => transaction.item)
+  transaction: Transaction;
+}
+
+@Entity()
+export class Tier {
+  @PrimaryGeneratedColumn("increment")
+  id_tier: number;
+
+  @Column()
+  tier: string;
 }
 
 @Entity()

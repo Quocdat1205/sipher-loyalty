@@ -1,12 +1,21 @@
-import { Controller, Get, Param, Put, Req, UseGuards } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Param,
+  Put,
+  Query,
+  Req,
+  UseGuards,
+} from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
 import { AtherGuard } from "@modules/auth/auth.guard";
 import { AuthService } from "@modules/auth/auth.service";
 import { MerchService } from "@modules/merch/merch.service";
-import { Airdrop, AirdropType } from "src/entity/airdrop.entity";
+import { AirdropType } from "src/entity/airdrop.entity";
 import { ParseEthereumAddress } from "src/pipes/ethereum-address..pipe";
 
+import { etherDto } from "./airdrop.dto";
 import { AirdropService } from "./airdrop.service";
 import { ResAllAirdrop } from "./airdrop.type";
 
@@ -46,5 +55,15 @@ export class AirdropController {
       publicAddress,
       id_merch,
     });
+  }
+
+  @ApiOkResponse({ type: etherDto })
+  @Get("all-merch")
+  async getAllMerch(
+    @Query("publicAddress", ParseEthereumAddress) publicAddress: string
+  ) {
+    // const { publicAddress } = query;
+
+    return this.merchService.getAllMerch(publicAddress);
   }
 }

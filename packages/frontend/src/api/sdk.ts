@@ -147,6 +147,8 @@ export interface ResAllAirdrop {
   nft: Airdrop[];
 }
 
+export type EtherDto = object;
+
 export type BioDto = object;
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
@@ -577,6 +579,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/sipher/loyalty/airdrop/merch/claim/${publicAddress}/${idMerch}`,
         method: 'PUT',
         secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags airdrop
+     * @name AirdropControllerGetAllMerch
+     * @request GET:/api/sipher/loyalty/airdrop/all-merch
+     */
+    airdropControllerGetAllMerch: (query: { publicAddress: string }, params: RequestParams = {}) =>
+      this.request<EtherDto, any>({
+        path: `/api/sipher/loyalty/airdrop/all-merch`,
+        method: 'GET',
+        query: query,
         format: 'json',
         ...params,
       }),
