@@ -1,4 +1,4 @@
-import { ShopifyCode } from "@entity";
+import { SculptureTransaction } from "@entity";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
@@ -14,7 +14,7 @@ import { TrackedBlock } from "src/entity/tracking.entity";
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([ShopifyCode, TrackedBlock]),
+    TypeOrmModule.forFeature([SculptureTransaction, TrackedBlock]),
     SculptureTrackerModule,
   ],
 })
