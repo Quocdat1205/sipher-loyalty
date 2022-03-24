@@ -89,7 +89,6 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
     if (account) {
       try {
         const user = await AtherIdAuth.signIn(account)
-        console.log(account, user)
         if (user)
           toast({
             status: "error",

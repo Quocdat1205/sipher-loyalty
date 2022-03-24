@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 import { useMutation } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Button, chakra, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
@@ -17,21 +17,21 @@ interface VerifySignUpFormProps {
 const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpFormProps) => {
   const toast = useChakraToast()
   const [code, setCode] = useState("")
+  const [isOpen, setIsOpen] = useState(false)
+  // const [isConnectingWallet, setIsConnectingWallet] = useState(false)
+  const [authFlow, setAuthFlow] = useStore(s => [s.authFlow, s.setAuthFlow])
 
-  const [isConnectingWallet, setIsConnectingWallet] = useState(false)
-  const setAuthFlow = useStore(s => s.setAuthFlow)
-
-  const { mutate, isLoading } = useMutation(() => AtherIdAuth.confirmSignUp(email, code), {
+  const { mutate: mutateConfirmSignup, isLoading } = useMutation(() => AtherIdAuth.confirmSignUp(email, code), {
     onSuccess: () => {
-      if (!isWalletConnected) setIsConnectingWallet(true)
-      else {
-        toast({
-          status: "success",
-          title: "Sign up successfully",
-          message: "You can now login to your account",
-        })
-        setAuthFlow("SIGN_IN")
-      }
+      // if (!isWalletConnected) setIsConnectingWallet(true)
+      // else {
+      toast({
+        status: "success",
+        title: "Sign up successfully",
+        message: "You can now login to your account",
+      })
+      setAuthFlow("SIGN_IN")
+      // }
     },
     onError: (e: any) => {
       toast({
@@ -40,7 +40,14 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
         message: e?.message || "Please try again later.",
       })
     },
+    onSettled: () => {
+      setIsOpen(false)
+    },
   })
+
+  useEffect(() => {
+    if (authFlow === "SIGN_UP") setIsOpen(true)
+  }, [authFlow])
 
   const { mutate: mutateResendCode, isLoading: isResendingCode } = useMutation(() => AtherIdAuth.resendSignUp(email), {
     onSuccess: () => {
@@ -52,11 +59,16 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
     },
   })
 
-  if (isConnectingWallet) return <ConnectToWallet />
+  // if (isConnectingWallet) return <ConnectToWallet />
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    mutateConfirmSignup()
+  }
 
   return (
-    <ChakraModal title={"VERIFY YOUR ACCOUNT"} size="lg" isOpen={true} hideCloseButton={true}>
-      <Form onSubmit={() => mutate()}>
+    <ChakraModal title={"VERIFY YOUR ACCOUNT"} size="lg" isOpen={isOpen} hideCloseButton={true}>
+      <Form onSubmit={handleSubmit}>
         <Stack pos="relative" px={6} spacing={4} w="full">
           <Text color="neutral.300">
             Please enter the passcode sent to <chakra.span fontWeight={600}>{email}</chakra.span>
