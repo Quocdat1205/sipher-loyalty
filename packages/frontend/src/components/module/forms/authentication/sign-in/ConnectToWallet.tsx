@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useMutation, useQuery } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Box, chakra, Divider, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
+import { chakra, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
 import { ChakraModal, WalletCard } from "@components/shared"
@@ -14,23 +14,23 @@ const ConnectToWallet = () => {
   const [isOpen, setIsOpen] = useState(true)
 
   const { data: ownedWallets } = useQuery("owned-wallets", () => AtherIdAuth.ownedWallets(), { initialData: [] })
-
   const { mutate: mutateAddWallet } = useMutation<unknown, unknown, Parameters<typeof connect>["0"]>(
     async connectorId => {
       const account = await connect(connectorId)
       if (!ownedWallets?.map(w => w.address).includes(account!)) {
         const res = await AtherIdAuth.connectWallet(account!)
         const signature = await scCaller.current?.sign(res.message)
-        if (!signature) throw Error("User denied signature")
-        await AtherIdAuth.confirmConectWallet(res, signature)
+        await AtherIdAuth.confirmConectWallet(res, signature!)
       }
     },
     {
-      onSuccess: () => {
-        toast({ status: "success", title: "Connect wallet successfully" })
-      },
-      onError: (e: any) => {
-        toast({ status: "error", title: "Error", message: e.message })
+      onError: async (e: any) => {
+        if (e?.code === 4001) {
+          await AtherIdAuth.signOut()
+          toast({ status: "error", title: "Signature error", message: "User denied to sign the message" })
+        } else {
+          toast({ status: "error", title: "Error", message: e.message })
+        }
       },
       onSettled: () => {
         setIsOpen(false)
@@ -40,8 +40,8 @@ const ConnectToWallet = () => {
 
   return (
     <ChakraModal title={"CONNECT TO A WALLET"} size="lg" isOpen={isOpen} hideCloseButton={true}>
-      <Stack pos="relative" px={6} spacing={6} w="full">
-        <HStack w="full" justify="space-between" align="center" spacing={6}>
+      <Stack pos="relative" px={6} spacing={4} w="full">
+        <HStack w="full" justify="space-between" align="center" spacing={4}>
           <WalletCard
             onClick={() => {
               mutateAddWallet("injected")
@@ -59,9 +59,7 @@ const ConnectToWallet = () => {
             colorScheme={"whiteAlpha"}
           />
         </HStack>
-        <Box>
-          <Divider pos="absolute" left="0" w="full" borderColor="whiteAlpha.100" />
-        </Box>
+
         <Text color="neutral.400" textAlign="center">
           Don't have a Wallet?{" "}
           <chakra.span textDecor="underline" cursor="pointer" color="cyan.600">

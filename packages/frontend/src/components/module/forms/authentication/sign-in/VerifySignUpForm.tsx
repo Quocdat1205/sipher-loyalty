@@ -49,7 +49,7 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
   })
 
   useEffect(() => {
-    mutateResendCode()
+    AtherIdAuth.resendSignUp(email)
   }, [])
 
   if (isConnectingWallet) return <ConnectToWallet />
@@ -61,12 +61,12 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
 
   return (
     <ChakraModal title={"VERIFY YOUR ACCOUNT"} size="lg" isOpen={true} hideCloseButton={true}>
-      <Stack pos="relative" px={6} spacing={6} w="full">
-        <Text color="neutral.300">
-          Please enter Passcode sent to <chakra.span fontWeight={600}>{email}</chakra.span>
-        </Text>
-        <Form onSubmit={handleSubmit}>
-          <FormControl mb={0} as="fieldset">
+      <Form onSubmit={handleSubmit}>
+        <Stack pos="relative" px={6} spacing={4} w="full">
+          <Text color="neutral.300">
+            Please enter Passcode sent to <chakra.span fontWeight={600}>{email}</chakra.span>
+          </Text>
+          <FormControl as="fieldset">
             <FormField>
               <CustomInput placeholder="Passcode" value={code} onChange={e => setCode(e.target.value)} />
             </FormField>
@@ -78,14 +78,12 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
             </chakra.span>
             {isResendingCode && <Spinner size="xs" color="cyan.600" ml={2} />}
           </Text>
-          <Box pb={2}>
-            <Divider pos="absolute" left="0" w="full" borderColor="whiteAlpha.100" />
-          </Box>
+
           <Button type="submit" fontSize="md" py={6} fontWeight={600} isLoading={isLoading}>
             COMPLETE
           </Button>
-        </Form>
-      </Stack>
+        </Stack>
+      </Form>
     </ChakraModal>
   )
 }

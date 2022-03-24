@@ -91,8 +91,8 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
       toast({ title: "Need new password" })
       return setSigningInUser(user)
     } else if (user.challengeName === "CUSTOM_CHALLENGE") {
-      const { challenge } = user.challengeParam
-      if (challenge === "WALLET") {
+      const { TYPE } = user.challengeParam
+      if (TYPE === "WALLET") {
         return handleWalletChallenge(user, user.challengeParam.message)
       }
     }
@@ -109,11 +109,24 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
     {
       onSuccess: handleChallenge,
       onError: (e: any) => {
-        if (e?.message === "User is not confirmed.") setVerifyCode(true)
-        else {
+        if (e?.message === "User is not confirmed.") {
+          setVerifyCode(true)
+        } else if (e?.message === "Wallet is not connected with any account") {
+          toast({
+            title: "Wallet is not registered",
+            message: "Please sign up to continue!",
+          })
+          setAuthFlow("SIGN_UP")
+        } else if (e?.code === 4001) {
           toast({
             status: "error",
-            title: "Signature Error",
+            title: "Signature error",
+            message: "User denied to sign the message",
+          })
+        } else {
+          toast({
+            status: "error",
+            title: "Wallet connection error",
             message: e.message || "User denied to sign message.",
           })
         }

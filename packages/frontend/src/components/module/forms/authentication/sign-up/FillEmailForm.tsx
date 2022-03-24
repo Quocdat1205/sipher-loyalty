@@ -81,7 +81,7 @@ const FillEmailForm = () => {
             </Text>
           </Flex>
           <FormControl as="fieldset">
-            <FormField error={errors.email}>
+            <FormField error={errors?.email?.message}>
               <CustomInput
                 placeholder="Email address"
                 {...register("email", { onChange: e => setEmail(e.target.value) })}
@@ -89,7 +89,7 @@ const FillEmailForm = () => {
             </FormField>
           </FormControl>
           <FormControl mb={2} as="fieldset">
-            <FormField error={errors.password}>
+            <FormField error={errors?.password?.message}>
               <CustomInput
                 pr="2.5rem"
                 type={"password"}
@@ -100,7 +100,7 @@ const FillEmailForm = () => {
             </FormField>
           </FormControl>
           <FormControl mb={2} as="fieldset">
-            <FormField error={errors.confirmPassword}>
+            <FormField error={errors?.confirmPassword?.message}>
               <CustomInput
                 pr="2.5rem"
                 type={"password"}
