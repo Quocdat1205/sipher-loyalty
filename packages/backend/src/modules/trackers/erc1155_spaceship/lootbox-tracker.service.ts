@@ -70,7 +70,7 @@ export class LootboxTrackerService {
 
   @Interval("tracking lootbox canceled", 15000)
   async TrackingCanceledInterval() {
-    // this.fromBlockBurned = await this.trackingCancel(this.fromBlockCanceled);
+    this.fromBlockBurned = await this.trackingCancel(this.fromBlockCanceled);
     const trackedBlock = await this.trackedBlockRepo.findOne({
       where: { type: "cancel" },
     });
