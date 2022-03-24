@@ -15,6 +15,8 @@ import {
 } from "src/entity/sipher-collection.entity";
 
 import { PortfolioQuery } from "./collection.dto";
+import { ElasticsearchService } from "@nestjs/elasticsearch";
+import constant from "@setting/constant";
 
 @Injectable()
 export class CollectionService {
@@ -22,6 +24,7 @@ export class CollectionService {
     private httpService: HttpService,
     private nftService: NftItemService,
     private uriService: URIService,
+    private readonly searchSrv: ElasticsearchService,
     @InjectRepository(SipherCollection)
     private sipherCollectionRepo: Repository<SipherCollection>
   ) {}
@@ -115,6 +118,30 @@ export class CollectionService {
       total: inventory.length,
       items: await this.addUriToItem(inventory),
     };
+  }
+
+  async getItemById(itemId: string) {
+    const result = await this.searchSrv.get({
+      index: constant.ELASTICSEARCH_INDEX,
+      id: itemId,
+    });
+    const item = result?.body?._source ? result?.body?._source : undefined;
+    if (!item) {
+      return item;
+    }
+    delete item._entity;
+    delete item._relation;
+    const itemCollection = await this.sipherCollectionRepo.findOne({
+      where: {
+        contractAddress: item.collectionId,
+      },
+    });
+    if (itemCollection) {
+      item.collection = itemCollection;
+    }
+    const itemWithUri = (await this.addUriToItem([item]))[0];
+
+    return itemWithUri;
   }
 
   private async addUriToItem(items: any) {
