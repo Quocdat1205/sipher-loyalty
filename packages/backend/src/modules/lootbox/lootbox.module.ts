@@ -20,6 +20,7 @@ import { LootBoxService } from "./lootbox.service";
     BurnModule,
     CancelModule,
     AuthModule,
+    CancelModule,
   ],
   providers: [LootBoxService],
   controllers: [LootBoxController],

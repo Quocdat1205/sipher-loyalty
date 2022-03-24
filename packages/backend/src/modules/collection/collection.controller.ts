@@ -7,25 +7,34 @@ import {
   InternalServerErrorException,
   Param,
   Query,
+  Req,
+  UseGuards,
 } from "@nestjs/common";
-import { ApiQuery, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
 
 import { LoggerService } from "@modules/logger/logger.service";
-import { CollectionCategory } from "src/entity/sipher-collection.entity";
 
 import { PortfolioQuery } from "./collection.dto";
 import { CollectionService } from "./collection.service";
+import { CollectionCategory } from "src/entity/sipher-collection.entity";
+import { AtherGuard } from "@modules/auth/auth.guard";
+import { AuthService } from "@modules/auth/auth.service";
 
 @ApiTags("collection")
 @Controller("collection")
 export class CollectionController {
-  constructor(private collectionService: CollectionService) {}
+  constructor(
+    private collectionService: CollectionService,
+    private authService: AuthService
+  ) {}
 
   @Get("")
   async getAllCollections() {
     return this.collectionService.getAllCollection();
   }
 
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
   @ApiQuery({
     name: "category",
     enum: CollectionCategory,
@@ -38,20 +47,26 @@ export class CollectionController {
   @Get("portfolio/:userAddress")
   async getUserCollection(
     @Query() query: PortfolioQuery,
-    @Param("userAddress") userAddress: string
+    @Param("userAddress") userAddress: string,
+    @Req() req: any
   ) {
-    return this.collectionService.getPortfolio(
+    await this.authService.verifyAddress(userAddress, req.userData);
+    return await this.collectionService.getPortfolio(
       userAddress.toLowerCase(),
       query
     );
   }
 
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
   @Get(":collectionSlug/portfolio/:userAddress")
   async getPortfolioByCollection(
     @Param("userAddress") userAddress: string,
-    @Param("collectionSlug") collectionSlug: string
+    @Param("collectionSlug") collectionSlug: string,
+    @Req() req: any
   ) {
-    return this.collectionService.getPortfolioByCollection(
+    await this.authService.verifyAddress(userAddress, req.userData);
+    return await this.collectionService.getPortfolioByCollection(
       userAddress.toLowerCase(),
       collectionSlug
     );

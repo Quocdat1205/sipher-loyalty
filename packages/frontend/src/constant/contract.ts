@@ -86,4 +86,12 @@ export const NftContracts = [
     name: "Sipherian Flash",
     address: NEKO_ADDRESS,
   },
+  {
+    name: "Sipher Spaceship",
+    address: "0x890e002a6bb11d0094d80f4c301caf645d168333",
+  },
+  {
+    name: "Sipher Lootbox",
+    address: "0x3edb954303d0a13ee347c6989189294b0422e7d6",
+  },
 ] as const

@@ -2,13 +2,15 @@ import React from "react"
 import { Box } from "@sipher.dev/sipher-ui"
 
 import { Carousel } from "./Carousel"
+import usePortFolioHome from "./usePortFolioHome"
 
-export const NFTsContainer = () => {
-  const data = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+const NFTsContainer = () => {
+  const { collectionData } = usePortFolioHome()
 
   return (
     <Box>
-      <Carousel slideData={data} />
+      <Carousel slideData={collectionData} />
     </Box>
   )
 }
+export default NFTsContainer

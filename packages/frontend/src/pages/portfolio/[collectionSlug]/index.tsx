@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 
 import { CommonLayout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
-import { DetailsCollection } from "@components/UI/portfolio/collection"
+import DetailsCollection from "@components/UI/portfolio/nft/DetailsCollection"
 import { NextPageWithLayout } from "src/pages/_app"
 
 const CollectionDetailsPage: NextPageWithLayout = () => {
@@ -12,7 +12,7 @@ const CollectionDetailsPage: NextPageWithLayout = () => {
   return (
     <>
       <Metadata title="Portfolio" description="Details Collection" />
-      <DetailsCollection collectionId={router.query.contractAddress as string} />
+      <DetailsCollection collectionSlug={router.query.collectionSlug as string} />
     </>
   )
 }

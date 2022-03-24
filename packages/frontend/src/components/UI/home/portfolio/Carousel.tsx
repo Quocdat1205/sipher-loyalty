@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { wrap } from "popmotion"
 import { Box, HStack, SimpleGrid } from "@sipher.dev/sipher-ui"
 
-import { CollectionCard } from "@components/UI/portfolio/collection"
+import CollectionCard from "@components/UI/portfolio/collection/CollectionCard"
 
 interface SlideshowProps {
   isAuto?: boolean
@@ -111,31 +111,21 @@ export const Carousel = ({ deplay = 10000, slideData, isAuto = false }: Slidesho
           <Box pos="absolute" w="full" h="full">
             <SimpleGrid p={1} w="full" spacing={6} columns={pageSize}>
               {slideData.slice(index * pageSize, (index + 1) * pageSize).map(item => (
-                <CollectionCard
-                  onClick={() => console.log("a")}
-                  isVerified
-                  key={item}
-                  volume={1}
-                  floorPrice={1}
-                  collectionId={"1"}
-                  collectionName="Sipherian Surge"
-                  imageUrl="/images/nft/sipher3.png"
-                />
+                <CollectionCard key={item.id} data={item} />
               ))}
             </SimpleGrid>
           </Box>
         </motion.div>
       </AnimatePresence>
-      <HStack pos="absolute" bottom={0} left="50%" transform="translate(-50%, -1rem)" align="center">
+      <HStack spacing={4} pos="absolute" bottom={0} left="50%" transform="translate(-50%, -1rem)" align="center">
         {Array.from(Array(pageNumber).keys()).map((_, idx) => (
           <Box
             cursor="pointer"
             onClick={() => handleClick(idx)}
             key={idx}
             bg={index === idx ? "white" : "whiteAlpha.500"}
-            w="20px"
-            h={index === idx ? "6px" : "3px"}
-            rounded="full"
+            w="88px"
+            h={"8px"}
           />
         ))}
       </HStack>
