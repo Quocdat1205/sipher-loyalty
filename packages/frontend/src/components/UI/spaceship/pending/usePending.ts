@@ -45,7 +45,13 @@ export const usePending = () => {
 
   const { mutate: mutateMintBatch } = useMutation<unknown, unknown, InputLootBoxProp>(
     ({ deadline, batchIDs, amounts, salt, signature }) =>
-      scCaller.current!.SipherSpaceshipLootBox.mintBatch(deadline, batchIDs!, amounts!, salt, signature),
+      scCaller.current!.SipherSpaceshipLootBox.mintBatch({
+        deadline: deadline,
+        batchIDs: batchIDs!,
+        amounts: amounts!,
+        salt: salt,
+        signature: signature,
+      }),
     {
       onMutate: ({ id }) => {
         setMintId(id)
@@ -65,7 +71,13 @@ export const usePending = () => {
 
   const { mutate: mutateMint } = useMutation<unknown, unknown, InputLootBoxProp>(
     ({ deadline, batchID, amount, salt, signature }) =>
-      scCaller.current!.SipherSpaceshipLootBox.mint(deadline, batchID!, amount!, salt, signature),
+      scCaller.current!.SipherSpaceshipLootBox.mint({
+        deadline: deadline,
+        batchID: batchID!,
+        amount: amount!,
+        salt: salt,
+        signature: signature,
+      }),
     {
       onMutate: ({ id }) => {
         setMintId(id)
