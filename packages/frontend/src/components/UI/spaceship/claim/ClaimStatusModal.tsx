@@ -39,7 +39,7 @@ const ClaimStatusModal = ({ isOpen, onClose, status }: ClaimStatusModalProp) => 
               tab
             </Fragment>
           ) : (
-            "Something went wrong, please try after sometime!"
+            "Something went wrong. Please try again!"
           )}
         </Text>
         <Divider mb={4} borderColor="whiteAlpha.100" />

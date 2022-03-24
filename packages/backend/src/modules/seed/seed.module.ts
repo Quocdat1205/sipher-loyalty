@@ -5,7 +5,6 @@ import {
   ERC1155Sculpture,
   ERC1155SculptureAttribute,
   Lootbox,
-  Merch,
 } from "@entity";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -28,7 +27,6 @@ import { SeedLootboxService } from "./seedLootbox.service";
       ERC1155SculptureAttribute,
       Lootbox,
       Airdrop,
-      Merch,
       ClaimableLootbox,
     ]),
   ],

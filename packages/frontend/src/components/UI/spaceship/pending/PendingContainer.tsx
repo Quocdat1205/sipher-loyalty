@@ -1,12 +1,11 @@
 import React from "react"
-import Image from "next/image"
-import { Box, Button, chakra, Flex, Text } from "@sipher.dev/sipher-ui"
+import { Box, chakra, Flex } from "@sipher.dev/sipher-ui"
 
 import { usePending } from "./usePending"
 
 export const PendingContainer = () => {
   const { pendingData } = usePending()
-
+  console.log(pendingData)
   return (
     <Flex pos="relative" bgRepeat="no-repeat" bgSize="cover" flexDir="column" align="center">
       <Box py={6} zIndex={2} maxW="1200px" w="full" pb={8}>
@@ -26,7 +25,7 @@ export const PendingContainer = () => {
             </chakra.tr>
           </chakra.thead>
           <chakra.tbody>
-            {pendingData?.map((item, index) => (
+            {/* {pendingData?.map((item, index) => (
               <chakra.tr borderTop="1px" borderColor="whiteAlpha.100" key={item.id}>
                 <chakra.td textAlign="center" py={4}>
                   {index + 1}
@@ -52,14 +51,14 @@ export const PendingContainer = () => {
                   <Button
                     isLoading={item.isMinting}
                     onClick={() => {
-                      item.batchIDs.length > 1 ? item.onMintBatch() : item.onMint()
+                      item.batchIDs && item.batchIDs.length > 0 ? item.onMintBatch() : item.onMint()
                     }}
                   >
                     MINT
                   </Button>
                 </chakra.td>
               </chakra.tr>
-            ))}
+            ))} */}
           </chakra.tbody>
         </chakra.table>
       </Box>

@@ -9,12 +9,12 @@ interface TimelineProps {
 }
 export const Timeline = ({ mappedData }: TimelineProps) => {
   return (
-    <Box pos="relative">
+    <Box mb={16} pos="relative">
       <svg viewBox="300 300 1200 75" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="grad1">
             {opacityArr.map((item, index) => (
-              <stop key={item} offset={`${index * 10}%`} stopColor={"#9091A0"} stopOpacity={item} />
+              <stop key={index} offset={`${index * 10}%`} stopColor={"#9091A0"} stopOpacity={item} />
             ))}
           </linearGradient>
         </defs>

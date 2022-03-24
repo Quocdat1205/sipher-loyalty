@@ -7,12 +7,13 @@ import {
   Inject,
   Injectable,
 } from "@nestjs/common";
-import constant from "@setting/constant";
 
 import { UserData } from "./auth.types";
 
 @Injectable()
 export class AuthService {
+  private client;
+
   constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {}
 
   get = async (token: string) => this.cacheManager.get<UserData>(token);

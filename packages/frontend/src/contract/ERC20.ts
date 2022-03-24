@@ -16,7 +16,7 @@ class ERC20 {
   async getBalance(address: string): Promise<number> {
     const value = await this.contract.balanceOf(address)
 
-    return parseFloat(weiToEther(value))
+    return weiToEther(value)
   }
 
   async allowance(ownerAddress: string, targetAddress: string): Promise<BigNumber> {

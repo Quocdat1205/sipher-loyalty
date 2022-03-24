@@ -37,7 +37,19 @@ export interface PendingMint {
 }
 
 export interface ResPendingMintDto {
-  pending: PendingMint;
+  id: string;
+  to: string;
+  batchID: number;
+  amount: number;
+  batchIDs: number[];
+  amounts: number[];
+  salt: string;
+  status: MintStatus;
+  type: MintType;
+  signature: string;
+
+  /** @format date-time */
+  createdAt: string;
   info: PendingMint[];
 }
 
@@ -128,6 +140,11 @@ export interface Airdrop {
 
   /** @format date-time */
   created: string;
+}
+
+export interface ResAllAirdrop {
+  token: Airdrop[];
+  nft: Airdrop[];
 }
 
 export type BioDto = object;
@@ -473,6 +490,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags collection
+     * @name CollectionControllerGetAllCollections
+     * @request GET:/api/sipher/loyalty/collection
+     */
+    collectionControllerGetAllCollections: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/collection`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags collection
+     * @name CollectionControllerGetUserCollection
+     * @request GET:/api/sipher/loyalty/collection/portfolio/{userAddress}
+     */
+    collectionControllerGetUserCollection: (userAddress: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/collection/portfolio/${userAddress}`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags collection
+     * @name CollectionControllerGetPortfolioByCollection
+     * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/portfolio/{userAddress}
+     */
+    collectionControllerGetPortfolioByCollection: (userAddress: string, collectionSlug: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/collection/${collectionSlug}/portfolio/${userAddress}`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags collection
      * @name CollectionControllerGetCollectionStat
      * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/stats
      */
@@ -486,27 +545,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags collection
-     * @name CollectionControllerGetCollectionPorfolio
-     * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/portfolio/{ownerAddress}
-     */
-    collectionControllerGetCollectionPorfolio: (collectionSlug: string, ownerAddress: string, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/sipher/loyalty/collection/${collectionSlug}/portfolio/${ownerAddress}`,
-        method: 'GET',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
      * @tags airdrop
      * @name AirdropControllerGetAirdropByType
      * @request GET:/api/sipher/loyalty/airdrop/{airdropType}/{publicAddress}
      * @secure
      */
     airdropControllerGetAirdropByType: (publicAddress: string, airdropType: string, params: RequestParams = {}) =>
-      this.request<Airdrop[], any>({
+      this.request<ResAllAirdrop, any>({
         path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}`,
         method: 'GET',
         secure: true,
@@ -528,19 +573,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: 'PUT',
         secure: true,
         format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @name MultiTokenControllerGetBalance
-     * @request GET:/api/sipher/loyalty/erc1155/balance/{address}/{tokenId}
-     */
-    multiTokenControllerGetBalance: (address: string, tokenId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/sipher/loyalty/erc1155/balance/${address}/${tokenId}`,
-        method: 'GET',
         ...params,
       }),
 

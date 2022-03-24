@@ -1,4 +1,4 @@
-import useWalletContext from './useWalletContext';
-import UseWalletProvider from './UseWalletProvider';
+import useWalletContext from "./useWalletContext"
+import UseWalletProvider from "./UseWalletProvider"
 
-export { useWalletContext, UseWalletProvider };
+export { useWalletContext, UseWalletProvider }

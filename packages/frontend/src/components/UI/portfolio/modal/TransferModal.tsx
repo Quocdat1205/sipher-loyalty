@@ -1,8 +1,7 @@
 import React from "react"
 import { chakra, Flex, FormControl, FormLabel, Img, Link, Text } from "@sipher.dev/sipher-ui"
 
-import { CustomInput } from "@components/module/modal"
-import { ChakraModal, EthereumIcon, Form } from "@components/shared"
+import { ChakraModal, CustomInput, EthereumIcon, Form } from "@components/shared"
 
 interface TransferModalProps {
   isOpen: boolean

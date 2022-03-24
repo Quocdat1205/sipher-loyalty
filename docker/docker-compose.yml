@@ -22,6 +22,7 @@ services:
 
   redis:
     image: redis
+    command: redis-server --appendonly yes --requirepass 12345678
     volumes:
       - ./redis/data:/data
     ports:

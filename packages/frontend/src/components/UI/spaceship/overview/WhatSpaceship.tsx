@@ -2,8 +2,6 @@ import React from "react"
 import Image from "next/image"
 import { Avatar, Box, Flex, Heading, Text, Wrap, WrapItem } from "@sipher.dev/sipher-ui"
 
-import { TutorialSpaceship } from "./TutorialSpaceship"
-
 const contentWhatSpaceships = [
   {
     title: "Resource Capacity",
@@ -56,7 +54,7 @@ export const WhatSpaceship = () => {
         w="full"
         bgGradient="linear(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%)"
       />
-      <Flex flexDir="column" align="center" zIndex={2} pt={24} pb={16} maxW="1200px" w="full">
+      <Flex flexDir="column" align="center" zIndex={2} py={24} maxW="1200px" w="full">
         <Heading mb={4} fontWeight={600} fontSize="3xl">
           What are Spaceships?
         </Heading>
@@ -66,7 +64,7 @@ export const WhatSpaceship = () => {
         <Text mb={12} color="neutral.100">
           throughout the various dungeons and the World of Sipheria.
         </Text>
-        <Wrap mb={[8, 8, 8, 16]} spacing={16}>
+        <Wrap mb={[16, 16, 24, 24, 24]} spacing={16}>
           {contentWhatSpaceships.map(item => (
             <WrapItem flex="1 1 20rem" key={item.title}>
               <Flex flexDir="column" align="center">

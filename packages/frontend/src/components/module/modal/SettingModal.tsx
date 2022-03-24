@@ -3,7 +3,7 @@ import { BiChevronRight } from "react-icons/bi"
 import { MdImage } from "react-icons/md"
 import { Avatar, Box, Button, Divider, Flex, FormControl, FormLabel, HStack, Text } from "@sipher.dev/sipher-ui"
 
-import { CustomInput } from "."
+import { CustomInput } from "@components/shared"
 
 interface SettingAccountModalProps {
   onClose: () => void

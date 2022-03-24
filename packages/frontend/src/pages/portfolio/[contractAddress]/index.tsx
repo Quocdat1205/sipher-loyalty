@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import { useRouter } from "next/router"
 
-import { Layout } from "@components/module/layout"
+import { CommonLayout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
 import { DetailsCollection } from "@components/UI/portfolio/collection"
 import { NextPageWithLayout } from "src/pages/_app"
@@ -17,6 +17,6 @@ const CollectionDetailsPage: NextPageWithLayout = () => {
   )
 }
 
-CollectionDetailsPage.getLayout = (page: ReactNode) => <Layout>{page}</Layout>
+CollectionDetailsPage.getLayout = (page: ReactNode) => <CommonLayout>{page}</CommonLayout>
 
 export default CollectionDetailsPage

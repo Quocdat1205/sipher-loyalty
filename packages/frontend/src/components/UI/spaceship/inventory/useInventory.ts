@@ -115,6 +115,11 @@ export const useInventory = () => {
       },
       onError: (err: any) => {
         toast({ status: "error", title: "Error", message: err?.message })
+        if (err.code === 4001) {
+          setIsStatusModal("PENDING")
+        } else {
+          setIsStatusModal("ERROR")
+        }
       },
     },
   )
@@ -123,10 +128,10 @@ export const useInventory = () => {
     setData(data.map(item => ({ ...item, slot: item.mintable })))
   }, [isStatusModal])
 
-  const handleMint = async () => {
+  const handleMint = () => {
     if (chainId !== POLYGON_NETWORK) {
       toast({ status: "info", title: "Please switch to Polygon network!", duration: 5000 })
-      await switchNetwork(POLYGON_NETWORK)
+      switchNetwork(POLYGON_NETWORK)
     } else {
       mutateMintBatch()
     }
