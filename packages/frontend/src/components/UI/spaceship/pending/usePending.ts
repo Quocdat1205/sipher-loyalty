@@ -113,7 +113,6 @@ export const usePending = () => {
   //     }
   //   },
   // }))
-  // console.log(dataInit)
 
   return {
     pendingData: [],

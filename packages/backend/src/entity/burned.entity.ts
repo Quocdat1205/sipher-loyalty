@@ -23,11 +23,11 @@ export class Burned {
   to: string;
 
   @ApiProperty({ type: Number })
-  @Column({ nullable: true, default: -1 })
+  @Column({ nullable: true })
   batchID?: number;
 
   @ApiProperty({ type: Number })
-  @Column({ nullable: true, default: 0 })
+  @Column({ nullable: true })
   amount?: number;
 
   @ApiProperty({ type: Number, isArray: true })

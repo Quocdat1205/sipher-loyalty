@@ -25,7 +25,6 @@ export const useCollection = () => {
     },
   )
 
-  console.log(data)
 
   const handleClick = (collectionId: string | number) => {
     router.push(`/portfolio/${collectionId}`)
