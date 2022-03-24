@@ -11,3 +11,4 @@ export * from "./S3.entity";
 export * from "./shopify-code.entity";
 export * from "./transaction.entity";
 export * from "./user.entity";
+export * from "./airdrop.entity";
