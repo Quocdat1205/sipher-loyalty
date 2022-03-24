@@ -3,15 +3,18 @@ import { defaultAbiCoder } from "ethers/lib/utils";
 import constant from "@setting/constant";
 
 import {
-  EIP712_BATCH_ORDER_TYPES,
-  EIP712_DOMAIN_TEMPLATE,
-  EIP712_ORDER_TYPES,
+  EIP712_LOOTBOX_BATCH_ORDER_TYPES,
+  EIP712_LOOTBOX_DOMAIN_TEMPLATE,
+  EIP712_LOOTBOX_ORDER_TYPES,
 } from "./constants";
 import { Order } from "./type";
 import { BatchOrder } from ".";
 
-const createEIP712Domain = (chainId: number, verifyingContract: string) => ({
-  ...EIP712_DOMAIN_TEMPLATE,
+const createEIP712_LOOTBOXDomain = (
+  chainId: number,
+  verifyingContract: string
+) => ({
+  ...EIP712_LOOTBOX_DOMAIN_TEMPLATE,
   verifyingContract,
   chainId,
 });
@@ -22,9 +25,14 @@ const signOrder = async (
   config: { chainId: number; verifyingContract: string },
   order: Order
 ): Promise<any> => {
-  const domain = createEIP712Domain(config.chainId, config.verifyingContract);
+  const domain = createEIP712_LOOTBOXDomain(
+    config.chainId,
+    config.verifyingContract
+  );
 
-  const types = EIP712_ORDER_TYPES;
+  const types = EIP712_LOOTBOX_ORDER_TYPES;
+  order.deadline = new Date().getTime() + constant.PENDING_TIME_LOOTBOX_MINT;
+  console.log(order);
 
   const signature = await signer._signTypedData(domain, types, order);
 
@@ -42,10 +50,16 @@ const signBatchOrder = async (
   config: { chainId: number; verifyingContract: string },
   batchOrder: BatchOrder
 ): Promise<any> => {
-  const domain = createEIP712Domain(config.chainId, config.verifyingContract);
+  const domain = createEIP712_LOOTBOXDomain(
+    config.chainId,
+    config.verifyingContract
+  );
 
-  const types = EIP712_BATCH_ORDER_TYPES;
+  const types = EIP712_LOOTBOX_BATCH_ORDER_TYPES;
+  batchOrder.deadline =
+    new Date().getTime() + constant.PENDING_TIME_LOOTBOX_MINT;
 
+  console.log(batchOrder);
   const signature = await signer._signTypedData(
     domain,
     types,
@@ -56,7 +70,7 @@ const signBatchOrder = async (
 };
 
 export {
-  createEIP712Domain,
+  createEIP712_LOOTBOXDomain,
   encodeBatchOrder,
   signBatchOrder,
   signer,

@@ -385,7 +385,6 @@ export class LootBoxService {
 
   mintBatchLootbox = async (mintBatchLootboxInput: MintBatchLootboxInput) => {
     const { publicAddress, batchID, amount } = mintBatchLootboxInput;
-
     // verify
     if (batchID.length !== amount.length)
       throw new HttpException(
@@ -430,7 +429,6 @@ export class LootBoxService {
 
   mintLootbox = async (mintLootboxInput: MintLootboxInput) => {
     const { publicAddress, batchID, amount } = mintLootboxInput;
-
     // verify
     if (amount === 0)
       throw new HttpException(

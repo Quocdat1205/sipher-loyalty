@@ -10,6 +10,8 @@ import {
 } from "@nestjs/common";
 import constant from "@setting/constant";
 
+import { LoggerService } from "@modules/logger/logger.service";
+
 import { AuthService } from "./auth.service";
 
 @Injectable()
@@ -40,6 +42,7 @@ export class AtherGuard implements CanActivate {
         req.userData = currentUserData;
       }
     } catch (err) {
+      LoggerService.error(err);
       throw new HttpException("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
     }
     return true;

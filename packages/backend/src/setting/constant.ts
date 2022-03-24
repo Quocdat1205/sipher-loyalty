@@ -3,6 +3,8 @@ import "@env";
 
 import { Injectable } from "@nestjs/common";
 
+import { ZERO_ADDRESS } from "@utils/constants";
+
 export enum Chain {
   Mainnet = 1,
   Rinkeby = 4,
@@ -90,6 +92,8 @@ export class SystemConfigProvider {
 
   ATHER_ID_URL = this.get("ATHER_ID_URL");
 
+  PENDING_TIME_LOOTBOX_MINT = 86400 * 3;
+
   public get isDebugging() {
     return !!this.get("DEBUG");
   }
@@ -112,33 +116,33 @@ export class SystemConfigProvider {
 
     const erc1155Spaceship = {
       [Chain.Mainnet]: {
-        address: "0x1D5Db97aC0c865B6C01Cfe1309B6Ba8cB431805F",
+        address: ZERO_ADDRESS,
       },
       [Chain.Rinkeby]: {
-        address: "0x1D5Db97aC0c865B6C01Cfe1309B6Ba8cB431805F",
+        address: ZERO_ADDRESS,
       },
       [Chain.Mumbai]: {
-        address: "0x890E002A6Bb11D0094d80f4C301CaF645D168333",
+        address: "0x3E445D426c8FdE12F5F0C223019CA9158f7Da93B",
       },
 
       [Chain.Polygon]: {
-        address: "0x890E002A6Bb11D0094d80f4C301CaF645D168333",
+        address: ZERO_ADDRESS,
       },
     };
 
     const erc1155Sculpture = {
       [Chain.Mainnet]: {
-        address: "0x1D5Db97aC0c865B6C01Cfe1309B6Ba8cB431805F",
+        address: ZERO_ADDRESS,
       },
       [Chain.Rinkeby]: {
-        address: "0x1D5Db97aC0c865B6C01Cfe1309B6Ba8cB431805F",
+        address: ZERO_ADDRESS,
       },
       [Chain.Mumbai]: {
         address: "0x3EdB954303D0A13ee347C6989189294B0422E7D6",
       },
 
       [Chain.Polygon]: {
-        address: "0x3EdB954303D0A13ee347C6989189294B0422E7D6",
+        address: ZERO_ADDRESS,
       },
     };
 

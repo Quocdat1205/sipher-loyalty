@@ -3,6 +3,7 @@ export type BatchOrder = {
   batchID: number[];
   amount: number[];
   salt: string;
+  deadline?: number;
 };
 
 export type Order = {
@@ -10,4 +11,5 @@ export type Order = {
   batchID: number;
   amount: number;
   salt: string;
+  deadline?: number;
 };

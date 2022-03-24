@@ -47,6 +47,10 @@ export class PendingMint {
   @Column({ nullable: false })
   salt: string;
 
+  @ApiProperty({ type: Number })
+  @Column({ nullable: false, default: 0 })
+  deadline: number;
+
   @ApiProperty({ type: String, enum: MintStatus, enumName: "MintStatus" })
   @Column({
     type: "enum",

@@ -1,5 +1,6 @@
 // import library
 import { toChecksumAddress } from "ethereumjs-util";
+import { date } from "joi";
 import { Repository } from "typeorm";
 import { ERC1155Lootbox, MintStatus, MintType, PendingMint } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
@@ -145,9 +146,11 @@ export class MintService {
   }
 
   async mintBatch(mintBatchLootboxInput: MintBatchLootboxInput) {
-    const { publicAddress, batchID, amount } = mintBatchLootboxInput;
+    mintBatchLootboxInput.deadline =
+      new Date().getTime() / 1000 + constant.PENDING_TIME_LOOTBOX_MINT;
+    const { publicAddress, batchID, amount, deadline } = mintBatchLootboxInput;
     LoggerService.log(
-      `sign mint data for ${publicAddress},${batchID},${amount}`
+      `sign mint data for ${publicAddress},${batchID},${amount},${deadline}`
     );
 
     const batchOrder = {
@@ -156,11 +159,11 @@ export class MintService {
       amount,
       salt: randomSalt(),
       signature: "",
+      deadline,
     };
-
     const signature = await signBatchOrder(this.config, batchOrder);
     batchOrder.signature = signature;
-    const order = {
+    const pendingBatchOrder = {
       to: publicAddress,
       batchIDs: batchID,
       amounts: amount,
@@ -168,8 +171,9 @@ export class MintService {
       signature,
       type: MintType.Lootbox,
       status: MintStatus.Pending,
+      deadline,
     };
-    const pendingMint = this.PendingMintRepo.create(order);
+    const pendingMint = this.PendingMintRepo.create(pendingBatchOrder);
     LoggerService.log("save pending mint to ", publicAddress);
     await this.PendingMintRepo.save(pendingMint);
     const verifySignature = recoverBatchOrderSignature(
@@ -183,9 +187,11 @@ export class MintService {
   }
 
   async mint(mintLootboxInput: MintLootboxInput) {
-    const { publicAddress, batchID, amount } = mintLootboxInput;
+    mintLootboxInput.deadline =
+      new Date().getTime() / 1000 + constant.PENDING_TIME_LOOTBOX_MINT;
+    const { publicAddress, batchID, amount, deadline } = mintLootboxInput;
     LoggerService.log(
-      `sign mint data for ${publicAddress},${batchID},${amount}`
+      `sign mint data for ${publicAddress},${batchID},${amount},${deadline}`
     );
 
     const order = {
@@ -196,6 +202,7 @@ export class MintService {
       signature: "",
       type: MintType.Lootbox,
       status: MintStatus.Pending,
+      deadline,
     };
     const signature = await signOrder(this.config, order);
     order.signature = signature;

@@ -64,10 +64,12 @@ export interface MintLootboxInput {
   publicAddress: string;
   batchID: number;
   amount: number;
+  deadline?: number;
 }
 
 export interface MintBatchLootboxInput {
   publicAddress: string;
   batchID: number[];
   amount: number[];
+  deadline?: number;
 }

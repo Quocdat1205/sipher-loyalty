@@ -34,6 +34,7 @@ export interface ResPendingMintDto {
   batchIDs: number[];
   amounts: number[];
   salt: string;
+  deadline: number;
   status: MintStatus;
   type: MintType;
   signature: string;
@@ -109,6 +110,7 @@ export interface PendingMint {
   batchIDs: number[];
   amounts: number[];
   salt: string;
+  deadline: number;
   status: MintStatus;
   type: MintType;
   signature: string;

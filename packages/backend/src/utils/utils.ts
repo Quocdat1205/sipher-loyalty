@@ -1,5 +1,5 @@
-import constant, { Chain } from "@setting/constant";
 import { ethers } from "ethers";
+import constant, { Chain } from "@setting/constant";
 
 const randomSalt = () =>
   ethers.utils.formatBytes32String(
@@ -28,4 +28,4 @@ const isSpaceshipContract = (contractAddress: string) => {
   return isMumbaiSpaceship || isPolygonSpaceship;
 };
 
-export { randomSalt, isSculptureContract, isSpaceshipContract };
+export { isSculptureContract, isSpaceshipContract, randomSalt };

@@ -54,5 +54,6 @@ export class SeedLootboxService {
       promises.push(this.createClaimableLootbox(this.lootboxData[i]));
     }
     await Promise.all(promises);
+    LoggerService.log("Done");
   };
 }

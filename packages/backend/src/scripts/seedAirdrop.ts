@@ -4,6 +4,7 @@ import { NestFactory } from "@nestjs/core";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { configService } from "@setting/config.typeorm";
 
+import { LoggerService } from "@modules/logger/logger.service";
 import { SeedModule } from "@modules/seed/seed.module";
 import { SeedAirdropService } from "@modules/seed/seedAirdrop.service";
 import { Airdrop } from "src/entity/airdrop.entity";
@@ -23,6 +24,7 @@ export class AppModule implements OnApplicationBootstrap {
   async onApplicationBootstrap(): Promise<void> {
     await this.seedingService.seedAirdropHolder();
     await this.seedingService.seedAirdropInvestor_CP1();
+    LoggerService.log("Done");
   }
 }
 async function bootstrap() {
