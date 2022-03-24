@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 
 export enum CollectionType {
   ERC721 = "ERC721",
@@ -54,4 +60,36 @@ export class SipherCollection {
     nullable: true,
   })
   floorPrice: number;
+
+  @Column({
+    type: "text",
+    default: "",
+  })
+  description: string;
+
+  @Column({
+    type: "character varying",
+  })
+  logoImage: string;
+
+  @Column({
+    type: "character varying",
+  })
+  bannerImage: string;
+
+  @Column({
+    type: "character varying",
+  })
+  siteUrl: string;
+
+  @Column({
+    type: "boolean",
+  })
+  isVerified: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

@@ -125,10 +125,18 @@ export class CollectionService {
   private async addUriToSculptureOrSpaceship(item: any) {
     const newItem = { ...item };
     if (isSpaceshipContract(item.collectionId)) {
-      newItem.uri = await this.uriService.getDataERC1155Spaceship(item.tokenId);
+      const uriInfo = await this.uriService.getDataERC1155Spaceship(
+        item.tokenId
+      );
+      newItem.name = uriInfo.name;
+      newItem.imageUrl = uriInfo.image;
     }
     if (isSculptureContract(item.collectionId)) {
-      newItem.uri = await this.uriService.getDataERC1155Sculpture(item.tokenId);
+      const uriInfo = await this.uriService.getDataERC1155Sculpture(
+        item.tokenId
+      );
+      newItem.name = uriInfo.name;
+      newItem.imageUrl = uriInfo.image;
     }
     if (newItem.uri) {
       delete newItem.uri.id;
