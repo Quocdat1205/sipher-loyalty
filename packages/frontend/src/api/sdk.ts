@@ -123,6 +123,13 @@ export interface MintLootboxInputDto {
   amount: number;
 }
 
+export enum CollectionCategory {
+  Character = 'character',
+  Sculpture = 'sculpture',
+  Lootbox = 'lootbox',
+  Spaceship = 'spaceship',
+}
+
 export enum AirdropType {
   NFT = 'NFT',
   TOKEN = 'TOKEN',
@@ -516,11 +523,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/sipher/loyalty/collection/portfolio/{userAddress}
      * @secure
      */
-    collectionControllerGetUserCollection: (
-      userAddress: string,
-      query?: { chainId?: any; category?: 'character' | 'sculpture' | 'lootbox' | 'spaceship' },
-      params: RequestParams = {},
-    ) =>
+    collectionControllerGetUserCollection: (userAddress: string, query?: { category?: CollectionCategory; chainId?: string }, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/collection/portfolio/${userAddress}`,
         method: 'GET',
