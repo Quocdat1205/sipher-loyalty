@@ -140,7 +140,7 @@ export class MintService {
   };
 
   async updatePendingMint(pendingMint: PendingMint) {
-    LoggerService.log(`update pending mint : ${pendingMint}`);
+    LoggerService.log(`update pending mint : ${JSON.stringify(pendingMint)}`);
     return this.PendingMintRepo.save(pendingMint);
   }
 

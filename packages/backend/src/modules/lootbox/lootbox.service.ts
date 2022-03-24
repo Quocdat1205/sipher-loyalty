@@ -89,7 +89,7 @@ export class LootBoxService {
       LoggerService.log(`save claimable lootbox to  ${publicAddress}`);
       await this.claimableLootboxRepo.save(lootbox);
     } catch (err) {
-      LoggerService.log(`err at ${i}, ${err}`);
+      LoggerService.error(`err at ${i}, ${err}`);
     }
   };
 
@@ -461,7 +461,7 @@ export class LootBoxService {
       batchOrder
     );
     if (pending) {
-      LoggerService.log(`pending : ${pending}`);
+      LoggerService.log(`pending : ${JSON.stringify(pending)}`);
       const lootboxs = await this.getLootboxFromWalletAndTokenIDs(
         batchOrder.to,
         batchOrder.batchID
@@ -495,7 +495,7 @@ export class LootBoxService {
 
     const pending = await this.mintService.getPendingLootboxByOrder(order);
     if (pending) {
-      LoggerService.log(`pending : ${pending}`);
+      LoggerService.log(`pending : ${JSON.stringify(pending)}`);
       const lootbox = await this.getLootboxFromWalletAndTokenID(
         order.to,
         order.batchID

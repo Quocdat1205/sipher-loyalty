@@ -35,7 +35,7 @@ export class SeedERC1155SculptureService {
       const erc1155Sculpture = this.erc1155SculptureRepo.create(erc1155);
       await this.erc1155SculptureRepo.save(erc1155Sculpture);
     } catch (err) {
-      LoggerService.log(err);
+      LoggerService.error(err);
     }
   };
 
@@ -48,7 +48,7 @@ export class SeedERC1155SculptureService {
       );
       return result;
     } catch (err) {
-      LoggerService.log(err);
+      LoggerService.error(err);
       return {};
     }
   };

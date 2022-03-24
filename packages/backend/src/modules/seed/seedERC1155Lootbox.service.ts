@@ -35,7 +35,7 @@ export class SeedERC1155LootboxService {
       const erc1155Lootbox = this.erc1155LootboxRepo.create(erc1155);
       await this.erc1155LootboxRepo.save(erc1155Lootbox);
     } catch (err) {
-      LoggerService.log(err);
+      LoggerService.error(err);
     }
   };
 
@@ -48,7 +48,7 @@ export class SeedERC1155LootboxService {
       );
       return result;
     } catch (err) {
-      LoggerService.log(err);
+      LoggerService.error(err);
       return {};
     }
   };
