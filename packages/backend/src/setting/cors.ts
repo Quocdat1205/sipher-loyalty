@@ -5,8 +5,10 @@ const cors: CorsOptions = {
     "http://localhost:3001",
     "http://localhost:3000",
     "https://loyalty.sipher.gg",
+    "www.loyalty.sipher.gg",
+    "loyalty.sipher.gg",
   ],
-  credentials: true,
+  // credentials: true,
 };
 
 export default cors;
