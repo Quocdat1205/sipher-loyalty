@@ -2,23 +2,20 @@ import React, { useState } from "react"
 import { Box, Flex, HStack, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import DetailsTab from "./details-tab"
-import HistoryTab from "./history-tab"
 
-const tabs = ["Details", "History"] as const
+const tabs = ["Details"] as const
 type Tab = typeof tabs[number]
 
 interface TabContainerProps {
   isFetched: boolean
-  tokenId?: string
-  contractAddress?: string
 }
 
-const TabContainer = ({ tokenId, contractAddress, isFetched }: TabContainerProps) => {
+const TabContainer = ({ isFetched }: TabContainerProps) => {
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
 
   const renderTabs = () => {
-    if (currentTab === "Details") return <DetailsTab tokenId={tokenId} contractAddress={contractAddress} />
-    if (currentTab === "History") return <HistoryTab />
+    if (currentTab === "Details") return <DetailsTab />
+    // if (currentTab === "History") return <HistoryTab />
   }
 
   return (

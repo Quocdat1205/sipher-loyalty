@@ -1,20 +1,21 @@
-import React from "react"
+import React, { useState } from "react"
 import { Avatar, Flex, HStack, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import { NftContracts } from "@constant"
 import { shortenAddress } from "@utils"
 
+import { OwnersModal } from "../../modal"
+
+import { useDetailContext } from "./useDetail"
+
 interface InfoNFTProps {
-  user: any[] | undefined
-  creator: string | undefined
-  owner: string | undefined
+  tokenDetails: ReturnType<typeof useDetailContext>["tokenDetails"][number]
   isFetched: boolean
-  contractAddress: string
 }
 
-const InfoNFT = ({ user, owner, creator, isFetched, contractAddress }: InfoNFTProps) => {
-  const collectionName = NftContracts.find(contract => contract.address === contractAddress)?.name
-
+const InfoNFT = ({ tokenDetails, isFetched }: InfoNFTProps) => {
+  const collectionName = NftContracts.find(contract => contract.address === tokenDetails?.collection.id)?.name
+  const [isModal, setIsModal] = useState(false)
   return (
     <HStack mb={8} spacing={8}>
       <Flex align="center" flex={1} minW={0}>
@@ -24,8 +25,8 @@ const InfoNFT = ({ user, owner, creator, isFetched, contractAddress }: InfoNFTPr
             Creator
           </Text>
           <Skeleton isLoaded={isFetched}>
-            <Text w="full" isTruncated>
-              {user?.find(user => user.id === creator)?.name || shortenAddress(creator || "")}
+            <Text color="cyan.600" w="full" isTruncated>
+              Sipher
             </Text>
           </Skeleton>
         </Flex>
@@ -34,12 +35,19 @@ const InfoNFT = ({ user, owner, creator, isFetched, contractAddress }: InfoNFTPr
         <Avatar bg="gray" />
         <Flex ml={2} flexDir="column">
           <Text pb={1} fontWeight={600} color="neutral.400">
-            Owner
+            {tokenDetails?.collection.collectionType === "ERC1155" ? "Owner(s)" : "Owner"}
           </Text>
-          <Skeleton isLoaded={isFetched}>
-            <Text>{user?.find(user => user.id === owner)?.name || shortenAddress(owner || "")}</Text>
+          <Skeleton color="cyan.600" isLoaded={isFetched}>
+            {tokenDetails?.collection.collectionType === "ERC1155" ? (
+              <Text onClick={() => setIsModal(true)} cursor="pointer" textDecor="underline">
+                {tokenDetails?.allOwner.length}
+              </Text>
+            ) : (
+              <Text>{shortenAddress(tokenDetails?.owner || "")}</Text>
+            )}
           </Skeleton>
         </Flex>
+        <OwnersModal ownersData={tokenDetails?.allOwner} isOpen={isModal} onClose={() => setIsModal(false)} />
       </Flex>
       <Flex align="center" flex={1} minW={0}>
         <Avatar
@@ -54,7 +62,9 @@ const InfoNFT = ({ user, owner, creator, isFetched, contractAddress }: InfoNFTPr
             Collection
           </Text>
           <Skeleton isLoaded={isFetched}>
-            <Text whiteSpace="nowrap">{collectionName}</Text>
+            <Text color="cyan.600" whiteSpace="nowrap">
+              {collectionName}
+            </Text>
           </Skeleton>
         </Flex>
       </Flex>

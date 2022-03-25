@@ -1,15 +1,15 @@
-import React, { useState } from "react"
-import { ImPriceTag } from "react-icons/im"
-import { Box, Button, chakra, HStack, Skeleton } from "@sipher.dev/sipher-ui"
+import React, { Fragment } from "react"
+import { Box, Button, HStack, Skeleton } from "@sipher.dev/sipher-ui"
 
-import QuantitySelector from "./QuantitySelector"
+import { useDetailContext } from "./useDetail"
 
 interface ActionContainerProps {
   isFetched: boolean
 }
 
 const ActionContainer = ({ isFetched }: ActionContainerProps) => {
-  const [slot, setSlot] = useState(0)
+  const { tokenDetails } = useDetailContext()
+
   return (
     <Box
       px={4}
@@ -22,23 +22,29 @@ const ActionContainer = ({ isFetched }: ActionContainerProps) => {
       borderColor="neutral.600"
     >
       <HStack spacing={4}>
-        <Skeleton isLoaded={isFetched} flex={1}>
-          <QuantitySelector onChange={setSlot} maxValue={5} value={slot} />
-        </Skeleton>
-        <Skeleton isLoaded={isFetched} flex={1}>
-          <Button
-            py={5}
-            colorScheme="accent"
-            w="full"
-            leftIcon={
-              <chakra.span transform={"auto"} rotate={"-100deg"}>
-                <ImPriceTag />
-              </chakra.span>
-            }
-          >
-            MINT NFT
-          </Button>
-        </Skeleton>
+        {tokenDetails?.collection.collectionType === "ERC1155" ? (
+          <Fragment>
+            <Skeleton isLoaded={isFetched} flex={1}>
+              <Button isDisabled py={5} colorScheme="accent" w="full">
+                REDEEM SCULPTURE
+              </Button>
+            </Skeleton>
+            <Skeleton isLoaded={isFetched} flex={1}>
+              <Button py={5} variant="secondary" colorScheme="cyan" w="full">
+                VIEW ON MARKETPLACE
+              </Button>
+            </Skeleton>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Skeleton isLoaded={isFetched} flex={1}>
+              <Button py={5} variant="secondary" colorScheme="cyan" w="full">
+                VIEW ON MARKETPLACE
+              </Button>
+            </Skeleton>
+            <Skeleton isLoaded={isFetched} flex={1}></Skeleton>
+          </Fragment>
+        )}
       </HStack>
     </Box>
   )

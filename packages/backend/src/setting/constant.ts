@@ -94,6 +94,8 @@ export class SystemConfigProvider {
 
   PENDING_TIME_LOOTBOX_MINT = 86400 * 3;
 
+  MARKETPLACE_SDK_URL = this.get("MARKETPLACE_SDK_URL");
+
   public get isDebugging() {
     return !!this.get("DEBUG");
   }

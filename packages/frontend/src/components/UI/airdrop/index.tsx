@@ -18,7 +18,7 @@ const AirdropUI = () => {
 
   return (
     <Flex pos="relative" flexDir="column" align="center" flex={1}>
-      <NotifyNetwork chainId={ETHEREUM_NETWORK} title="Ethereum Mainnet" />
+      <NotifyNetwork chainId={ETHEREUM_NETWORK} />
       <Banner
         srcBg="/images/airdrops/banner.png"
         title="Airdrops"

@@ -2,9 +2,10 @@ import React from "react"
 import { BsFillTriangleFill } from "react-icons/bs"
 import { Box, chakra, Flex, Text } from "@sipher.dev/sipher-ui"
 
-import { EthereumIcon, SipherIcon } from "@components/shared"
 import { currency } from "@utils"
 import useSortableData from "src/hooks/useSortableData"
+
+import usePortfolio from "../usePortfolio"
 
 const header = [
   { id: "currency", name: "Currency" },
@@ -13,25 +14,12 @@ const header = [
   { id: "change", name: "24H Change" },
 ] as const
 
-const activityLog = [
-  {
-    currency: "ETH",
-    name: "Sipher NEKO #7922",
-    balance: 0.027,
-    value: 0.05,
-    change: 900.23,
-  },
-  {
-    currency: "SIPHER",
-    name: "Sipher NEKO #7923",
-    balance: 0.05,
-    value: 0.05,
-    change: 100.23,
-  },
-]
+interface TokensContainerProps {
+  dataTokens: ReturnType<typeof usePortfolio>["dataTokens"]
+}
 
-export const TokensContainer = () => {
-  const { items, requestSort, sortConfig } = useSortableData(activityLog)
+const TokensContainer = ({ dataTokens = [] }: TokensContainerProps) => {
+  const { items, requestSort, sortConfig } = useSortableData(dataTokens)
 
   return (
     <Box bg="neutral.700" p={4} rounded="lg" overflowX="auto" whiteSpace="nowrap">
@@ -66,7 +54,7 @@ export const TokensContainer = () => {
               <chakra.td p={2}>
                 <Flex align="center">
                   <Box color="neutral.400" transform="auto" overflow="hidden" rounded="base" mr={2}>
-                    {item.currency === "ETH" ? <EthereumIcon /> : <SipherIcon />}
+                    {item.icon}
                   </Box>
                   {item.currency}
                 </Flex>
@@ -83,3 +71,4 @@ export const TokensContainer = () => {
     </Box>
   )
 }
+export default TokensContainer

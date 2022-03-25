@@ -109,6 +109,7 @@ export const usePending = () => {
           message: "Please review your wallet notifications.",
           duration: 10000,
         })
+        query.invalidateQueries(["lootBoxs", account, user])
         query.invalidateQueries(["pending", account, user])
       },
     },

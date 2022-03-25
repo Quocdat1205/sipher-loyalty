@@ -20,7 +20,7 @@ interface CustomPopoverProps {
 
 export const CustomPopover = ({ placement = "bottom-start", icon, children, label = "" }: CustomPopoverProps) => {
   return (
-    <Popover arrowSize={16} placement={placement}>
+    <Popover arrowSize={8} placement={placement}>
       <PopoverTrigger>{icon}</PopoverTrigger>
       <PopoverContent
         _focus={{ boxShadow: "none", border: "none" }}

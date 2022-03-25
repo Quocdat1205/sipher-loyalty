@@ -14,7 +14,6 @@ interface CardProps {
 
 const CollectionCard = ({ data }: CardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false)
-
   return (
     <Box
       onClick={data.onView}

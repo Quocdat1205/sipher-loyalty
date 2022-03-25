@@ -29,7 +29,7 @@ const usePortFolioHome = () => {
 
   const collectionData = dataInit?.map(item => ({
     ...item,
-    onView: () => router.push(`/portfolio/${item.collectionSlug}`),
+    onView: () => router.push(`/portfolio/${item.id}`),
   }))
 
   return { collectionData }

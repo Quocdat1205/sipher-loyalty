@@ -1,14 +1,7 @@
 // import library
-import * as redisStore from "cache-manager-redis-store";
 import Joi from "joi";
-import {
-  NftOrder,
-  Program,
-  SculpturesOrder,
-  SculptureTransaction,
-  User,
-} from "@entity";
-import { CacheModule, Module } from "@nestjs/common";
+import { Program, SculptureTransaction, User } from "@entity";
+import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { configService } from "@setting/config.typeorm";
@@ -20,6 +13,7 @@ import { LoggerModule } from "@modules/logger/logger.module";
 import { MerchModule } from "@modules/merch/merch.module";
 import { MultiTokenModule } from "@modules/multi-token/multi-token.module";
 import { NftItemModule } from "@modules/nft/nftItem.module";
+import { PriceModule } from "@modules/price/price.module";
 import { SculptureModule } from "@modules/sculpture/sculpture.module";
 import { SearchModule } from "@modules/search/search.module";
 import { URIModule } from "@modules/uri/uri.module";
@@ -39,13 +33,7 @@ import { AppService } from "./app.service";
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([
-      User,
-      Program,
-      SculpturesOrder,
-      NftOrder,
-      SculptureTransaction,
-    ]),
+    TypeOrmModule.forFeature([User, Program, SculptureTransaction]),
     SearchModule,
     LoggerModule,
     NftItemModule,
@@ -58,6 +46,7 @@ import { AppService } from "./app.service";
     SculptureModule,
     MerchModule,
     UserModule,
+    PriceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

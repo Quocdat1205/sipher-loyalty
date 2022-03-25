@@ -1,23 +1,20 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
+
+import { AtherGuard } from "@modules/auth/auth.guard";
 
 import { PriceService } from "./price.service";
+import { PriceData } from "./price.type";
 
 @Controller("price")
 export class PriceController {
   constructor(private priceService: PriceService) {}
 
-  @Get("sipher")
-  async getSipherPrice() {
-    return this.priceService.getSipherPrice();
-  }
-
-  @Get("ether")
-  async getEtherprice() {
-    return this.priceService.getEtherPrice();
-  }
-
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @ApiOkResponse({ type: PriceData })
   @Get("sipher/change")
-  async getPriceChange() {
-    return this.priceService.getPriceChange();
+  async getPrice() {
+    return this.priceService.getPrice();
   }
 }

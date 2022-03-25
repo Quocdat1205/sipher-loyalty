@@ -50,5 +50,10 @@ export const clearSignIn = () => {
 export const setBearerToken = (token: string): RequestParams => ({
   headers: {
     Authorization: `Bearer ${token}`,
+    credentials: true,
   },
 })
+
+export const padZero = (num: number, length: number) => {
+  return num.toString().padStart(length, "0")
+}

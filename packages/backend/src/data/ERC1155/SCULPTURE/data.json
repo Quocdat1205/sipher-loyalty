@@ -1,14 +1,18 @@
 [
   {
     "tokenId": "0",
-    "name": "Sculpture Inu",
+    "name": "Sipher INU Sculpture",
     "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/inu_sculpture.mp4",
-    "attributes": []
+    "attributes": [],
+    "animation_url": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/neko_sculpture.mp4",
+    "description": "For the first time ever, a Inu figurine is brought to you as a token of appreciation for the real MVP who participated in the NEKO Dutch Auction. Imprinted with a dystopian futuristic setting, this Sipher Inu Sculpture will be a totem of aesthetics that can make you a proud owner."
   },
   {
     "tokenId": "1",
-    "name": "Sculpture Neko",
+    "name": "Sipher NEKO Sculpture",
     "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/neko_sculpture.mp4",
-    "attributes": []
+    "attributes": [],
+    "animation_url": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/neko_sculpture.mp4",
+    "description": "For the first time ever, a Neko figurine is brought to you as a token of appreciation for the real MVP who participated in the NEKO Dutch Auction. Imprinted with a dystopian futuristic setting, this Sipher Neko Sculpture will be a totem of aesthetics that can make you a proud owner."
   }
 ]

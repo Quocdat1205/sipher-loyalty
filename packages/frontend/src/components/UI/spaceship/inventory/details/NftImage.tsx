@@ -17,19 +17,20 @@ import {
 } from "@sipher.dev/sipher-ui"
 
 import { SpLayer } from "@components/shared/icons"
+import { videos } from "@components/UI/portfolio/nft/NFTCard"
 
 interface NftImageProps extends BoxProps {
   mintable: number
   isFetching: boolean
   windowHeight?: number
-  src?: string
+  src: string
   alt?: string
 }
 
 export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest }: NftImageProps) => {
-  const [isImgLoaded, setIsImgLoaded] = useState(false)
   const [isOpen, setIsOpen] = useState("")
   const boxRef = useRef(null)
+  const extension = src ? src.split(".")[5] : ""
 
   useOutsideClick({
     ref: boxRef,
@@ -37,16 +38,24 @@ export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest
   })
 
   return (
-    <Skeleton h="full" isLoaded={isFetching || isImgLoaded} sx={{ span: { rounded: "md" } }}>
+    <Box h="full">
       <Flex align="center" justify="center" h="full" {...rest}>
-        <Box maxW="36rem" pos="relative">
-          <Image
-            src={src || "/"}
-            alt={alt}
-            width={windowHeight ? ((windowHeight - 200) * 644) / 722 : 500}
-            height={windowHeight ? windowHeight - 200 : 574}
-            onLoad={() => setIsImgLoaded(true)}
-          />
+        <Skeleton
+          sx={{ span: { rounded: "md" }, video: { rounded: "md" } }}
+          isLoaded={isFetching}
+          maxW="38rem"
+          pos="relative"
+        >
+          {videos.includes(extension) ? (
+            <video src={src} autoPlay loop muted datatype="video/mp4"></video>
+          ) : (
+            <Image
+              src={src || "/"}
+              alt={alt}
+              width={windowHeight ? ((windowHeight - 200) * 644) / 722 : 500}
+              height={windowHeight ? windowHeight - 200 : 574}
+            />
+          )}
           <Box pos="absolute" bottom="0" left="0" transform="translate(1rem, -2rem)">
             <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white">
               <SpLayer />
@@ -67,7 +76,7 @@ export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest
               icon={<BiFullscreen size="1.4rem" />}
             />
           </Box>
-        </Box>
+        </Skeleton>
       </Flex>
       <Modal isOpen={isOpen === "FULL_SCREEN"} onClose={() => setIsOpen("")} isCentered size="3xl">
         <ModalOverlay />
@@ -75,13 +84,17 @@ export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest
           <ModalBody p={0} display="flex" justifyContent="center">
             <Flex direction="column" align={"flex-end"}>
               <ModalCloseButton pos="static" mb={2} _focus={{ shadow: "none" }} rounded="full" />
-              <Box sx={{ span: { rounded: "md" } }}>
-                <Image src={src || "/"} alt={alt} width={550} height={640} />
+              <Box sx={{ span: { rounded: "md" }, video: { rounded: "md" } }}>
+                {videos.includes(extension) ? (
+                  <video src={src} autoPlay loop muted datatype="video/mp4"></video>
+                ) : (
+                  <Image src={src || "/"} alt={alt} width={550} height={640} />
+                )}
               </Box>
             </Flex>
           </ModalBody>
         </ModalContent>
       </Modal>
-    </Skeleton>
+    </Box>
   )
 }

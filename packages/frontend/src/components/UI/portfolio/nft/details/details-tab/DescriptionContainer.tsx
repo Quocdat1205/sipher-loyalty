@@ -8,10 +8,7 @@ const DescriptionContainer = () => {
         Description
       </Text>
       <Text color="neutral.400">
-        Created by{" "}
-        <chakra.span color="cyan.600" cursor="pointer">
-          Sipher-Mad-Scientist
-        </chakra.span>
+        Created by <chakra.span color="cyan.600">Sipher-Mad-Scientist</chakra.span>
       </Text>
     </Box>
   )

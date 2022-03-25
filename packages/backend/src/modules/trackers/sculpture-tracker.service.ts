@@ -86,6 +86,7 @@ export class ScupltureTrackerService {
       const ownerAddress = event.args[0];
       const tokenId = (event.args[1] as BigNumber).toString();
       const amount = (event.args[2] as BigNumber).toNumber();
+      // eslint-disable-next-line no-await-in-loop
       await this.scupltureService.saveRedeemTransaction({
         address: ownerAddress,
         tokenId,
