@@ -19,7 +19,10 @@ import { MintModule } from "@modules/mint/mint.module";
 import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 import { TrackedBlock } from "src/entity/tracking.entity";
 
-import { LootboxTrackerService } from "./lootbox-tracker.service";
+import { LootboxTrackerBurnedService } from "./lootbox-tracker-burned.service";
+import { LootboxTrackerCancelService } from "./lootbox-tracker-canceled.service";
+import { LootboxTrackerExpiredService } from "./lootbox-tracker-expired.service";
+import { LootboxTrackerMintedService } from "./lootbox-tracker-minted.service";
 
 @Module({
   imports: [
@@ -40,7 +43,13 @@ import { LootboxTrackerService } from "./lootbox-tracker.service";
     CancelModule,
     AuthCacheModule,
   ],
-  providers: [LootboxTrackerService, LootBoxService, CacheService],
-  exports: [LootboxTrackerService],
+  providers: [
+    LootboxTrackerBurnedService,
+    LootboxTrackerCancelService,
+    LootboxTrackerMintedService,
+    LootBoxService,
+    CacheService,
+    LootboxTrackerExpiredService,
+  ],
 })
 export class LootboxTrackerModule {}

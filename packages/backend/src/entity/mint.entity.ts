@@ -10,6 +10,7 @@ export enum MintStatus {
   Pending = "Pending",
   Minted = "Minted",
   Canceled = "Canceled",
+  Expired = "Expired",
 }
 
 export enum MintType {

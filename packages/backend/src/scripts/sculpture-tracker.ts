@@ -7,7 +7,7 @@ import { configService } from "@setting/config.typeorm";
 import constant from "@setting/constant";
 
 import { LoggerService } from "@modules/logger/logger.service";
-import { SculptureTrackerModule } from "@modules/trackers/erc1155_spaceship/sculpture-tracker.module";
+import { SculptureTrackerModule } from "@modules/trackers/sculpture-tracker.module";
 import { TrackedBlock } from "src/entity/tracking.entity";
 
 @Module({

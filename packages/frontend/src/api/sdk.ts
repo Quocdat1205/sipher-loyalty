@@ -13,6 +13,7 @@ export enum MintStatus {
   Pending = 'Pending',
   Minted = 'Minted',
   Canceled = 'Canceled',
+  Expired = 'Expired',
 }
 
 export enum MintType {
@@ -228,6 +229,12 @@ export interface ResAllAirdrop {
 export type EtherDto = object;
 
 export type BioDto = object;
+
+export interface PriceData {
+  image: string;
+  tokenId: number;
+  quantity: number;
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
 
@@ -752,6 +759,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, any>({
         path: `/api/sipher/loyalty/user/get-sipher-statics`,
         method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name PriceControllerGetPrice
+     * @request GET:/api/sipher/loyalty/price/sipher/change
+     * @secure
+     */
+    priceControllerGetPrice: (params: RequestParams = {}) =>
+      this.request<PriceData, any>({
+        path: `/api/sipher/loyalty/price/sipher/change`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
         ...params,
       }),
   };

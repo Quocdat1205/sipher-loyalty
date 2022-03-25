@@ -48,18 +48,25 @@ export class PriceService {
     return this.currentPrice;
   }
 
-  async getSipherPrice() {
+  private async getSipherPrice() {
     const cryptoPrice = await this.getCryptoPrice();
     return cryptoPrice.data.sipher.usd;
   }
 
-  async getEtherPrice() {
+  private async getEtherPrice() {
     const cryptoPrice = await this.getCryptoPrice();
     return cryptoPrice.data.ethereum.usd;
   }
 
-  async getPriceChange() {
+  private async getPriceChange() {
     const cryptoPrice = await this.getCryptoPrice();
     return cryptoPrice.data.changingPrice;
+  }
+
+  async getPrice() {
+    const priceChange = await this.getPriceChange();
+    const sipherPrice = await this.getSipherPrice();
+    const etherPrice = await this.getEtherPrice();
+    return { sipherPrice, etherPrice, priceChange };
   }
 }
