@@ -6,6 +6,7 @@ import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, Button, chakra, Flex, FormControl, Stack, Text } from "@sipher.dev/sipher-ui"
+import { useWalletContext } from "@web3"
 
 import { ChakraModal, CustomInput, CustomPopover, Form, FormField } from "@components/shared"
 import { useChakraToast } from "@hooks"
@@ -25,10 +26,17 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref("password")], "Passwords must match"),
 })
 
-const FillEmailForm = () => {
+interface FillEmailFormProps {
+  onClose: () => void
+}
+
+const FillEmailForm = ({ onClose }: FillEmailFormProps) => {
   const [showVerify, setShowVerify] = useState(false)
   const toast = useChakraToast()
   const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const { account } = useWalletContext()
 
   const {
     register,
@@ -39,7 +47,9 @@ const FillEmailForm = () => {
   const { mutate, isLoading } = useMutation<unknown, unknown, FieldValues>(
     data => AtherIdAuth.signUp(data.email, data.password),
     {
-      onSuccess: () => setShowVerify(true),
+      onSuccess: () => {
+        setShowVerify(true)
+      },
       onError: (e: any) =>
         toast({
           status: "error",
@@ -49,10 +59,10 @@ const FillEmailForm = () => {
     },
   )
 
-  if (showVerify) return <VerifySignUpForm email={email} />
+  if (showVerify) return <VerifySignUpForm email={email} address={account} password={password} />
 
   return (
-    <ChakraModal title={"YOU ARE ALMOST THERE"} size="lg" isOpen={true} hideCloseButton={true}>
+    <ChakraModal title={"YOU ARE ALMOST THERE"} size="lg" isOpen={true} onClose={onClose}>
       <Form onSubmit={handleSubmit(d => mutate(d))}>
         <Stack pos="relative" px={6} spacing={4} w="full">
           <Flex display="inline-block" align="center">
@@ -95,7 +105,7 @@ const FillEmailForm = () => {
                 type={"password"}
                 placeholder="Password"
                 autoComplete="new-password"
-                {...register("password")}
+                {...register("password", { onChange: e => setPassword(e.target.value) })}
               />
             </FormField>
           </FormControl>

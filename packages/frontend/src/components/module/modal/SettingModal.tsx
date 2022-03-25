@@ -1,16 +1,30 @@
 import React from "react"
+import { useForm } from "react-hook-form"
 import { BiChevronRight } from "react-icons/bi"
 import { MdImage } from "react-icons/md"
+import * as Yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
 import { Avatar, Box, Button, Divider, Flex, FormControl, FormLabel, HStack, Text } from "@sipher.dev/sipher-ui"
 
-import { CustomInput } from "@components/shared"
+import { CustomInput, CustomTextarea, Form, FormField } from "@components/shared"
 
 interface SettingAccountModalProps {
   onClose: () => void
   setChangeForm: (v: string) => void
 }
 
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  bio: Yup.string().optional(),
+})
+
 export const SettingModal = ({ onClose, setChangeForm }: SettingAccountModalProps) => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(validationSchema) })
+
   return (
     <Box px={6}>
       <Flex mb={8} align="center">
@@ -34,31 +48,21 @@ export const SettingModal = ({ onClose, setChangeForm }: SettingAccountModalProp
           </Button>
         </Box>
       </Flex>
-      <Flex align="flex-start" mb="6">
-        <FormControl as="fieldset">
-          <Box bg="neutral.600" rounded="base" p={2} mb={1}>
-            <FormLabel mb={0} fontSize="xs" color="neutral.400" fontWeight={400}>
-              Username
-            </FormLabel>
-            <CustomInput
-              maxLength={20}
-              p={0}
-              _hover={{ bg: "transparent" }}
-              _focus={{ bg: "transparent" }}
-              bg="transparent"
-            />
-          </Box>
-          <Text color="neutral.500" fontSize="xs" textAlign="right">
-            0/20
-          </Text>
-        </FormControl>
-        <FormControl ml={8} bg="neutral.600" rounded="base" p={2} as="fieldset">
-          <FormLabel mb={0} fontSize="xs" color="neutral.400" fontWeight={400}>
-            Email address
-          </FormLabel>
-          <CustomInput p={0} _hover={{ bg: "transparent" }} _focus={{ bg: "transparent" }} bg="transparent" />
-        </FormControl>
-      </Flex>
+      <FormControl>
+        <FormLabel mb={1} fontSize="sm" color="neutral.400">
+          Name
+        </FormLabel>
+        <FormField error={"asf"}>
+          <CustomInput maxLength={20} />
+        </FormField>
+      </FormControl>
+      <FormControl>
+        <FormLabel mb={1} fontSize="sm" color="neutral.400">
+          Bio
+        </FormLabel>
+        <CustomTextarea maxLength={255} h="6rem" />
+      </FormControl>
+
       <Divider pt={6} orientation="horizontal" />
       <Flex
         onClick={() => setChangeForm("PASSWORD")}

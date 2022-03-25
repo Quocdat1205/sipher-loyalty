@@ -153,6 +153,7 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
       <Form
         onSubmit={handleSubmit(d => {
           setConnectingMethod("email")
+          console.log(d)
           mutateSignIn({ emailOrWallet: d.email, password: d.password })
         })}
       >

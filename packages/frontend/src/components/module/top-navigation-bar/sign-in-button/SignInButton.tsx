@@ -25,7 +25,7 @@ const SignInButton = () => {
     setAuthFlow: s.setAuthFlow,
   }))
 
-  const { authenticated } = useAuth()
+  const { authenticated, user } = useAuth()
 
   useOutsideClick({
     ref: popRef,
@@ -66,7 +66,7 @@ const SignInButton = () => {
             <Flex align="center" cursor="pointer" onClick={() => setIsPopupOpen(!isPopupOpen)}>
               <Avatar bg="gray" size="sm" />
               <Text color="white" display={["none", "block"]} ml={2}>
-                {shortenAddress(wallet.account)}
+                {user?.email}
               </Text>
             </Flex>
           )}

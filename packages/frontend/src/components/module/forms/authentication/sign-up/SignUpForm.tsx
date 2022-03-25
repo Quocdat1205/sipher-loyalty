@@ -8,15 +8,7 @@ import { Box, Button, chakra, Flex, Link, Stack, Text } from "@sipher.dev/sipher
 import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
-import {
-  ChakraModal,
-  CustomInput,
-  Form,
-  FormControl,
-  FormField,
-  SocialAccountSignIn,
-  WalletSignIn,
-} from "@components/shared"
+import { ChakraModal, CustomInput, Form, FormControl, FormField, WalletSignIn } from "@components/shared"
 import { useChakraToast } from "@hooks"
 
 import FillEmailForm from "./FillEmailForm"
@@ -43,6 +35,7 @@ interface SignUpFormProps {
 const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
   const toast = useChakraToast()
   const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [showVerify, setShowVerify] = useState(false)
   const [showEmailForm, setShowEmailForm] = useState(false)
   const [connectingMethod, setConnectingMethod] = useState<string | null>(null)
@@ -69,6 +62,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
   const { mutate, isLoading } = useMutation<unknown, unknown, FieldValues>(
     data => AtherIdAuth.signUp(data.email, data.password),
     {
+      // go to verify page after sign up
       onSuccess: () => setShowVerify(true),
       onError: (e: any) => {
         toast({
@@ -88,15 +82,17 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
 
     if (account) {
       try {
+        console.log(account)
         const user = await AtherIdAuth.signIn(account)
-        if (user)
+        if (user) {
           toast({
             status: "error",
             title: "Address is already registered!",
             message: "Please sign in to continue.",
           })
-        else setShowEmailForm(true)
-      } catch (e) {
+        } else setShowEmailForm(true)
+      } catch (e: any) {
+        console.log("Error", e?.message)
         setShowEmailForm(true)
       }
     }
@@ -104,10 +100,18 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
   }
 
   // show verify form after user has signed up
-  if (showVerify) return <VerifySignUpForm email={email} />
+  if (showVerify) return <VerifySignUpForm email={email} address={wallet.account} password={password} />
 
   // show email filling form after user connect wallet first
-  if (showEmailForm) return <FillEmailForm />
+  if (showEmailForm)
+    return (
+      <FillEmailForm
+        onClose={() => {
+          setAuthFlow(null)
+          setShowEmailForm(false)
+        }}
+      />
+    )
 
   return (
     <ChakraModal title={"SIGN IN OR CREATE ACCOUNT"} size="lg" isOpen={isOpen} onClose={onClose}>
@@ -132,7 +136,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
                 type={"password"}
                 placeholder="Password"
                 autoComplete="new-password"
-                {...register("password")}
+                {...register("password", { onChange: e => setPassword(e.target.value) })}
               />
             </FormField>
           </FormControl>
@@ -162,7 +166,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
             </Text>
             <Box bg="neutral.600" h="1px" flex={1} />
           </Flex>
-          <SocialAccountSignIn />
+          {/* <SocialAccountSignIn /> */}
           <WalletSignIn
             onMetamaskConnect={() => handleConnectWallet("injected")}
             onWalletConnectConnect={() => handleConnectWallet("walletConnect")}
