@@ -36,3 +36,8 @@ export class PortfolioByCollectionResponse {
   })
   items: NftItem[];
 }
+
+export class Portfolio extends SipherCollection {
+  @ApiProperty({ type: Number })
+  total: number;
+}

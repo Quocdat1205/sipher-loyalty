@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React from "react"
 import Image from "next/image"
-import { Box, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Flex, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { SpLayer } from "@components/shared/icons"
 import { NftContracts } from "@constant"
@@ -11,10 +11,12 @@ interface CardProps {
   data: ReturnType<typeof useNFTs>["nftsData"][number]
 }
 
+export const images = ["jpg", "gif", "png"]
+export const videos = ["mp4", "3gp", "ogg"]
+
 const NFTCard = ({ data }: CardProps) => {
   const collectionName = NftContracts.find(property => property.address === data.collectionId)?.name
-
-  const [imageLoaded, setImageLoaded] = useState(false)
+  const extension = data.imageUrl.split(".")[5]
   return (
     <Box
       onClick={data.onView}
@@ -25,16 +27,19 @@ const NFTCard = ({ data }: CardProps) => {
       bg="neutral.700"
       pos="relative"
     >
-      <Skeleton pos="relative" isLoaded={imageLoaded}>
-        <Image
-          src={data.imageUrl || "/images/nft/sipher1.png"}
-          alt={data.tokenId}
-          loading="lazy"
-          height={480}
-          width={436}
-          objectFit="cover"
-          onLoad={() => setImageLoaded(true)}
-        />
+      <Box pos="relative">
+        {videos.includes(extension) ? (
+          <video src={data.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
+        ) : (
+          <Image
+            src={data.imageUrl || "/images/nft/sipher1.png"}
+            alt={data.tokenId}
+            loading="lazy"
+            height={480}
+            width={436}
+            objectFit="cover"
+          />
+        )}
         {data.type === "ERC1155" && (
           <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white" pos="absolute" bottom="1rem" left="0.5rem">
             <SpLayer />
@@ -43,7 +48,7 @@ const NFTCard = ({ data }: CardProps) => {
             </Text>
           </Flex>
         )}
-      </Skeleton>
+      </Box>
       <Stack spacing={1} pt={2} pb={4} px={4}>
         <Text fontWeight={600}>{data.name}</Text>
         <Text color="neutral.400">{collectionName}</Text>

@@ -12,39 +12,46 @@ const useDetail = () => {
   const router = useRouter()
   const { session, authenticated, user } = useAuth()
   const qc = useQueryClient()
-  const { collectionId, tokenId } = router.query
+  const { collectionId, id } = router.query
+
   const {
     data: tokenDetails,
     isLoading,
+    isFetched,
     refetch,
   } = useQuery<any>(
-    ["character", user, tokenId, wallet.account],
+    ["detailNFT", user, id, wallet.account, collectionId],
     () =>
       client.api
-        .nftItemControllerGetByCollection(setBearerToken(session?.getIdToken().getJwtToken() as string))
+        .collectionControllerGetItemById(
+          wallet.account!,
+          id as string,
+          setBearerToken(session?.getIdToken().getJwtToken() as string),
+        )
         .then(res => res.data),
     {
       enabled: router.isReady && authenticated,
       retry: false,
-      onSuccess: data => console.log(data),
     },
   )
 
-  const isOwner = wallet.account === tokenDetails?.item.owner
+  const isOwner = wallet.account === tokenDetails?.owner
 
   const revalidate = () => {
-    qc.invalidateQueries(["character", collectionId, tokenId, wallet.account])
+    qc.invalidateQueries(["detailNFT", user, id, wallet.account, collectionId])
   }
 
   const getUserById = (id: string) => tokenDetails?.users?.find(user => user.id === id)
 
   return {
+    router,
+    isFetched,
     tokenDetails,
     isLoading,
     isOwner,
     wallet,
     collectionId: collectionId as string,
-    tokenId: tokenId as string,
+    tokenId: id as string,
     refetch,
     revalidate,
     getUserById,

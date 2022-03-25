@@ -139,6 +139,28 @@ export enum CollectionType {
   ERC1155 = 'ERC1155',
 }
 
+export interface Portfolio {
+  id: string;
+  name: string;
+  collectionSlug: string;
+  chainId: number;
+  collectionType: CollectionType;
+  category: CollectionCategory;
+  floorPrice: number;
+  description: string;
+  logoImage: string;
+  bannerImage: string;
+  siteUrl: string;
+  isVerified: boolean;
+
+  /** @format date-time */
+  createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
+  total: number;
+}
+
 export interface SipherCollection {
   id: string;
   name: string;
@@ -163,6 +185,7 @@ export interface SipherCollection {
 export interface NftItemAttribute {
   trait_type: string;
   value: string;
+  percentage: number;
 }
 
 export interface Erc1155Owner {
@@ -188,6 +211,7 @@ export interface NftItem {
   value: number;
   quantity: number;
   allOwner: Erc1155Owner[];
+  collection: SipherCollection;
 }
 
 export interface PortfolioByCollectionResponse {
@@ -231,9 +255,9 @@ export type EtherDto = object;
 export type BioDto = object;
 
 export interface PriceData {
-  sipherPrice: number;
-  etherPrice: number;
-  priceChange: number;
+  usd: number;
+  eth: number;
+  change: number;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
@@ -596,11 +620,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     collectionControllerGetUserCollection: (userAddress: string, query?: { category?: CollectionCategory; chainId?: string }, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<Portfolio[], any>({
         path: `/api/sipher/loyalty/collection/portfolio/${userAddress}`,
         method: 'GET',
         query: query,
         secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -766,12 +791,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name PriceControllerGetPrice
-     * @request GET:/api/sipher/loyalty/price/all
+     * @request GET:/api/sipher/loyalty/price
+     * @secure
      */
     priceControllerGetPrice: (params: RequestParams = {}) =>
       this.request<PriceData, any>({
-        path: `/api/sipher/loyalty/price/all`,
+        path: `/api/sipher/loyalty/price`,
         method: 'GET',
+        secure: true,
         format: 'json',
         ...params,
       }),

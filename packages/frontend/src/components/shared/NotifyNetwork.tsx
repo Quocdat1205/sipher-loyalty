@@ -4,15 +4,36 @@ import { useWalletContext } from "@web3"
 
 interface NotifyNetworkProps {
   chainId: number
-  title: string
 }
 
-export const NotifyNetwork = ({ chainId, title }: NotifyNetworkProps) => {
+const chainName = [
+  {
+    id: 1,
+    name: "Ethereum Mainnet",
+  },
+  {
+    id: 4,
+    name: "Ethereum Testnet",
+  },
+  {
+    id: 137,
+    name: "Polygon Mainnet",
+  },
+  {
+    id: 80001,
+    name: "Polygon Testnet",
+  },
+]
+
+export const NotifyNetwork = ({ chainId }: NotifyNetworkProps) => {
+  const [changeId, setChangeId] = useState(chainId)
   const { chainId: chainIdCurrent, switchNetwork, account } = useWalletContext()
   const [isOpen, setIsOpen] = useState(false)
+  const title = chainName.find(i => i.id === chainId)?.name
   useEffect(() => {
-    if (chainIdCurrent && chainIdCurrent !== chainId) setIsOpen(true)
-  }, [account, chainIdCurrent])
+    setChangeId(chainId)
+    if (chainIdCurrent && chainIdCurrent !== changeId && changeId) setIsOpen(true)
+  }, [account, chainIdCurrent, changeId])
 
   return (
     <Fragment>

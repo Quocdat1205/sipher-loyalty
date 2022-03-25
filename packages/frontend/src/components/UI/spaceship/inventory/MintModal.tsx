@@ -1,29 +1,26 @@
-import React, { Fragment, useEffect, useState } from "react"
+import React, { Fragment } from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { Box, Button, chakra, Divider, Flex, HStack, Link, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
+import { padZero } from "@utils"
 
 import QuantitySelector from "./details/QuantitySelector"
-import { useInventory } from "./useInventory"
+import { InventoryProps, useInventory } from "./useInventory"
 
 interface MintModalProps {
   isLoading: boolean
   status: string
   handleMint: () => void
+  dataMinted: InventoryProps[]
   dataMint: ReturnType<typeof useInventory>["inventoryDataCheck"]
   isOpen: boolean
   onClose: () => void
 }
 
-export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoading }: MintModalProps) => {
+export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handleMint, isLoading }: MintModalProps) => {
   const router = useRouter()
-  const [dataMinted, setDataMinted] = useState<ReturnType<typeof useInventory>["inventoryDataCheck"]>([])
-
-  useEffect(() => {
-    setDataMinted(dataMint)
-  }, [isLoading])
 
   return (
     <ChakraModal
@@ -107,7 +104,7 @@ export const MintModal = ({ dataMint, isOpen, onClose, status, handleMint, isLoa
             </Text>
             {dataMinted.map(item => (
               <Text textAlign="center" color="white" fontWeight={600} key={item.id}>
-                {item.slot} {item.propertyLootbox.name}
+                {padZero(item.slot, 2)} {item.propertyLootbox.name}
               </Text>
             ))}
             <Text color="grey.400" textAlign="center" mt={4}>

@@ -40,7 +40,7 @@ const ContentSpaceship = () => {
 
   return (
     <Flex pos="relative" flexDir="column" align="center" flex={1}>
-      <NotifyNetwork chainId={POLYGON_NETWORK} title="Polygon Mainnet" />
+      <NotifyNetwork chainId={POLYGON_NETWORK} />
       <Banner
         srcBg="/images/spaceship/banner.png"
         title="Spaceship"

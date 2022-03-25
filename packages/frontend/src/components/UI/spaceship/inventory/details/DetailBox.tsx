@@ -40,7 +40,7 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
             mintable={details?.mintable ?? 0}
             isFetching={isFetching}
             windowHeight={windowWidth.height}
-            src={details?.propertyLootbox.image}
+            src={details?.propertyLootbox.image as string}
             alt={"box"}
           />
         </Box>
@@ -50,7 +50,7 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
               <NftImage
                 mintable={details?.mintable ?? 0}
                 isFetching={isFetching}
-                src={details?.propertyLootbox.image}
+                src={details?.propertyLootbox.image as string}
                 alt={"box"}
               />
             </Box>

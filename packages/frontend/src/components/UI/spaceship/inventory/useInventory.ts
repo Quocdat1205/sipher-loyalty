@@ -23,6 +23,7 @@ export const useInventory = () => {
   const { account, scCaller, chainId, switchNetwork } = useWalletContext()
   const router = useRouter()
   const [isFetched, setIsFetched] = useState(false)
+  const [dataMinted, setDataMinted] = useState<InventoryProps[]>([])
   const [data, setData] = useState<InventoryProps[]>([])
   const toast = useChakraToast()
   const { refetch } = useQuery(
@@ -107,12 +108,15 @@ export const useInventory = () => {
       }
     },
     {
+      onMutate: () => {
+        setDataMinted(data.filter(i => i.isChecked))
+      },
       onSuccess: () => {
         setIsStatusModal("SUCCESS")
       },
       onSettled: () => {
         refetch()
-        query.invalidateQueries(["pending", user])
+        query.invalidateQueries(["pending", account, user])
       },
       onError: (err: any) => {
         toast({ status: "error", title: "Error", message: err?.message })
@@ -139,6 +143,7 @@ export const useInventory = () => {
   }
 
   return {
+    dataMinted,
     isLoading,
     isStatusModal,
     handleMint,

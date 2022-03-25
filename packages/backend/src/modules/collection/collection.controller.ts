@@ -24,6 +24,7 @@ import { NftItem } from "@modules/nft/nft-item.dto";
 import { CollectionCategory } from "src/entity/sipher-collection.entity";
 
 import {
+  Portfolio,
   PortfolioByCollectionResponse,
   PortfolioQuery,
 } from "./collection.dto";
@@ -52,6 +53,10 @@ export class CollectionController {
   @ApiQuery({
     name: "chainId",
     required: false,
+  })
+  @ApiOkResponse({
+    type: Portfolio,
+    isArray: true,
   })
   @Get("portfolio/:userAddress")
   async getUserCollection(

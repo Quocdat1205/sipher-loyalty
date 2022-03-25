@@ -51,10 +51,12 @@ export class AirdropController {
     @Req() req: any
   ) {
     await this.authService.verifyAddress(publicAddress, req.userData);
-    return this.merchService.claimItems({
-      publicAddress,
-      id_merch,
-    });
+    console.log(id_merch);
+
+    // return this.merchService.claimItems({
+    //   publicAddress,
+    //   id_merch,
+    // });
   }
 
   @ApiOkResponse({ type: etherDto })

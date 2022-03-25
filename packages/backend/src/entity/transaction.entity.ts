@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
-
-import { Item } from "./airdrop.entity";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Transaction {
@@ -16,9 +8,11 @@ export class Transaction {
   @Column()
   publicAddress: string;
 
-  @OneToOne(() => Item, (item) => item.transaction)
-  @JoinColumn({ name: "id_item" })
-  item: Item;
+  @Column()
+  tier: string;
+
+  @Column()
+  merch_item: string;
 
   @Column()
   quantity: number;
@@ -26,6 +20,6 @@ export class Transaction {
   @Column()
   quantity_shipped: number;
 
-  @Column()
-  isShipped: boolean;
+  @Column({ default: false })
+  isShipped?: boolean;
 }

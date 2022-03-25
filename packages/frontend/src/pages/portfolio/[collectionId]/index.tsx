@@ -12,7 +12,7 @@ const CollectionDetailsPage: NextPageWithLayout = () => {
   return (
     <>
       <Metadata title="Portfolio" description="Details Collection" />
-      <DetailsCollection collectionSlug={router.query.collectionSlug as string} />
+      <DetailsCollection collectionId={router.query.collectionId as string} />
     </>
   )
 }

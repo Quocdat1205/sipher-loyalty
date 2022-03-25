@@ -2,6 +2,8 @@ import { Transform } from "class-transformer";
 import { IsEnum, IsNumber, IsOptional, IsString, Min } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
+import { SipherCollection } from "src/entity/sipher-collection.entity";
+
 export class NftItemAttributeFilterDto {
   @IsString()
   traitType: string;
@@ -85,6 +87,12 @@ export class LikeNftItemReqDto {
 
   @IsString()
   itemId: string;
+
+  @IsString()
+  profileImage: string;
+
+  @IsString()
+  username: string;
 }
 
 export class NftItemAttribute {
@@ -93,6 +101,9 @@ export class NftItemAttribute {
 
   @ApiProperty()
   value: string;
+
+  @ApiProperty()
+  percentage: number;
 }
 
 export class Erc1155Owner {
@@ -174,5 +185,11 @@ export class NftItem {
     type: Erc1155Owner,
     isArray: true,
   })
-  allOwner: Erc1155Owner[];
+  allOwner?: Erc1155Owner[];
+
+  /* Collection Info */
+  @ApiProperty({
+    type: SipherCollection,
+  })
+  collection?: SipherCollection;
 }

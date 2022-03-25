@@ -1,5 +1,4 @@
 import CoinGecko from "coingecko-api";
-import * as CoinMarketCap from "coinmarketcap-api";
 import { format } from "date-fns";
 import { Injectable } from "@nestjs/common";
 import constant from "@setting/constant";
@@ -19,6 +18,9 @@ export class PriceService {
         usd: 4731.7,
       },
       sipher: {
+        usd: 0.6,
+      },
+      "matic-network": {
         usd: 0.6,
       },
     },
@@ -66,7 +68,6 @@ export class PriceService {
           date: format(yesterday, "dd-MM-yyyy"),
         }
       );
-      console.log(dataHistoryMatic);
 
       this.currentPrice.changingPriceMatic =
         dataPrice.data["matic-network"].usd /
@@ -79,23 +80,35 @@ export class PriceService {
 
   private async getSipherPrice() {
     const cryptoPrice = await this.getCryptoPrice();
-    return cryptoPrice.data.sipher.usd;
+    return {
+      usd: cryptoPrice.data.sipher.usd,
+      eth: cryptoPrice.data.ethereum.usd,
+      change: cryptoPrice.changingPriceSipher,
+    };
   }
 
   private async getEtherPrice() {
     const cryptoPrice = await this.getCryptoPrice();
-    return cryptoPrice.data.ethereum.usd;
+    return {
+      usd: cryptoPrice.data.ethereum.usd,
+      eth: cryptoPrice.data.ethereum.usd,
+      change: cryptoPrice.changingPriceEthereum,
+    };
   }
 
-  private async getPriceChange() {
+  private async getMaticPrice() {
     const cryptoPrice = await this.getCryptoPrice();
-    return cryptoPrice.changingPriceSipher;
+    return {
+      usd: cryptoPrice.data["matic-network"].usd,
+      eth: cryptoPrice.data["matic-network"].usd,
+      change: cryptoPrice.changingPriceMatic,
+    };
   }
 
   async getPrice() {
-    const priceChange = await this.getPriceChange();
+    const maticPrice = await this.getMaticPrice();
     const sipherPrice = await this.getSipherPrice();
-    const etherPrice = await this.getEtherPrice();
-    return { sipherPrice, etherPrice, priceChange };
+    const ethereumPrice = await this.getEtherPrice();
+    return { sipherPrice, ethereumPrice, maticPrice };
   }
 }

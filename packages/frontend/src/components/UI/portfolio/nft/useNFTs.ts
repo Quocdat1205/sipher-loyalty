@@ -7,7 +7,7 @@ import { useWalletContext } from "@web3"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
-const useNFTs = collectionSlug => {
+const useNFTs = collectionId => {
   const router = useRouter()
   const { session, authenticated, user } = useAuth()
   const { account } = useWalletContext()
@@ -15,12 +15,12 @@ const useNFTs = collectionSlug => {
   const columns = gridSize === "small" ? [2, 3, 4, 5, 5] : [1, 2, 3, 4, 4]
 
   const { data: initData } = useQuery<any>(
-    ["nfts", user, account],
+    ["nfts", user, account, collectionId],
     () =>
       client.api
         .collectionControllerGetPortfolioByCollection(
           account!,
-          collectionSlug,
+          collectionId,
           setBearerToken(session?.getIdToken().getJwtToken() as string),
         )
         .then(res => res.data),
@@ -31,11 +31,11 @@ const useNFTs = collectionSlug => {
   )
   const nftsData = initData!.items?.map(item => ({
     ...item,
-    onView: () => router.push(`/portfolio/${collectionSlug}/${item.tokenId}`),
+    onView: () => router.push(`/portfolio/${collectionId}/${item.id}`),
   }))
 
-  console.log(nftsData)
+  const collectionData = initData!.collection
 
-  return { columns, total: initData!.total, nftsData }
+  return { collectionData, columns, total: initData!.total, nftsData }
 }
 export default useNFTs

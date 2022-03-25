@@ -5,22 +5,12 @@ import ChainInfoContainer from "./ChainInfoContainer"
 import DescriptionContainer from "./DescriptionContainer"
 import PropertiesContainer from "./PropertiesContainer"
 
-interface DetailsTabProps {
-  tokenId?: string
-  contractAddress?: string
-}
-
-const DetailsTab = ({ tokenId, contractAddress }: DetailsTabProps) => {
+const DetailsTab = () => {
   return (
     <Box overflow="hidden">
       <DescriptionContainer />
-      <PropertiesContainer attributes={[]} />
-      <ChainInfoContainer
-        tokenId={tokenId ?? "0"}
-        contractAddress={contractAddress ?? "0x000"}
-        tokenStandard="ERC-721"
-        blockChain="Ethereum"
-      />
+      <PropertiesContainer />
+      <ChainInfoContainer />
     </Box>
   )
 }

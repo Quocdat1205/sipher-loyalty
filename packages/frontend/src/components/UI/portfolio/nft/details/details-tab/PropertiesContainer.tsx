@@ -3,14 +3,19 @@ import { Box, Flex, Text, Wrap, WrapItem } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
 
+import { useDetailContext } from "../useDetail"
+
 import PropertyTag from "./PropertyTag"
 
-interface PropertiesProps {
-  attributes?: any[]
-}
 const soulBoundData = ["weapon", "hand", "head", "sub-race", "costume"]
 
-const PropertiesContainer = ({ attributes = [] }: PropertiesProps) => {
+const PropertiesContainer = () => {
+  const { tokenDetails } = useDetailContext()
+
+  if (tokenDetails?.collection.collectionType === "ERC1155") {
+    return <></>
+  }
+
   return (
     <Box mb={4}>
       <Flex mb={4} align="center">
@@ -41,7 +46,7 @@ const PropertiesContainer = ({ attributes = [] }: PropertiesProps) => {
           </CustomPopover>
         </Flex>
         <Wrap w="full" py={4} spacing={4}>
-          {attributes
+          {tokenDetails?.attributes
             .filter(i => soulBoundData.includes(i.trait_type))
             .map(data => (
               <WrapItem key={data.trait_type}>
@@ -67,7 +72,7 @@ const PropertiesContainer = ({ attributes = [] }: PropertiesProps) => {
           </CustomPopover>
         </Flex>
         <Wrap w="full" py={4} spacing={4}>
-          {attributes
+          {tokenDetails?.attributes
             .filter(i => !soulBoundData.includes(i.trait_type))
             .map(data => (
               <WrapItem key={data.trait_type}>

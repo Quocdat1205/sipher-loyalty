@@ -10,10 +10,10 @@ import { PriceData } from "./price.type";
 export class PriceController {
   constructor(private priceService: PriceService) {}
 
-  // @UseGuards(AtherGuard)
-  // @ApiBearerAuth("JWT-auth")
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: PriceData })
-  @Get("/all")
+  @Get("")
   async getPrice() {
     return this.priceService.getPrice();
   }
