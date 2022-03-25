@@ -766,14 +766,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name PriceControllerGetPrice
-     * @request GET:/api/sipher/loyalty/price/sipher/change
-     * @secure
+     * @request GET:/api/sipher/loyalty/price/all
      */
     priceControllerGetPrice: (params: RequestParams = {}) =>
       this.request<PriceData, any>({
-        path: `/api/sipher/loyalty/price/sipher/change`,
+        path: `/api/sipher/loyalty/price/all`,
         method: 'GET',
-        secure: true,
         format: 'json',
         ...params,
       }),
