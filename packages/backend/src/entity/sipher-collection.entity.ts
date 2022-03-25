@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import {
   Column,
   CreateDateColumn,
@@ -21,19 +22,23 @@ export enum CollectionCategory {
 @Entity()
 export class SipherCollection {
   @PrimaryColumn()
+  @ApiProperty({ type: String })
   id: string;
 
   @Column({
     type: "character varying",
   })
+  @ApiProperty({ type: String })
   name: string;
 
   @Column({
     type: "character varying",
   })
+  @ApiProperty({ type: String })
   collectionSlug: string;
 
   @Column({ type: "integer" })
+  @ApiProperty({ type: Number })
   chainId: number;
 
   @Column({
@@ -41,6 +46,7 @@ export class SipherCollection {
     enum: CollectionType,
     default: CollectionType.ERC721,
   })
+  @ApiProperty({ enum: CollectionType, enumName: "CollectionType" })
   collectionType: CollectionType;
 
   @Column({
@@ -48,43 +54,52 @@ export class SipherCollection {
     enum: CollectionCategory,
     default: CollectionCategory.CHARACTER,
   })
+  @ApiProperty({ enum: CollectionCategory, enumName: "CollectionCategory" })
   category: CollectionCategory;
 
   @Column({
     type: "decimal",
     nullable: true,
   })
+  @ApiProperty({ type: Number })
   floorPrice: number;
 
   @Column({
     type: "text",
     default: "",
   })
+  @ApiProperty({ type: String })
   description: string;
 
   @Column({
     type: "character varying",
   })
+  @ApiProperty({ type: String })
   logoImage: string;
 
   @Column({
     type: "character varying",
   })
+  @ApiProperty({ type: String })
   bannerImage: string;
 
   @Column({
     type: "character varying",
   })
+  @ApiProperty({ type: String })
   siteUrl: string;
 
   @Column({
     type: "boolean",
   })
+  @ApiProperty({ type: Boolean })
   isVerified: boolean;
 
   @CreateDateColumn()
+  @ApiProperty({ type: Date })
   createdAt: Date;
 
   @UpdateDateColumn()
+  @ApiProperty({ type: Date })
   updatedAt: Date;
 }

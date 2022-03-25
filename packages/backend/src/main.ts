@@ -21,7 +21,6 @@ async function bootstrap() {
   app.setGlobalPrefix("api/sipher/loyalty");
   const config = new DocumentBuilder()
     .setTitle("Sipher Loyalty")
-    .setBasePath("api/sipher/loyalty")
     .setDescription("Sipher loyalty API documents")
     .addBearerAuth(
       {

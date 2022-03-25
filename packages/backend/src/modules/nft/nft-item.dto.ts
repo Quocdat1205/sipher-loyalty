@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsEnum, IsNumber, IsOptional, IsString, Min } from "class-validator";
 
@@ -84,4 +85,94 @@ export class LikeNftItemReqDto {
 
   @IsString()
   itemId: string;
+}
+
+export class NftItemAttribute {
+  @ApiProperty()
+  trait_type: string;
+
+  @ApiProperty()
+  value: string;
+}
+
+export class Erc1155Owner {
+  @ApiProperty({ type: String })
+  publicAddress: string;
+
+  @ApiProperty({ type: Number })
+  totalOwned: number;
+}
+export class NftItem {
+  @IsString()
+  @ApiProperty({ type: String })
+  id: string;
+
+  @IsString()
+  @ApiProperty({ type: String })
+  collectionId: string;
+
+  @IsString()
+  @ApiProperty({ type: String })
+  tokenId: string;
+
+  @IsString()
+  @ApiProperty({ type: String })
+  tokenUri?: string;
+
+  @IsNumber()
+  @ApiProperty({ type: String })
+  chainId: number;
+
+  @ApiProperty({
+    type: NftItemAttribute,
+    isArray: true,
+  })
+  attributes?: NftItemAttribute[];
+
+  @IsString()
+  @ApiProperty({ type: String })
+  imageUrl: string;
+
+  @IsString()
+  @ApiProperty({ type: String })
+  name: string;
+
+  @IsString()
+  @ApiProperty({ type: String })
+  owner: string;
+
+  @IsString()
+  @ApiProperty({ type: String })
+  creator?: string;
+
+  @IsNumber()
+  @ApiProperty({ type: Number })
+  viewCount?: number;
+
+  @IsString()
+  @ApiProperty({ type: String })
+  imageThumbnailUrl?: string;
+
+  @IsNumber()
+  @ApiProperty({ type: Number })
+  rarityRank?: number;
+
+  @IsNumber()
+  @ApiProperty({ type: Number })
+  rarityScore?: number;
+
+  /* ERC1155 */
+  @IsNumber()
+  @ApiProperty({ type: Number })
+  value?: number;
+
+  @IsNumber()
+  @ApiProperty({ type: Number })
+  quantity?: number;
+
+  @ApiProperty({
+    type: Erc1155Owner,
+    isArray: true,
+  })
+  allOwner: Erc1155Owner[];
 }

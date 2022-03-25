@@ -26,12 +26,6 @@ export class SeedLootboxService {
     private claimableLootboxRepo: Repository<ClaimableLootbox>
   ) {}
 
-  seedLootboxWeekly = async () => {
-    LoggerService.log("start disribute claimable lootbox");
-    await this.lootboxService.weeklySnapshotForClaimableLootbox();
-    LoggerService.log("done disribute claimable lootbox");
-  };
-
   private async createClaimableLootbox(lootbox: any) {
     const erclootbox = await this.erc1155LootboxRepo.findOne({
       tokenId: lootbox.tokenId,

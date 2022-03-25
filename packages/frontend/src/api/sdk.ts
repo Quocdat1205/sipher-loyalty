@@ -133,6 +133,68 @@ export enum CollectionCategory {
   Spaceship = 'spaceship',
 }
 
+export enum CollectionType {
+  ERC721 = 'ERC721',
+  ERC1155 = 'ERC1155',
+}
+
+export interface SipherCollection {
+  id: string;
+  name: string;
+  collectionSlug: string;
+  chainId: number;
+  collectionType: CollectionType;
+  category: CollectionCategory;
+  floorPrice: number;
+  description: string;
+  logoImage: string;
+  bannerImage: string;
+  siteUrl: string;
+  isVerified: boolean;
+
+  /** @format date-time */
+  createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
+}
+
+export interface NftItemAttribute {
+  trait_type: string;
+  value: string;
+}
+
+export interface Erc1155Owner {
+  publicAddress: string;
+  totalOwned: number;
+}
+
+export interface NftItem {
+  id: string;
+  collectionId: string;
+  tokenId: string;
+  tokenUri: string;
+  chainId: string;
+  attributes: NftItemAttribute[];
+  imageUrl: string;
+  name: string;
+  owner: string;
+  creator: string;
+  viewCount: number;
+  imageThumbnailUrl: string;
+  rarityRank: number;
+  rarityScore: number;
+  value: number;
+  quantity: number;
+  allOwner: Erc1155Owner[];
+}
+
+export interface PortfolioByCollectionResponse {
+  collection: SipherCollection;
+  total: number;
+  items: NftItem;
+}
+
 export enum AirdropType {
   NFT = 'NFT',
   TOKEN = 'TOKEN',
@@ -540,14 +602,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags collection
      * @name CollectionControllerGetPortfolioByCollection
-     * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/portfolio/{userAddress}
+     * @request GET:/api/sipher/loyalty/collection/{collectionId}/portfolio/{userAddress}
      * @secure
      */
-    collectionControllerGetPortfolioByCollection: (userAddress: string, collectionSlug: string, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/sipher/loyalty/collection/${collectionSlug}/portfolio/${userAddress}`,
+    collectionControllerGetPortfolioByCollection: (userAddress: string, collectionId: string, params: RequestParams = {}) =>
+      this.request<PortfolioByCollectionResponse, any>({
+        path: `/api/sipher/loyalty/collection/${collectionId}/portfolio/${userAddress}`,
         method: 'GET',
         secure: true,
+        format: 'json',
         ...params,
       }),
 
@@ -560,10 +623,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     collectionControllerGetItemById: (userAddress: string, itemId: string, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<NftItem, any>({
         path: `/api/sipher/loyalty/collection/portfolio/${userAddress}/nft-item/${itemId}`,
         method: 'GET',
         secure: true,
+        format: 'json',
         ...params,
       }),
 
