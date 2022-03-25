@@ -93,6 +93,9 @@ export class NftItemAttribute {
 
   @ApiProperty()
   value: string;
+
+  @ApiProperty()
+  percentage: number;
 }
 
 export class Erc1155Owner {
@@ -174,5 +177,5 @@ export class NftItem {
     type: Erc1155Owner,
     isArray: true,
   })
-  allOwner: Erc1155Owner[];
+  allOwner?: Erc1155Owner[];
 }

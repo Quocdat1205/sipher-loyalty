@@ -163,6 +163,7 @@ export interface SipherCollection {
 export interface NftItemAttribute {
   trait_type: string;
   value: string;
+  percentage: number;
 }
 
 export interface Erc1155Owner {

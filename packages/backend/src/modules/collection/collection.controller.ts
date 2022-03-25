@@ -94,7 +94,9 @@ export class CollectionController {
     @Req() req: any
   ) {
     await this.authService.verifyAddress(userAddress, req.userData);
-    const result = await this.collectionService.getItemById(itemId);
+    const result = await this.collectionService.getItemById(
+      itemId.toLowerCase()
+    );
     if (!result) {
       throw new HttpException("Item not found", 404);
     }

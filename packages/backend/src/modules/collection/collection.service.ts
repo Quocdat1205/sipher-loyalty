@@ -18,6 +18,7 @@ import {
 
 import { PortfolioQuery } from "./collection.dto";
 import { NftItem } from "@modules/nft/nft-item.dto";
+import marketplaceClient from "src/api/marketplaceClient";
 
 @Injectable()
 export class CollectionService {
@@ -127,17 +128,27 @@ export class CollectionService {
     };
   }
 
-  async getItemById(itemId: string): Promise<NftItem> {
-    const result = await this.searchSrv.get({
-      index: constant.ELASTICSEARCH_INDEX,
-      id: itemId,
-    });
-    const item = result?.body?._source ? result?.body?._source : undefined;
+  async getItemById(itemId: string): Promise<any> {
+    // So the marketpalce detail sdk doesn't work with ERC1155, have to do it in this way
+    let item: any;
+    if (this.isErc1155Id(itemId)) {
+      const result = await this.searchSrv.get({
+        index: constant.ELASTICSEARCH_INDEX,
+        id: itemId,
+      });
+      item = result?.body?._source ? result?.body?._source : undefined;
+    } else {
+      const response =
+        await marketplaceClient.api.nftItemControllerGetDetailsById(itemId);
+      item = {
+        ...response.data.item,
+        attributes: response.data.attributes,
+      } as any;
+    }
+
     if (!item) {
       return item;
     }
-    delete item._entity;
-    delete item._relation;
     const itemCollection = await this.sipherCollectionRepo.findOne({
       where: {
         id: item.collectionId,
@@ -160,6 +171,10 @@ export class CollectionService {
     const itemWithUri = (await this.addUriToItem([item]))[0];
 
     return itemWithUri;
+  }
+
+  private isErc1155Id(id: string) {
+    return id.split(":").length === 3;
   }
 
   private async getTotalErc1155Minted(collectionId: string, tokenId: string) {
