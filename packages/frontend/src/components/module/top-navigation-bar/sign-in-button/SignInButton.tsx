@@ -9,7 +9,6 @@ import SignInForm from "@components/module/forms/authentication/sign-in"
 import SignUpForm from "@components/module/forms/authentication/sign-up"
 import { SignInProvider } from "@components/module/forms/authentication/useSignInContext"
 import { AccountModal, BuySipherModal } from "@components/module/modal"
-import { shortenAddress } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 import UserInfoDropdown from "./UserInfoDropdown"

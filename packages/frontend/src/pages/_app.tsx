@@ -23,7 +23,15 @@ type AppPropsWithLayout = AppProps & {
 const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout || (page => page)
 
-  const qcRef = useRef(new QueryClient())
+  const qcRef = useRef(
+    new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+      },
+    }),
+  )
 
   return (
     <SipherProvider>
