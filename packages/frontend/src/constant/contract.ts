@@ -26,6 +26,8 @@ export const StakingLPSipherWethUniswapAddress = "0x5b2D34C26B5eb7388F54a3E8D4bE
 
 export const StakingLPSipherWethKyberAddress = "0xEB3CadDe330a4AA3D627F666aEcdD6F65208B19F" //main
 
+export const SipherAirdropsAddress = "0x0b761403fdc1E7CD8763cCd89D0b269AcFDc4926" //main
+
 export const SipherSpaceshipLootBoxAddress = "0x3E445D426c8FdE12F5F0C223019CA9158f7Da93B" //test
 
 export const PRICE_TYPE = [

@@ -12,11 +12,11 @@ export const useAirdrops = () => {
   const { session, authenticated, user } = useAuth()
   const { account } = useWalletContext()
 
-  useQuery(
+  const { data: dataAirdrops } = useQuery(
     ["airdrops", currentTab, user, account],
     () =>
       client.api
-        .airdropControllerGetAirdropByType(account!, "ALL".toUpperCase(), {
+        .airdropControllerGetAirdropByType(account!, AirdropType.ALL, {
           headers: {
             Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
           },
@@ -24,8 +24,16 @@ export const useAirdrops = () => {
         .then(res => res.data),
     {
       enabled: authenticated && !!account,
+      initialData: {
+        nft: [],
+        token: [],
+      },
     },
   )
 
-  return { currentTab }
+  const allAirdrops = [...dataAirdrops!.nft.map(item => item), ...dataAirdrops!.token.map(item => item)]
+
+  console.log(allAirdrops)
+
+  return { currentTab, allAirdrops }
 }
