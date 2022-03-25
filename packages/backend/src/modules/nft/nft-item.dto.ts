@@ -85,6 +85,12 @@ export class LikeNftItemReqDto {
 
   @IsString()
   itemId: string;
+
+  @IsString()
+  profileImage: string;
+
+  @IsString()
+  username: string;
 }
 
 export class NftItemAttribute {

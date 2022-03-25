@@ -192,6 +192,8 @@ export class CollectionService {
     const ownerArray = items.map((item) => ({
       publicAddress: item.owner,
       totalOwned: item.value,
+      profileImage: "",
+      username: "",
     }));
     return ownerArray;
   }
