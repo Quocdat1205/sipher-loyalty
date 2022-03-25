@@ -7,8 +7,10 @@ import { useWalletContext } from "@web3"
 
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
 import { useChakraToast, useOwnedWallets } from "@hooks"
+import { useAuth } from "src/providers/auth"
 
 import ConnectingWallet from "./ConnectingWallet"
+import ConnectToWallet from "./ConnectToWallet"
 
 interface VerifySignUpFormProps {
   email: string
@@ -25,39 +27,35 @@ const VerifySignUpForm = ({ email, password, address }: VerifySignUpFormProps) =
   const [isOpen, setIsOpen] = useState(true)
   // const [isConnectingWallet, setIsConnectingWallet] = useState(false)
   const [authFlow] = useStore(s => [s.authFlow])
-
+  const { ownedWallets } = useAuth()
   const { scCaller, reset } = useWalletContext()
 
-  const ownedWallets = useOwnedWallets()
+  // const { mutate: mutateConnectWallet, isLoading: isConnectingWallet } = useMutation(
+  //   async () => {
+  //     const res = await AtherIdAuth.connectWallet(address!)
+  //     const signature = await scCaller.current?.sign(res.message)
+  //     await AtherIdAuth.confirmConectWallet(res, signature!)
+  //   },
+  //   {
+  //     onError: (e: any) => {
+  //       if (e?.code === 4001) {
+  //         toast({
+  //           status: "error",
+  //           title: "Signature error",
+  //           message: "User denied to sign the message",
+  //         })
+  //         AtherIdAuth.signOut()
+  //         reset()
+  //       }
+  //     },
+  //   },
+  // )
 
-  const { mutate: mutateConnectWallet, isLoading: isConnectingWallet } = useMutation(
-    async () => {
-      if (!ownedWallets.includes(address!)) {
-        const res = await AtherIdAuth.connectWallet(address!)
-        const signature = await scCaller.current?.sign(res.message)
-        await AtherIdAuth.confirmConectWallet(res, signature!)
-      }
-    },
-    {
-      onError: (e: any) => {
-        if (e?.code === 4001) {
-          toast({
-            status: "error",
-            title: "Signature error",
-            message: "User denied to sign the message",
-          })
-          AtherIdAuth.signOut()
-          reset()
-        }
-      },
-    },
-  )
+  const [showConnectWallet, setShowConnectWallet] = useState(false)
 
   const { mutate: mutateSignIn, isLoading: isSigningIn } = useMutation(() => AtherIdAuth.signIn(email, password), {
     onSuccess: () => {
-      if (address) {
-        mutateConnectWallet()
-      }
+      setShowConnectWallet(true)
     },
   })
 
@@ -78,7 +76,7 @@ const VerifySignUpForm = ({ email, password, address }: VerifySignUpFormProps) =
     },
   )
 
-  const isLoading = isConfirmingSignup || isSigningIn || isConnectingWallet
+  const isLoading = isConfirmingSignup || isSigningIn
 
   useEffect(() => {
     if (authFlow === "SIGN_UP") setIsOpen(true)
@@ -99,7 +97,7 @@ const VerifySignUpForm = ({ email, password, address }: VerifySignUpFormProps) =
     mutateConfirmSignup()
   }
 
-  if (isConnectingWallet) return <ConnectingWallet />
+  if (showConnectWallet) return <ConnectToWallet onClose={() => setShowConnectWallet(false)} />
 
   return (
     <ChakraModal title={"VERIFY YOUR ACCOUNT"} size="lg" isOpen={isOpen} hideCloseButton={true}>

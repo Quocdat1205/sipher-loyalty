@@ -37,7 +37,7 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
 
   const toast = useChakraToast()
   const { setUser: setSigningInUser } = useSignInContext()
-  const { setUser, authenticated } = useAuth()
+  const { setUser } = useAuth()
 
   const setAuthFlow = useStore(s => s.setAuthFlow)
 
@@ -46,9 +46,9 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
   const [email, setEmail] = useState("")
   const [connectingMethod, setConnectingMethod] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (authenticated && !wallet.isActive) setConnectWallet(true)
-  }, [authenticated, !wallet.isActive])
+  // useEffect(() => {
+  //   if (authenticated && !wallet.isActive) setConnectWallet(true)
+  // }, [authenticated, !wallet.isActive])
 
   useEffect(() => {
     if (connectWallet || verifyCode) setAuthFlow(null)
@@ -144,7 +144,7 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
     mutateSignIn({ emailOrWallet: account! })
   }
 
-  if (connectWallet) return <ConnectToWallet />
+  if (connectWallet) return <ConnectToWallet onClose={() => setConnectWallet(false)} />
 
   if (verifyCode) return <VerifySignUpForm email={email} />
 

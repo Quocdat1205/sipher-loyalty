@@ -13,14 +13,12 @@ const ConnectToWallet = ({ onClose }: { onClose: () => void }) => {
   const toast = useChakraToast()
   const { ownedWallets } = useAuth()
   const [isOpen, setIsOpen] = useState(true)
-  const [progress, setProgress] = useState("Loading")
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
+
   const { mutate: mutateAddWallet } = useMutation<unknown, unknown, string>(
     async account => {
       const res = await AtherIdAuth.connectWallet(account!)
-      setProgress("Signing")
       const signature = await scCaller.current?.sign(res.message)
-      setProgress("Confirming")
       await AtherIdAuth.confirmConectWallet(res, signature!)
     },
     {
@@ -42,15 +40,14 @@ const ConnectToWallet = ({ onClose }: { onClose: () => void }) => {
       },
       onSettled: () => {
         setConnectingMethod(null)
-        setProgress("Loading")
       },
     },
   )
 
   const handleConnectWallet = async (connectorId: Parameters<typeof connect>["0"]) => {
     setConnectingMethod(connectorId)
-    setProgress("Checking")
     const account = await connect(connectorId)
+    console.log(account, ownedWallets)
     if (account && !ownedWallets.includes(account)) {
       mutateAddWallet(account)
     } else setIsOpen(false)
@@ -68,7 +65,6 @@ const ConnectToWallet = ({ onClose }: { onClose: () => void }) => {
             src="/images/icons/wallets/metamask.svg"
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "injected"}
-            loadingText={progress}
           />
           <WalletCard
             onClick={() => {
@@ -78,7 +74,6 @@ const ConnectToWallet = ({ onClose }: { onClose: () => void }) => {
             src="/images/icons/wallets/walletconnect.svg"
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "walletConnect"}
-            loadingText={progress}
           />
         </HStack>
 

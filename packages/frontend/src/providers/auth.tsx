@@ -1,4 +1,5 @@
 import { createContext, FC, useContext, useEffect, useMemo, useRef, useState } from "react"
+import { useQuery } from "react-query"
 import AtherIdAuth, {
   AtherIdEnviromment,
   CognitoUser,
@@ -7,7 +8,8 @@ import AtherIdAuth, {
   getClient,
   Hub,
 } from "@sipher.dev/ather-id"
-import { useWalletContext } from "@web3"
+
+import { getProfile } from "@api"
 
 const configPromise = configure({
   environment: (process.env.NEXT_PUBLIC_ATHER_ID_URL as any) ?? AtherIdEnviromment.Dev,
@@ -18,8 +20,6 @@ const configPromise = configure({
 })
 
 const useAuthState = () => {
-  const wallet = useWalletContext()
-
   const userRef = useRef<CognitoUser>()
   const [cognitoUser, _setUser] = useState<CognitoUser>()
   const authenticated = useMemo(() => !!cognitoUser, [cognitoUser])
@@ -66,8 +66,20 @@ const useAuthState = () => {
   const signOut = async () => {
     await AtherIdAuth.signOut()
     setUser(undefined)
-    wallet.reset()
   }
+
+  const { data: userProfile } = useQuery(
+    ["profile", user?.email],
+    () => getProfile(session?.getIdToken().getJwtToken() ?? ""),
+    {
+      enabled: !!session,
+    },
+  )
+
+  const { data: ownedWallets } = useQuery(["owned-wallets", user?.email], () => AtherIdAuth.ownedWallets(), {
+    initialData: [],
+    enabled: authenticated,
+  })
 
   useEffect(() => {
     const client = getClient()
@@ -112,35 +124,24 @@ const useAuthState = () => {
     }
   }, [])
 
-  return { authenticated, session, user, cognitoUser, signOut, setUser }
+  return {
+    authenticated,
+    session,
+    user,
+    cognitoUser,
+    signOut,
+    setUser,
+    userProfile,
+    ownedWallets: ownedWallets!.map(w => w.address),
+  }
 }
 
-export type UseAuthState = ReturnType<typeof useAuthState>
-
-const authContext = createContext<UseAuthState | null>(null)
+const authContext = createContext<ReturnType<typeof useAuthState> | null>(null)
 
 const { Provider } = authContext
 
 export const AuthProvider: FC = ({ children }) => {
   const auth = useAuthState()
-  // const router = useRouter()
-
-  // const { authenticated } = auth
-
-  // useEffect(() => {
-  //   const isLoginRoute = router.pathname === "/login"
-  //   console.log("authenticated", authenticated, "isLoginRoute", isLoginRoute)
-  //   if (!authenticated && !isLoginRoute) {
-  //     const next = encodeURIComponent(router.route)
-  //     console.log("push route", `${"/login"}?next=${next}`)
-  //     router.push(`${"/login"}?next=${next}`)
-  //   } else if (authenticated && isLoginRoute) {
-  //     const next = decodeURIComponent((router.query["next"] as string) || "/")
-  //     const [pathname, search] = next.split("?")
-  //     console.log("push route", { pathname, search })
-  //     router.push({ pathname, search })
-  //   }
-  // }, [authenticated, router.pathname])
 
   return <Provider value={auth}>{children}</Provider>
 }

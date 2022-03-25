@@ -145,7 +145,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
               <CustomInput
                 pr="2.5rem"
                 type={"password"}
-                placeholder="Password"
+                placeholder="Confirm your password"
                 autoComplete="new-password"
                 {...register("confirmPassword")}
               />

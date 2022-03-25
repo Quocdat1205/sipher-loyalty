@@ -6,17 +6,17 @@ const useBalance = () => {
   const { scCaller, account } = useWalletContext()
   const qc = useQueryClient()
 
-  const { data: ethereum } = useQuery(["ethereum", account], () => scCaller.current?.getEtherBalance(account!), {
+  const { data: ethereum } = useQuery(["ethereum", account], () => scCaller.current!.getEtherBalance(account!), {
     initialData: 0,
-    enabled: false, // !!scCaller.current && !!account,
+    enabled: !!scCaller.current && !!account,
   })
-  const { data: sipher } = useQuery(["sipher", account], () => scCaller.current?.getSipherBalance(account!), {
+  const { data: sipher } = useQuery(["sipher", account], () => scCaller.current!.getSipherBalance(account!), {
     initialData: 0,
-    enabled: false, // !!scCaller.current && !!account,
+    enabled: !!scCaller.current && !!account,
   })
-  const { data: weth } = useQuery(["weth", account], () => scCaller.current?.getWETHBalance(account!), {
+  const { data: weth } = useQuery(["weth", account], () => scCaller.current!.getWETHBalance(account!), {
     initialData: 0,
-    enabled: false, // !!scCaller.current && !!account,
+    enabled: !!scCaller.current && !!account,
   })
 
   const refetch = () => {
@@ -27,9 +27,9 @@ const useBalance = () => {
 
   return {
     balance: {
-      ethereum: 0,
-      sipher: 0,
-      weth: 0,
+      ethereum: ethereum ?? 0,
+      sipher: sipher ?? 0,
+      weth: weth ?? 0,
     },
     refetch,
   }

@@ -24,7 +24,7 @@ const SignInButton = () => {
     setAuthFlow: s.setAuthFlow,
   }))
 
-  const { authenticated, user } = useAuth()
+  const { authenticated, userProfile } = useAuth()
 
   useOutsideClick({
     ref: popRef,
@@ -63,9 +63,15 @@ const SignInButton = () => {
             </Flex>
           ) : (
             <Flex align="center" cursor="pointer" onClick={() => setIsPopupOpen(!isPopupOpen)}>
-              <Avatar bg="gray" size="sm" />
-              <Text color="white" display={["none", "block"]} ml={2}>
-                {user?.email}
+              <Avatar
+                bg="gray"
+                size="sm"
+                src={userProfile?.user.avatarImage}
+                name={userProfile?.user.name}
+                bgGradient="linear(to-l, #FCD11F, #DF6767, #200B9F)"
+              />
+              <Text color="white" display={["none", "block"]} ml={2} maxW="10rem" isTruncated>
+                {userProfile?.user.name}
               </Text>
             </Flex>
           )}
@@ -73,8 +79,14 @@ const SignInButton = () => {
         <UserInfoDropdown
           isOpen={isPopupOpen}
           onClose={() => setIsPopupOpen(false)}
-          onBuySipherClick={() => setModal("BUY")}
-          onSettingClick={() => setModal("SETTING")}
+          onBuySipherClick={() => {
+            setModal("BUY")
+            setIsPopupOpen(false)
+          }}
+          onSettingClick={() => {
+            setModal("SETTING")
+            setIsPopupOpen(false)
+          }}
         />
       </Box>
 
