@@ -60,6 +60,10 @@ export class NftItemFilterDto {
   @IsEnum(NftItemFilterOrderBy)
   @IsOptional()
   orderBy?: NftItemFilterOrderBy;
+
+  @IsString()
+  @IsOptional()
+  tokenId?: string;
 }
 
 export class GetNftItemReqDto {

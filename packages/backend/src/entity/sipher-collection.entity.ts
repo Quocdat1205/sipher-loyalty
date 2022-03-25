@@ -2,7 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
 
@@ -20,8 +20,8 @@ export enum CollectionCategory {
 
 @Entity()
 export class SipherCollection {
-  @PrimaryGeneratedColumn("increment")
-  id: number;
+  @PrimaryColumn()
+  id: string;
 
   @Column({
     type: "character varying",
@@ -32,11 +32,6 @@ export class SipherCollection {
     type: "character varying",
   })
   collectionSlug: string;
-
-  @Column({
-    type: "character varying",
-  })
-  contractAddress: string;
 
   @Column({ type: "integer" })
   chainId: number;

@@ -539,13 +539,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags collection
-     * @name CollectionControllerGetItemById
-     * @request GET:/api/sipher/loyalty/collection/portfolio/{userAddress}/nft-item/{itemId}
+     * @name CollectionControllerGetPortfolioByCollection
+     * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/portfolio/{userAddress}
      * @secure
      */
-    collectionControllerGetItemById: (userAddress: string, itemId: string, params: RequestParams = {}) =>
+    collectionControllerGetPortfolioByCollection: (userAddress: string, collectionSlug: string, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/collection/portfolio/${userAddress}/nft-item/${itemId}`,
+        path: `/api/sipher/loyalty/collection/${collectionSlug}/portfolio/${userAddress}`,
         method: 'GET',
         secure: true,
         ...params,
@@ -555,13 +555,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags collection
-     * @name CollectionControllerGetPortfolioByCollection
-     * @request GET:/api/sipher/loyalty/collection/{collectionSlug}/portfolio/{userAddress}
+     * @name CollectionControllerGetItemById
+     * @request GET:/api/sipher/loyalty/collection/portfolio/{userAddress}/nft-item/{itemId}
      * @secure
      */
-    collectionControllerGetPortfolioByCollection: (userAddress: string, collectionSlug: string, params: RequestParams = {}) =>
+    collectionControllerGetItemById: (userAddress: string, itemId: string, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/collection/${collectionSlug}/portfolio/${userAddress}`,
+        path: `/api/sipher/loyalty/collection/portfolio/${userAddress}/nft-item/${itemId}`,
         method: 'GET',
         secure: true,
         ...params,
