@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsEnum, IsNumber, IsOptional, IsString, Min } from "class-validator";
+import { SipherCollection } from "src/entity/sipher-collection.entity";
 
 export class NftItemAttributeFilterDto {
   @IsString()
@@ -184,4 +185,10 @@ export class NftItem {
     isArray: true,
   })
   allOwner?: Erc1155Owner[];
+
+  /* Collection Info */
+  @ApiProperty({
+    type: SipherCollection,
+  })
+  collection?: SipherCollection;
 }

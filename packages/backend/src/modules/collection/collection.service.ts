@@ -2,7 +2,7 @@ import _ from "lodash";
 import { lastValueFrom, map, Observable } from "rxjs";
 import { FindOneOptions, Repository } from "typeorm";
 import { HttpService } from "@nestjs/axios";
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ElasticsearchService } from "@nestjs/elasticsearch";
 import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
@@ -16,8 +16,7 @@ import {
   SipherCollection,
 } from "src/entity/sipher-collection.entity";
 
-import { PortfolioQuery } from "./collection.dto";
-import { NftItem } from "@modules/nft/nft-item.dto";
+import { Portfolio, PortfolioQuery } from "./collection.dto";
 import marketplaceClient from "src/api/marketplaceClient";
 
 @Injectable()
@@ -59,11 +58,14 @@ export class CollectionService {
   }
 
   async getPortfolio(userAddress: string, query: PortfolioQuery) {
+    /* Get user items */
     const inventory = await this.nftService.search({
       owner: userAddress,
     });
+
+    /* Aggregate collections */
     const groupedInventoryByCollectionId = _.groupBy(inventory, "collectionId");
-    const portfolio: (SipherCollection & { total: number })[] = [];
+    const portfolio: Portfolio[] = [];
     // eslint-disable-next-line no-restricted-syntax
     for (const collectionId of Object.keys(groupedInventoryByCollectionId)) {
       // eslint-disable-next-line no-await-in-loop
@@ -88,6 +90,8 @@ export class CollectionService {
         total,
       });
     }
+
+    /* Filter */
     let filteredPortfolio = [...portfolio];
     if (query.category) {
       filteredPortfolio = filteredPortfolio.filter(
@@ -129,15 +133,18 @@ export class CollectionService {
   }
 
   async getItemById(itemId: string): Promise<any> {
+    /* Getting the base item */
     // So the marketpalce detail sdk doesn't work with ERC1155, have to do it in this way
     let item: any;
     if (this.isErc1155Id(itemId)) {
+      LoggerService.debug(`Getting ERC1155 from item ${itemId}`);
       const result = await this.searchSrv.get({
         index: constant.ELASTICSEARCH_INDEX,
         id: itemId,
       });
       item = result?.body?._source ? result?.body?._source : undefined;
     } else {
+      LoggerService.debug(`Getting ERC721 from item ${itemId}`);
       const response =
         await marketplaceClient.api.nftItemControllerGetDetailsById(itemId);
       item = {
@@ -147,8 +154,9 @@ export class CollectionService {
     }
 
     if (!item) {
-      return item;
+      throw new HttpException("Item not found", HttpStatus.NOT_FOUND);
     }
+    /* Add collection to base item, and other info base on collection type*/
     const itemCollection = await this.sipherCollectionRepo.findOne({
       where: {
         id: item.collectionId,
@@ -167,13 +175,13 @@ export class CollectionService {
         item.allOwner = allOwner;
       }
     }
-
     const itemWithUri = (await this.addUriToItem([item]))[0];
 
     return itemWithUri;
   }
 
   private isErc1155Id(id: string) {
+    // Ghetto id check 💀
     return id.split(":").length === 3;
   }
 
@@ -234,61 +242,5 @@ export class CollectionService {
       delete newItem.uri.tokenId;
     }
     return newItem;
-  }
-
-  private async getCollectionDetail(slugOrId: string | number) {
-    let findOption: FindOneOptions;
-    if (typeof slugOrId === "string") {
-      findOption = {
-        where: {
-          collectionSlug: slugOrId,
-        },
-      };
-    } else {
-      findOption = {
-        where: {
-          id: slugOrId,
-        },
-      };
-    }
-    const collection = await this.sipherCollectionRepo.findOne(findOption);
-    return collection;
-  }
-
-  async getCollectionPortfolio(collectionSlug: string, ownerAddress: string) {
-    const userInventory = await this.nftService.search({
-      owner: ownerAddress,
-    });
-    const collection = await this.getCollectionDetail(collectionSlug);
-    const userCollectionItems = userInventory.filter(
-      (item) => item.collectionId === collection.id
-    );
-    let balance = 0;
-    if (collection.collectionType === CollectionType.ERC721) {
-      LoggerService.debug(`Getting user ERC721 balance`);
-      balance = userCollectionItems.length;
-    } else {
-      LoggerService.debug(`Getting user ERC1155 balance`);
-      balance = userCollectionItems.reduce(
-        (prev, curr) => prev + curr.value,
-        0
-      );
-    }
-    let totalValue = 0;
-    if (!collection.floorPrice) {
-      try {
-        const stats = await lastValueFrom(
-          this.getCollectionStats(collectionSlug)
-        );
-        totalValue = stats.floorPrice * balance;
-      } catch (err) {
-        LoggerService.error("Failed to get floor price from Opensea");
-      }
-    } else {
-      totalValue = collection.floorPrice * balance;
-    }
-    return {
-      totalValue: totalValue.toFixed(4),
-    };
   }
 }

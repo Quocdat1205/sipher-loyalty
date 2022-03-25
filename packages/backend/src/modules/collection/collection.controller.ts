@@ -25,6 +25,7 @@ import { CollectionCategory } from "src/entity/sipher-collection.entity";
 import {
   PortfolioQuery,
   PortfolioByCollectionResponse,
+  Portfolio,
 } from "./collection.dto";
 import { CollectionService } from "./collection.service";
 import { NftItem } from "@modules/nft/nft-item.dto";
@@ -52,6 +53,10 @@ export class CollectionController {
   @ApiQuery({
     name: "chainId",
     required: false,
+  })
+  @ApiOkResponse({
+    type: Portfolio,
+    isArray: true,
   })
   @Get("portfolio/:userAddress")
   async getUserCollection(
@@ -94,9 +99,7 @@ export class CollectionController {
     @Req() req: any
   ) {
     await this.authService.verifyAddress(userAddress, req.userData);
-    const result = await this.collectionService.getItemById(
-      itemId.toLowerCase()
-    );
+    const result = await this.collectionService.getItemById(itemId);
     if (!result) {
       throw new HttpException("Item not found", 404);
     }
