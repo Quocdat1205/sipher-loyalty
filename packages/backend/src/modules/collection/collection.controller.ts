@@ -10,15 +10,24 @@ import {
   Req,
   UseGuards,
 } from "@nestjs/common";
-import { ApiBearerAuth, ApiQuery, ApiTags } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiQuery,
+  ApiTags,
+} from "@nestjs/swagger";
 
 import { AtherGuard } from "@modules/auth/auth.guard";
 import { AuthService } from "@modules/auth/auth.service";
 import { LoggerService } from "@modules/logger/logger.service";
 import { CollectionCategory } from "src/entity/sipher-collection.entity";
 
-import { PortfolioQuery } from "./collection.dto";
+import {
+  PortfolioQuery,
+  PortfolioByCollectionResponse,
+} from "./collection.dto";
 import { CollectionService } from "./collection.service";
+import { NftItem } from "@modules/nft/nft-item.dto";
 
 @ApiTags("collection")
 @Controller("collection")
@@ -59,22 +68,26 @@ export class CollectionController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @Get(":collectionSlug/portfolio/:userAddress")
+  @Get(":collectionId/portfolio/:userAddress")
+  @ApiOkResponse({ type: PortfolioByCollectionResponse })
   async getPortfolioByCollection(
     @Param("userAddress") userAddress: string,
-    @Param("collectionSlug") collectionSlug: string,
+    @Param("collectionId") collectionId: string,
     @Req() req: any
   ) {
     await this.authService.verifyAddress(userAddress, req.userData);
     return this.collectionService.getPortfolioByCollection(
       userAddress.toLowerCase(),
-      collectionSlug
+      collectionId.toLowerCase()
     );
   }
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @Get("portfolio/:userAddress/nft-item/:itemId")
+  @ApiOkResponse({
+    type: NftItem,
+  })
   async getItemById(
     @Param("userAddress") userAddress: string,
     @Param("itemId") itemId: string,

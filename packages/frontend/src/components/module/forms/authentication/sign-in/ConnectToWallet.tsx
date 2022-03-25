@@ -1,11 +1,11 @@
 import { useState } from "react"
-import { useMutation, useQuery } from "react-query"
+import { useMutation } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { chakra, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
 import { ChakraModal, WalletCard } from "@components/shared"
-import { useChakraToast } from "@hooks"
+import { useChakraToast, useOwnedWallets } from "@hooks"
 
 const ConnectToWallet = () => {
   const { connect, scCaller } = useWalletContext()
@@ -13,11 +13,11 @@ const ConnectToWallet = () => {
 
   const [isOpen, setIsOpen] = useState(true)
 
-  const { data: ownedWallets } = useQuery("owned-wallets", () => AtherIdAuth.ownedWallets(), { initialData: [] })
+  const ownedWallets = useOwnedWallets()
   const { mutate: mutateAddWallet } = useMutation<unknown, unknown, Parameters<typeof connect>["0"]>(
     async connectorId => {
       const account = await connect(connectorId)
-      if (!ownedWallets?.map(w => w.address).includes(account!)) {
+      if (account && !ownedWallets.includes(account.toLowerCase())) {
         const res = await AtherIdAuth.connectWallet(account!)
         const signature = await scCaller.current?.sign(res.message)
         await AtherIdAuth.confirmConectWallet(res, signature!)

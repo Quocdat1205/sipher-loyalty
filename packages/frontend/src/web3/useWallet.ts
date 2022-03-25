@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ContractCaller } from "@contract"
+import AtherIdAuth from "@sipher.dev/ather-id"
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core"
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector"
 
-import { useChakraToast } from "@hooks"
+import { useChakraToast, useOwnedWallets } from "@hooks"
+import { useAuth } from "src/providers/auth"
 
 import { ConnectorId, connectors } from "./connectors"
 import { ChainUnsupportedError } from "./errors"
@@ -61,6 +63,8 @@ const useWallet = () => {
     }
   }, [web3React.library])
 
+  const ownedWallets = useOwnedWallets()
+
   // connect to wallet
   const connect = useCallback(
     async (connectorId: ConnectorId = "injected") => {
@@ -88,7 +92,23 @@ const useWallet = () => {
             setLastActiveAccount(injectedAccount)
           }
           web3ReactConnector.getProvider().then(provider => {
-            provider.on("accountsChanged", () => {
+            provider.on("accountsChanged", async ([account]: string[]) => {
+              if (!ownedWallets.includes(account)) {
+                try {
+                  const res = await AtherIdAuth.connectWallet(account!)
+                  const signature = await scCaller.current?.sign(res.message)
+                  await AtherIdAuth.confirmConectWallet(res, signature!)
+                } catch (e: any) {
+                  if (e?.code === 4001) {
+                    toast({
+                      status: "error",
+                      title: "Signature error",
+                      message: "User denied to sign the message",
+                    })
+                    AtherIdAuth.signOut()
+                  }
+                }
+              }
               reset()
             })
             provider.on("chainChanged", () => {
