@@ -1,12 +1,6 @@
 // import library
 import Joi from "joi";
-import {
-  NftOrder,
-  Program,
-  SculpturesOrder,
-  SculptureTransaction,
-  User,
-} from "@entity";
+import { Program, SculptureTransaction, User } from "@entity";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -39,13 +33,7 @@ import { AppService } from "./app.service";
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([
-      User,
-      Program,
-      SculpturesOrder,
-      NftOrder,
-      SculptureTransaction,
-    ]),
+    TypeOrmModule.forFeature([User, Program, SculptureTransaction]),
     SearchModule,
     LoggerModule,
     NftItemModule,

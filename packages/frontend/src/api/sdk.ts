@@ -43,27 +43,7 @@ export interface ResPendingMintDto {
 
   /** @format date-time */
   createdAt: string;
-<<<<<<< HEAD
   info: InfoPendingMintDto[];
-=======
-}
-
-export interface ResPendingMintDto {
-  id: string;
-  to: string;
-  batchID: number;
-  amount: number;
-  batchIDs: number[];
-  amounts: number[];
-  salt: string;
-  status: MintStatus;
-  type: MintType;
-  signature: string;
-
-  /** @format date-time */
-  createdAt: string;
-  info: PendingMint[];
->>>>>>> a5175068 (done route get all merch)
 }
 
 export interface ERC1155LootboxAttribute {
