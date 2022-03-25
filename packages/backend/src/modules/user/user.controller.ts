@@ -1,4 +1,4 @@
-import * as CoinMarketCap from "coinmarketcap-api";
+import CoinMarketCap from "coinmarketcap-api";
 import {
   Body,
   Controller,
@@ -53,7 +53,7 @@ export class UserController {
 
   @Get("get-sipher-statics")
   async getPriceCoinMarketCap() {
-    const client = new CoinMarketCap.CoinMarketCap(apiKey);
+    const client = new CoinMarketCap(apiKey);
 
     const sipher = await client.getQuotes({ id: id_sipher, convert: "USD" });
 

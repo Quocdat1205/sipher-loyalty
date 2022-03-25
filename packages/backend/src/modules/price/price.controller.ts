@@ -13,7 +13,7 @@ export class PriceController {
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: PriceData })
-  @Get("sipher/change")
+  @Get("")
   async getPrice() {
     return this.priceService.getPrice();
   }

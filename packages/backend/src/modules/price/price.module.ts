@@ -1,12 +1,13 @@
 import { Module } from "@nestjs/common";
 
-import { AuthCacheModule } from "@modules/auth/auth.module";
+import { AuthModule } from "@modules/auth/auth.module";
+import { RedisCacheModule } from "@modules/cache/cache.module";
 
 import { PriceController } from "./price.controller";
 import { PriceService } from "./price.service";
 
 @Module({
-  imports: [AuthCacheModule],
+  imports: [AuthModule, RedisCacheModule],
   providers: [PriceService],
   controllers: [PriceController],
 })

@@ -1,7 +1,7 @@
 import { Cache } from "cache-manager";
 import { CACHE_MANAGER, Inject, Injectable } from "@nestjs/common";
 
-import { UserData } from "./auth.types";
+import { UserData } from "@modules/auth/auth.types";
 
 @Injectable()
 export class CacheService {

@@ -2,11 +2,21 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class PriceData {
   @ApiProperty({ type: Number })
-  sipherPrice: number;
+  usd: number;
 
   @ApiProperty({ type: Number })
-  etherPrice: number;
+  eth: number;
 
   @ApiProperty({ type: Number })
-  priceChange: number;
+  change: number;
+}
+export class PricesData {
+  @ApiProperty({ type: PriceData })
+  sipherPrice: PriceData;
+
+  @ApiProperty({ type: PriceData })
+  ethereumPrice: PriceData;
+
+  @ApiProperty({ type: PriceData })
+  maticPrice: PriceData;
 }

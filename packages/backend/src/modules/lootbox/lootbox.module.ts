@@ -1,10 +1,11 @@
-import { Canceled, Lootbox } from "@entity";
+import { Lootbox } from "@entity";
 import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { AuthCacheModule } from "@modules/auth/auth.module";
+import { AuthModule } from "@modules/auth/auth.module";
 import { BurnModule } from "@modules/burn/burn.module";
+import { RedisCacheModule } from "@modules/cache/cache.module";
 import { CancelModule } from "@modules/cancel/cancel.module";
 import { MintModule } from "@modules/mint/mint.module";
 import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
@@ -19,8 +20,9 @@ import { LootBoxService } from "./lootbox.service";
     MintModule,
     BurnModule,
     CancelModule,
-    AuthCacheModule,
+    RedisCacheModule,
     CancelModule,
+    AuthModule,
   ],
   providers: [LootBoxService],
   controllers: [LootBoxController],

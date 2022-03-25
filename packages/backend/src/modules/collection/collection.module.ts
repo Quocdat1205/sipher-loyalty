@@ -2,7 +2,8 @@ import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { AuthCacheModule } from "@modules/auth/auth.module";
+import { AuthModule } from "@modules/auth/auth.module";
+import { RedisCacheModule } from "@modules/cache/cache.module";
 import { NftItemModule } from "@modules/nft/nftItem.module";
 import { URIModule } from "@modules/uri/uri.module";
 import { SipherCollection } from "src/entity/sipher-collection.entity";
@@ -15,7 +16,8 @@ import { CollectionService } from "./collection.service";
     HttpModule,
     NftItemModule,
     URIModule,
-    AuthCacheModule,
+    AuthModule,
+    RedisCacheModule,
     TypeOrmModule.forFeature([SipherCollection]),
   ],
   providers: [CollectionService],

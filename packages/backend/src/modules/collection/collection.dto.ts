@@ -1,7 +1,7 @@
-import { NftItem } from "@modules/nft/nft-item.dto";
-import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsNumberString, IsOptional } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
 
+import { NftItem } from "@modules/nft/nft-item.dto";
 import {
   CollectionCategory,
   SipherCollection,

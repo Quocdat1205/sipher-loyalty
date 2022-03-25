@@ -12,8 +12,8 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { UserData } from "@modules/auth/auth.types";
-import { CacheService } from "@modules/auth/cache.service";
 import { BurnService } from "@modules/burn/burn.service";
+import { CacheService } from "@modules/cache/cache.service";
 import { CancelService } from "@modules/cancel/cancel.service";
 import { MintService } from "@modules/mint/mint.service";
 import { BatchOrder, Order } from "@utils/type";

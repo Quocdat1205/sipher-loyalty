@@ -1,8 +1,8 @@
+import { isEthereumAddress } from "class-validator";
 import { toChecksumAddress } from "ethereumjs-util";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 
 import { UserData } from "./auth.types";
-import { isEthereumAddress } from "class-validator";
 
 @Injectable()
 export class AuthService {

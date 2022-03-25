@@ -255,9 +255,9 @@ export type EtherDto = object;
 export type BioDto = object;
 
 export interface PriceData {
-  sipherPrice: number;
-  etherPrice: number;
-  priceChange: number;
+  usd: number;
+  eth: number;
+  change: number;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
@@ -791,12 +791,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name PriceControllerGetPrice
-     * @request GET:/api/sipher/loyalty/price/sipher/change
+     * @request GET:/api/sipher/loyalty/price
      * @secure
      */
     priceControllerGetPrice: (params: RequestParams = {}) =>
       this.request<PriceData, any>({
-        path: `/api/sipher/loyalty/price/sipher/change`,
+        path: `/api/sipher/loyalty/price`,
         method: 'GET',
         secure: true,
         format: 'json',
