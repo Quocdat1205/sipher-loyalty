@@ -231,9 +231,9 @@ export type EtherDto = object;
 export type BioDto = object;
 
 export interface PriceData {
-  image: string;
-  tokenId: number;
-  quantity: number;
+  sipherPrice: number;
+  etherPrice: number;
+  priceChange: number;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
