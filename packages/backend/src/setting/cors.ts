@@ -4,7 +4,7 @@ const cors: CorsOptions = {
   origin: [
     "http://localhost:3001",
     "http://localhost:3000",
-    "https://api-loyalty.sipher.gg",
+    "https://loyalty.sipher.gg",
   ],
   credentials: true,
 };
