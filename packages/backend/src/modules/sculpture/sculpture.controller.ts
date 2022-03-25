@@ -10,11 +10,9 @@ export class SculptureController {
 
   @Get("shopify-code/:ownerAddress")
   async getUserOwnedCode(@Param("ownerAddress") ownerAddress: string) {
-    const shopifyCodes = await this.sculptureService.getAddressOwnedCode(
-      ownerAddress
-    );
+    const transactions = await this.sculptureService.getAddressTx(ownerAddress);
     return {
-      shopifyCodes: shopifyCodes.map((code) => code.code),
+      transactions,
     };
   }
 }

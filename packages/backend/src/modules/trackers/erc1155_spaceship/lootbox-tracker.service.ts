@@ -8,8 +8,6 @@ import { getContract, getProvider } from "@setting/blockchain/ethers";
 import constant, { Chain } from "@setting/constant";
 
 import { LootBoxService } from "@modules/lootbox/lootbox.service";
-import { ZERO_ADDRESS } from "@utils/constants";
-import { signer } from "@utils/signer";
 import { TrackedBlock } from "src/entity/tracking.entity";
 
 import { LoggerService } from "../../logger/logger.service";
@@ -19,8 +17,6 @@ export class LootboxTrackerService {
   private provider: providers.Provider;
 
   private contract: Contract;
-
-  private contractWithSigner;
 
   private fromBlockMinted: number;
 
@@ -45,7 +41,6 @@ export class LootboxTrackerService {
       erc1155Abi,
       this.provider
     );
-    this.contractWithSigner = this.contract.connect(signer);
   }
 
   @Interval("tracking lootbox minted", 15000)

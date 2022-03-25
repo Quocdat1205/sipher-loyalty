@@ -12,15 +12,15 @@ import constant from "@setting/constant";
 
 import { LoggerService } from "@modules/logger/logger.service";
 
-import { AuthService } from "./auth.service";
+import { CacheService } from "./cache.service";
 
 @Injectable()
 export class AtherGuard implements CanActivate {
-  constructor(private authService: AuthService) {}
+  constructor(private cacheService: CacheService) {}
 
   private async validateRequest(req: any) {
     try {
-      const currentUserData = await this.authService.get(
+      const currentUserData = await this.cacheService.get(
         req.headers.authorization
       );
       if (!currentUserData) {
@@ -36,7 +36,7 @@ export class AtherGuard implements CanActivate {
           userId: data[0].userId,
           publicAddress: data.map((el: any) => toChecksumAddress(el.address)),
         };
-        await this.authService.set(req.headers.authorization, userData);
+        await this.cacheService.set(req.headers.authorization, userData);
         req.userData = userData;
       } else {
         req.userData = currentUserData;

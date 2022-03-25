@@ -3,7 +3,9 @@ import { lastValueFrom, map, Observable } from "rxjs";
 import { FindOneOptions, Repository } from "typeorm";
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
+import { ElasticsearchService } from "@nestjs/elasticsearch";
 import { InjectRepository } from "@nestjs/typeorm";
+import constant from "@setting/constant";
 
 import { LoggerService } from "@modules/logger/logger.service";
 import { NftItemService } from "@modules/nft/nftItem.service";
@@ -15,8 +17,6 @@ import {
 } from "src/entity/sipher-collection.entity";
 
 import { PortfolioQuery } from "./collection.dto";
-import { ElasticsearchService } from "@nestjs/elasticsearch";
-import constant from "@setting/constant";
 
 @Injectable()
 export class CollectionService {
@@ -67,7 +67,7 @@ export class CollectionService {
       // eslint-disable-next-line no-await-in-loop
       const collection = await this.sipherCollectionRepo.findOne({
         where: {
-          contractAddress: collectionId,
+          id: collectionId,
         },
       });
 
@@ -112,7 +112,7 @@ export class CollectionService {
     }
     const inventory = await this.nftService.search({
       owner: userAddress,
-      collections: [collection.contractAddress],
+      collections: [collection.id],
     });
     return {
       total: inventory.length,
@@ -133,15 +133,50 @@ export class CollectionService {
     delete item._relation;
     const itemCollection = await this.sipherCollectionRepo.findOne({
       where: {
-        contractAddress: item.collectionId,
+        id: item.collectionId,
       },
     });
     if (itemCollection) {
       item.collection = itemCollection;
+      if (item.collection.collectionType === "ERC1155") {
+        const totalMintedItems = await this.getTotalErc1155Minted(
+          item.collectionId,
+          item.tokenId
+        );
+        const quantity = this.getErc1155Quantity(totalMintedItems);
+        item.quantity = quantity;
+        const allOwner = this.getAllOwnerOfErc1155(totalMintedItems);
+        item.allOwner = allOwner;
+      }
     }
+
     const itemWithUri = (await this.addUriToItem([item]))[0];
 
     return itemWithUri;
+  }
+
+  private async getTotalErc1155Minted(collectionId: string, tokenId: string) {
+    const totalMintedforCollection = await this.nftService.search(
+      {
+        collections: [collectionId],
+        tokenId,
+      },
+      100
+    );
+    return totalMintedforCollection;
+  }
+
+  private getAllOwnerOfErc1155(items: any) {
+    const ownerArray = items.map((item) => ({
+      publicAddress: item.owner,
+      totalOwned: item.value,
+    }));
+    return ownerArray;
+  }
+
+  private getErc1155Quantity(items: any) {
+    const quantity = items.reduce((prev, curr) => prev + curr.value, 0);
+    return quantity;
   }
 
   private async addUriToItem(items: any) {

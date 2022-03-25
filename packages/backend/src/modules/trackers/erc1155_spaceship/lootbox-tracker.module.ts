@@ -6,10 +6,12 @@ import {
   Lootbox,
   PendingMint,
 } from "@entity";
-import { Module } from "@nestjs/common";
+import { CacheModule, Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { AuthCacheModule } from "@modules/auth/auth.module";
+import { CacheService } from "@modules/auth/cache.service";
 import { BurnModule } from "@modules/burn/burn.module";
 import { CancelModule } from "@modules/cancel/cancel.module";
 import { LootBoxService } from "@modules/lootbox/lootbox.service";
@@ -21,6 +23,7 @@ import { LootboxTrackerService } from "./lootbox-tracker.service";
 
 @Module({
   imports: [
+    CacheModule.register(),
     ScheduleModule.forRoot(),
     TypeOrmModule.forFeature([
       Lootbox,
@@ -35,8 +38,9 @@ import { LootboxTrackerService } from "./lootbox-tracker.service";
     MintModule,
     BurnModule,
     CancelModule,
+    AuthCacheModule,
   ],
-  providers: [LootboxTrackerService, LootBoxService],
+  providers: [LootboxTrackerService, LootBoxService, CacheService],
   exports: [LootboxTrackerService],
 })
 export class LootboxTrackerModule {}

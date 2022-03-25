@@ -34,7 +34,10 @@ export class ScupltureTrackerService {
 
   @Interval("scuplture-tracker", 15000)
   async runOnIntervalTracker() {
-    await this.trackRedeemedRecord();
+    const fromBlock = await this.getFromBlock();
+    const toBlock = await this.getToBlock(fromBlock);
+    await this.trackRedeemedRecord(fromBlock, toBlock);
+    await this.updateTrackerBlock(toBlock);
   }
 
   private async updateTrackerBlock(newBlock: number) {
@@ -70,10 +73,8 @@ export class ScupltureTrackerService {
     return chainLatestBlock;
   }
 
-  async trackRedeemedRecord() {
+  async trackRedeemedRecord(fromBlock: number, toBlock: number) {
     const eventType = this.sculptureContract.filters.RedeemRecord();
-    const fromBlock = await this.getFromBlock();
-    const toBlock = await this.getToBlock(fromBlock);
     LoggerService.debug(`Tracking sculptures from ${fromBlock} to ${toBlock}`);
     const events = await this.sculptureContract.queryFilter(
       eventType,
@@ -84,14 +85,13 @@ export class ScupltureTrackerService {
     for (const event of events) {
       const ownerAddress = event.args[0];
       const tokenId = (event.args[1] as BigNumber).toString();
-      const amount = event.args[2];
-      this.scupltureService.redeemShopifyCode({
+      const amount = (event.args[2] as BigNumber).toNumber();
+      await this.scupltureService.saveRedeemTransaction({
         address: ownerAddress,
         tokenId,
         amount,
         txHash: event.transactionHash,
       });
     }
-    this.updateTrackerBlock(toBlock);
   }
 }

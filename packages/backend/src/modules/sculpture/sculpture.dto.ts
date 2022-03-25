@@ -6,7 +6,7 @@ export class SculptureBalanceDto {
   sculptureType: SculptureType;
 }
 
-export class RedeemShopifyCodeDto {
+export class RedeemTxDto {
   address: string;
   tokenId: string;
   amount: number;

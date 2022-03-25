@@ -33,6 +33,9 @@ const useNFTs = collectionSlug => {
     ...item,
     onView: () => router.push(`/portfolio/${collectionSlug}/${item.tokenId}`),
   }))
+
+  console.log(nftsData)
+
   return { columns, total: initData!.total, nftsData }
 }
 export default useNFTs
