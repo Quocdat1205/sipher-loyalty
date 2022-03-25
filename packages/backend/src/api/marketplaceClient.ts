@@ -3,7 +3,7 @@ import { Api } from "./marketplaceSdk";
 
 const marketplaceClient = new Api({
   format: "json",
-  baseURL: constant.MARKETPLACE_SDK_URL,
+  baseURL: "https://dev-api-marketplace.sipher.gg",
 });
 
 export default marketplaceClient;
