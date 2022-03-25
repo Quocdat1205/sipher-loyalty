@@ -1,10 +1,16 @@
 import CoinGecko from "coingecko-api";
+import * as CoinMarketCap from "coinmarketcap-api";
 import { format } from "date-fns";
 import { Injectable } from "@nestjs/common";
+import constant from "@setting/constant";
 
 @Injectable()
 export class PriceService {
   private coingeckoClient = new CoinGecko();
+
+  private apiKey = constant.API_KEY_CMC;
+
+  private id_sipher = constant.ID_SIPHER;
 
   private currentPrice = {
     timestamp: 0,
@@ -15,33 +21,56 @@ export class PriceService {
       sipher: {
         usd: 0.6,
       },
-      changingPrice: 0.0,
     },
+    changingPriceSipher: 0.0,
+    changingPriceMatic: 0.0,
+    changingPriceEthereum: 0.0,
   };
 
   private async getCryptoPrice() {
     if (this.currentPrice.timestamp + 5000 < new Date().getTime()) {
       const dataPrice = await this.coingeckoClient.simple.price({
-        ids: ["ethereum", "sipher"],
+        ids: ["ethereum", "sipher", "matic-network"],
         vs_currencies: ["usd"],
       });
-
+      this.currentPrice.data = dataPrice.data;
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
+      this.currentPrice.timestamp = new Date().getTime();
 
-      const dataHistory = await this.coingeckoClient.coins.fetchHistory(
+      const dataHistorySipher = await this.coingeckoClient.coins.fetchHistory(
         "sipher",
         {
           date: format(yesterday, "dd-MM-yyyy"),
         }
       );
-      this.currentPrice = {
-        data: dataPrice.data,
-        timestamp: new Date().getTime(),
-      };
-      this.currentPrice.data.changingPrice =
+      this.currentPrice.changingPriceSipher =
         dataPrice.data.sipher.usd /
-          dataHistory.data.market_data.current_price.usd -
+          dataHistorySipher.data.market_data.current_price.usd -
+        1;
+
+      const dataHistoryEthereum = await this.coingeckoClient.coins.fetchHistory(
+        "ethereum",
+        {
+          date: format(yesterday, "dd-MM-yyyy"),
+        }
+      );
+      this.currentPrice.changingPriceEthereum =
+        dataPrice.data.ethereum.usd /
+          dataHistoryEthereum.data.market_data.current_price.usd -
+        1;
+
+      const dataHistoryMatic = await this.coingeckoClient.coins.fetchHistory(
+        "matic-network",
+        {
+          date: format(yesterday, "dd-MM-yyyy"),
+        }
+      );
+      console.log(dataHistoryMatic);
+
+      this.currentPrice.changingPriceMatic =
+        dataPrice.data["matic-network"].usd /
+          dataHistoryMatic.data.market_data.current_price.usd -
         1;
     }
 
@@ -60,7 +89,7 @@ export class PriceService {
 
   private async getPriceChange() {
     const cryptoPrice = await this.getCryptoPrice();
-    return cryptoPrice.data.changingPrice;
+    return cryptoPrice.changingPriceSipher;
   }
 
   async getPrice() {

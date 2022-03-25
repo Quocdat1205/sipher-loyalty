@@ -10,9 +10,8 @@ import {
 } from "@nestjs/common";
 import constant from "@setting/constant";
 
+import { CacheService } from "@modules/cache/cache.service";
 import { LoggerService } from "@modules/logger/logger.service";
-
-import { CacheService } from "./cache.service";
 
 @Injectable()
 export class AtherGuard implements CanActivate {

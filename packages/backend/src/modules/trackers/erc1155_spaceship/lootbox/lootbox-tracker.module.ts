@@ -10,9 +10,9 @@ import { CacheModule, Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { AuthCacheModule } from "@modules/auth/auth.module";
-import { CacheService } from "@modules/auth/cache.service";
+import { AuthModule } from "@modules/auth/auth.module";
 import { BurnModule } from "@modules/burn/burn.module";
+import { CacheService } from "@modules/cache/cache.service";
 import { CancelModule } from "@modules/cancel/cancel.module";
 import { LootBoxService } from "@modules/lootbox/lootbox.service";
 import { MintModule } from "@modules/mint/mint.module";
@@ -41,7 +41,7 @@ import { LootboxTrackerMintedService } from "./lootbox-tracker-minted.service";
     MintModule,
     BurnModule,
     CancelModule,
-    AuthCacheModule,
+    AuthModule,
   ],
   providers: [
     LootboxTrackerBurnedService,
