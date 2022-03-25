@@ -16,7 +16,7 @@ const TabContainer = () => {
       return <NFTsContainer />
     }
     if (currentTab === "Tokens") {
-      return <TokensContainer />
+      return <TokensContainer dataTokens={[]} />
     }
     return null
   }

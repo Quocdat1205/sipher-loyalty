@@ -6,7 +6,6 @@ import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, Button, chakra, Flex, FormControl, Stack, Text } from "@sipher.dev/sipher-ui"
-import { useWalletContext } from "@web3"
 
 import { ChakraModal, CustomInput, CustomPopover, Form, FormField } from "@components/shared"
 import { useChakraToast } from "@hooks"
@@ -35,8 +34,6 @@ const FillEmailForm = ({ onClose }: FillEmailFormProps) => {
   const toast = useChakraToast()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-
-  const { account } = useWalletContext()
 
   const {
     register,
