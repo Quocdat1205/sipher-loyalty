@@ -6,7 +6,7 @@ import { Banner } from "@components/shared"
 
 import CollectionContainer from "./collection"
 import General from "./General"
-import { TokensContainer } from "./tokens"
+import TokensContainer from "./tokens"
 import usePortfolio from "./usePortfolio"
 
 const tabs = [
@@ -15,14 +15,14 @@ const tabs = [
 ]
 
 const ContentPortfolio = () => {
-  const { totalNFTs, currentTab, collectionData, filter, setFilter } = usePortfolio()
+  const { dataTokens, totalToken, totalNFTs, currentTab, collectionData, filter, setFilter } = usePortfolio()
 
   const renderTabs = () => {
     if (currentTab === "nfts") {
       return <CollectionContainer filter={filter} setFilter={setFilter} collectionData={collectionData} />
     }
     if (currentTab === "tokens") {
-      return <TokensContainer />
+      return <TokensContainer dataTokens={dataTokens} />
     }
 
     return null
@@ -36,7 +36,7 @@ const ContentPortfolio = () => {
         description="Where to find your digital assets & balance"
       />
       <Box px={[4, 4, 4, 0, 0]} py={12} flex={1} w="full" maxW="1200px">
-        <General totalNFTs={totalNFTs} />
+        <General totalNFTs={totalNFTs} totalToken={totalToken} />
         <TabPage tabs={tabs} />
         <Box py={6}>{renderTabs()}</Box>
       </Box>

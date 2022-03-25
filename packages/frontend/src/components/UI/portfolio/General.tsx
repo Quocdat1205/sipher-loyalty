@@ -7,9 +7,10 @@ import CardGeneral from "../home/CardGeneral"
 
 interface GeneralProps {
   totalNFTs: number
+  totalToken: number
 }
 
-const General = ({ totalNFTs }: GeneralProps) => {
+const General = ({ totalNFTs, totalToken }: GeneralProps) => {
   return (
     <SimpleGrid mb={8} columns={[2, 4]} spacing={8}>
       <CardGeneral
@@ -18,7 +19,7 @@ const General = ({ totalNFTs }: GeneralProps) => {
         icon={<Image src="/images/icons/coin1.png" h="1.3rem" />}
       />
       <CardGeneral
-        value={"2"}
+        value={totalToken.toString()}
         name={"Total Tokens"}
         icon={<Image src="/images/icons/coin.png" h="1.3rem" />}
         rightChildren={

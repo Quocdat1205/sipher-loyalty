@@ -1,1 +1,3 @@
-export * from "./TokensContainer"
+import TokensContainer from "./TokensContainer"
+
+export default TokensContainer
