@@ -16,6 +16,7 @@ import { getContract, getProvider } from "@setting/blockchain/ethers";
 import constant from "@setting/constant";
 
 import { UserData } from "@modules/auth/auth.types";
+import { CacheService } from "@modules/auth/cache.service";
 import { BurnService } from "@modules/burn/burn.service";
 import { CancelService } from "@modules/cancel/cancel.service";
 import { MintService } from "@modules/mint/mint.service";
@@ -40,7 +41,8 @@ export class LootBoxService {
     private claimableLootboxRepo: Repository<ClaimableLootbox>,
     private mintService: MintService,
     private burnService: BurnService,
-    private cancelService: CancelService
+    private cancelService: CancelService,
+    private cacheService: CacheService
   ) {
     this.provider = getProvider(constant.CHAIN_ID);
     this.InuContract = getContract(
@@ -385,6 +387,14 @@ export class LootBoxService {
 
   mintBatchLootbox = async (mintBatchLootboxInput: MintBatchLootboxInput) => {
     const { publicAddress, batchID, amount } = mintBatchLootboxInput;
+
+    if (await this.cacheService.getMintPending(publicAddress)) {
+      throw new HttpException(
+        `${publicAddress} minting ! please try again later`,
+        HttpStatus.BAD_REQUEST
+      );
+    }
+    await this.cacheService.setMintPending(publicAddress, true);
     // verify
     if (batchID.length !== amount.length)
       throw new HttpException(
@@ -423,7 +433,7 @@ export class LootBoxService {
 
     // sign messages and save pending mint
     const pendingMint = await this.mintService.mintBatch(mintBatchLootboxInput);
-
+    await this.cacheService.setMintPending(publicAddress, false);
     return pendingMint;
   };
 
@@ -452,6 +462,7 @@ export class LootBoxService {
     // sign messages and save pending mint
     const pendingMint = await this.mintService.mint(mintLootboxInput);
 
+    await this.cacheService.setMintPending(publicAddress, false);
     return pendingMint;
   };
 

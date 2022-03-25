@@ -3,6 +3,7 @@ import { CacheModule, Module } from "@nestjs/common";
 import constant from "@setting/constant";
 
 import { AuthService } from "./auth.service";
+import { CacheService } from "./cache.service";
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { AuthService } from "./auth.service";
       no_ready_check: true,
     }),
   ],
-  providers: [AuthService],
-  exports: [AuthService],
+  providers: [AuthService, CacheService],
+  exports: [AuthService, CacheService],
 })
-export class AuthModule {}
+export class AuthCacheModule {}

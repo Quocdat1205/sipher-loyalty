@@ -3,7 +3,7 @@ import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { AuthModule } from "@modules/auth/auth.module";
+import { AuthCacheModule } from "@modules/auth/auth.module";
 import { BurnModule } from "@modules/burn/burn.module";
 import { CancelModule } from "@modules/cancel/cancel.module";
 import { MintModule } from "@modules/mint/mint.module";
@@ -19,7 +19,7 @@ import { LootBoxService } from "./lootbox.service";
     MintModule,
     BurnModule,
     CancelModule,
-    AuthModule,
+    AuthCacheModule,
     CancelModule,
   ],
   providers: [LootBoxService],
