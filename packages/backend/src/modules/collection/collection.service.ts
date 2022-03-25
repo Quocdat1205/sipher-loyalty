@@ -17,6 +17,7 @@ import {
 } from "src/entity/sipher-collection.entity";
 
 import { PortfolioQuery } from "./collection.dto";
+import { NftItem } from "@modules/nft/nft-item.dto";
 
 @Injectable()
 export class CollectionService {
@@ -101,26 +102,32 @@ export class CollectionService {
     return filteredPortfolio;
   }
 
-  async getPortfolioByCollection(userAddress: string, collectionSlug: string) {
+  async getPortfolioByCollection(userAddress: string, collectionId: string) {
     const collection = await this.sipherCollectionRepo.findOne({
       where: {
-        collectionSlug,
+        id: collectionId,
       },
     });
     if (!collection) {
-      return [];
+      return {
+        collection: {},
+        items: [],
+        total: 0,
+      };
     }
     const inventory = await this.nftService.search({
       owner: userAddress,
       collections: [collection.id],
     });
+    inventory.forEach((item) => delete item._relation);
     return {
+      collection,
       total: inventory.length,
       items: await this.addUriToItem(inventory),
     };
   }
 
-  async getItemById(itemId: string) {
+  async getItemById(itemId: string): Promise<NftItem> {
     const result = await this.searchSrv.get({
       index: constant.ELASTICSEARCH_INDEX,
       id: itemId,
