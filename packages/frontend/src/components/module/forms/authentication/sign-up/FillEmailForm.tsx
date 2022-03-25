@@ -80,11 +80,16 @@ const FillEmailForm = ({ onClose }: FillEmailFormProps) => {
                   }
                 >
                   <Text fontSize="sm" color="neutral.900">
-                    Wallets are used to send, receive, and store digital assets like Ether. Wallets come in many forms.
-                    For more infomation about wallets, see this{" "}
-                    <chakra.span color="cyan.500" textDecor="underline">
-                      explanation
-                    </chakra.span>
+                    The Ather Account system powers Ather Labs Game Launcher, Sipher game, Sipher Marketplace, Sipher
+                    Loyalty, and more. This account system has never been compromised. However, specific individual
+                    Ather accounts have been compromised by hackers using lists of email addresses and passwords leaked
+                    from other sites which have been compromised.
+                  </Text>
+                  <Text fontSize="sm" color="neutral.900">
+                    If you use the same email address and password on Ather as you used on another site which has been
+                    compromised, then your account is vulnerable to attack. To secure your Ather account, use a unique
+                    password, and enable multi-factor authentication. You can learn more about the measures we take to
+                    protect your account and what you can do to stay safe here.
                   </Text>
                 </CustomPopover>
               </chakra.span>

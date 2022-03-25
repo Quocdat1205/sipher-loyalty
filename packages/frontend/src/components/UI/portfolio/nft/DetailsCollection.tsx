@@ -22,8 +22,6 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
     return nftsData?.map(i => <NFTCard key={i.id} data={i} />)
   }
 
-  console.log(collectionData)
-
   return (
     <Box pos="relative">
       <NotifyNetwork chainId={collectionData?.chainId} />
