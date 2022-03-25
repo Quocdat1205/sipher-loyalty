@@ -59,7 +59,7 @@ const FillEmailForm = ({ onClose }: FillEmailFormProps) => {
     },
   )
 
-  if (showVerify) return <VerifySignUpForm email={email} address={account} password={password} />
+  if (showVerify) return <VerifySignUpForm email={email} password={password} />
 
   return (
     <ChakraModal title={"YOU ARE ALMOST THERE"} size="lg" isOpen={true} onClose={onClose}>

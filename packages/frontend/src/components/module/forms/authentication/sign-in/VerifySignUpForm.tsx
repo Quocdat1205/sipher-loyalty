@@ -52,7 +52,7 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
     AtherIdAuth.resendSignUp(email)
   }, [])
 
-  if (isConnectingWallet) return <ConnectToWallet />
+  if (isConnectingWallet) return <ConnectToWallet onClose={() => setIsConnectingWallet(false)} />
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()

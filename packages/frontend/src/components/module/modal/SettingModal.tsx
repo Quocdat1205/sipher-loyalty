@@ -3,7 +3,7 @@ import { BiChevronRight } from "react-icons/bi"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { Avatar, Box, Button, Divider, Flex, FormControl, FormLabel, HStack, Image, Text } from "@sipher.dev/sipher-ui"
 
-import { getAvailableAvatars, getProfile, ProfileInput, updateProfile } from "@api"
+import { getProfile, updateProfile } from "@api"
 import { CustomInput, CustomTextarea, FormField } from "@components/shared"
 import { useChakraToast, useFormCoreWithError } from "@hooks"
 import { useAuth } from "src/providers/auth"
@@ -14,7 +14,7 @@ interface SettingAccountModalProps {
 }
 
 export const SettingModal = ({ onClose, setChangeForm }: SettingAccountModalProps) => {
-  const { values, setValue, errors, setError, initForm } = useFormCoreWithError({ name: "", bio: "" })
+  const { values, setValue, errors, initForm } = useFormCoreWithError({ name: "", bio: "" })
 
   const { session, user } = useAuth()
   const qc = useQueryClient()
@@ -30,10 +30,6 @@ export const SettingModal = ({ onClose, setChangeForm }: SettingAccountModalProp
   useEffect(() => {
     refetch()
   }, [])
-
-  const { data: availableAvatars } = useQuery(["available-avatars", user?.email], () =>
-    getAvailableAvatars(session?.getIdToken().getJwtToken() ?? ""),
-  )
 
   const { mutate: mutateUpdateProfile, isLoading } = useMutation(
     () => updateProfile({ name: values.name, bio: values.bio }, session?.getIdToken().getJwtToken() ?? ""),

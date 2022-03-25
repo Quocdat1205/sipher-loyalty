@@ -3,53 +3,26 @@ import { useMutation } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Button, chakra, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useStore } from "@store"
-import { useWalletContext } from "@web3"
 
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
-import { useChakraToast, useOwnedWallets } from "@hooks"
-import { useAuth } from "src/providers/auth"
+import { useChakraToast } from "@hooks"
 
-import ConnectingWallet from "./ConnectingWallet"
 import ConnectToWallet from "./ConnectToWallet"
 
 interface VerifySignUpFormProps {
   email: string
   password: string
   // address will be string when user connect wallet first, else
-  address: string | null
 }
 
 // * CONFIRM SIGN UP => SIGN IN (=> ADD WALLET IF HAVE => CONFIRM WALLET)
 
-const VerifySignUpForm = ({ email, password, address }: VerifySignUpFormProps) => {
+const VerifySignUpForm = ({ email, password }: VerifySignUpFormProps) => {
   const toast = useChakraToast()
   const [code, setCode] = useState("")
   const [isOpen, setIsOpen] = useState(true)
   // const [isConnectingWallet, setIsConnectingWallet] = useState(false)
   const [authFlow] = useStore(s => [s.authFlow])
-  const { ownedWallets } = useAuth()
-  const { scCaller, reset } = useWalletContext()
-
-  // const { mutate: mutateConnectWallet, isLoading: isConnectingWallet } = useMutation(
-  //   async () => {
-  //     const res = await AtherIdAuth.connectWallet(address!)
-  //     const signature = await scCaller.current?.sign(res.message)
-  //     await AtherIdAuth.confirmConectWallet(res, signature!)
-  //   },
-  //   {
-  //     onError: (e: any) => {
-  //       if (e?.code === 4001) {
-  //         toast({
-  //           status: "error",
-  //           title: "Signature error",
-  //           message: "User denied to sign the message",
-  //         })
-  //         AtherIdAuth.signOut()
-  //         reset()
-  //       }
-  //     },
-  //   },
-  // )
 
   const [showConnectWallet, setShowConnectWallet] = useState(false)
 
