@@ -61,7 +61,7 @@ const TokensContainer = ({ dataTokens = [] }: TokensContainerProps) => {
               </chakra.td>
               <chakra.td p={2}>{currency(item.balance)}</chakra.td>
               <chakra.td p={2}>
-                <Flex align="center">${currency(item.value)}</Flex>
+                <Flex align="center">${currency(item.value || 0)}</Flex>
               </chakra.td>
               <chakra.td p={2}>{currency(item.change)}%</chakra.td>
             </chakra.tr>
