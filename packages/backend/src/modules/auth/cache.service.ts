@@ -12,14 +12,14 @@ export class CacheService {
   set = async (token: string, userData: UserData) =>
     this.cacheManager.set<UserData>(token, userData, { ttl: 3600 });
 
-  setMintPending = async (publicAddress: string, minting: boolean) =>
-    this.cacheManager.set<boolean>(publicAddress.toLowerCase(), minting, {
-      ttl: 10,
+  setBlockingLootbox = async (id: string, blocking: boolean) =>
+    this.cacheManager.set<boolean>(`blocking_lootbox_${id}`, blocking, {
+      ttl: 30,
     });
 
-  getMintPending = async (publicAddress: string) => {
-    if (this.cacheManager.get<boolean>(publicAddress.toLowerCase()))
-      return this.cacheManager.get<boolean>(publicAddress.toLowerCase());
+  getBlockingLootbox = async (id: string) => {
+    const result = this.cacheManager.get<boolean>(id);
+    if (result) return result;
     return false;
   };
 }
