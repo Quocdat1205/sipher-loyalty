@@ -19,10 +19,6 @@ export class SeedAirdropService {
     fs.readFileSync(`${this.src}/AIRDROP/holder.json`).toString()
   );
 
-  private airdropDataInvestorsCP1 = JSON.parse(
-    fs.readFileSync(`${this.src}/AIRDROP/investors_CP1.json`).toString()
-  );
-
   private airdropDataMerch = JSON.parse(
     fs.readFileSync(`${this.src}/AIRDROP/merch.json`).toString()
   );
@@ -70,52 +66,6 @@ export class SeedAirdropService {
     );
     LoggerService.log(
       `Check airdrop Holder : ${
-        parseInt(airdropCount[0].count, 10) === flaternAirdrop.length
-          ? "OK"
-          : "Failed"
-      }
-        `
-    );
-  };
-
-  seedAirdropInvestor_CP1 = async () => {
-    const flaternAirdrop = this.airdropDataInvestorsCP1.data.map((el) => ({
-      merkleRoot: this.airdropDataInvestorsCP1.merkleRoot,
-      imageUrl: this.airdropDataInvestorsCP1.imageUrl,
-      ...el,
-      addressContract: this.airdropDataInvestorsCP1.addressContract,
-      startTime: this.airdropDataInvestorsCP1.startTime,
-      vestingInterval: this.airdropDataInvestorsCP1.vestingInterval,
-      numberOfVestingPoint: this.airdropDataInvestorsCP1.numberOfVestingPoint,
-    }));
-    await this.airdropRepo.query(
-      `delete from airdrop where "addressContract"='${this.airdropDataInvestorsCP1.addressContract}';`
-    );
-
-    const promises = [];
-    for (let i = 0; i < flaternAirdrop.length; i++) {
-      const query = `insert into airdrop ("merkleRoot","imageUrl","proof","leaf","claimer","addressContract","totalAmount","startTime","vestingInterval","numberOfVestingPoint","type") values (
-            '${flaternAirdrop[i].merkleRoot}',
-            '${flaternAirdrop[i].imageUrl}',
-            '${`{${flaternAirdrop[i].proof.join(",")}}`}',
-            '${flaternAirdrop[i].leaf}',
-            '${flaternAirdrop[i].claimer.toLowerCase()}',
-            '${flaternAirdrop[i].addressContract}',
-            '${flaternAirdrop[i].totalAmount}',
-            '${flaternAirdrop[i].startTime}',
-            '${flaternAirdrop[i].vestingInterval}',
-            '${flaternAirdrop[i].numberOfVestingPoint}'
-            ,'TOKEN');`;
-      // LoggerService.log(query);
-      promises.push(this.airdropRepo.query(query));
-    }
-    await Promise.all(promises);
-
-    const airdropCount = await this.airdropRepo.query(
-      `select count(*) from airdrop where "addressContract"='${this.airdropDataInvestorsCP1.addressContract}';`
-    );
-    LoggerService.log(
-      `Check airdrop investors campaign 1: ${
         parseInt(airdropCount[0].count, 10) === flaternAirdrop.length
           ? "OK"
           : "Failed"

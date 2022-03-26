@@ -1,5 +1,6 @@
 // import library
 import { toChecksumAddress } from "ethereumjs-util";
+import { async } from "rxjs";
 import { Repository } from "typeorm";
 import { ERC1155Lootbox, MintStatus, MintType, PendingMint } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
@@ -22,18 +23,26 @@ import { LoggerService } from "../logger/logger.service";
 
 @Injectable()
 export class MintService {
+  private infoPendings: Array<{ name: string; image: string }>;
+
+  private config = constant.config.erc1155Spaceship;
+
   constructor(
     @InjectRepository(PendingMint)
     private PendingMintRepo: Repository<PendingMint>,
     @InjectRepository(ERC1155Lootbox)
     private erc1155LootboxRepo: Repository<ERC1155Lootbox>
-  ) {}
+  ) {
+    this.genInfoPendings();
+  }
 
-  private config = constant.config.erc1155Spaceship;
+  private genInfoPendings = async () => {
+    this.infoPendings = (await this.erc1155LootboxRepo.find())
+      .sort((a, b) => parseInt(a.tokenId, 10) - parseInt(b.tokenId, 10))
+      .map((el) => ({ name: el.name, image: el.image }));
+  };
 
   getPendingLootbox = async (publicAddress: string) => {
-    const imageBaseUrl =
-      "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/lootbox";
     const pendings = await this.PendingMintRepo.find({
       where: [
         {
@@ -48,6 +57,7 @@ export class MintService {
         },
       ],
     });
+
     const data = [];
     pendings.forEach((element) => {
       if (element.batchID) {
@@ -57,7 +67,8 @@ export class MintService {
             {
               tokenId: element.batchID,
               quantity: element.amount,
-              image: `${imageBaseUrl}_${element.batchID}.png`,
+              image: this.infoPendings[element.batchID].image,
+              name: this.infoPendings[element.batchID].name,
             },
           ],
         };
@@ -68,7 +79,8 @@ export class MintService {
           info.push({
             tokenId: element.batchIDs[i],
             quantity: element.amounts[i],
-            image: `${imageBaseUrl}_${element.batchIDs[i]}.png`,
+            image: this.infoPendings[element.batchIDs[i]].image,
+            name: this.infoPendings[element.batchIDs[i]].name,
           });
         }
         const pending = {
