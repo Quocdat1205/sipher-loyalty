@@ -15,6 +15,7 @@ const ConnectToWallet = ({ onClose }: { onClose: () => void }) => {
   const [isOpen, setIsOpen] = useState(true)
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
 
+  // Initiate wallet connection => Sign the message to get signature => Confirm wallet connection
   const { mutate: mutateAddWallet } = useMutation<unknown, unknown, string>(
     async account => {
       const res = await AtherIdAuth.connectWallet(account!)
@@ -47,7 +48,7 @@ const ConnectToWallet = ({ onClose }: { onClose: () => void }) => {
   const handleConnectWallet = async (connectorId: Parameters<typeof connect>["0"]) => {
     setConnectingMethod(connectorId)
     const account = await connect(connectorId)
-    console.log(account, ownedWallets)
+    // Try to add wallet to account if not linked yet
     if (account && !ownedWallets.includes(account)) {
       mutateAddWallet(account)
     } else setIsOpen(false)

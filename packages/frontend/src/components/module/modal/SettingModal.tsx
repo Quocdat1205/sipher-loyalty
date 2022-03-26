@@ -80,6 +80,12 @@ export const SettingModal = ({ onClose, setChangeForm }: SettingAccountModalProp
       </Flex>
       <FormControl mb={4}>
         <FormLabel mb={1} fontSize="sm" color="neutral.400">
+          Email
+        </FormLabel>
+        <Text>{user?.email}</Text>
+      </FormControl>
+      <FormControl mb={4}>
+        <FormLabel mb={1} fontSize="sm" color="neutral.400">
           Name
         </FormLabel>
         <FormField error={errors.name}>

@@ -40,6 +40,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
   const [showEmailForm, setShowEmailForm] = useState(false)
   const [connectingMethod, setConnectingMethod] = useState<string | null>(null)
   const setAuthFlow = useStore(s => s.setAuthFlow)
+  const wallet = useWalletContext()
 
   useEffect(() => {
     if (isOpen) {
@@ -59,10 +60,10 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) })
 
-  const { mutate, isLoading } = useMutation<unknown, unknown, FieldValues>(
+  const { mutate: mutateSignUp, isLoading } = useMutation<unknown, unknown, FieldValues>(
     data => AtherIdAuth.signUp(data.email, data.password),
     {
-      // go to verify page after sign up
+      // Go to verify page after sign up
       onSuccess: () => setShowVerify(true),
       onError: (e: any) => {
         toast({
@@ -74,15 +75,14 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
     },
   )
 
-  const wallet = useWalletContext()
-
   const handleConnectWallet = async (connectorId: Parameters<typeof wallet["connect"]>["0"]) => {
+    // Try to connect wallet
     setConnectingMethod(connectorId!)
     const account = await wallet.connect(connectorId)
 
     if (account) {
       try {
-        console.log(account)
+        // Check if this address is already registered, if so, throw error, else navigate to fill email page
         const user = await AtherIdAuth.signIn(account)
         if (user) {
           toast({
@@ -115,7 +115,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
 
   return (
     <ChakraModal title={"SIGN IN OR CREATE ACCOUNT"} size="lg" isOpen={isOpen} onClose={onClose}>
-      <Form onSubmit={handleSubmit(d => mutate(d))}>
+      <Form onSubmit={handleSubmit(d => mutateSignUp(d))}>
         <Stack px={6} spacing={4} w="full">
           <Text fontSize="sm" color="neutral.300">
             Please link crypto-wallet in order to sign in. This will only be used to link to your account. Funds will
