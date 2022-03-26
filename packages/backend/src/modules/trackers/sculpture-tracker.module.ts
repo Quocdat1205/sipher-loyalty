@@ -3,18 +3,18 @@ import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { MultiTokenService } from "@modules/multi-token/multi-token.service";
-import { SculptureService } from "@modules/sculpture/sculpture.service";
 import { TrackedBlock } from "src/entity/tracking.entity";
 
 import { ScupltureTrackerService } from "./sculpture-tracker.service";
+import { SculptureModule } from "@modules/sculpture/sculpture.module";
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
+    SculptureModule,
     TypeOrmModule.forFeature([SculptureTransaction, TrackedBlock]),
   ],
-  providers: [ScupltureTrackerService, SculptureService, MultiTokenService],
+  providers: [ScupltureTrackerService],
   exports: [ScupltureTrackerService],
 })
 export class SculptureTrackerModule {}

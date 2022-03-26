@@ -224,6 +224,7 @@ export class CollectionService {
   private async addUriToSculptureOrSpaceship(item: any) {
     const newItem = { ...item };
     if (isSpaceshipContract(item.collectionId)) {
+      LoggerService.debug("Is spaceship contract");
       const uriInfo = await this.uriService.getDataERC1155Spaceship(
         item.tokenId
       );
@@ -231,6 +232,7 @@ export class CollectionService {
       newItem.imageUrl = uriInfo.image;
     }
     if (isSculptureContract(item.collectionId)) {
+      LoggerService.debug("Is sculpture contract");
       const uriInfo = await this.uriService.getDataERC1155Sculpture(
         item.tokenId
       );

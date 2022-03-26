@@ -3,6 +3,9 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class InfoPendingMintDto {
   @ApiProperty({ type: String })
+  name: string;
+
+  @ApiProperty({ type: String })
   image: string;
 
   @ApiProperty({ type: Number })
