@@ -2,7 +2,7 @@ import React from "react"
 import Image from "next/image"
 import { Button, ButtonProps, Text } from "@sipher.dev/sipher-ui"
 
-interface WalletCardProps {
+interface WalletCardProps extends ButtonProps {
   src: string
   onClick?: () => void
   colorScheme: ButtonProps["colorScheme"]
@@ -11,7 +11,7 @@ interface WalletCardProps {
   spinnerColor?: string
 }
 
-export const WalletCard = ({ colorScheme, src, text, onClick, isLoading = false }: WalletCardProps) => {
+export const WalletCard = ({ colorScheme, src, text, onClick, isLoading = false, ...rest }: WalletCardProps) => {
   return (
     <Button
       role="group"
@@ -23,6 +23,7 @@ export const WalletCard = ({ colorScheme, src, text, onClick, isLoading = false 
       bg={colorScheme === "whiteAlpha" ? "white" : undefined}
       fontWeight={400}
       isLoading={isLoading}
+      {...rest}
     >
       <Image width={28} height={28} src={src} alt={src.split("/")[1]} />
       {text && (

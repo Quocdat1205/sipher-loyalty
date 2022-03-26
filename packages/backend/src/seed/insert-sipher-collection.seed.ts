@@ -45,7 +45,7 @@ export default class InsertSipherCollection implements Seeder {
             "https://lh3.googleusercontent.com/-V0eEOrC5W9AcbS_tvv_Ew9zp-Gf5WLS0WNdBGhd2b9CKVjO2IMDUsbN5uEzwxRuLpR_AiUU_TDfANQuh9uO-auOxW5Cdu435MFcKg=s120",
         },
         {
-          id: "0x890e002a6bb11d0094d80f4c301caf645d168333".toLowerCase(),
+          id: "0x3e445d426c8fde12f5f0c223019ca9158f7da93b".toLowerCase(),
           name: "SIPHER SPACESHIP",
           collectionType: CollectionType.ERC1155,
           collectionSlug: "sipherspaceship",

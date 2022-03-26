@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 
-import { TokensContainer } from "@components/UI/portfolio/tokens"
+import TokensContainer from "@components/UI/portfolio/tokens"
 
 import NFTsContainer from "./NFTsContainer"
 
@@ -16,7 +16,7 @@ const TabContainer = () => {
       return <NFTsContainer />
     }
     if (currentTab === "Tokens") {
-      return <TokensContainer />
+      return <TokensContainer dataTokens={[]} />
     }
     return null
   }

@@ -1,8 +1,10 @@
 import React from "react"
-import { RiArrowRightLine } from "react-icons/ri"
+import { BsArrowRightShort } from "react-icons/bs"
 import { Box, Flex, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 
+import { useETHPrice, useSipherPrice } from "@api"
 import { ChakraModal, EthereumIcon, SipherIcon, WalletCard } from "@components/shared"
+import { currency } from "@utils"
 
 interface BuySipherModalProps {
   isOpen: boolean
@@ -10,20 +12,27 @@ interface BuySipherModalProps {
 }
 
 export const BuySipherModal = ({ isOpen, onClose }: BuySipherModalProps) => {
+  const sipherPrice = useSipherPrice()
+  const ethPrice = useETHPrice()
+
   return (
     <ChakraModal isCentered title={"BUY SIPHER"} isOpen={isOpen} onClose={onClose} size="sm">
       <Stack spacing={4} px={6}>
-        <HStack spacing={4} justify="center" align="center">
+        <HStack w="full" justify="center" spacing={2}>
           <Flex align="center">
-            <SipherIcon size="1.4rem" />
-            <Text ml={2}>1</Text>
+            <SipherIcon />
+            <Text ml={2} fontWeight={500} color="neutral.100">
+              1
+            </Text>
           </Flex>
           <Box color="neutral.500">
-            <RiArrowRightLine size="1.2rem" />
+            <BsArrowRightShort size="1.5rem" />
           </Box>
           <Flex align="center">
-            <EthereumIcon size="1.6rem" />
-            <Text>0.01 ($0.98)</Text>
+            <EthereumIcon size="1.4rem" />
+            <Text fontWeight={500} color="neutral.100">
+              {currency(sipherPrice / ethPrice, "", { maximumFractionDigits: 5 })} (${currency(sipherPrice)})
+            </Text>
           </Flex>
         </HStack>
         <WalletCard
@@ -36,6 +45,7 @@ export const BuySipherModal = ({ isOpen, onClose }: BuySipherModalProps) => {
           text="Kyper Network"
           src="/images/icons/kyper.png"
           colorScheme={"whiteAlpha"}
+          py={2}
         />
         <WalletCard
           onClick={() =>
@@ -47,6 +57,7 @@ export const BuySipherModal = ({ isOpen, onClose }: BuySipherModalProps) => {
           text="Uniswap"
           src="/images/icons/uniswap.png"
           colorScheme={"whiteAlpha"}
+          py={2}
         />
       </Stack>
     </ChakraModal>

@@ -9,8 +9,8 @@ export const currency = (
   amount: number,
   prefix = "",
   options: {
-    maximumFractionDigits: number
-    minimumFractionDigits: number
+    maximumFractionDigits?: number
+    minimumFractionDigits?: number
   } = {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,

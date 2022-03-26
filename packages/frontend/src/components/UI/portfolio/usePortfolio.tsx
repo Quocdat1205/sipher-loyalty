@@ -82,29 +82,31 @@ const usePortfolio = () => {
         .then(res => res.data),
     {
       enabled: authenticated && !!account,
-      initialData: { etherPrice: 0, sipherPrice: 0, priceChange: 0 },
+      // initialData: { eth: 0, change: 0, usd: 0 },
     },
   )
+
+  console.log(dataPrice)
 
   const dataTokens = [
     {
       currency: "ETH",
       balance: chainId === ETHEREUM_NETWORK ? currentPrice ?? 0 : 0,
-      value: currentPrice! * dataPrice!.etherPrice ?? 0,
+      // value: currentPrice! * dataPrice!.etherPrice ?? 0,
       change: 900.23,
       icon: <EthereumIcon size="1.4rem" />,
     },
     {
       currency: "MATIC",
       balance: chainId === POLYGON_NETWORK ? currentPrice ?? 0 : 0,
-      value: currentPrice! * dataPrice!.etherPrice ?? 0,
+      // value: currentPrice! * dataPrice!.etherPrice ?? 0,
       change: 900.23,
       icon: <Img src="/images/icons/matic.png" alt="matic" h="1.4rem" />,
     },
     {
       currency: "SIPHER",
       balance: sipherPrice ?? 0,
-      value: sipherPrice! * dataPrice!.sipherPrice ?? 0,
+      // value: sipherPrice! * dataPrice!.sipherPrice ?? 0,
       change: 100.23,
       icon: <SipherIcon size="1.4rem" />,
     },

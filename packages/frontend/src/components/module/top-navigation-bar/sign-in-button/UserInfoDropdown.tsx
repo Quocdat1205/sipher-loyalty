@@ -19,6 +19,7 @@ import {
 import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
+import { useETHPrice, useSipherPrice } from "@api"
 import { EthereumIcon, SipherIcon } from "@components/shared"
 import { ClipboardCopy } from "@components/shared/ClipboardCopy"
 import { useBalanceContext } from "@hooks"
@@ -40,7 +41,10 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
     balance: { ethereum, sipher, weth },
   } = useBalanceContext()
 
-  const { signOut } = useAuth()
+  const sipherPrice = useSipherPrice()
+  const ethPrice = useETHPrice()
+
+  const { signOut, userProfile } = useAuth()
   const setAuthFlow = useStore(s => s.setAuthFlow)
 
   const { mutate: mutateSignOut, isLoading } = useMutation(signOut, {
@@ -87,9 +91,15 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
             icon={<IoMdClose size="1.5rem" />}
           />
           <Stack mb={4} w="full" align="center" spacing={4}>
-            <Avatar size="lg" bg="gray" />
+            <Avatar
+              size="lg"
+              bg="gray"
+              src={userProfile?.user.avatarImage}
+              name={userProfile?.user.name}
+              bgGradient="linear(to-l, #FCD11F, #DF6767, #200B9F)"
+            />
             <Text fontWeight={600} fontSize="lg">
-              Unnamed
+              {userProfile?.user.name}
             </Text>
             <Flex>
               <Flex align="center" p={2} rounded="base" border="1px" borderColor="neutral.600">
@@ -114,8 +124,8 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
             <HStack w="full" justify="center" spacing={2}>
               <Flex align="center">
                 <SipherIcon />
-                <Text ml={2} fontWeight={500} color="neutral.400">
-                  0.14
+                <Text ml={2} fontWeight={500} color="neutral.100">
+                  1
                 </Text>
               </Flex>
               <Box color="neutral.500">
@@ -123,8 +133,8 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
               </Box>
               <Flex align="center">
                 <EthereumIcon size="1.4rem" />
-                <Text fontWeight={500} color="neutral.400">
-                  0.14
+                <Text fontWeight={500} color="neutral.100">
+                  {currency(sipherPrice / ethPrice, "", { maximumFractionDigits: 5 })} (${currency(sipherPrice)})
                 </Text>
               </Flex>
             </HStack>
@@ -145,8 +155,11 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
                   </Box>
                   <Text ml={2}>ETH</Text>
                 </Flex>
-                <Text>
-                  {currency(ethereum)} <chakra.span color="neutral.400">(${currency(ethereum)})</chakra.span>
+                <Text fontWeight={600}>
+                  {currency(ethereum)}{" "}
+                  <chakra.span color="neutral.400" fontWeight={400}>
+                    (${currency(ethereum)})
+                  </chakra.span>
                 </Text>
               </Flex>
               <Flex align="center" justify="space-between">
@@ -156,19 +169,25 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
                   </Box>
                   <Text ml={2}>WETH</Text>
                 </Flex>
-                <Text>
-                  {currency(weth)} <chakra.span color="neutral.400">(${currency(weth)})</chakra.span>
+                <Text fontWeight={600}>
+                  {currency(weth)}{" "}
+                  <chakra.span fontWeight={400} color="neutral.400">
+                    (${currency(weth)})
+                  </chakra.span>
                 </Text>
               </Flex>
               <Flex align="center" justify="space-between">
                 <Flex align="center">
                   <Box textAlign="center" w="1.5rem">
-                    <SipherIcon size="1.4rem" />
+                    <SipherIcon />
                   </Box>
                   <Text ml={2}>SIPHER</Text>
                 </Flex>
-                <Text>
-                  {currency(sipher)} <chakra.span color="neutral.400">(${currency(sipher)})</chakra.span>
+                <Text fontWeight={600}>
+                  {currency(sipher)}{" "}
+                  <chakra.span fontWeight={400} color="neutral.400">
+                    (${currency(sipher)})
+                  </chakra.span>
                 </Text>
               </Flex>
             </Stack>
@@ -180,7 +199,11 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
               icon={<RiEarthFill size="1.4rem" />}
               onClick={() => window.open("https://sipher.xyz/", "_blank")}
             />
-            <OptionCard name="Support" icon={<BiHeadphone size="1.4rem" />} />
+            <OptionCard
+              name="Support"
+              icon={<BiHeadphone size="1.4rem" />}
+              onClick={() => window.open("mailto:hello@sipher.xyz")}
+            />
           </Stack>
           <Button
             isLoading={isLoading}

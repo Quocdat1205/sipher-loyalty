@@ -100,7 +100,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
   }
 
   // show verify form after user has signed up
-  if (showVerify) return <VerifySignUpForm email={email} address={wallet.account} password={password} />
+  if (showVerify) return <VerifySignUpForm email={email} password={password} />
 
   // show email filling form after user connect wallet first
   if (showEmailForm)
@@ -145,7 +145,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
               <CustomInput
                 pr="2.5rem"
                 type={"password"}
-                placeholder="Password"
+                placeholder="Confirm your password"
                 autoComplete="new-password"
                 {...register("confirmPassword")}
               />

@@ -63,7 +63,7 @@ const useWallet = () => {
     }
   }, [web3React.library])
 
-  const ownedWallets = useOwnedWallets()
+  const { ownedWallets } = useAuth()
 
   // connect to wallet
   const connect = useCallback(
@@ -119,7 +119,7 @@ const useWallet = () => {
         }
         setStatus("connected")
         const account = await web3ReactConnector.getAccount()
-        return account
+        return account?.toLowerCase()
       } catch (err: any) {
         if (id !== activationId.current) return
         setConnectorName(null)
