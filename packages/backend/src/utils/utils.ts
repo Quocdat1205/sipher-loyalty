@@ -25,7 +25,7 @@ const isSculptureContract = (contractAddress: string) => {
 const isSpaceshipContract = (contractAddress: string) => {
   const contractRegistry = constant.blockchain.contracts;
   const isMumbaiSpaceship =
-    contractRegistry.erc1155Spaceship[Chain.Mainnet].address.toLowerCase() ===
+    contractRegistry.erc1155Spaceship[Chain.Mumbai].address.toLowerCase() ===
     contractAddress;
   const isPolygonSpaceship =
     contractRegistry.erc1155Spaceship[Chain.Mainnet].address.toLowerCase() ===
