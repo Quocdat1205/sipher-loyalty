@@ -81,7 +81,7 @@ export class UserService {
     }
   }
 
-  async updateBio(ather_id: string, bio: string) {
+  async updateBio(ather_id: string, username: string, bio: string) {
     // find user
     const user = await this.userRepo.findOne({ where: ather_id });
 
@@ -90,6 +90,7 @@ export class UserService {
     }
 
     user.bio = bio;
+    user.username = username;
 
     await this.userRepo.save(user);
 
