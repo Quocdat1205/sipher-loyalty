@@ -252,6 +252,35 @@ export interface ResAllAirdrop {
 
 export type EtherDto = object;
 
+export type IsEmail = object;
+
+export interface Receiver {
+  publicAddress: string;
+  first_name: string;
+  last_name: string;
+  email: IsEmail;
+  phone: string;
+}
+
+export interface Address {
+  id_address: string;
+  publicAddress: string;
+  street_address: string;
+  town: string;
+  country: string;
+  state: string;
+  zip_code: string;
+}
+
+export interface Shipping {
+  publicAddress: string;
+  id_receiver: string;
+  id_address: string;
+  receiver: Receiver;
+  address: Address;
+  item_order: any[][];
+}
+
 export type BioDto = object;
 
 export interface PriceData {
@@ -704,23 +733,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags airdrop
-     * @name AirdropControllerClaimMerch
-     * @request PUT:/api/sipher/loyalty/airdrop/merch/claim/{publicAddress}/{id_merch}
-     * @secure
-     */
-    airdropControllerClaimMerch: (publicAddress: string, idMerch: string, params: RequestParams = {}) =>
-      this.request<boolean, any>({
-        path: `/api/sipher/loyalty/airdrop/merch/claim/${publicAddress}/${idMerch}`,
-        method: 'PUT',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags airdrop
      * @name AirdropControllerGetAllMerch
      * @request GET:/api/sipher/loyalty/airdrop/all-merch
      */
@@ -729,6 +741,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/sipher/loyalty/airdrop/all-merch`,
         method: 'GET',
         query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags airdrop
+     * @name AirdropControllerShippingMerch
+     * @request POST:/api/sipher/loyalty/airdrop/sipping
+     */
+    airdropControllerShippingMerch: (data: Shipping, params: RequestParams = {}) =>
+      this.request<Shipping, any>({
+        path: `/api/sipher/loyalty/airdrop/sipping`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
@@ -768,11 +797,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags user
      * @name UserControllerUploadBio
-     * @request POST:/api/sipher/loyalty/user/update-bio
+     * @request POST:/api/sipher/loyalty/user/update-info
      */
     userControllerUploadBio: (data: BioDto, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/user/update-bio`,
+        path: `/api/sipher/loyalty/user/update-info`,
         method: 'POST',
         body: data,
         type: ContentType.Json,

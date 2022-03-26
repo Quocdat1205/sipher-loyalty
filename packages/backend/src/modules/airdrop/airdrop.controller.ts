@@ -1,8 +1,9 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
-  Put,
+  Post,
   Query,
   Req,
   UseGuards,
@@ -17,7 +18,7 @@ import { ParseEthereumAddress } from "src/pipes/ethereum-address..pipe";
 
 import { etherDto } from "./airdrop.dto";
 import { AirdropService } from "./airdrop.service";
-import { ResAllAirdrop } from "./airdrop.type";
+import { ResAllAirdrop, Shipping } from "./airdrop.type";
 
 @ApiTags("airdrop")
 @Controller("airdrop")
@@ -41,31 +42,54 @@ export class AirdropController {
     return this.airdropService.getAirdropByType(publicAddress, airdropType);
   }
 
-  @UseGuards(AtherGuard)
-  @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: Boolean })
-  @Put("/merch/claim/:publicAddress/:id_merch")
-  async claimMerch(
-    @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
-    @Param("id_merch") id_merch: string,
-    @Req() req: any
-  ) {
-    await this.authService.verifyAddress(publicAddress, req.userData);
-    console.log(id_merch);
-
-    // return this.merchService.claimItems({
-    //   publicAddress,
-    //   id_merch,
-    // });
-  }
-
   @ApiOkResponse({ type: etherDto })
   @Get("all-merch")
   async getAllMerch(
     @Query("publicAddress", ParseEthereumAddress) publicAddress: string
   ) {
-    // const { publicAddress } = query;
-
     return this.merchService.getAllMerch(publicAddress);
+  }
+
+  @ApiOkResponse({ type: Shipping })
+  @Post("sipping")
+  async shippingMerch(@Body() body: Shipping) {
+    const {
+      publicAddress,
+      id_receiver,
+      id_address,
+      receiver,
+      address,
+      item_order,
+    } = body;
+
+    let find_id_receiver = "";
+    let find_id_address = "";
+
+    if (!id_receiver) {
+      const find_receiver = await this.merchService.findAllReceiver(
+        id_receiver
+      );
+
+      find_id_receiver = find_receiver.id_receiver;
+    }
+
+    if (!id_address) {
+      const find_address = await this.merchService.findAllAddress(id_address);
+
+      find_id_address = find_address.id_address;
+    }
+
+    if (!id_receiver && !id_address) {
+      const find_receiver = await this.merchService.findAllReceiver(
+        id_receiver
+      );
+      const find_address = await this.merchService.findAllAddress(id_address);
+
+      find_id_receiver = find_receiver.id_receiver;
+
+      find_id_address = find_address.id_address;
+    }
+
+    return true;
   }
 }

@@ -5,5 +5,8 @@ export class bioDto {
   ather_id: string;
 
   @IsString()
+  username: string;
+
+  @IsString()
   bio: string;
 }
