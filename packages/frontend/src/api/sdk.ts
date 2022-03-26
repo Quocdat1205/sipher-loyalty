@@ -249,9 +249,8 @@ export interface Airdrop {
 export interface ResAllAirdrop {
   token: Airdrop[];
   nft: Airdrop[];
+  merch: Airdrop[];
 }
-
-export type EtherDto = object;
 
 export type BioDto = object;
 
@@ -697,39 +696,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}`,
         method: 'GET',
         secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags airdrop
-     * @name AirdropControllerClaimMerch
-     * @request PUT:/api/sipher/loyalty/airdrop/merch/claim/{publicAddress}/{id_merch}
-     * @secure
-     */
-    airdropControllerClaimMerch: (publicAddress: string, idMerch: string, params: RequestParams = {}) =>
-      this.request<boolean, any>({
-        path: `/api/sipher/loyalty/airdrop/merch/claim/${publicAddress}/${idMerch}`,
-        method: 'PUT',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags airdrop
-     * @name AirdropControllerGetAllMerch
-     * @request GET:/api/sipher/loyalty/airdrop/all-merch
-     */
-    airdropControllerGetAllMerch: (query: { publicAddress: string }, params: RequestParams = {}) =>
-      this.request<EtherDto, any>({
-        path: `/api/sipher/loyalty/airdrop/all-merch`,
-        method: 'GET',
-        query: query,
         format: 'json',
         ...params,
       }),

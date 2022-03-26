@@ -13,6 +13,17 @@ import constant from "@setting/constant";
 import { CacheService } from "@modules/cache/cache.service";
 import { LoggerService } from "@modules/logger/logger.service";
 
+import { UserData } from "./auth.types";
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface Request {
+      userData: UserData;
+    }
+  }
+}
+
 @Injectable()
 export class AtherGuard implements CanActivate {
   constructor(private cacheService: CacheService) {}

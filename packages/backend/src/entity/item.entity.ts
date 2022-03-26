@@ -1,13 +1,19 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-export type ItemType = "Boomer" | "Hoodie" | "Tshirt" | "Hat";
+export enum ItemType {
+  Boomer = "Boomer",
+  Hoodie = "Hoodie",
+  Tshirt = "Tshirt",
+  Hat = "Hat",
+}
 
-export type viewType =
-  | "SIPHER Exclusive Bomber"
-  | "SIPHER Exclusive Hoodie"
-  | "SIPHER Exclusive T-shirt"
-  | "SIPHER Exclusive Hat";
+export enum ViewType {
+  Bomber = "SIPHER Exclusive Bomber",
+  Hoodie = "SIPHER Exclusive Hoodie",
+  Tshirt = "SIPHER Exclusive T-shirt",
+  Hat = "SIPHER Exclusive Hat",
+}
 
 @Entity()
 export class Item {
@@ -35,5 +41,5 @@ export class Item {
       "SIPHER Exclusive Hat",
     ],
   })
-  view: viewType;
+  view: ViewType;
 }
