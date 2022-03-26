@@ -10,319 +10,321 @@
  */
 
 export enum MintStatus {
-  Pending = 'Pending',
-  Minted = 'Minted',
-  Canceled = 'Canceled',
-  Expired = 'Expired',
+  Pending = "Pending",
+  Minted = "Minted",
+  Canceled = "Canceled",
+  Expired = "Expired",
 }
 
 export enum MintType {
-  Lootbox = 'Lootbox',
-  SpaceshipPart = 'SpaceshipPart',
-  Spaceship = 'Spaceship',
+  Lootbox = "Lootbox",
+  SpaceshipPart = "SpaceshipPart",
+  Spaceship = "Spaceship",
 }
 
 export interface InfoPendingMintDto {
-  name: string;
-  image: string;
-  tokenId: number;
-  quantity: number;
+  name: string
+  image: string
+  tokenId: number
+  quantity: number
 }
 
 export interface ResPendingMintDto {
-  id: string;
-  to: string;
-  batchID: number;
-  amount: number;
-  batchIDs: number[];
-  amounts: number[];
-  salt: string;
-  deadline: number;
-  status: MintStatus;
-  type: MintType;
-  signature: string;
+  id: string
+  to: string
+  batchID: number
+  amount: number
+  batchIDs: number[]
+  amounts: number[]
+  salt: string
+  deadline: number
+  status: MintStatus
+  type: MintType
+  signature: string
 
   /** @format date-time */
-  createdAt: string;
-  info: InfoPendingMintDto[];
+  createdAt: string
+  info: InfoPendingMintDto[]
 }
 
 export interface ERC1155LootboxAttribute {
-  id: string;
-  trait_type: string;
-  value: string;
-  erc1155: ERC1155Lootbox;
+  id: string
+  trait_type: string
+  value: string
+  erc1155: ERC1155Lootbox
 
   /** @format date-time */
-  createdAt: string;
+  createdAt: string
 }
 
 export interface Lootbox {
-  id: string;
-  publicAddress: string;
-  quantity: number;
-  tokenId: number;
-  pending: number;
-  mintable: number;
-  propertyLootbox: ERC1155Lootbox;
+  id: string
+  publicAddress: string
+  quantity: number
+  tokenId: number
+  pending: number
+  mintable: number
+  propertyLootbox: ERC1155Lootbox
 
   /** @format date-time */
-  createdAt: string;
+  createdAt: string
 }
 
 export interface ClaimableLootbox {
-  id: string;
-  publicAddress: string;
-  quantity: number;
-  tokenId: number;
-  propertyLootbox: ERC1155Lootbox;
+  id: string
+  publicAddress: string
+  quantity: number
+  tokenId: number
+  propertyLootbox: ERC1155Lootbox
 
   /** @format date-time */
-  expiredDate: string;
+  expiredDate: string
 
   /** @format date-time */
-  createdAt: string;
+  createdAt: string
 }
 
 export interface ERC1155Lootbox {
-  id: string;
-  tokenId: string;
-  name: string;
-  description: string;
-  external_url: string;
-  image: string;
-  attributes: ERC1155LootboxAttribute[];
-  lootboxs: Lootbox[];
-  claimableLootboxs: ClaimableLootbox[];
+  id: string
+  tokenId: string
+  name: string
+  description: string
+  external_url: string
+  image: string
+  attributes: ERC1155LootboxAttribute[]
+  lootboxs: Lootbox[]
+  claimableLootboxs: ClaimableLootbox[]
 
   /** @format date-time */
-  createdAt: string;
+  createdAt: string
 }
 
 export interface MintBatchLootboxInputDto {
-  publicAddress: string;
-  batchID: number[];
-  amount: number[];
+  publicAddress: string
+  batchID: number[]
+  amount: number[]
 }
 
 export interface PendingMint {
-  id: string;
-  to: string;
-  batchID: number;
-  amount: number;
-  batchIDs: number[];
-  amounts: number[];
-  salt: string;
-  deadline: number;
-  status: MintStatus;
-  type: MintType;
-  signature: string;
+  id: string
+  to: string
+  batchID: number
+  amount: number
+  batchIDs: number[]
+  amounts: number[]
+  salt: string
+  deadline: number
+  status: MintStatus
+  type: MintType
+  signature: string
 
   /** @format date-time */
-  createdAt: string;
+  createdAt: string
 }
 
 export interface MintLootboxInputDto {
-  publicAddress: string;
-  batchID: number;
-  amount: number;
+  publicAddress: string
+  batchID: number
+  amount: number
 }
 
 export enum CollectionCategory {
-  Character = 'character',
-  Sculpture = 'sculpture',
-  Lootbox = 'lootbox',
-  Spaceship = 'spaceship',
+  Character = "character",
+  Sculpture = "sculpture",
+  Lootbox = "lootbox",
+  Spaceship = "spaceship",
 }
 
 export enum CollectionType {
-  ERC721 = 'ERC721',
-  ERC1155 = 'ERC1155',
+  ERC721 = "ERC721",
+  ERC1155 = "ERC1155",
 }
 
 export interface Portfolio {
-  id: string;
-  name: string;
-  collectionSlug: string;
-  chainId: number;
-  collectionType: CollectionType;
-  category: CollectionCategory;
-  floorPrice: number;
-  description: string;
-  logoImage: string;
-  bannerImage: string;
-  siteUrl: string;
-  isVerified: boolean;
+  id: string
+  name: string
+  collectionSlug: string
+  chainId: number
+  collectionType: CollectionType
+  category: CollectionCategory
+  floorPrice: number
+  description: string
+  logoImage: string
+  bannerImage: string
+  siteUrl: string
+  isVerified: boolean
 
   /** @format date-time */
-  createdAt: string;
+  createdAt: string
 
   /** @format date-time */
-  updatedAt: string;
-  total: number;
+  updatedAt: string
+  total: number
 }
 
 export interface SipherCollection {
-  id: string;
-  name: string;
-  collectionSlug: string;
-  chainId: number;
-  collectionType: CollectionType;
-  category: CollectionCategory;
-  floorPrice: number;
-  description: string;
-  logoImage: string;
-  bannerImage: string;
-  siteUrl: string;
-  isVerified: boolean;
+  id: string
+  name: string
+  collectionSlug: string
+  chainId: number
+  collectionType: CollectionType
+  category: CollectionCategory
+  floorPrice: number
+  description: string
+  logoImage: string
+  bannerImage: string
+  siteUrl: string
+  isVerified: boolean
 
   /** @format date-time */
-  createdAt: string;
+  createdAt: string
 
   /** @format date-time */
-  updatedAt: string;
+  updatedAt: string
 }
 
 export interface NftItemAttribute {
-  trait_type: string;
-  value: string;
-  percentage: number;
+  trait_type: string
+  value: string
+  percentage: number
 }
 
 export interface Erc1155Owner {
-  publicAddress: string;
-  totalOwned: number;
+  publicAddress: string
+  totalOwned: number
 }
 
 export interface NftItem {
-  id: string;
-  collectionId: string;
-  tokenId: string;
-  tokenUri: string;
-  chainId: string;
-  attributes: NftItemAttribute[];
-  imageUrl: string;
-  name: string;
-  owner: string;
-  creator: string;
-  viewCount: number;
-  imageThumbnailUrl: string;
-  rarityRank: number;
-  rarityScore: number;
-  value: number;
-  quantity: number;
-  allOwner: Erc1155Owner[];
-  collection: SipherCollection;
+  id: string
+  collectionId: string
+  tokenId: string
+  tokenUri: string
+  chainId: string
+  attributes: NftItemAttribute[]
+  imageUrl: string
+  name: string
+  owner: string
+  creator: string
+  viewCount: number
+  imageThumbnailUrl: string
+  rarityRank: number
+  rarityScore: number
+  value: number
+  quantity: number
+  allOwner: Erc1155Owner[]
+  collection: SipherCollection
 }
 
 export interface PortfolioByCollectionResponse {
-  collection: SipherCollection;
-  total: number;
-  items: NftItem;
+  collection: SipherCollection
+  total: number
+  items: NftItem
 }
 
 export enum AirdropType {
-  NFT = 'NFT',
-  TOKEN = 'TOKEN',
-  MERCH = 'MERCH',
-  ALL = 'ALL',
+  NFT = "NFT",
+  TOKEN = "TOKEN",
+  MERCH = "MERCH",
+  ALL = "ALL",
 }
 
 export interface Airdrop {
-  id: string;
-  merkleRoot: string;
-  proof: string[];
-  leaf: string;
-  claimer: string;
-  addressContract: string;
-  imageUrl: string;
-  totalAmount: string;
-  type: AirdropType;
-  startTime: string;
-  vestingInterval: string;
-  numberOfVestingPoint: string;
+  id: string
+  merkleRoot: string
+  proof: string[]
+  leaf: string
+  claimer: string
+  addressContract: string
+  imageUrl: string
+  totalAmount: string
+  type: AirdropType
+  startTime: string
+  vestingInterval: string
+  numberOfVestingPoint: string
 
   /** @format date-time */
-  created: string;
+  created: string
 }
 
 export interface ResAllAirdrop {
-  token: Airdrop[];
-  nft: Airdrop[];
-  merch: Airdrop[];
+  token: Airdrop[]
+  nft: Airdrop[]
+  merch: Airdrop[]
 }
 
-export type BioDto = object;
+export type BioDto = object
 
 export interface PriceData {
-  usd: number;
-  eth: number;
-  change: number;
+  usd: number
+  eth: number
+  change: number
 }
 
 export interface PriceDatas {
-  sipherPrice: PriceData;
-  ethereumPrice: PriceData;
-  maticPrice: PriceData;
+  sipherPrice: PriceData
+  ethereumPrice: PriceData
+  maticPrice: PriceData
 }
 
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios"
 
-export type QueryParamsType = Record<string | number, any>;
+export type QueryParamsType = Record<string | number, any>
 
-export interface FullRequestParams extends Omit<AxiosRequestConfig, 'data' | 'params' | 'url' | 'responseType'> {
+export interface FullRequestParams extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
   /** set parameter to `true` for call `securityWorker` for this request */
-  secure?: boolean;
+  secure?: boolean
   /** request path */
-  path: string;
+  path: string
   /** content type of request body */
-  type?: ContentType;
+  type?: ContentType
   /** query params */
-  query?: QueryParamsType;
+  query?: QueryParamsType
   /** format of response (i.e. response.json() -> format: "json") */
-  format?: ResponseType;
+  format?: ResponseType
   /** request body */
-  body?: unknown;
+  body?: unknown
 }
 
-export type RequestParams = Omit<FullRequestParams, 'body' | 'method' | 'query' | 'path'>;
+export type RequestParams = Omit<FullRequestParams, "body" | "method" | "query" | "path">
 
-export interface ApiConfig<SecurityDataType = unknown> extends Omit<AxiosRequestConfig, 'data' | 'cancelToken'> {
-  securityWorker?: (securityData: SecurityDataType | null) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
-  secure?: boolean;
-  format?: ResponseType;
+export interface ApiConfig<SecurityDataType = unknown> extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
+  securityWorker?: (
+    securityData: SecurityDataType | null,
+  ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void
+  secure?: boolean
+  format?: ResponseType
 }
 
 export enum ContentType {
-  Json = 'application/json',
-  FormData = 'multipart/form-data',
-  UrlEncoded = 'application/x-www-form-urlencoded',
+  Json = "application/json",
+  FormData = "multipart/form-data",
+  UrlEncoded = "application/x-www-form-urlencoded",
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public instance: AxiosInstance;
-  private securityData: SecurityDataType | null = null;
-  private securityWorker?: ApiConfig<SecurityDataType>['securityWorker'];
-  private secure?: boolean;
-  private format?: ResponseType;
+  public instance: AxiosInstance
+  private securityData: SecurityDataType | null = null
+  private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"]
+  private secure?: boolean
+  private format?: ResponseType
 
   constructor({ securityWorker, secure, format, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
-    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || '' });
-    this.secure = secure;
-    this.format = format;
-    this.securityWorker = securityWorker;
+    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || "" })
+    this.secure = secure
+    this.format = format
+    this.securityWorker = securityWorker
 
-    this.instance.defaults.headers.common = { Accept: '*/*' };
-    this.instance.defaults.headers.post = {};
-    this.instance.defaults.headers.put = {};
+    this.instance.defaults.headers.common = { Accept: "*/*" }
+    this.instance.defaults.headers.post = {}
+    this.instance.defaults.headers.put = {}
   }
 
   public setSecurityData = (data: SecurityDataType | null) => {
-    this.securityData = data;
-  };
+    this.securityData = data
+  }
 
   private mergeRequestParams(params1: AxiosRequestConfig, params2?: AxiosRequestConfig): AxiosRequestConfig {
-    const method = (params1.method || params2?.method || 'get').toLowerCase();
+    const method = (params1.method || params2?.method || "get").toLowerCase()
     return {
       ...this.instance.defaults,
       ...params1,
@@ -333,38 +335,57 @@ export class HttpClient<SecurityDataType = unknown> {
         ...(params1.headers || {}),
         ...((params2 && params2.headers) || {}),
       },
-    };
+    }
   }
 
   private createFormData(input: Record<string, unknown>): FormData {
     return Object.keys(input || {}).reduce((formData, key) => {
-      const property = input[key];
-      formData.append(key, property instanceof Blob ? property : typeof property === 'object' && property !== null ? JSON.stringify(property) : `${property}`);
-      return formData;
-    }, new FormData());
+      const property = input[key]
+      formData.append(
+        key,
+        property instanceof Blob
+          ? property
+          : typeof property === "object" && property !== null
+          ? JSON.stringify(property)
+          : `${property}`,
+      )
+      return formData
+    }, new FormData())
   }
 
-  public request = async <T = any, _E = any>({ secure, path, type, query, format, body, ...params }: FullRequestParams): Promise<AxiosResponse<T>> => {
-    const secureParams = ((typeof secure === 'boolean' ? secure : this.secure) && this.securityWorker && (await this.securityWorker(this.securityData))) || {};
-    const requestParams = this.mergeRequestParams(params, secureParams);
-    const responseFormat = (format && this.format) || void 0;
+  public request = async <T = any, _E = any>({
+    secure,
+    path,
+    type,
+    query,
+    format,
+    body,
+    ...params
+  }: FullRequestParams): Promise<AxiosResponse<T>> => {
+    const secureParams =
+      ((typeof secure === "boolean" ? secure : this.secure) &&
+        this.securityWorker &&
+        (await this.securityWorker(this.securityData))) ||
+      {}
+    const requestParams = this.mergeRequestParams(params, secureParams)
+    const responseFormat = (format && this.format) || void 0
 
-    if (type === ContentType.FormData && body && body !== null && typeof body === 'object') {
-      body = this.createFormData(body as Record<string, unknown>);
+    if (type === ContentType.FormData && body && body !== null && typeof body === "object") {
+      body = this.createFormData(body as Record<string, unknown>)
     }
 
     return this.instance.request({
       ...requestParams,
       headers: {
-        ...(type && type !== ContentType.FormData ? { 'Content-Type': type } : {}),
+        ...(type && type !== ContentType.FormData ? { "Content-Type": type } : {}),
         ...(requestParams.headers || {}),
       },
       params: query,
       responseType: responseFormat,
       data: body,
       url: path,
-    });
-  };
+    })
+  }
 }
 
 /**
@@ -386,7 +407,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     appControllerGetHello: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty`,
-        method: 'GET',
+        method: "GET",
         ...params,
       }),
 
@@ -400,7 +421,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     nftItemControllerGetByOwner: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/nft/get-by-owner`,
-        method: 'GET',
+        method: "GET",
         ...params,
       }),
 
@@ -414,7 +435,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     nftItemControllerGetByCollection: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/nft/get-by-collection`,
-        method: 'GET',
+        method: "GET",
         ...params,
       }),
 
@@ -429,9 +450,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     mintControllerGetPendingLootbox: (publicAddress: string, params: RequestParams = {}) =>
       this.request<ResPendingMintDto[], any>({
         path: `/api/sipher/loyalty/mint/pending/lootbox/${publicAddress}`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -446,9 +467,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     lootBoxControllerGetLootboxById: (publicAddress: string, id: string, params: RequestParams = {}) =>
       this.request<Lootbox, any>({
         path: `/api/sipher/loyalty/lootbox/get-by-walllet/${publicAddress}/${id}`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -463,9 +484,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     lootBoxControllerGetLootboxFromWallet: (publicAddress: string, params: RequestParams = {}) =>
       this.request<Lootbox[], any>({
         path: `/api/sipher/loyalty/lootbox/get-by-walllet/${publicAddress}`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -480,9 +501,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     lootBoxControllerGetClaimableLootboxFromWallet: (publicAddress: string, params: RequestParams = {}) =>
       this.request<ClaimableLootbox[], any>({
         path: `/api/sipher/loyalty/lootbox/get-by-walllet/claimable/${publicAddress}`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -497,9 +518,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     lootBoxControllerGetLootboxFromUserId: (params: RequestParams = {}) =>
       this.request<Lootbox[], any>({
         path: `/api/sipher/loyalty/lootbox/get-by-userId`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -514,9 +535,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     lootBoxControllerGetClaimableLootboxFromUserId: (params: RequestParams = {}) =>
       this.request<ClaimableLootbox[], any>({
         path: `/api/sipher/loyalty/lootbox/get-by-userId/claimable`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -531,11 +552,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     lootBoxControllerMintBatchLootbox: (data: MintBatchLootboxInputDto, params: RequestParams = {}) =>
       this.request<PendingMint, any>({
         path: `/api/sipher/loyalty/lootbox/mint-batch`,
-        method: 'PUT',
+        method: "PUT",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -550,11 +571,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     lootBoxControllerMintLootbox: (data: MintLootboxInputDto, params: RequestParams = {}) =>
       this.request<PendingMint, any>({
         path: `/api/sipher/loyalty/lootbox/mint`,
-        method: 'PUT',
+        method: "PUT",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -569,9 +590,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     lootBoxControllerClaim: (publicAddress: string, params: RequestParams = {}) =>
       this.request<ClaimableLootbox[], any>({
         path: `/api/sipher/loyalty/lootbox/claim-lootbox/${publicAddress}`,
-        method: 'PUT',
+        method: "PUT",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -585,7 +606,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     uriControllerGetDataErc1155Spaceship: (tokenId: number, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/uri/erc1155-lootbox/${tokenId}`,
-        method: 'GET',
+        method: "GET",
         ...params,
       }),
 
@@ -599,7 +620,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     uriControllerGetDataErc1155Sculpture: (tokenId: number, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/uri/erc1155-sculpture/${tokenId}`,
-        method: 'GET',
+        method: "GET",
         ...params,
       }),
 
@@ -613,7 +634,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     collectionControllerGetAllCollections: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/collection`,
-        method: 'GET',
+        method: "GET",
         ...params,
       }),
 
@@ -625,13 +646,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/sipher/loyalty/collection/portfolio/{userAddress}
      * @secure
      */
-    collectionControllerGetUserCollection: (userAddress: string, query?: { category?: CollectionCategory; chainId?: string }, params: RequestParams = {}) =>
+    collectionControllerGetUserCollection: (
+      userAddress: string,
+      query?: { category?: CollectionCategory; chainId?: string },
+      params: RequestParams = {},
+    ) =>
       this.request<Portfolio[], any>({
         path: `/api/sipher/loyalty/collection/portfolio/${userAddress}`,
-        method: 'GET',
+        method: "GET",
         query: query,
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -643,12 +668,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/sipher/loyalty/collection/{collectionId}/portfolio/{userAddress}
      * @secure
      */
-    collectionControllerGetPortfolioByCollection: (userAddress: string, collectionId: string, params: RequestParams = {}) =>
+    collectionControllerGetPortfolioByCollection: (
+      userAddress: string,
+      collectionId: string,
+      params: RequestParams = {},
+    ) =>
       this.request<PortfolioByCollectionResponse, any>({
         path: `/api/sipher/loyalty/collection/${collectionId}/portfolio/${userAddress}`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -663,9 +692,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     collectionControllerGetItemById: (userAddress: string, itemId: string, params: RequestParams = {}) =>
       this.request<NftItem, any>({
         path: `/api/sipher/loyalty/collection/portfolio/${userAddress}/nft-item/${itemId}`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -679,7 +708,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     collectionControllerGetCollectionStat: (collectionSlug: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/collection/${collectionSlug}/stats`,
-        method: 'GET',
+        method: "GET",
         ...params,
       }),
 
@@ -694,9 +723,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     airdropControllerGetAirdropByType: (publicAddress: string, airdropType: string, params: RequestParams = {}) =>
       this.request<ResAllAirdrop, any>({
         path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -710,7 +739,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     sculptureControllerGetUserOwnedCode: (ownerAddress: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/sculpture/shopify-code/${ownerAddress}`,
-        method: 'GET',
+        method: "GET",
         ...params,
       }),
 
@@ -724,7 +753,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     userControllerUploadImg: (data: { file?: File }, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/user/upload-image`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.FormData,
         ...params,
@@ -735,12 +764,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags user
      * @name UserControllerUploadBio
-     * @request POST:/api/sipher/loyalty/user/update-bio
+     * @request POST:/api/sipher/loyalty/user/update-info
      */
     userControllerUploadBio: (data: BioDto, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/user/update-bio`,
-        method: 'POST',
+        path: `/api/sipher/loyalty/user/update-info`,
+        method: "POST",
         body: data,
         type: ContentType.Json,
         ...params,
@@ -756,7 +785,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     userControllerGetPriceCoinMarketCap: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/user/get-sipher-statics`,
-        method: 'GET',
+        method: "GET",
         ...params,
       }),
 
@@ -770,10 +799,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     priceControllerGetPrice: (params: RequestParams = {}) =>
       this.request<PriceDatas, any>({
         path: `/api/sipher/loyalty/price`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
-  };
+  }
 }
