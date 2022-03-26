@@ -13,20 +13,21 @@ export class PriceService {
 
   private currentPrice = {
     timestamp: 0,
-    data: {
-      ethereum: {
-        usd: 4731.7,
-      },
-      sipher: {
-        usd: 0.6,
-      },
-      "matic-network": {
-        usd: 0.6,
-      },
+    ethereum: {
+      usd: 3100.0,
+      eth: 1,
+      change: 0.0,
     },
-    changingPriceSipher: 0.0,
-    changingPriceMatic: 0.0,
-    changingPriceEthereum: 0.0,
+    sipher: {
+      usd: 0.6,
+      eth: 0.000001,
+      change: 0.0,
+    },
+    matic: {
+      usd: 0.6,
+      eth: 0.000001,
+      change: 0.0,
+    },
   };
 
   private async getCryptoPrice() {
@@ -35,7 +36,15 @@ export class PriceService {
         ids: ["ethereum", "sipher", "matic-network"],
         vs_currencies: ["usd"],
       });
-      this.currentPrice.data = dataPrice.data;
+      this.currentPrice.ethereum.usd = dataPrice.data.ethereum.usd;
+      this.currentPrice.sipher.usd = dataPrice.data.sipher.usd;
+      this.currentPrice.matic.usd = dataPrice.data["matic-network"].usd;
+
+      this.currentPrice.sipher.eth =
+        dataPrice.data.sipher.usd / dataPrice.data.ethereum.usd;
+      this.currentPrice.matic.eth =
+        dataPrice.data["matic-network"].usd / dataPrice.data.ethereum.usd;
+
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
       this.currentPrice.timestamp = new Date().getTime();
@@ -46,7 +55,7 @@ export class PriceService {
           date: format(yesterday, "dd-MM-yyyy"),
         }
       );
-      this.currentPrice.changingPriceSipher =
+      this.currentPrice.sipher.change =
         dataPrice.data.sipher.usd /
           dataHistorySipher.data.market_data.current_price.usd -
         1;
@@ -57,7 +66,7 @@ export class PriceService {
           date: format(yesterday, "dd-MM-yyyy"),
         }
       );
-      this.currentPrice.changingPriceEthereum =
+      this.currentPrice.ethereum.change =
         dataPrice.data.ethereum.usd /
           dataHistoryEthereum.data.market_data.current_price.usd -
         1;
@@ -69,7 +78,7 @@ export class PriceService {
         }
       );
 
-      this.currentPrice.changingPriceMatic =
+      this.currentPrice.matic.change =
         dataPrice.data["matic-network"].usd /
           dataHistoryMatic.data.market_data.current_price.usd -
         1;
@@ -80,29 +89,17 @@ export class PriceService {
 
   private async getSipherPrice() {
     const cryptoPrice = await this.getCryptoPrice();
-    return {
-      usd: cryptoPrice.data.sipher.usd,
-      eth: cryptoPrice.data.ethereum.usd,
-      change: cryptoPrice.changingPriceSipher,
-    };
+    return cryptoPrice.sipher;
   }
 
   private async getEtherPrice() {
     const cryptoPrice = await this.getCryptoPrice();
-    return {
-      usd: cryptoPrice.data.ethereum.usd,
-      eth: cryptoPrice.data.ethereum.usd,
-      change: cryptoPrice.changingPriceEthereum,
-    };
+    return cryptoPrice.ethereum;
   }
 
   private async getMaticPrice() {
     const cryptoPrice = await this.getCryptoPrice();
-    return {
-      usd: cryptoPrice.data["matic-network"].usd,
-      eth: cryptoPrice.data["matic-network"].usd,
-      change: cryptoPrice.changingPriceMatic,
-    };
+    return cryptoPrice.matic;
   }
 
   async getPrice() {
