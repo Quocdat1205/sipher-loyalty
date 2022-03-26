@@ -1,6 +1,6 @@
 import _ from "lodash";
-import { lastValueFrom, map, Observable } from "rxjs";
-import { FindOneOptions, Repository } from "typeorm";
+import { map, Observable } from "rxjs";
+import { Repository } from "typeorm";
 import { HttpService } from "@nestjs/axios";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ElasticsearchService } from "@nestjs/elasticsearch";
@@ -11,13 +11,13 @@ import { LoggerService } from "@modules/logger/logger.service";
 import { NftItemService } from "@modules/nft/nftItem.service";
 import { URIService } from "@modules/uri/uri.service";
 import { isSculptureContract, isSpaceshipContract } from "@utils/utils";
+import marketplaceClient from "src/api/marketplaceClient";
 import {
   CollectionType,
   SipherCollection,
 } from "src/entity/sipher-collection.entity";
 
 import { Portfolio, PortfolioQuery } from "./collection.dto";
-import marketplaceClient from "src/api/marketplaceClient";
 
 @Injectable()
 export class CollectionService {
@@ -156,7 +156,7 @@ export class CollectionService {
     if (!item) {
       throw new HttpException("Item not found", HttpStatus.NOT_FOUND);
     }
-    /* Add collection to base item, and other info base on collection type*/
+    /* Add collection to base item, and other info base on collection type */
     const itemCollection = await this.sipherCollectionRepo.findOne({
       where: {
         id: item.collectionId,

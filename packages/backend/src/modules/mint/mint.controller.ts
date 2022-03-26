@@ -1,4 +1,13 @@
-import { Controller, Get, Param, Req, UseGuards } from "@nestjs/common";
+import { Request } from "express";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Put,
+  Req,
+  UseGuards,
+} from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
 import { AtherGuard } from "@modules/auth/auth.guard";
@@ -26,4 +35,16 @@ export class MintController {
     await this.authService.verifyAddress(publicAddress, req.userData);
     return this.mintService.getPendingLootbox(publicAddress);
   }
+
+  // @UseGuards(AtherGuard)
+  // @ApiBearerAuth("JWT-auth")
+  // @ApiOkResponse({ type: ResPendingMintDto, isArray: true })
+  // @Put("status/")
+  // async updateStatusPendingLootbox(
+  //   @Body() body: BodyUpdatePendingMint,
+  //   @Req() req: Request
+  // ) {
+  //   await this.authService.verifyAddress(body.publicAddress, req.userData);
+  //   return this.mintService.updateStatusPendingLootbox(body);
+  // }
 }
