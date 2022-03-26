@@ -11,6 +11,13 @@ const getDeadline3Day = () =>
 
 const getNow = () => Math.round(new Date().getTime() / 1000);
 
+const insertDetailStringToImage = (img_url: string) => {
+  const re = /(.*)\.png$/;
+  const newstr = img_url.replace(re, "$1_Detail.png");
+  console.log(newstr);
+  return newstr;
+};
+
 const isSculptureContract = (contractAddress: string) => {
   const contractRegistry = constant.blockchain.contracts;
   const isMumbaiSculpture =
@@ -36,6 +43,7 @@ const isSpaceshipContract = (contractAddress: string) => {
 export {
   getDeadline3Day,
   getNow,
+  insertDetailStringToImage,
   isSculptureContract,
   isSpaceshipContract,
   randomSalt,
