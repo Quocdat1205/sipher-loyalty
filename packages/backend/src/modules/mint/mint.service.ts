@@ -240,8 +240,9 @@ export class MintService {
 
     // verify status pending mint
     if (
-      pending.status !==
-      (MintStatus.Expired || MintStatus.Canceled || MintStatus.Minted)
+      pending.status === MintStatus.Expired ||
+      pending.status === MintStatus.Minted ||
+      pending.status === MintStatus.Canceled
     )
       throw new HttpException(
         `Not allow update ${pending.status} to this pending mint id ${bodyUpdatePendingMint.id}`,

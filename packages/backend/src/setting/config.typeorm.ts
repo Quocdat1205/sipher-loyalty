@@ -39,9 +39,7 @@ class ConfigService {
       port: parseInt(this.getValue("POSTGRES_PORT"), 10),
       username: this.getValue("POSTGRES_USER"),
       password: this.getValue("POSTGRES_PASSWORD"),
-      database: constant.isProduction
-        ? this.getValue("POSTGRES_DATABASE")
-        : "sipher_loyalty",
+      database: this.getValue("POSTGRES_DATABASE"),
       // Need to use src/* instead of dist/* if you generate ormconfig.json and need to run typeorm-seeding
       entities: [join(__dirname, "**", "*.entity{.ts,.js}")],
 
