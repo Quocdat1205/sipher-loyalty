@@ -4,7 +4,7 @@ import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
 import { AtherGuard } from "@modules/auth/auth.guard";
 
 import { PriceService } from "./price.service";
-import { PriceData } from "./price.type";
+import { PriceDatas } from "./price.type";
 
 @Controller("price")
 export class PriceController {
@@ -12,7 +12,7 @@ export class PriceController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({ type: PriceData })
+  @ApiOkResponse({ type: PriceDatas })
   @Get("")
   async getPrice() {
     return this.priceService.getPrice();

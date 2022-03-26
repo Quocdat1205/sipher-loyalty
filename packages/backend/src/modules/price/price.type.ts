@@ -10,7 +10,7 @@ export class PriceData {
   @ApiProperty({ type: Number })
   change: number;
 }
-export class PricesData {
+export class PriceDatas {
   @ApiProperty({ type: PriceData })
   sipherPrice: PriceData;
 

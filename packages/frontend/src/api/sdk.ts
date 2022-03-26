@@ -260,6 +260,12 @@ export interface PriceData {
   change: number;
 }
 
+export interface PriceDatas {
+  sipherPrice: PriceData;
+  ethereumPrice: PriceData;
+  maticPrice: PriceData;
+}
+
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
 
 export type QueryParamsType = Record<string | number, any>;
@@ -795,7 +801,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     priceControllerGetPrice: (params: RequestParams = {}) =>
-      this.request<PriceData, any>({
+      this.request<PriceDatas, any>({
         path: `/api/sipher/loyalty/price`,
         method: 'GET',
         secure: true,
