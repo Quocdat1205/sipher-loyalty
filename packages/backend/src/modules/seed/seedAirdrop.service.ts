@@ -37,6 +37,8 @@ export class SeedAirdropService {
       startTime: this.airdropDataHolder.startTime,
       vestingInterval: this.airdropDataHolder.vestingInterval,
       numberOfVestingPoint: this.airdropDataHolder.numberOfVestingPoint,
+      name: this.airdropDataHolder.name,
+      description: this.airdropDataHolder.description,
     }));
     await this.airdropRepo.query(
       `delete from airdrop where "addressContract"='${this.airdropDataHolder.addressContract}';`
@@ -44,7 +46,7 @@ export class SeedAirdropService {
 
     const promises = [];
     for (let i = 0; i < flaternAirdrop.length; i++) {
-      const query = `insert into airdrop ("merkleRoot","imageUrl","proof","leaf","claimer","addressContract","totalAmount","startTime","vestingInterval","numberOfVestingPoint","type") values (
+      const query = `insert into airdrop ("merkleRoot","imageUrl","proof","leaf","claimer","addressContract","totalAmount","startTime","vestingInterval","numberOfVestingPoint","type","name","description") values (
             '${flaternAirdrop[i].merkleRoot}',
             '${flaternAirdrop[i].imageUrl}',
             '${`{${flaternAirdrop[i].proof.join(",")}}`}',
@@ -55,6 +57,8 @@ export class SeedAirdropService {
             '${flaternAirdrop[i].startTime}',
             '${flaternAirdrop[i].vestingInterval}',
             '${flaternAirdrop[i].numberOfVestingPoint}'
+            '${flaternAirdrop[i].name}'
+            '${flaternAirdrop[i].description}'
             ,'TOKEN');`;
       // LoggerService.log(query);
       promises.push(this.airdropRepo.query(query));

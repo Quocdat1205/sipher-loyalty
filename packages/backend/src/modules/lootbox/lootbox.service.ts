@@ -174,6 +174,9 @@ export class LootBoxService {
       ],
       relations: ["propertyLootbox"],
     });
+    const { image } = lootbox.propertyLootbox;
+    lootbox.propertyLootbox.image =
+      image.split(".")[image.split(".").length - 1];
     return lootbox;
   };
 

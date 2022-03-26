@@ -63,6 +63,14 @@ export class Airdrop {
   vestingInterval: string;
 
   @ApiProperty({ type: String })
+  @Column({ nullable: true })
+  name: string;
+
+  @ApiProperty({ type: String })
+  @Column({ nullable: true })
+  description: string;
+
+  @ApiProperty({ type: String })
   @Column({ nullable: false })
   numberOfVestingPoint: string;
 
