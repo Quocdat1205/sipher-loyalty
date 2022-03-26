@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "publicAddress": "0x162A591a4B5900c69f0ef29B6F32087e06C70F24",
+    "investor_type": "Diamond",
+    "merch_item": "Bomber",
+    "quantity": "1",
+    "isShipped": false,
+    "name": "SIPHER Exclusive Bomber",
+    "description": "merchandise for investor nft support Sipher team early"
+  },
+  {
+    "id": "2",
+    "publicAddress": "0x83629905189464CC16F5E7c12D54dD5e87459B33",
+    "investor_type": "Silver",
+    "merch_item": "Hat",
+    "quantity": "1",
+    "isShipped": false,
+    "name": "SIPHER Exclusive Hat",
+    "description": "merchandise for investor nft support Sipher team early"
+  }
+]

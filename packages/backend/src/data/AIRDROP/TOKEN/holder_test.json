@@ -1,0 +1,33 @@
+{
+  "merkleRoot": "0x8239385e3b62a6494fd272fc54bccfab2df08b511eab3b0f8890c042554c1b2b",
+  "addressContract": "0x0b761403fdc1E7CD8763cCd89D0b269AcFDc4926",
+  "startTime": "1646067600",
+  "vestingInterval": "2419200",
+  "numberOfVestingPoint": "6",
+  "imageUrl": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_token.png",
+  "name": "Holder Airdrop",
+  "description": "Airdrop for holder nft Inu / Neko",
+  "data": [
+    {
+      "proof": [
+        "0xb1b485628812c735a770a42337fb22388a7405e5a0b16ec26904b059c1c97bd1",
+        "0x850b7546de81dbb00eca43fc99e48cb64a4c89b594d0f0ed033a484d77990604",
+        "0x04806ef57c378887da42de114b4f82d6c1ae629a8f892f0111c355f6ccdaa8a3",
+        "0x9e0be1b05237669d2b328c6e17b3d37a30e0e1ac83be49417feba19f608bdd2a",
+        "0x0bf3a0b9e9ad812b643cfb8f22adbd64c72859b4ec3d0370572da710738c26f6",
+        "0xb12aa882ebdb1ed3062158a4cf1bbbadf8adbf250a544856230327e598fae35c",
+        "0x66305ebe791a2460a4d2fb98d740a80f9990da03f76f20f57ef9746721a6a9d8",
+        "0xe4e2cab053a65d8076a8de9794ff6b18d0f347163995f8bfdfb74e26a17cd64f",
+        "0x8a50062c2bcab9771e8e2c7420c7b9e225e995170848d6395e9f12172446ba56",
+        "0x3990fd29e0b4377ce6d7e71f6d19c2edd52c850bc030849d694c9518e80002d5",
+        "0x3f8da78764f9a5bddfcf7af5129120d4bdd96298d87eb0c47dd48c49ab196ca9",
+        "0xf511bb1c6b125f438cbb65e6dc119c0ecb9437585d075110ec3c43d85f7d88ed",
+        "0x36314f5f8d91879bf5311a646ed7f62f21ef9669f226cee7e0914789fbaa3ec4"
+      ],
+      "leaf": "0xb1c6bea08d422d8a81cb73d47d37bdb55efd2e43e100bfdbe929ddbeafe20f6f",
+      "index": 0,
+      "claimer": "0x83629905189464CC16F5E7c12D54dD5e87459B33",
+      "totalAmount": "42715195175432600000000"
+    }
+  ]
+}

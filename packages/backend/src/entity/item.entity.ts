@@ -47,4 +47,8 @@ export class Item {
   @ApiProperty({ type: String })
   @Column()
   description: string;
+
+  @ApiProperty({ type: String })
+  @Column()
+  imageUrl: string;
 }

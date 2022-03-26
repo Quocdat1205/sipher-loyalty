@@ -30,6 +30,9 @@ export class MerchType {
 
   @ApiProperty({ type: String })
   description: string;
+
+  @ApiProperty({ type: String })
+  imageUrl: string;
 }
 
 export class ReceiverType {

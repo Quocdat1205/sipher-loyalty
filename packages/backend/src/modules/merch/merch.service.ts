@@ -53,6 +53,7 @@ export class MerchService {
       isShipped: transaction.isShipped,
       name: item.name,
       description: item.description,
+      imageUrl: item.imageUrl,
     };
   }
 

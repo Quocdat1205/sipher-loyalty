@@ -5,6 +5,7 @@ import path from "path";
 import { Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import constant from "@setting/constant";
 
 import { Airdrop } from "src/entity/airdrop.entity";
 
@@ -15,13 +16,23 @@ import { LoggerService } from "../logger/logger.service";
 export class SeedAirdropService {
   private src = path.resolve(__dirname, "../../../src/data");
 
-  private airdropDataHolder = JSON.parse(
-    fs.readFileSync(`${this.src}/AIRDROP/holder.json`).toString()
-  );
+  private airdropDataHolder = constant.isProduction
+    ? JSON.parse(
+        fs.readFileSync(`${this.src}/AIRDROP/TOKEN/holder.json`).toString()
+      )
+    : JSON.parse(
+        fs.readFileSync(`${this.src}/AIRDROP/TOKEN/holder_test.json`).toString()
+      );
 
-  private airdropDataMerchTransaction = JSON.parse(
-    fs.readFileSync(`${this.src}/AIRDROP/MERCH/transaction.json`).toString()
-  );
+  private airdropDataMerchTransaction = constant.isProduction
+    ? JSON.parse(
+        fs.readFileSync(`${this.src}/AIRDROP/MERCH/transaction.json`).toString()
+      )
+    : JSON.parse(
+        fs
+          .readFileSync(`${this.src}/AIRDROP/MERCH/transaction_test.json`)
+          .toString()
+      );
 
   private airdropDataMerchItem = JSON.parse(
     fs.readFileSync(`${this.src}/AIRDROP/MERCH/item.json`).toString()
@@ -117,10 +128,11 @@ export class SeedAirdropService {
 
     const promises = [];
     for (let i = 0; i < this.airdropDataMerchItem.length; i++) {
-      const query = `insert into item ("merch_item","description","name") values (
+      const query = `insert into item ("merch_item","description","name","imageUrl") values (
             '${this.airdropDataMerchItem[i].merch_item}',
             '${this.airdropDataMerchItem[i].description}',
-            '${this.airdropDataMerchItem[i].name}');`;
+            '${this.airdropDataMerchItem[i].name}',
+            '${this.airdropDataMerchItem[i].imageUrl}');`;
       // LoggerService.log(query);
       promises.push(this.airdropRepo.query(query));
     }
