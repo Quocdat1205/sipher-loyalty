@@ -1,12 +1,13 @@
-import { boolean } from "joi";
+import { IsEthereumAddress } from "class-validator";
 import { ViewType } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
-export class AllMerchType {
+export class MerchType {
   @ApiProperty({ type: Number })
   id_transaction: number;
 
   @ApiProperty({ type: String })
+  @IsEthereumAddress()
   publicAddress: string;
 
   @ApiProperty({ type: String })
@@ -21,11 +22,14 @@ export class AllMerchType {
   @ApiProperty({ type: Number })
   quantity_shipped: number;
 
-  @ApiProperty({ type: boolean })
+  @ApiProperty({ type: Boolean })
   isShipped: boolean;
 
   @ApiProperty({ type: String, enum: ViewType, enumName: "ViewType" })
-  view: ViewType;
+  name: ViewType;
+
+  @ApiProperty({ type: String })
+  description: string;
 }
 
 export class ReceiverType {

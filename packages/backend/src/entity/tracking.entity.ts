@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+
 @Entity()
 export class TrackedBlock {
   @PrimaryGeneratedColumn("increment")

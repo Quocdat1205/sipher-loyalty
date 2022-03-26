@@ -19,8 +19,12 @@ export class SeedAirdropService {
     fs.readFileSync(`${this.src}/AIRDROP/holder.json`).toString()
   );
 
-  private airdropDataMerch = JSON.parse(
-    fs.readFileSync(`${this.src}/AIRDROP/merch.json`).toString()
+  private airdropDataMerchTransaction = JSON.parse(
+    fs.readFileSync(`${this.src}/AIRDROP/MERCH/transaction.json`).toString()
+  );
+
+  private airdropDataMerchItem = JSON.parse(
+    fs.readFileSync(`${this.src}/AIRDROP/MERCH/item.json`).toString()
   );
 
   constructor(
@@ -46,7 +50,7 @@ export class SeedAirdropService {
 
     const promises = [];
     for (let i = 0; i < flaternAirdrop.length; i++) {
-      const query = `insert into airdrop ("merkleRoot","imageUrl","proof","leaf","claimer","addressContract","totalAmount","startTime","vestingInterval","numberOfVestingPoint","type","name","description") values (
+      const query = `insert into airdrop ("merkleRoot","imageUrl","proof","leaf","claimer","addressContract","totalAmount","startTime","vestingInterval","numberOfVestingPoint","name","description","type") values (
             '${flaternAirdrop[i].merkleRoot}',
             '${flaternAirdrop[i].imageUrl}',
             '${`{${flaternAirdrop[i].proof.join(",")}}`}',
@@ -56,10 +60,10 @@ export class SeedAirdropService {
             '${flaternAirdrop[i].totalAmount}',
             '${flaternAirdrop[i].startTime}',
             '${flaternAirdrop[i].vestingInterval}',
-            '${flaternAirdrop[i].numberOfVestingPoint}'
-            '${flaternAirdrop[i].name}'
-            '${flaternAirdrop[i].description}'
-            ,'TOKEN');`;
+            '${flaternAirdrop[i].numberOfVestingPoint}',
+            '${flaternAirdrop[i].name}',
+            '${flaternAirdrop[i].description}',
+            'TOKEN');`;
       // LoggerService.log(query);
       promises.push(this.airdropRepo.query(query));
     }
@@ -77,4 +81,65 @@ export class SeedAirdropService {
         `
     );
   };
+
+  private seedMerchTransaction = async () => {
+    await this.airdropRepo.query(`delete from transaction`);
+    const promises = [];
+
+    for (let i = 0; i < this.airdropDataMerchTransaction.length; i++) {
+      const query = `insert into transaction ("publicAddress","tier","merch_item","quantity","quantity_shipped") values (
+            '${this.airdropDataMerchTransaction[i].publicAddress}',
+            '${this.airdropDataMerchTransaction[i].investor_type}',
+            '${this.airdropDataMerchTransaction[i].merch_item}',
+            '${this.airdropDataMerchTransaction[i].quantity}',
+            '${this.airdropDataMerchTransaction[i].quantity}');`;
+      // LoggerService.log(query);
+      promises.push(this.airdropRepo.query(query));
+    }
+    await Promise.all(promises);
+
+    const airdropCount = await this.airdropRepo.query(
+      `select count(*) from transaction `
+    );
+    LoggerService.log(
+      `Check airdrop merch transaction : ${
+        parseInt(airdropCount[0].count, 10) ===
+        this.airdropDataMerchTransaction.length
+          ? "OK"
+          : "Failed"
+      }
+        `
+    );
+  };
+
+  private seedMerchItem = async () => {
+    await this.airdropRepo.query(`delete from item`);
+
+    const promises = [];
+    for (let i = 0; i < this.airdropDataMerchItem.length; i++) {
+      const query = `insert into item ("merch_item","description","name") values (
+            '${this.airdropDataMerchItem[i].merch_item}',
+            '${this.airdropDataMerchItem[i].description}',
+            '${this.airdropDataMerchItem[i].name}');`;
+      // LoggerService.log(query);
+      promises.push(this.airdropRepo.query(query));
+    }
+    await Promise.all(promises);
+
+    const airdropCount = await this.airdropRepo.query(
+      `select count(*) from item `
+    );
+    LoggerService.log(
+      `Check airdrop merch item : ${
+        parseInt(airdropCount[0].count, 10) === this.airdropDataMerchItem.length
+          ? "OK"
+          : "Failed"
+      }
+        `
+    );
+  };
+
+  async seedMerch() {
+    await Promise.all([this.seedMerchItem(), this.seedMerchTransaction()]);
+  }
 }

@@ -248,6 +248,8 @@ export interface Airdrop {
   type: AirdropType;
   startTime: string;
   vestingInterval: string;
+  name: string;
+  description: string;
   numberOfVestingPoint: string;
 
   /** @format date-time */
@@ -259,8 +261,6 @@ export interface ResAllAirdrop {
   nft: Airdrop[];
   merch: Airdrop[];
 }
-
-export type BioDto = object;
 
 export interface PriceData {
   usd: number;
@@ -737,52 +737,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     sculptureControllerGetUserOwnedCode: (ownerAddress: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/sculpture/transaction/${ownerAddress}`,
-        method: 'GET',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags user
-     * @name UserControllerUploadImg
-     * @request POST:/api/sipher/loyalty/user/upload-image
-     */
-    userControllerUploadImg: (data: { file?: File }, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/sipher/loyalty/user/upload-image`,
-        method: 'POST',
-        body: data,
-        type: ContentType.FormData,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags user
-     * @name UserControllerUploadBio
-     * @request POST:/api/sipher/loyalty/user/update-info
-     */
-    userControllerUploadBio: (data: BioDto, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/sipher/loyalty/user/update-info`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags user
-     * @name UserControllerGetPriceCoinMarketCap
-     * @request GET:/api/sipher/loyalty/user/get-sipher-statics
-     */
-    userControllerGetPriceCoinMarketCap: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/sipher/loyalty/user/get-sipher-statics`,
         method: 'GET',
         ...params,
       }),

@@ -19,7 +19,7 @@ import {
   shipping_address,
   shipping_info,
 } from "./merch.type";
-import { AllMerchType, ReceiverType } from "./response.type";
+import { MerchType, ReceiverType } from "./response.type";
 
 @Injectable()
 export class MerchService {
@@ -51,13 +51,14 @@ export class MerchService {
       quantity: transaction.quantity,
       quantity_shipped: transaction.quantity_shipped,
       isShipped: transaction.isShipped,
-      view: item.view,
+      name: item.name,
+      description: item.description,
     };
   }
 
   async getAllMerchByPublicAddress(
     publicAddress: string
-  ): Promise<Array<AllMerchType> | undefined> {
+  ): Promise<Array<MerchType> | undefined> {
     LoggerService.log(`Get all merch`);
 
     const transactions = await this.transactionRepo.find({
@@ -68,7 +69,7 @@ export class MerchService {
       throw new HttpException("List merch not found", HttpStatus.NOT_FOUND);
     }
 
-    const response: Array<AllMerchType> = await Promise.all(
+    const response: Array<MerchType> = await Promise.all(
       transactions.map(async (transaction) => this.toMerchData(transaction))
     );
 

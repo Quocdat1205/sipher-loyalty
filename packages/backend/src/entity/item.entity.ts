@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
 export enum ItemType {
-  Boomer = "Boomer",
+  Bomber = "Bomber",
   Hoodie = "Hoodie",
   Tshirt = "Tshirt",
   Hat = "Hat",
@@ -17,17 +17,18 @@ export enum ViewType {
 
 @Entity()
 export class Item {
+  @ApiProperty({ type: Number })
   @PrimaryGeneratedColumn("increment")
   id_merch: number;
 
   @ApiProperty({
     type: String,
-    enum: ["Boomer", "Hoodie", "Tshirt", "Hat"],
+    enum: ["Bomber", "Hoodie", "Tshirt", "Hat"],
     enumName: "ItemType",
   })
   @Column({
     type: "enum",
-    enum: ["Boomer", "Hoodie", "Tshirt", "Hat"],
+    enum: ["Bomber", "Hoodie", "Tshirt", "Hat"],
   })
   merch_item: ItemType;
 
@@ -41,5 +42,9 @@ export class Item {
       "SIPHER Exclusive Hat",
     ],
   })
-  view: ViewType;
+  name: ViewType;
+
+  @ApiProperty({ type: String })
+  @Column()
+  description: string;
 }

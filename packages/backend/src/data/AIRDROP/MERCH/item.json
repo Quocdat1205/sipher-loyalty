@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "merch_item": "Bomber",
+    "name": "SIPHER Exclusive Bomber",
+    "description": "merchandise for investor nft support Sipher team early"
+  },
+  {
+    "id": 2,
+    "merch_item": "Hoodie",
+    "name": "SIPHER Exclusive Hoodie",
+    "description": "merchandise for investor nft support Sipher team early"
+  },
+  {
+    "id": 3,
+    "merch_item": "Tshirt",
+    "name": "SIPHER Exclusive T-shirt",
+    "description": "merchandise for investor nft support Sipher team early"
+  },
+  {
+    "id": 4,
+    "merch_item": "Hat",
+    "name": "SIPHER Exclusive Hat",
+    "description": "merchandise for investor nft support Sipher team early"
+  }
+]

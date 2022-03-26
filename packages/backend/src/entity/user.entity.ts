@@ -27,9 +27,11 @@ export class User {
   @Column({ nullable: true })
   bio: string;
 
+  @ApiProperty()
   @Column({ default: new Date() })
   last_active: Date;
 
+  @ApiProperty()
   @CreateDateColumn({ default: new Date() })
   createdAt?: Date;
 }

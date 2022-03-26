@@ -1,7 +1,7 @@
 import { Address, Airdrop, ItemOrder, Receiver } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { AllMerchType } from "@modules/merch/response.type";
+import { MerchType } from "@modules/merch/response.type";
 
 export class ResAllAirdrop {
   @ApiProperty({ type: Airdrop, isArray: true })
@@ -11,7 +11,7 @@ export class ResAllAirdrop {
   nft: Airdrop[];
 
   @ApiProperty({ type: Airdrop, isArray: true })
-  merch: AllMerchType[];
+  merch: MerchType[];
 }
 
 export class ResNFTAirdrop {
@@ -26,7 +26,7 @@ export class ResTokenAirdrop {
 
 export class ResMerchAirdrop {
   @ApiProperty({ type: Airdrop, isArray: true })
-  merch: AllMerchType[];
+  merch: MerchType[];
 }
 
 export class Shipping {

@@ -1,6 +1,6 @@
 // import library
 import Joi from "joi";
-import { Program, SculptureTransaction, User } from "@entity";
+import { SculptureTransaction, User } from "@entity";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -16,7 +16,6 @@ import { PriceModule } from "@modules/price/price.module";
 import { SculptureModule } from "@modules/sculpture/sculpture.module";
 import { SearchModule } from "@modules/search/search.module";
 import { URIModule } from "@modules/uri/uri.module";
-import { UserModule } from "@modules/user/user.module";
 
 import { LootBoxModule } from "../lootbox/lootbox.module";
 import { MintModule } from "../mint/mint.module";
@@ -32,7 +31,7 @@ import { AppService } from "./app.service";
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([User, Program, SculptureTransaction]),
+    TypeOrmModule.forFeature([User, SculptureTransaction]),
     SearchModule,
     LoggerModule,
     NftItemModule,
@@ -43,7 +42,6 @@ import { AppService } from "./app.service";
     AirdropModule,
     SculptureModule,
     MerchModule,
-    UserModule,
     PriceModule,
   ],
   controllers: [AppController],
