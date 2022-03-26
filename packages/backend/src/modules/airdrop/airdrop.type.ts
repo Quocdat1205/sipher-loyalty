@@ -16,12 +16,12 @@ export class ResAllAirdrop {
 
 export class ResNFTAirdrop {
   @ApiProperty({ type: Airdrop, isArray: true })
-  nft: Airdrop;
+  nft: Airdrop[];
 }
 
 export class ResTokenAirdrop {
   @ApiProperty({ type: Airdrop, isArray: true })
-  token: Airdrop;
+  token: Airdrop[];
 }
 
 export class ResMerchAirdrop {
