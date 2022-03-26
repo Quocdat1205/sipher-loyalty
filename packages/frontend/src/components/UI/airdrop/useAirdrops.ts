@@ -33,7 +33,5 @@ export const useAirdrops = () => {
 
   const allAirdrops = [...dataAirdrops!.nft.map(item => item), ...dataAirdrops!.token.map(item => item)]
 
-  console.log(allAirdrops)
-
   return { currentTab, allAirdrops }
 }

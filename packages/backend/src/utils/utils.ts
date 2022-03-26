@@ -14,7 +14,6 @@ const getNow = () => Math.round(new Date().getTime() / 1000);
 const insertDetailStringToImage = (img_url: string) => {
   const re = /(.*)\.png$/;
   const newstr = img_url.replace(re, "$1_Detail.png");
-  console.log(newstr);
   return newstr;
 };
 

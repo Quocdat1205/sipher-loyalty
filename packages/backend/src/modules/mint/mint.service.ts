@@ -237,7 +237,11 @@ export class MintService {
     const pending = await this.PendingMintRepo.findOne({
       id: bodyUpdatePendingMint.id,
     });
-
+    if (!pending)
+      throw new HttpException(
+        `Not found pending mint id ${bodyUpdatePendingMint.id}`,
+        HttpStatus.BAD_REQUEST
+      );
     // verify status pending mint
     if (
       pending.status === MintStatus.Expired ||
