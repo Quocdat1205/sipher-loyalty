@@ -8,7 +8,7 @@ import { SculptureService } from "./sculpture.service";
 export class SculptureController {
   constructor(private sculptureService: SculptureService) {}
 
-  @Get("shopify-code/:ownerAddress")
+  @Get("transaction/:ownerAddress")
   async getUserOwnedCode(@Param("ownerAddress") ownerAddress: string) {
     const transactions = await this.sculptureService.getAddressTx(ownerAddress);
     return {

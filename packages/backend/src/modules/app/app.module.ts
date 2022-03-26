@@ -11,7 +11,6 @@ import { AirdropModule } from "@modules/airdrop/airdrop.module";
 import { CollectionModule } from "@modules/collection/collection.module";
 import { LoggerModule } from "@modules/logger/logger.module";
 import { MerchModule } from "@modules/merch/merch.module";
-import { MultiTokenModule } from "@modules/multi-token/multi-token.module";
 import { NftItemModule } from "@modules/nft/nftItem.module";
 import { PriceModule } from "@modules/price/price.module";
 import { SculptureModule } from "@modules/sculpture/sculpture.module";
@@ -42,7 +41,6 @@ import { AppService } from "./app.service";
     URIModule,
     CollectionModule,
     AirdropModule,
-    MultiTokenModule,
     SculptureModule,
     MerchModule,
     UserModule,

@@ -738,11 +738,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags sculpture
      * @name SculptureControllerGetUserOwnedCode
-     * @request GET:/api/sipher/loyalty/sculpture/shopify-code/{ownerAddress}
+     * @request GET:/api/sipher/loyalty/sculpture/transaction/{ownerAddress}
      */
     sculptureControllerGetUserOwnedCode: (ownerAddress: string, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/sculpture/shopify-code/${ownerAddress}`,
+        path: `/api/sipher/loyalty/sculpture/transaction/${ownerAddress}`,
         method: 'GET',
         ...params,
       }),
