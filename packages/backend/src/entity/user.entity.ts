@@ -8,7 +8,6 @@ import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class User {
-  @ApiProperty({ type: String })
   @PrimaryGeneratedColumn("uuid")
   ather_id: string;
 
@@ -19,6 +18,10 @@ export class User {
   @ApiProperty({ type: String })
   @Column({ nullable: true })
   attachment: string;
+
+  @ApiProperty({ type: String })
+  @Column({ default: "" })
+  username: string;
 
   @ApiProperty({ type: String })
   @Column({ nullable: true })

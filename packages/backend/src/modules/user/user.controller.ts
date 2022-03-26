@@ -8,11 +8,12 @@ import {
   UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { ApiBody, ApiConsumes, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiConsumes, ApiProperty, ApiTags } from "@nestjs/swagger";
 import constant from "@setting/constant";
 
 import { bioDto } from "./user.dto";
 import { UserService } from "./user.service";
+import { updateInfo } from "./user.type";
 
 const apiKey = constant.API_KEY_CMC;
 const id_sipher = constant.ID_SIPHER;
@@ -43,12 +44,12 @@ export class UserController {
     return result;
   }
 
-  @Post("update-bio")
-  @UseInterceptors(FileInterceptor("file"))
+  @Post("update-info")
+  @ApiProperty({ type: updateInfo })
   async uploadBio(@Body() body: bioDto) {
-    const { ather_id, bio } = body;
+    const { ather_id, username, bio } = body;
 
-    return this.userService.updateBio(ather_id, bio);
+    return this.userService.updateBio(ather_id, username, bio);
   }
 
   @Get("get-sipher-statics")

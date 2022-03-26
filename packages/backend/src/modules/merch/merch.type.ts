@@ -70,9 +70,6 @@ export class ordertype {
 
 export class itemOrder {
   @ApiProperty({ type: String })
-  id_order: string;
-
-  @ApiProperty({ type: String })
   size?: string;
 
   @ApiProperty({ type: String })

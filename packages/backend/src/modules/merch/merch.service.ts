@@ -104,12 +104,12 @@ export class MerchService {
     });
   }
 
-  async findAllAddress(publicAddress: string) {
-    return this.addressRepo.find({ where: { publicAddress } });
+  async findAllAddress(id_address: string): Promise<Address> {
+    return this.addressRepo.findOne({ where: { id_address } });
   }
 
-  async findAllReceiver(publicAddress: string) {
-    return this.receiverRepo.find({ where: { publicAddress } });
+  async findAllReceiver(id_receiver: string): Promise<Receiver> {
+    return this.receiverRepo.findOne({ where: { id_receiver } });
   }
 
   async addNewOrder(order: ordertype): Promise<HttpException | boolean> {
