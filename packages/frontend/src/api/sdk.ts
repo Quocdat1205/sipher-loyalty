@@ -23,6 +23,7 @@ export enum MintType {
 }
 
 export interface InfoPendingMintDto {
+  name: string;
   image: string;
   tokenId: number;
   quantity: number;
