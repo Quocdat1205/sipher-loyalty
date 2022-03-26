@@ -21,6 +21,8 @@ import { getDeadline3Day, randomSalt } from "@utils/utils";
 
 import { LoggerService } from "../logger/logger.service";
 
+import { BodyUpdatePendingMint } from "./mint.type";
+
 @Injectable()
 export class MintService {
   private infoPendings: Array<{ name: string; image: string }>;
@@ -48,12 +50,12 @@ export class MintService {
         {
           to: publicAddress.toLowerCase(),
           type: MintType.Lootbox,
-          status: MintStatus.Pending,
+          status: MintStatus.Minting,
         },
         {
           to: toChecksumAddress(publicAddress),
           type: MintType.Lootbox,
-          status: MintStatus.Pending,
+          status: MintStatus.Minting,
         },
       ],
     });
@@ -99,7 +101,7 @@ export class MintService {
         {
           to: batchOrder.to.toLowerCase(),
           type: MintType.Lootbox,
-          status: MintStatus.Pending,
+          status: MintStatus.Minting,
           salt: batchOrder.salt,
           batchIDs: batchOrder.batchID,
           amounts: batchOrder.amount,
@@ -107,7 +109,7 @@ export class MintService {
         {
           to: toChecksumAddress(batchOrder.to),
           type: MintType.Lootbox,
-          status: MintStatus.Pending,
+          status: MintStatus.Minting,
           salt: batchOrder.salt,
           batchIDs: batchOrder.batchID,
           amounts: batchOrder.amount,
@@ -128,7 +130,7 @@ export class MintService {
         {
           to: order.to.toLowerCase(),
           type: MintType.Lootbox,
-          status: MintStatus.Pending,
+          status: MintStatus.Minting,
           salt: order.salt,
           batchID: order.batchID,
           amount: order.amount,
@@ -138,7 +140,7 @@ export class MintService {
         {
           to: toChecksumAddress(order.to),
           type: MintType.Lootbox,
-          status: MintStatus.Pending,
+          status: MintStatus.Minting,
           salt: order.salt,
           batchID: order.batchID,
           amount: order.amount,
@@ -180,7 +182,7 @@ export class MintService {
       salt: batchOrder.salt,
       signature,
       type: MintType.Lootbox,
-      status: MintStatus.Pending,
+      status: MintStatus.Minting,
       deadline,
     };
     const pendingMint = this.PendingMintRepo.create(pendingBatchOrder);
@@ -210,7 +212,7 @@ export class MintService {
       salt: randomSalt(),
       signature: "",
       type: MintType.Lootbox,
-      status: MintStatus.Pending,
+      status: MintStatus.Minting,
       deadline,
     };
     const signature = await signOrder(this.config, order);
@@ -228,4 +230,25 @@ export class MintService {
       throw new HttpException("wrong signature", HttpStatus.BAD_REQUEST);
     return pendingMint;
   }
+
+  updateStatusPendingLootbox = async (
+    bodyUpdatePendingMint: BodyUpdatePendingMint
+  ) => {
+    const pending = await this.PendingMintRepo.findOne({
+      id: bodyUpdatePendingMint.id,
+    });
+
+    // verify status pending mint
+    if (
+      pending.status !==
+      (MintStatus.Expired || MintStatus.Canceled || MintStatus.Minted)
+    )
+      throw new HttpException(
+        `Not allow update ${pending.status} to this pending mint id ${bodyUpdatePendingMint.id}`,
+        HttpStatus.BAD_REQUEST
+      );
+
+    pending.status = bodyUpdatePendingMint.status;
+    return this.PendingMintRepo.save(pending);
+  };
 }

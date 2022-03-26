@@ -10,10 +10,12 @@
  */
 
 export enum MintStatus {
-  Pending = 'Pending',
+  Minting = 'Minting',
   Minted = 'Minted',
   Canceled = 'Canceled',
   Expired = 'Expired',
+  Error = 'Error',
+  Rejected = 'Rejected',
 }
 
 export enum MintType {
@@ -45,6 +47,29 @@ export interface ResPendingMintDto {
   /** @format date-time */
   createdAt: string;
   info: InfoPendingMintDto[];
+}
+
+export interface BodyUpdatePendingMint {
+  publicAddress: string;
+  id: string;
+  status: MintStatus;
+}
+
+export interface PendingMint {
+  id: string;
+  to: string;
+  batchID: number;
+  amount: number;
+  batchIDs: number[];
+  amounts: number[];
+  salt: string;
+  deadline: number;
+  status: MintStatus;
+  type: MintType;
+  signature: string;
+
+  /** @format date-time */
+  createdAt: string;
 }
 
 export interface ERC1155LootboxAttribute {
@@ -103,23 +128,6 @@ export interface MintBatchLootboxInputDto {
   publicAddress: string;
   batchID: number[];
   amount: number[];
-}
-
-export interface PendingMint {
-  id: string;
-  to: string;
-  batchID: number;
-  amount: number;
-  batchIDs: number[];
-  amounts: number[];
-  salt: string;
-  deadline: number;
-  status: MintStatus;
-  type: MintType;
-  signature: string;
-
-  /** @format date-time */
-  createdAt: string;
 }
 
 export interface MintLootboxInputDto {
@@ -431,6 +439,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/sipher/loyalty/mint/pending/lootbox/${publicAddress}`,
         method: 'GET',
         secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags mint
+     * @name MintControllerUpdateStatusPendingLootbox
+     * @request PUT:/api/sipher/loyalty/mint/pending/status
+     * @secure
+     */
+    mintControllerUpdateStatusPendingLootbox: (data: BodyUpdatePendingMint, params: RequestParams = {}) =>
+      this.request<PendingMint, any>({
+        path: `/api/sipher/loyalty/mint/pending/status`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),

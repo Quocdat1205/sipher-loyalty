@@ -7,10 +7,12 @@ import {
 import { ApiProperty } from "@nestjs/swagger";
 
 export enum MintStatus {
-  Pending = "Pending",
+  Minting = "Minting",
   Minted = "Minted",
   Canceled = "Canceled",
   Expired = "Expired",
+  Error = "Error",
+  Reject = "Rejected",
 }
 
 export enum MintType {
@@ -57,7 +59,7 @@ export class PendingMint {
   @Column({
     type: "enum",
     enum: MintStatus,
-    default: MintStatus.Pending,
+    default: MintStatus.Minting,
   })
   status: MintStatus;
 

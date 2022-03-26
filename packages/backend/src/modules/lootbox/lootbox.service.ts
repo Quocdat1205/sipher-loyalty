@@ -539,7 +539,7 @@ export class LootBoxService {
         signature
       );
 
-      if (pendingMint && pendingMint.status === MintStatus.Pending) {
+      if (pendingMint && pendingMint.status === MintStatus.Minting) {
         pendingMint.status = MintStatus.Canceled;
         await this.mintService.updatePendingMint(pendingMint);
         const tokenIds = pendingMint.batchID

@@ -1,4 +1,4 @@
-import { PendingMint } from "@entity";
+import { MintStatus, PendingMint } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class InfoPendingMintDto {
@@ -18,4 +18,15 @@ export class InfoPendingMintDto {
 export class ResPendingMintDto extends PendingMint {
   @ApiProperty({ type: InfoPendingMintDto, isArray: true })
   info: InfoPendingMintDto;
+}
+
+export class BodyUpdatePendingMint {
+  @ApiProperty({ type: String })
+  publicAddress: string;
+
+  @ApiProperty({ type: String })
+  id: string;
+
+  @ApiProperty({ type: String, enum: MintStatus, enumName: "MintStatus" })
+  status: MintStatus;
 }
