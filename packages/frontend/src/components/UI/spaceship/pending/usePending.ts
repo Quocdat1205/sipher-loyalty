@@ -42,7 +42,6 @@ export const usePending = () => {
         .then(res => res.data),
     { enabled: authenticated && !!account, initialData: [] },
   )
-
   const { mutate: mutateMintBatch } = useMutation<unknown, unknown, InputLootBoxProp>(
     ({ deadline, batchIDs, amounts, salt, signature }) =>
       scCaller.current!.SipherSpaceshipLootBox.mintBatch({

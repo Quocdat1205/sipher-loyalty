@@ -163,14 +163,21 @@ const useWallet = () => {
   }
 
   const switchNetwork = (id: number) => {
-    ethereum.request({
-      method: "wallet_addEthereumChain",
-      params: [
-        SUPPORTED_CHAINS_INFO.map(i => ({ ...i, chainId: decimalToHexString(i.chainId) })).find(
-          item => item.chainId === decimalToHexString(id),
-        ),
-      ],
-    })
+    if (id === 1) {
+      ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: decimalToHexString(1) }],
+      })
+    } else {
+      ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [
+          SUPPORTED_CHAINS_INFO.map(i => ({ ...i, chainId: decimalToHexString(i.chainId) })).find(
+            item => item.chainId === decimalToHexString(id),
+          ),
+        ],
+      })
+    }
   }
 
   // auto connect on refresh

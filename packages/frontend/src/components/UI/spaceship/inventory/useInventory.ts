@@ -156,7 +156,6 @@ export const useInventory = () => {
 
   const handleMint = () => {
     if (chainId !== POLYGON_NETWORK) {
-      toast({ status: "info", title: "Please switch to Polygon network!", duration: 5000 })
       switchNetwork(POLYGON_NETWORK)
     } else {
       mutateMintBatch()

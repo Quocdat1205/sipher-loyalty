@@ -3,11 +3,12 @@ import { useQuery, useQueryClient } from "react-query"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
+import { ETHEREUM_NETWORK } from "@constant"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 const useBalance = () => {
-  const { scCaller, account } = useWalletContext()
+  const { scCaller, account, chainId } = useWalletContext()
   const { session, authenticated, user } = useAuth()
   const [isFetched, setIsFetched] = useState(false)
   const qc = useQueryClient()
@@ -18,11 +19,11 @@ const useBalance = () => {
   })
   const { data: sipher } = useQuery(["sipher", account], () => scCaller.current!.getSipherBalance(account!), {
     initialData: 0,
-    enabled: !!scCaller.current && !!account,
+    enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK,
   })
   const { data: weth } = useQuery(["weth", account], () => scCaller.current!.getWETHBalance(account!), {
     initialData: 0,
-    enabled: !!scCaller.current && !!account,
+    enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK,
   })
 
   const { data: dataPrice } = useQuery(

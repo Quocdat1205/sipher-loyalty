@@ -53,10 +53,11 @@ export const useAirdrops = () => {
         dataAirdrops!.token.find(item => item.addressContract === SipherAirdropsAddress)!.proof,
       ),
     {
-      enabled: !!scCaller.current && !!account && !!dataAirdrops,
+      enabled: !!scCaller.current && !!account && dataAirdrops!.token.length > 0 && chainId === ETHEREUM_NETWORK,
       initialData: 0,
     },
   )
+  console.log(claimableAmount)
 
   const { mutate: claim } = useMutation<unknown, unknown, InputAirdrops>(
     ({ totalAmount, proof }) => scCaller.current!.SipherAirdrops.claim(totalAmount, proof),
@@ -114,8 +115,6 @@ export const useAirdrops = () => {
       },
     })),
   ]
-
-  console.log(allAirdrops)
 
   return { currentTab, allAirdrops }
 }

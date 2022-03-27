@@ -35,7 +35,6 @@ const QuantitySelector = ({ onChange, value, maxValue, minValue = 0, isDisabled 
           rounded="full"
         />
         <Input
-          w="4rem"
           variant="filled"
           bgColor="transparent"
           fontWeight={500}

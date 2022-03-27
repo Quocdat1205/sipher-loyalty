@@ -32,8 +32,8 @@ const AirdropUI = () => {
           {currentTab === "all" ? (
             allAirdrops.length > 0 ? (
               <SimpleGrid spacing={4} columns={5}>
-                {allAirdrops.map(item => (
-                  <AirdropCard key={item.id} data={item} />
+                {allAirdrops.map((item, index) => (
+                  <AirdropCard key={index} data={item} />
                 ))}
               </SimpleGrid>
             ) : (
