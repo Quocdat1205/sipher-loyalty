@@ -34,11 +34,16 @@ export enum ConnectWalletAction {
   Connect = "connect",
 }
 
+export enum ChangeWalletAction {
+  Change = "change",
+}
+
 export enum AuthType {
   SignUp = "signUp",
   SignIn = "signIn",
   ForgotPassword = "forgotPassword",
   ConnectWallet = "connectWallet",
+  ChangeWallet = "changeWallet",
 }
 
 export type SignUpFlow = {
@@ -61,7 +66,12 @@ export type ConnectWalletFlow = {
   action: ConnectWalletAction
 }
 
-export type AuthFlow = SignUpFlow | SignInFlow | ForgotPasswordFlow | ConnectWalletFlow
+export type ChangeWalletFlow = {
+  type: AuthType.ChangeWallet
+  action: ChangeWalletAction
+}
+
+export type AuthFlow = SignUpFlow | SignInFlow | ForgotPasswordFlow | ConnectWalletFlow | ChangeWalletFlow
 
 interface AuthFlowState {
   state: AuthFlow | null

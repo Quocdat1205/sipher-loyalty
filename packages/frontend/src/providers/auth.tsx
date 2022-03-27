@@ -46,7 +46,6 @@ const useAuthState = () => {
     const currentUser = await AtherIdAuth.currentAuthenticatedUser().catch(err => {
       console.log("not authenticated", err)
     })
-    console.log("currentUser", currentUser)
     return currentUser
   }
 
@@ -69,15 +68,14 @@ const useAuthState = () => {
   const signOut = async () => {
     await AtherIdAuth.signOut()
     setUser(undefined)
+    setSession(undefined)
   }
 
-  const { data: userProfile } = useQuery(
-    ["profile", cognitoUser?.getUsername()],
-    () => getProfile(session?.getIdToken().getJwtToken() ?? ""),
-    {
-      enabled: !!cognitoUser && !!session,
-    },
-  )
+  const bearerToken = session?.getIdToken().getJwtToken() ?? ""
+
+  const { data: userProfile } = useQuery(["profile", bearerToken], () => getProfile(bearerToken), {
+    enabled: !!bearerToken,
+  })
 
   const { data: ownedWallets } = useQuery(["owned-wallets", user?.email], () => AtherIdAuth.ownedWallets(), {
     initialData: [],
@@ -99,7 +97,6 @@ const useAuthState = () => {
     })
 
     const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {
-      console.log("LISTEN", event, data)
       switch (event) {
         case "signIn":
         case "cognitoHostedUI":
@@ -129,10 +126,10 @@ const useAuthState = () => {
   }, [])
 
   useEffect(() => {
-    if (cognitoUser && !session) getSession().then(setSession)
+    if (cognitoUser) getSession().then(setSession)
   }, [cognitoUser])
 
-  console.log("STATE", authenticated, cognitoUser?.getUsername(), session?.getIdToken()?.getJwtToken().slice(0, 10))
+  console.log("STATE", authenticated, user?.email, bearerToken.slice(0, 10))
 
   return {
     authenticated,
@@ -143,6 +140,7 @@ const useAuthState = () => {
     setUser,
     userProfile,
     ownedWallets: ownedWallets!.map(w => w.address),
+    bearerToken,
   }
 }
 
