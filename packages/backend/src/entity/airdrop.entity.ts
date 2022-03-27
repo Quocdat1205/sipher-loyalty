@@ -12,6 +12,7 @@ export enum AirdropType {
   TOKEN = "TOKEN",
   MERCH = "MERCH",
   ALL = "ALL",
+  CARD = "CARD",
 }
 
 @Entity()
