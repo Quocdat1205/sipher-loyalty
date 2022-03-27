@@ -1,7 +1,6 @@
 // import library
 import { toChecksumAddress } from "ethereumjs-util";
-import { async } from "rxjs";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { ERC1155Lootbox, MintStatus, MintType, PendingMint } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -48,14 +47,12 @@ export class MintService {
     const pendings = await this.PendingMintRepo.find({
       where: [
         {
-          to: publicAddress.toLowerCase(),
+          to: In([
+            publicAddress.toLowerCase(),
+            toChecksumAddress(publicAddress),
+          ]),
           type: MintType.Lootbox,
-          status: MintStatus.Minting || MintStatus.Reject || MintStatus.Error,
-        },
-        {
-          to: toChecksumAddress(publicAddress),
-          type: MintType.Lootbox,
-          status: MintStatus.Minting,
+          status: In([MintStatus.Minting, MintStatus.Reject, MintStatus.Error]),
         },
       ],
     });
@@ -99,15 +96,10 @@ export class MintService {
     const pending = await this.PendingMintRepo.findOne({
       where: [
         {
-          to: batchOrder.to.toLowerCase(),
-          type: MintType.Lootbox,
-          status: MintStatus.Minting,
-          salt: batchOrder.salt,
-          batchIDs: batchOrder.batchID,
-          amounts: batchOrder.amount,
-        },
-        {
-          to: toChecksumAddress(batchOrder.to),
+          to: In([
+            batchOrder.to.toLowerCase(),
+            toChecksumAddress(batchOrder.to),
+          ]),
           type: MintType.Lootbox,
           status: MintStatus.Minting,
           salt: batchOrder.salt,
@@ -128,17 +120,7 @@ export class MintService {
     const pending = await this.PendingMintRepo.findOne({
       where: [
         {
-          to: order.to.toLowerCase(),
-          type: MintType.Lootbox,
-          status: MintStatus.Minting,
-          salt: order.salt,
-          batchID: order.batchID,
-          amount: order.amount,
-          batchIDs: [],
-          amounts: [],
-        },
-        {
-          to: toChecksumAddress(order.to),
+          to: In([order.to.toLowerCase(), toChecksumAddress(order.to)]),
           type: MintType.Lootbox,
           status: MintStatus.Minting,
           salt: order.salt,

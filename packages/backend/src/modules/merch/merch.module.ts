@@ -1,12 +1,4 @@
-import {
-  Address,
-  ImageUrl,
-  Item,
-  ItemOrder,
-  MerchList,
-  Order,
-  Receiver,
-} from "@entity";
+import { ImageUrl, Item, Merchandise, SculptureTransaction } from "@entity";
 import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -17,13 +9,10 @@ import { MerchService } from "./merch.service";
   imports: [
     ScheduleModule.forRoot(),
     TypeOrmModule.forFeature([
-      MerchList,
-      Address,
+      Merchandise,
       Item,
-      ItemOrder,
-      Receiver,
-      Order,
       ImageUrl,
+      SculptureTransaction,
     ]),
   ],
   providers: [MerchService],

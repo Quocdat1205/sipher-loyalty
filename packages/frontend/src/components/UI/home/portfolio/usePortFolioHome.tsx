@@ -37,7 +37,7 @@ const usePortFolioHome = () => {
         {
           currency: "ETH",
           balance: chainId === ETHEREUM_NETWORK ? balance.chainPrice : 0,
-          value: balance.chainPrice * dataPrice!.ethereumPrice.usd,
+          value: chainId === ETHEREUM_NETWORK ? balance.chainPrice * dataPrice!.ethereumPrice.usd : 0,
           change: dataPrice!.ethereumPrice.change * 100,
           icon: <EthereumIcon size="1.4rem" />,
         },

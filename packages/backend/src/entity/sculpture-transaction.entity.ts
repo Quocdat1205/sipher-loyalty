@@ -44,6 +44,6 @@ export class SculptureTransaction {
   createdAt: Date;
 
   @ApiProperty()
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt?: Date;
 }

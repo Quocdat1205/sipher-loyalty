@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -28,12 +29,15 @@ export class Canceled {
     enumName: "CancelType",
   })
   @Column({
-    type: "enum",
-    enum: CancelType,
+    type: String,
   })
   type: CancelType;
 
   @ApiProperty()
   @CreateDateColumn({ default: new Date() })
   createdAt?: Date;
+
+  @ApiProperty()
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt?: Date;
 }

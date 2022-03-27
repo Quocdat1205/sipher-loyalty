@@ -1,4 +1,5 @@
-import { Repository } from "typeorm";
+import { toChecksumAddress } from "ethereumjs-util";
+import { In, Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -16,39 +17,66 @@ export class AirdropService {
   private async getAllAirdrop(publicAddress: string) {
     const token = await this.getTokenAirdrop(publicAddress);
     const nft = await this.getNFTAirdrop(publicAddress);
-    const merch = await this.merchService.getAllMerchByPublicAddress(
-      publicAddress
-    );
-    const other = await this.merchService.getOtherMerchByPublicAddress(
-      publicAddress
-    );
-    return { token, nft, merch, other };
+    const merchandise = await this.getMerchAirdrop(publicAddress);
+    const other = await this.getOtherAirdrop(publicAddress);
+    return { token, nft, merchandise, other };
   }
 
   private async getTokenAirdrop(publicAddress: string) {
     const data = await this.airdropRepos.find({
       where: [
-        { claimer: publicAddress, type: AirdropType.TOKEN },
-        { claimer: publicAddress.toLowerCase(), type: AirdropType.TOKEN },
+        {
+          claimer: In([
+            publicAddress.toLowerCase(),
+            toChecksumAddress(publicAddress),
+          ]),
+          type: AirdropType.TOKEN,
+        },
       ],
       relations: ["imageUrls"],
     });
     return data;
   }
 
-  private async getMerchAirdrop(publicAddress: string) {
-    return this.merchService.getAllMerchByPublicAddress(publicAddress);
+  private async getMerchAirdrop(
+    publicAddress: string
+  ): Promise<Array<Airdrop>> {
+    const merchandises = await this.merchService.getAllMerchByPublicAddress(
+      publicAddress
+    );
+    return merchandises.map((merch) => ({
+      id: merch.id,
+      name: merch.item.name,
+      description: merch.item.description,
+      imgageUrls: merch.item.imageUrls,
+      type: merch.item.type,
+    }));
   }
 
   private async getOtherAirdrop(publicAddress: string) {
-    return this.merchService.getOtherMerchByPublicAddress(publicAddress);
+    const others = await this.merchService.getOtherMerchByPublicAddress(
+      publicAddress
+    );
+
+    return others.map((merch) => ({
+      id: merch.id,
+      name: merch.item.name,
+      description: merch.item.description,
+      imgageUrls: merch.item.imageUrls,
+      type: merch.item.type,
+    }));
   }
 
   private async getNFTAirdrop(publicAddress: string) {
     const data = await this.airdropRepos.find({
       where: [
-        { claimer: publicAddress, type: AirdropType.NFT },
-        { claimer: publicAddress.toLowerCase(), type: AirdropType.NFT },
+        {
+          claimer: In([
+            publicAddress.toLowerCase(),
+            toChecksumAddress(publicAddress),
+          ]),
+          type: AirdropType.NFT,
+        },
       ],
       relations: ["imageUrls"],
     });
