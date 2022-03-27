@@ -15,8 +15,11 @@ export const images = ["jpg", "gif", "png"]
 export const videos = ["mp4", "3gp", "ogg"]
 
 const NFTCard = ({ data }: CardProps) => {
-  const collectionName = NftContracts.find(property => property.address === data.collectionId)?.name
-  const extension = data.imageUrl.split(".")[5]
+  const collectionName = NftContracts.find(
+    property => property.address.toUpperCase() === data.collectionId.toUpperCase(),
+  )?.name
+  const extension = data.imageUrl?.split(".")[5]
+
   return (
     <Box
       onClick={data.onView}

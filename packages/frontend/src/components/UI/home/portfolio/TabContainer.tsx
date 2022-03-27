@@ -4,19 +4,21 @@ import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 import TokensContainer from "@components/UI/portfolio/tokens"
 
 import NFTsContainer from "./NFTsContainer"
+import usePortFolioHome from "./usePortFolioHome"
 
 const tabs = ["NFTs", "Tokens"] as const
 type Tab = typeof tabs[number]
 
 const TabContainer = () => {
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
+  const { collectionData, tokensData } = usePortFolioHome()
 
   const renderTabs = () => {
     if (currentTab === "NFTs") {
-      return <NFTsContainer />
+      return <NFTsContainer collectionData={collectionData} />
     }
     if (currentTab === "Tokens") {
-      return <TokensContainer dataTokens={[]} />
+      return <TokensContainer tokensData={tokensData} />
     }
     return null
   }

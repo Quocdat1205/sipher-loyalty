@@ -9,7 +9,6 @@ interface ActionContainerProps {
 
 const ActionContainer = ({ isFetched }: ActionContainerProps) => {
   const { tokenDetails } = useDetailContext()
-
   return (
     <Box
       px={4}
@@ -26,7 +25,7 @@ const ActionContainer = ({ isFetched }: ActionContainerProps) => {
           <Fragment>
             <Skeleton isLoaded={isFetched} flex={1}>
               <Button isDisabled py={5} colorScheme="accent" w="full">
-                REDEEM SCULPTURE
+                {tokenDetails?.collection.category === "spaceship" ? "BRING TO OFF-CHAIN" : "REDEEM SCULPTURE"}
               </Button>
             </Skeleton>
             <Skeleton isLoaded={isFetched} flex={1}>

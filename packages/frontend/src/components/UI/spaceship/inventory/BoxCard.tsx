@@ -15,6 +15,7 @@ interface CardProps {
 export const BoxCard = ({ data }: CardProps) => {
   const { isChecked, onSelect, isDisabled, onView, propertyLootbox, mintable } = data
   const [imageLoaded, setImageLoaded] = useState(false)
+
   return (
     <Box
       onClick={() => !isDisabled && onSelect(!isChecked)}
@@ -68,8 +69,8 @@ export const BoxCard = ({ data }: CardProps) => {
       </Button>
       <Skeleton pos="relative" isLoaded={imageLoaded}>
         <Image
-          height={280}
-          width={280}
+          width={500}
+          height={300}
           src={propertyLootbox.image}
           alt={propertyLootbox.name}
           loading="lazy"

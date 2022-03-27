@@ -1,6 +1,6 @@
 import React from "react"
 import { TiMinus, TiPlus } from "react-icons/ti"
-import { Box, Flex, IconButton, Input, Text } from "@sipher.dev/sipher-ui"
+import { Flex, IconButton, Input, Text } from "@sipher.dev/sipher-ui"
 
 interface QuantitySelectorProps {
   onChange: (newValue: number) => void
@@ -35,7 +35,7 @@ const QuantitySelector = ({ onChange, value, maxValue, minValue = 0, isDisabled 
           rounded="full"
         />
         <Input
-          w="3rem"
+          w="4rem"
           variant="filled"
           bgColor="transparent"
           fontWeight={500}
@@ -66,11 +66,11 @@ const QuantitySelector = ({ onChange, value, maxValue, minValue = 0, isDisabled 
           rounded="full"
         />
       </Flex>
-      <Box flex={1} textAlign="center">
+      <Flex justify="center" flex={1}>
         <Text onClick={() => onChange(maxValue)} fontWeight={600} color="cyan.600" cursor="pointer">
           Max
         </Text>
-      </Box>
+      </Flex>
     </Flex>
   )
 }

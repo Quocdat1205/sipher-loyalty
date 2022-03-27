@@ -7,6 +7,7 @@ import { useWalletContext } from "@web3"
 
 import { EthereumIcon, SipherIcon } from "@components/shared"
 import { ETHEREUM_NETWORK, POLYGON_NETWORK } from "@constant"
+import { useBalanceContext } from "@hooks"
 import { CollectionCategory } from "@sdk"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
@@ -33,7 +34,8 @@ const initFilter = {
 const usePortfolio = () => {
   const router = useRouter()
   const { session, authenticated, user } = useAuth()
-  const { account, chainId, scCaller } = useWalletContext()
+  const { account, chainId } = useWalletContext()
+  const { dataPrice, balance } = useBalanceContext()
   const [filter, setFilter] = useState(initFilter)
 
   const currentTab = router.query.tab || "nfts"
@@ -56,58 +58,26 @@ const usePortfolio = () => {
     },
   )
 
-  const { data: currentPrice } = useQuery(
-    ["currentPrice", user, account],
-    () => scCaller.current!.getEtherBalance(account!),
-    {
-      enabled: !!scCaller.current && authenticated && !!account,
-      initialData: 0,
-    },
-  )
-
-  const { data: sipherPrice } = useQuery(
-    ["sipherPrice", user, account],
-    () => scCaller.current!.getSipherBalance(account!),
-    {
-      enabled: !!scCaller.current && authenticated && !!account,
-      initialData: 0,
-    },
-  )
-
-  const { data: dataPrice } = useQuery(
-    ["dataPrice", user, account],
-    () =>
-      client.api
-        .priceControllerGetPrice(setBearerToken(session?.getIdToken().getJwtToken() as string))
-        .then(res => res.data),
-    {
-      enabled: authenticated && !!account,
-      // initialData: { eth: 0, change: 0, usd: 0 },
-    },
-  )
-
-  console.log(dataPrice)
-
-  const dataTokens = [
+  const tokensData = [
     {
       currency: "ETH",
-      balance: chainId === ETHEREUM_NETWORK ? currentPrice ?? 0 : 0,
-      // value: currentPrice! * dataPrice!.etherPrice ?? 0,
-      change: 900.23,
+      balance: chainId === ETHEREUM_NETWORK ? balance.chainPrice : 0,
+      value: chainId === ETHEREUM_NETWORK ? balance.chainPrice * dataPrice!.ethereumPrice.usd : 0,
+      change: dataPrice!.ethereumPrice.change * 100,
       icon: <EthereumIcon size="1.4rem" />,
     },
     {
       currency: "MATIC",
-      balance: chainId === POLYGON_NETWORK ? currentPrice ?? 0 : 0,
-      // value: currentPrice! * dataPrice!.etherPrice ?? 0,
-      change: 900.23,
+      balance: chainId === POLYGON_NETWORK ? balance.chainPrice : 0,
+      value: chainId === POLYGON_NETWORK ? balance.chainPrice * dataPrice!.maticPrice.usd : 0,
+      change: dataPrice!.maticPrice.change * 100,
       icon: <Img src="/images/icons/matic.png" alt="matic" h="1.4rem" />,
     },
     {
       currency: "SIPHER",
-      balance: sipherPrice ?? 0,
-      // value: sipherPrice! * dataPrice!.sipherPrice ?? 0,
-      change: 100.23,
+      balance: balance.sipher,
+      value: balance.sipher * dataPrice!.sipherPrice.usd,
+      change: dataPrice!.sipherPrice.change * 100,
       icon: <SipherIcon size="1.4rem" />,
     },
   ]
@@ -118,7 +88,26 @@ const usePortfolio = () => {
   }))
 
   const totalNFTs = collectionData.reduce((accu, curr) => accu + curr.total, 0)
-  const totalToken = dataTokens.length
-  return { dataTokens, totalToken, totalNFTs, collectionData, filter, setFilter, currentTab, router }
+  const totalToken = tokensData.length
+  const totalETHPrice =
+    (chainId === ETHEREUM_NETWORK
+      ? dataPrice!.ethereumPrice.eth * balance.chainPrice + dataPrice!.sipherPrice.eth * balance.sipher
+      : chainId === POLYGON_NETWORK
+      ? dataPrice!.maticPrice.eth * balance.chainPrice + dataPrice!.sipherPrice.eth * balance.sipher
+      : 0) ?? 0
+  const totalUsdPrice = totalETHPrice * dataPrice!.ethereumPrice.usd ?? 0
+
+  return {
+    totalUsdPrice,
+    totalETHPrice,
+    tokensData,
+    totalToken,
+    totalNFTs,
+    collectionData,
+    filter,
+    setFilter,
+    currentTab,
+    router,
+  }
 }
 export default usePortfolio

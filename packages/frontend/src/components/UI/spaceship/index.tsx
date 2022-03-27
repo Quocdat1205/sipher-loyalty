@@ -51,7 +51,7 @@ const ContentSpaceship = () => {
           <TabPage tabs={spaceshipTabs} />
         </Box>
       )}
-      <Flex px={[4, 4, 4, 0, 0]} flexDir="column" flex={1} w="full">
+      <Flex flexDir="column" flex={1} w="full">
         {renderTabs()}
       </Flex>
     </Flex>

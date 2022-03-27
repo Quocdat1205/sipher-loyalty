@@ -1,8 +1,7 @@
 import { BigNumber, providers } from "ethers"
 
-import { LPSipherWethKyberAddress, LPSipherWethUniswapAddress, SipherTokenAddress, WETH_ADDRESS } from "@constant"
+import { SIPHER_TOKEN_ABI, SipherTokenAddress, WETH_ADDRESS } from "@constant"
 import { weiToEther } from "@utils"
-import { getETHPrice, getSipherPrice } from "src/api/price"
 
 import ERC20 from "./ERC20"
 import { LPSipherWethKyber } from "./LPSipherWethKyber"
@@ -34,7 +33,7 @@ export class ContractCaller {
     this.View = new View(this.provider)
     this.LPSipherWethUniswap = new LPSipherWethUniswap(this.provider)
     this.LPSipherWethKyber = new LPSipherWethKyber(this.provider)
-    this.SipherToken = new ERC20(this.provider, SipherTokenAddress)
+    this.SipherToken = new ERC20(this.provider, SipherTokenAddress, SIPHER_TOKEN_ABI)
     this.StakingPool = new StakingPool(this.provider)
     this.StakingLPSipherWethKyber = new StakingLPSipherWethKyber(this.provider)
     this.StakingLPSipherWethUniswap = new StakingLPSipherWethUniswap(this.provider)
@@ -57,42 +56,42 @@ export class ContractCaller {
     return weiToEther(balance.toString())
   }
 
-  public async getLpUniswapTVL() {
-    const lpBalance = await this.WETH.getBalance(LPSipherWethUniswapAddress)
-    const ethPrice = await getETHPrice()
-    const StakedLPPoolETH = lpBalance * ethPrice
+  // public async getLpUniswapTVL() {
+  //   const lpBalance = await this.WETH.getBalance(LPSipherWethUniswapAddress)
+  //   const ethPrice = await getETHPrice()
+  //   const StakedLPPoolETH = lpBalance * ethPrice
 
-    const sipherBalance = await this.SipherToken.getBalance(LPSipherWethUniswapAddress)
-    const sipherPrice = await getSipherPrice()
-    const StakedLPPoolSipher = sipherBalance * sipherPrice
+  //   const sipherBalance = await this.SipherToken.getBalance(LPSipherWethUniswapAddress)
+  //   const sipherPrice = await getSipherPrice()
+  //   const StakedLPPoolSipher = sipherBalance * sipherPrice
 
-    return StakedLPPoolETH + StakedLPPoolSipher
-  }
+  //   return StakedLPPoolETH + StakedLPPoolSipher
+  // }
 
-  public async getLpKyberTVL() {
-    const lpBalance = await this.WETH.getBalance(LPSipherWethKyberAddress)
-    const ethPrice = await getETHPrice()
-    const StakedLPPoolETH = lpBalance * ethPrice
+  // public async getLpKyberTVL() {
+  //   const lpBalance = await this.WETH.getBalance(LPSipherWethKyberAddress)
+  //   const ethPrice = await getETHPrice()
+  //   const StakedLPPoolETH = lpBalance * ethPrice
 
-    const sipherBalance = await this.SipherToken.getBalance(LPSipherWethKyberAddress)
-    const sipherPrice = await getSipherPrice()
-    const StakedLPPoolSipher = sipherBalance * sipherPrice
+  //   const sipherBalance = await this.SipherToken.getBalance(LPSipherWethKyberAddress)
+  //   const sipherPrice = await getSipherPrice()
+  //   const StakedLPPoolSipher = sipherBalance * sipherPrice
 
-    return StakedLPPoolETH + StakedLPPoolSipher
-  }
+  //   return StakedLPPoolETH + StakedLPPoolSipher
+  // }
 
-  public async getLpUniswapPrice() {
-    const lpPoolTVL = await this.getLpUniswapTVL()
+  // public async getLpUniswapPrice() {
+  //   const lpPoolTVL = await this.getLpUniswapTVL()
 
-    const totalSupply = await this.LPSipherWethUniswap.totalSupply()
-    return lpPoolTVL / totalSupply
-  }
+  //   const totalSupply = await this.LPSipherWethUniswap.totalSupply()
+  //   return lpPoolTVL / totalSupply
+  // }
 
-  public async getLpKyberPrice() {
-    const lpPoolTVL = await this.getLpKyberTVL()
-    const totalSupply = await this.LPSipherWethKyber.totalSupply()
-    return lpPoolTVL / totalSupply
-  }
+  // public async getLpKyberPrice() {
+  //   const lpPoolTVL = await this.getLpKyberTVL()
+  //   const totalSupply = await this.LPSipherWethKyber.totalSupply()
+  //   return lpPoolTVL / totalSupply
+  // }
 
   public async sign(message: any) {
     const signer = this.provider.getSigner()

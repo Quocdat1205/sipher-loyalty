@@ -19,6 +19,7 @@ const DetailNFT = () => {
   useEffect(() => {
     setBoxWidth(windowWidth.width - widthContainer)
   }, [windowWidth])
+
   return (
     <Flex flex={1} flexDir="column" align="center">
       <Flex pos="relative" w="full" flex={1} flexDir={["column", "row"]}>

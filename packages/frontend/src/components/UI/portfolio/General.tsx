@@ -8,9 +8,11 @@ import CardGeneral from "../home/CardGeneral"
 interface GeneralProps {
   totalNFTs: number
   totalToken: number
+  totalETHPrice: number
+  totalUsdPrice: number
 }
 
-const General = ({ totalNFTs, totalToken }: GeneralProps) => {
+const General = ({ totalNFTs = 0, totalToken = 0, totalETHPrice = 0, totalUsdPrice = 0 }: GeneralProps) => {
   return (
     <SimpleGrid mb={8} columns={[2, 4]} spacing={8}>
       <CardGeneral
@@ -24,7 +26,7 @@ const General = ({ totalNFTs, totalToken }: GeneralProps) => {
         icon={<Image src="/images/icons/coin.png" h="1.3rem" />}
         rightChildren={
           <Text color="neutral.100">
-            {currency(1.4)} ETH (${currency(23455)})
+            {currency(totalETHPrice)} ETH (${currency(totalUsdPrice)})
           </Text>
         }
       />

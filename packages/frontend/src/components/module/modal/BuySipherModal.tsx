@@ -2,8 +2,8 @@ import React from "react"
 import { BsArrowRightShort } from "react-icons/bs"
 import { Box, Flex, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 
-import { useETHPrice, useSipherPrice } from "@api"
 import { ChakraModal, EthereumIcon, SipherIcon, WalletCard } from "@components/shared"
+import { useBalanceContext } from "@hooks"
 import { currency } from "@utils"
 
 interface BuySipherModalProps {
@@ -12,8 +12,7 @@ interface BuySipherModalProps {
 }
 
 export const BuySipherModal = ({ isOpen, onClose }: BuySipherModalProps) => {
-  const sipherPrice = useSipherPrice()
-  const ethPrice = useETHPrice()
+  const { dataPrice } = useBalanceContext()
 
   return (
     <ChakraModal isCentered title={"BUY SIPHER"} isOpen={isOpen} onClose={onClose} size="sm">
@@ -31,7 +30,10 @@ export const BuySipherModal = ({ isOpen, onClose }: BuySipherModalProps) => {
           <Flex align="center">
             <EthereumIcon size="1.4rem" />
             <Text fontWeight={500} color="neutral.100">
-              {currency(sipherPrice / ethPrice, "", { maximumFractionDigits: 5 })} (${currency(sipherPrice)})
+              {currency(dataPrice!.sipherPrice.usd / dataPrice!.ethereumPrice.usd, "", {
+                maximumFractionDigits: 5,
+              })}{" "}
+              (${currency(dataPrice!.sipherPrice.usd)})
             </Text>
           </Flex>
         </HStack>

@@ -1,4 +1,5 @@
 import React from "react"
+import Image from "next/image"
 import { useRouter } from "next/router"
 import { Box, Button, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
 
@@ -6,20 +7,12 @@ const Slide1 = () => {
   const router = useRouter()
 
   return (
-    <Flex
-      align="center"
-      justify="center"
-      pos="relative"
-      bg={`url(/images/home/banner2.png)`}
-      h={["20rem", "22.5rem"]}
-      w="full"
-      bgSize="cover"
-      bgRepeat="no-repeat"
-    >
-      <Box pos="relative" w="full" maxW="1200px" display={["none", "block"]}>
-        <Box textAlign="center" pos="absolute" top="50%" left="0%" transform="translateY(-50%)">
+    <Flex align="center" justify="center" pos="relative" h={["6rem", "16rem", "18rem", "20rem", "23rem"]} w="full">
+      <Image objectFit="cover" quality={100} src="/images/home/banner-home.png" alt="slide1" layout="fill" />
+      <Box pos="relative" w="full" h="full" maxW="1200px" display={["none", "block"]}>
+        <Box px={[4, 4, 4, 0, 0]} textAlign="center" pos="absolute" top="50%" left="0%" transform="translateY(-50%)">
           <Heading fontSize="4xl" fontWeight={600}>
-            SPACESIP ASTERO
+            SPACESHIP ASTERO
           </Heading>
           <Text lineHeight={1.2} color="whiteAlpha.700" fontSize="xl">
             LOOTBOXES ARE READY TO BE
@@ -28,7 +21,7 @@ const Slide1 = () => {
             MINTED AND TRADEABLE
           </Text>
           <Button
-            onClick={() => router.push("/spaceship")}
+            onClick={() => router.push("/portfolio")}
             bg="transparent"
             border="1px"
             borderColor="white"

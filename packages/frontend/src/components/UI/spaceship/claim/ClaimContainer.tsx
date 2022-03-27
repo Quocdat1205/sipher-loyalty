@@ -18,42 +18,33 @@ const ClaimContainer = () => {
   } = useClaim()
 
   return (
-    <Flex
-      flex={1}
-      pos="relative"
-      bg="url(/images/spaceship/bg-claim.png)"
-      bgRepeat="no-repeat"
-      bgSize="cover"
-      flexDir="column"
-      align="center"
-    >
+    <Flex px={[4, 4, 4, 0, 0]} flex={1} pos="relative" flexDir="column" align="center">
       <Box
         pos="absolute"
         top={0}
         left={0}
         w="full"
         h="full"
-        bgGradient="linear(180deg, #1B1C27 0%, rgba(27, 28, 39, 0) 52.08%, #1B1C27 100%)"
+        bgGradient="linear(180deg, #1B1C27 0%, rgba(27, 28, 39, 0) 20%, #1B1C27 100%)"
       />
-      <Box zIndex={2} maxW="1200px" w="full" pb={8}>
+      <Flex flexDir="column" justify="space-between" zIndex={2} maxW="1200px" flex={1} w="full" pb={8}>
         <Flex mb={4} justify="center">
           <Box py={4} px={6} textAlign="center" bg="blackAlpha.500" borderRadius="0px 0px 16px 16px">
-            <Text>
+            <Text color="neutral.400">
               You have{" "}
-              <chakra.span fontWeight={600}>
+              <chakra.span color="white" fontWeight={600}>
                 {totalQuantity} {totalQuantity > 1 ? "Lootboxes" : "Lootbox"}
               </chakra.span>
             </Text>
-            <Text>Note the remaining time to claim</Text>
           </Box>
         </Flex>
-        <HStack spacing={4} mb={4} justify="center">
+        <HStack spacing={4} mb={4} justify={claimData.length > 1 ? "space-between" : "center"}>
           {claimData.map(item => (
             <ClaimCard key={item.id} isPopover={false} data={item} />
           ))}
         </HStack>
         <Flex w="full" justify="center">
-          {claimData.length > 0 && (
+          {!!account && claimData.length > 0 && (
             <Button
               isDisabled={!account || !isCheckAccountClaim || claimData.length === 0}
               isLoading={isLoading}
@@ -66,7 +57,7 @@ const ClaimContainer = () => {
           )}
         </Flex>
         <ClaimStatusModal isOpen={isStatusModal !== ""} onClose={() => setIsStatusModal("")} status={isStatusModal} />
-      </Box>
+      </Flex>
     </Flex>
   )
 }

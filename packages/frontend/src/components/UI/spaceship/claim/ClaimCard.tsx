@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { BsClockFill } from "react-icons/bs"
 import { MdInfo } from "react-icons/md"
 import Image from "next/image"
-import { Box, Divider, Flex, Link, Skeleton, Text } from "@sipher.dev/sipher-ui"
+import { Box, Flex, Link, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
 
@@ -18,21 +18,28 @@ interface CardProps {
 const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
   const { propertyLootbox, expiredDate, quantity } = data
   const [imageLoaded, setImageLoaded] = useState(false)
+
   return (
-    <Flex rounded="lg" align="center" justify="center" flexDir="column" pos="relative">
-      <Skeleton overflow="hidden" display="flex" isLoaded={imageLoaded}>
+    <Flex bg="neutral.900" rounded="lg" align="center" justify="center" pos="relative">
+      <Skeleton
+        blendMode="lighten"
+        sx={{ span: { rounded: "lg" } }}
+        overflow="hidden"
+        display="flex"
+        isLoaded={imageLoaded}
+      >
         <Image
-          src={propertyLootbox?.image ?? ""}
+          src={"https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/Lootbox_1.gif"}
           alt={propertyLootbox?.name}
           loading="lazy"
-          height={280}
-          width={280}
+          width={500 * 1.5}
+          height={300 * 1.5}
           onLoad={() => setImageLoaded(true)}
         />
       </Skeleton>
-      <Box p={4} w="full">
-        <Divider mb={4} borderColor="whiteAlpha.200" />
-        <Flex flexDir="column" align="center" mb={4} textAlign="center">
+      <Stack p={4} w="full">
+        <Box mb={2} w="3rem" h="1px" bg="whiteAlpha.200" />
+        <Flex flexDir="column" mb={4}>
           <Flex mb={2} align="center">
             <Text textTransform="uppercase" mr={2} fontWeight={600}>
               {propertyLootbox?.name}
@@ -62,28 +69,32 @@ const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
               </CustomPopover>
             )}
           </Flex>
-          <Flex align="center">
-            <Box mr={2} color="neutral.400">
-              <BsClockFill />
+          <Flex color="neutral.400" align="center" fontSize="sm" fontWeight={600}>
+            <Box mr={2}>
+              <BsClockFill size="0.8rem" />
             </Box>
             <CountDown deadline={expiredDate} />
           </Flex>
         </Flex>
-      </Box>
-      <Flex
-        align="center"
-        justify="center"
-        bg="whiteAlpha.800"
-        boxSize="3rem"
-        rounded="full"
-        pos="absolute"
-        top={4}
-        right={4}
-      >
-        <Text fontSize="lg" fontWeight={600} color="neutral.900">
-          x{quantity}
-        </Text>
-      </Flex>
+        <Flex>
+          <Text
+            backdropFilter="blur(4px)"
+            py={1}
+            px={4}
+            bgGradient={"linear(176.49deg, rgba(51, 205, 239, 0.33) 25.37%, #00748D 147.61%)"}
+            boxShadow={"0px 4px 4px rgba(0, 0, 0, 0.25)"}
+            rounded="md"
+            borderBottom="1px"
+            borderRight="1px"
+            borderColor="whiteAlpha.300"
+            fontWeight={600}
+            fontSize="sm"
+            color="white"
+          >
+            x{quantity}
+          </Text>
+        </Flex>
+      </Stack>
     </Flex>
   )
 })
