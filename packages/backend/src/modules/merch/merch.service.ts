@@ -64,7 +64,7 @@ export class MerchService {
     LoggerService.log(`Get all merch`);
 
     const transactions = await this.transactionRepo.find({
-      where: { publicAddress },
+      where: { publicAddress, isShip: true },
     });
 
     if (!transactions) {
@@ -76,6 +76,16 @@ export class MerchService {
     );
 
     return response;
+  }
+
+  async getAllThanksCardByPublicAddress(
+    publicAddress: string
+  ): Promise<Array<Transaction> | undefined> {
+    const list_card = await this.transactionRepo.find({
+      where: { publicAddress, isShip: false },
+    });
+
+    return list_card;
   }
 
   async addNewReceriver(

@@ -38,6 +38,7 @@ const contentWhatSpaceships = [
 export const WhatSpaceship = () => {
   return (
     <Flex
+      px={[4, 4, 4, 0, 0]}
       pos="relative"
       flexDir="column"
       align="center"
@@ -54,8 +55,8 @@ export const WhatSpaceship = () => {
         w="full"
         bgGradient="linear(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%)"
       />
-      <Flex flexDir="column" align="center" zIndex={2} py={24} maxW="1200px" w="full">
-        <Heading mb={4} fontWeight={600} fontSize="3xl">
+      <Flex flexDir="column" zIndex={2} py={24} maxW="1200px" w="full">
+        <Heading textTransform="uppercase" mb={4} fontWeight={600} fontSize="3xl">
           What are Spaceships?
         </Heading>
         <Text color="neutral.100">
@@ -67,14 +68,12 @@ export const WhatSpaceship = () => {
         <Wrap mb={[16, 16, 24, 24, 24]} spacing={16}>
           {contentWhatSpaceships.map(item => (
             <WrapItem flex="1 1 20rem" key={item.title}>
-              <Flex flexDir="column" align="center">
+              <Flex flexDir="column">
                 <Avatar src={`/images/spaceship/${item.img}`} bg="whiteAlpha.50" />
                 <Text fontSize="lg" fontWeight={600} py={4}>
                   {item.title}
                 </Text>
-                <Text color="neutral.200" textAlign="center">
-                  {item.text}
-                </Text>
+                <Text color="neutral.200">{item.text}</Text>
               </Flex>
             </WrapItem>
           ))}

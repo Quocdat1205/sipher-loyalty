@@ -17,6 +17,7 @@ export const SpaceshipContainer = () => {
 
   return (
     <Flex
+      px={[4, 4, 4, 0, 0]}
       flexDir="column"
       align="center"
       w="full"
