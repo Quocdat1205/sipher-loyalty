@@ -1,3 +1,4 @@
+import { ImageUrl } from "@entity";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
@@ -12,7 +13,7 @@ import { AirdropService } from "./airdrop.service";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Airdrop]),
+    TypeOrmModule.forFeature([Airdrop, ImageUrl]),
     AuthModule,
     MerchModule,
     RedisCacheModule,

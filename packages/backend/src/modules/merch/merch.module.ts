@@ -1,5 +1,6 @@
 import {
   Address,
+  ImageUrl,
   Item,
   ItemOrder,
   Order,
@@ -22,6 +23,7 @@ import { MerchService } from "./merch.service";
       ItemOrder,
       Receiver,
       Order,
+      ImageUrl,
     ]),
   ],
   providers: [MerchService],

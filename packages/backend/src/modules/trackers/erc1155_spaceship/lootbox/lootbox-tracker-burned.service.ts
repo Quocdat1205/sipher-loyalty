@@ -139,7 +139,7 @@ export class LootboxTrackerBurnedService {
       return _fromBlock; // retry
     }
     LoggerService.log(
-      `Start tracking burned from ${_fromBlock} to ${_currentBlock}`
+      `Start tracking burned from block ${_fromBlock} to block ${_currentBlock}`
     );
     const blockBurnedBatch = await this.trackingBurnedBatch(
       _fromBlock,

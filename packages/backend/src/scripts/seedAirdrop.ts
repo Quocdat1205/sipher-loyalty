@@ -1,3 +1,4 @@
+import { ImageUrl } from "@entity";
 import { Module, OnApplicationBootstrap } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
@@ -14,7 +15,7 @@ import { Airdrop } from "src/entity/airdrop.entity";
     SeedModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([Airdrop]),
+    TypeOrmModule.forFeature([Airdrop, ImageUrl]),
   ],
   providers: [SeedAirdropService],
 })
@@ -22,8 +23,7 @@ export class AppModule implements OnApplicationBootstrap {
   constructor(private readonly seedingService: SeedAirdropService) {}
 
   async onApplicationBootstrap(): Promise<void> {
-    await this.seedingService.seedAirdropHolder();
-    await this.seedingService.seedMerch();
+    await this.seedingService.seedTokens();
     LoggerService.log("Done");
   }
 }

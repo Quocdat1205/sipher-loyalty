@@ -1,5 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
+
+import { ImageUrl } from "./imageUrl.entity";
 
 export enum ItemType {
   Bomber = "Bomber",
@@ -48,7 +50,10 @@ export class Item {
   @Column()
   description: string;
 
-  @ApiProperty({ type: String })
-  @Column()
-  imageUrl: string;
+  @ApiProperty({
+    type: () => ImageUrl,
+    isArray: true,
+  })
+  @OneToMany(() => ImageUrl, (imageUrls) => imageUrls.item)
+  imageUrls?: ImageUrl[];
 }

@@ -24,8 +24,8 @@ export class BodyUpdatePendingMint {
   @ApiProperty({ type: String })
   publicAddress: string;
 
-  @ApiProperty({ type: String })
-  id: string;
+  @ApiProperty({ type: Number })
+  id: number;
 
   @ApiProperty({ type: String, enum: MintStatus, enumName: "MintStatus" })
   status: MintStatus;

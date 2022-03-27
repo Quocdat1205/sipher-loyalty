@@ -12,9 +12,9 @@ import { ERC1155Lootbox } from "./erc1155.entity";
 
 @Entity()
 export class Lootbox {
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: Number })
   @PrimaryGeneratedColumn("increment")
-  id: string;
+  id: number;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })

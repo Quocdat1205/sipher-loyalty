@@ -53,7 +53,7 @@ export class MerchService {
       isShipped: transaction.isShipped,
       name: item.name,
       description: item.description,
-      imageUrl: item.imageUrl,
+      images: [], // item.images,
       type: "MERCH",
     };
   }
@@ -84,7 +84,6 @@ export class MerchService {
     const { publicAddress, first_name, last_name, email, phone } = info;
 
     return this.receiverRepo.create({
-      id_receiver: uuidv4(),
       publicAddress,
       first_name,
       last_name,
@@ -98,7 +97,6 @@ export class MerchService {
       address;
 
     return this.addressRepo.create({
-      id_address: uuidv4(),
       publicAddress,
       street_address,
       town,
@@ -119,11 +117,9 @@ export class MerchService {
   async addNewOrder(order: ordertype): Promise<HttpException | boolean> {
     try {
       const { publicAddress, id_address, id_receiver, list_item_order } = order;
-      const id_order = uuidv4();
 
       // insert new Order
       this.orderRepo.create({
-        id_order,
         publicAddress,
         id_address,
         id_receiver,
@@ -134,7 +130,6 @@ export class MerchService {
 
       for (let i = 0; i < length; i++) {
         this.itemOrderRepo.create({
-          id_order,
           size: list_item_order[i].size,
           color: list_item_order[i].color,
           quantity: list_item_order[i].quantity,

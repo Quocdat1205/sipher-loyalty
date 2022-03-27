@@ -139,7 +139,7 @@ export class LootboxTrackerMintedService {
       return _fromBlock; // retry
     }
     LoggerService.log(
-      `Start tracking minted from ${_fromBlock} to ${_currentBlock}`
+      `Start tracking minted from block ${_fromBlock} to block ${_currentBlock}`
     );
     const blockMintedSingle = await this.trackingMintedBatch(
       _fromBlock,

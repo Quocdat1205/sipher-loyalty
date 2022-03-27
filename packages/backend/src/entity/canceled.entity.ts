@@ -14,9 +14,9 @@ export enum CancelType {
 
 @Entity()
 export class Canceled {
-  @ApiProperty({ type: String })
-  @PrimaryGeneratedColumn()
-  id?: string;
+  @ApiProperty({ type: Number })
+  @PrimaryGeneratedColumn("increment")
+  id?: number;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })

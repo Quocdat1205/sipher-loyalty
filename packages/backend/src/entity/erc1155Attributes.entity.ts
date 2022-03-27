@@ -11,9 +11,9 @@ import { ERC1155Lootbox, ERC1155Sculpture } from "./erc1155.entity";
 
 @Entity()
 export class ERC1155LootboxAttribute {
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: Number })
   @PrimaryGeneratedColumn("increment")
-  id: string;
+  id: number;
 
   @ApiProperty({ type: String })
   @Column()
@@ -34,9 +34,9 @@ export class ERC1155LootboxAttribute {
 
 @Entity()
 export class ERC1155SculptureAttribute {
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: Number })
   @PrimaryGeneratedColumn("increment")
-  id: string;
+  id: number;
 
   @ApiProperty({ type: String })
   @Column()

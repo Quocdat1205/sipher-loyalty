@@ -14,14 +14,16 @@ export class LootboxTrackerExpiredService {
     private pendingMintRepo: Repository<PendingMint>
   ) {}
 
-  @Interval("tracking lootbox expired", 10000)
+  @Interval("tracking lootbox expired", 15000)
   async TrackingExpiredInterval() {
     await this.updateExpiredPending();
   }
 
   private updateExpiredPending = async () => {
+    const _now = getNow();
+    LoggerService.log(`Start scan expired pending minting at : ${_now}`);
     const pendings = await this.pendingMintRepo.find({
-      where: [{ deadline: LessThan(getNow()), status: MintStatus.Minting }],
+      where: [{ deadline: LessThan(_now), status: MintStatus.Minting }],
     });
     const promises = [];
     for (let i = 0; i < pendings.length; i++) {
@@ -29,6 +31,8 @@ export class LootboxTrackerExpiredService {
       promises.push(this.pendingMintRepo.save(pendings[i]));
     }
     const result = Promise.all(promises);
-    LoggerService.log(`pending updated : ${JSON.stringify(result)}`);
+    LoggerService.log(
+      `End scan expired pending minting with result : ${JSON.stringify(result)}`
+    );
   };
 }

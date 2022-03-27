@@ -4,9 +4,9 @@ import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class Receiver {
-  @ApiProperty({ type: String })
-  @PrimaryGeneratedColumn("uuid")
-  id_receiver: string;
+  @ApiProperty({ type: Number })
+  @PrimaryGeneratedColumn("increment")
+  id_receiver: number;
 
   @ApiProperty({ type: String })
   @Column()
