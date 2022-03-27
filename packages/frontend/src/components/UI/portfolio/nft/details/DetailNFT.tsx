@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react"
 import { BiChevronLeft } from "react-icons/bi"
 import { Box, Button, Flex, Text } from "@sipher.dev/sipher-ui"
 
-import { NftImage } from "@components/UI/spaceship/inventory"
 import { useWidth } from "@hooks"
 
 import ActionContainer from "./ActionContainer"
 import HeaderDetails from "./HeaderDetails"
+import { NftImage } from "./NftImage"
 import TabContainer from "./TabContainer"
 import { useDetailContext } from "./useDetail"
 

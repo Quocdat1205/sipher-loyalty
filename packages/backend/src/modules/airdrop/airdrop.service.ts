@@ -19,7 +19,10 @@ export class AirdropService {
     const merch = await this.merchService.getAllMerchByPublicAddress(
       publicAddress
     );
-    return { token, nft, merch };
+    const other = await this.merchService.getOtherMerchByPublicAddress(
+      publicAddress
+    );
+    return { token, nft, merch, other };
   }
 
   private async getTokenAirdrop(publicAddress: string) {
@@ -28,6 +31,7 @@ export class AirdropService {
         { claimer: publicAddress, type: AirdropType.TOKEN },
         { claimer: publicAddress.toLowerCase(), type: AirdropType.TOKEN },
       ],
+      relations: ["imageUrls"],
     });
     return data;
   }
@@ -36,12 +40,17 @@ export class AirdropService {
     return this.merchService.getAllMerchByPublicAddress(publicAddress);
   }
 
+  private async getOtherAirdrop(publicAddress: string) {
+    return this.merchService.getOtherMerchByPublicAddress(publicAddress);
+  }
+
   private async getNFTAirdrop(publicAddress: string) {
     const data = await this.airdropRepos.find({
       where: [
         { claimer: publicAddress, type: AirdropType.NFT },
         { claimer: publicAddress.toLowerCase(), type: AirdropType.NFT },
       ],
+      relations: ["imageUrls"],
     });
     return data;
   }
@@ -57,8 +66,8 @@ export class AirdropService {
       case AirdropType.MERCH:
         return this.getMerchAirdrop(publicAddress);
 
-      case AirdropType.CARD:
-        return this.merchService.getAllThanksCardByPublicAddress(publicAddress);
+      case AirdropType.OTHER:
+        return this.getOtherAirdrop(publicAddress);
 
       default:
         return this.getAllAirdrop(publicAddress);

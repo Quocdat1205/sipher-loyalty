@@ -234,14 +234,45 @@ export enum ItemType {
   Hoodie = 'Hoodie',
   Tshirt = 'Tshirt',
   Hat = 'Hat',
+  Card = 'Card',
+}
+
+export enum ViewType {
+  SIPHERExclusiveBomber = 'SIPHER Exclusive Bomber',
+  SIPHERExclusiveHoodie = 'SIPHER Exclusive Hoodie',
+  SIPHERExclusiveTShirt = 'SIPHER Exclusive T-shirt',
+  SIPHERExclusiveHat = 'SIPHER Exclusive Hat',
+  ThankYouCard = 'Thank You Card',
+}
+
+export enum AirdropType {
+  NFT = 'NFT',
+  TOKEN = 'TOKEN',
+  MERCH = 'MERCH',
+  ALL = 'ALL',
+  OTHER = 'OTHER',
+}
+
+export interface MerchList {
+  id_merch_list: number;
+  publicAddress: string;
+  tier: string;
+  merch_item: string;
+  quantity: number;
+  quantity_shipped: number;
+  isShipped: boolean;
+  isShip: boolean;
+  item: Item;
 }
 
 export interface Item {
   id_merch: number;
   merch_item: ItemType;
-  name: string;
+  name: ViewType;
+  type: AirdropType;
   description: string;
   imageUrls: ImageUrl[];
+  merchList: MerchList[];
 }
 
 export interface ImageUrl {
@@ -259,14 +290,6 @@ export interface ImageUrl {
 
   /** @format date-time */
   createdAt: string;
-}
-
-export enum AirdropType {
-  NFT = 'NFT',
-  TOKEN = 'TOKEN',
-  MERCH = 'MERCH',
-  ALL = 'ALL',
-  CARD = 'CARD',
 }
 
 export interface Airdrop {
@@ -289,10 +312,25 @@ export interface Airdrop {
   createdAt: string;
 }
 
+export interface MerchType {
+  id_merch_list: number;
+  publicAddress: string;
+  tier: string;
+  merch_item: string;
+  quantity: number;
+  quantity_shipped: number;
+  isShipped: boolean;
+  name: ViewType;
+  description: string;
+  imageUrls: ImageUrl[];
+  type: string;
+}
+
 export interface ResAllAirdrop {
   token: Airdrop[];
   nft: Airdrop[];
-  merch: Airdrop[];
+  merch: MerchType[];
+  other: MerchType[];
 }
 
 export interface PriceData {

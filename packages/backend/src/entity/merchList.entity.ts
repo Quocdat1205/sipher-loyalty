@@ -1,11 +1,20 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
+
+import { Item } from "./item.entity";
 
 @Entity()
 export class MerchList {
   @ApiProperty({ type: Number })
   @PrimaryGeneratedColumn("increment")
-  id_transaction: number;
+  id_merch_list: number;
 
   @ApiProperty({ type: String })
   @Column()
@@ -34,4 +43,8 @@ export class MerchList {
   @ApiProperty({ type: Boolean })
   @Column({ default: false })
   isShip?: boolean;
+
+  @ApiProperty({ type: () => Item })
+  @ManyToOne(() => Item, (item) => item.merchList)
+  item: Item;
 }

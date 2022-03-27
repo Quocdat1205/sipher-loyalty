@@ -67,10 +67,12 @@ export const BoxCard = ({ data }: CardProps) => {
           </Box>
         </Flex>
       </Button>
-      <Skeleton pos="relative" isLoaded={imageLoaded}>
+      <Skeleton bg="black" sx={{ img: { transform: "auto", scale: "1.4" } }} pos="relative" isLoaded={imageLoaded}>
         <Image
+          quality={100}
           width={500}
-          height={300}
+          height={400}
+          objectFit="contain"
           src={propertyLootbox.image}
           alt={propertyLootbox.name}
           loading="lazy"
@@ -85,7 +87,7 @@ export const BoxCard = ({ data }: CardProps) => {
       </Skeleton>
       <Stack spacing={2} px={4} pt={2} pb={4}>
         <Text fontWeight={600}>{propertyLootbox.name}</Text>
-        <Text color="neutral.400">{propertyLootbox.description}</Text>
+        <Text color="neutral.400">{propertyLootbox.description.slice(0, 60)}...</Text>
       </Stack>
     </Box>
   )

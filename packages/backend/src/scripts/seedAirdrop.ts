@@ -23,8 +23,8 @@ export class AppModule implements OnApplicationBootstrap {
 
   async onApplicationBootstrap(): Promise<void> {
     await this.seedingService.seedTokens();
-    await this.seedingService.seedItems();
     await this.seedingService.seedMerchs();
+    await this.seedingService.seedItems();
   }
 }
 async function bootstrap() {

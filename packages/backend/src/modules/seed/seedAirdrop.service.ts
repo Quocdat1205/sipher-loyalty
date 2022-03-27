@@ -46,10 +46,10 @@ export class SeedAirdropService {
     private itemRepo: Repository<Item>
   ) {}
 
-  private seedToken = async (token) => {
+  private seedToken = async (token: Airdrop) => {
     try {
-      const imageUrl = await this.seedImageUrls(token.imageUrl);
-      token.imageUrl = imageUrl;
+      const imageUrl = await this.seedImageUrls(token.imageUrls);
+      token.imageUrls = imageUrl;
       const _token = this.airdropRepo.create(token);
       await this.airdropRepo.save(_token);
     } catch (err) {
@@ -57,7 +57,7 @@ export class SeedAirdropService {
     }
   };
 
-  private seedImageUrl = async (imageUrl) => {
+  private seedImageUrl = async (imageUrl: ImageUrl) => {
     try {
       const _imageUrl = this.imageUrlRepo.create(imageUrl);
       const result = await this.imageUrlRepo.save(_imageUrl);
@@ -82,7 +82,7 @@ export class SeedAirdropService {
 
     const tokenData = this.airdropDataHolder.data.map((el) => ({
       merkleRoot: this.airdropDataHolder.merkleRoot,
-      imageUrl: this.airdropDataHolder.imageUrl,
+      imageUrls: this.airdropDataHolder.imageUrls,
       ...el,
       addressContract: this.airdropDataHolder.addressContract,
       startTime: this.airdropDataHolder.startTime,
@@ -104,14 +104,17 @@ export class SeedAirdropService {
     LoggerService.log("Done token");
   };
 
-  private seedItem = async (item) => {
+  private seedItem = async (item: Item) => {
     try {
-      const imageUrl = await this.seedImageUrls(item.imageUrl);
-      item.imageUrl = imageUrl;
+      const imageUrl = await this.seedImageUrls(item.imageUrls);
+      item.imageUrls = imageUrl;
+      item.merchList = await this.merchListRepo.find({
+        merch_item: item.merch_item,
+      });
       const _item = this.itemRepo.create(item);
       await this.itemRepo.save(_item);
     } catch (err) {
-      LoggerService.error(item.imageUrl);
+      LoggerService.error(err);
     }
   };
 
@@ -131,7 +134,7 @@ export class SeedAirdropService {
       const _merch = this.merchListRepo.create(merch);
       await this.merchListRepo.save(_merch);
     } catch (err) {
-      LoggerService.error(err);
+      LoggerService.error(JSON.stringify(err));
     }
   };
 

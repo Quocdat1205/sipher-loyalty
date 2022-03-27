@@ -1,5 +1,13 @@
 import { Repository } from "typeorm";
-import { Address, Item, ItemOrder, MerchList, Order, Receiver } from "@entity";
+import {
+  Address,
+  AirdropType,
+  Item,
+  ItemOrder,
+  MerchList,
+  Order,
+  Receiver,
+} from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -17,7 +25,7 @@ import { MerchType, ReceiverType } from "./response.type";
 export class MerchService {
   constructor(
     @InjectRepository(MerchList)
-    private transactionRepo: Repository<MerchList>,
+    private merchListRepo: Repository<MerchList>,
     @InjectRepository(Item)
     private itemRepo: Repository<Item>,
     @InjectRepository(Receiver)
@@ -30,54 +38,50 @@ export class MerchService {
     private itemOrderRepo: Repository<ItemOrder>
   ) {}
 
-  async toMerchData(transaction: MerchList) {
-    const item = await this.itemRepo.findOne({
-      where: { merch_item: transaction.merch_item },
-    });
-
-    return {
-      id_transaction: transaction.id_transaction,
-      publicAddress: transaction.publicAddress,
-      tier: transaction.tier,
-      merch_item: transaction.merch_item,
-      quantity: transaction.quantity,
-      quantity_shipped: transaction.quantity_shipped,
-      isShipped: transaction.isShipped,
-      name: item.name,
-      description: item.description,
-      images: [], // item.images,
-      type: "MERCH",
-    };
-  }
-
   async getAllMerchByPublicAddress(
     publicAddress: string
-  ): Promise<Array<MerchType> | undefined> {
+  ): Promise<Array<MerchList> | undefined> {
     LoggerService.log(`Get all merch`);
 
-    const transactions = await this.transactionRepo.find({
-      where: { publicAddress, isShip: true },
+    const merchLists = await this.merchListRepo.find({
+      relations: ["item", "item.imageUrls"],
+      where: [
+        {
+          publicAddress,
+          item: {
+            type: AirdropType.MERCH,
+          },
+        },
+      ],
     });
 
-    if (!transactions) {
+    if (!merchLists) {
       throw new HttpException("List merch not found", HttpStatus.NOT_FOUND);
     }
-
-    const response: Array<MerchType> = await Promise.all(
-      transactions.map(async (transaction) => this.toMerchData(transaction))
-    );
-
-    return response;
+    return merchLists;
   }
 
-  async getAllThanksCardByPublicAddress(
+  async getOtherMerchByPublicAddress(
     publicAddress: string
   ): Promise<Array<MerchList> | undefined> {
-    const list_card = await this.transactionRepo.find({
-      where: { publicAddress, isShip: false },
+    LoggerService.log(`Get all other`);
+
+    const others = await this.merchListRepo.find({
+      relations: ["item", "item.imageUrls"],
+      where: [
+        {
+          publicAddress,
+          item: {
+            type: AirdropType.OTHER,
+          },
+        },
+      ],
     });
 
-    return list_card;
+    if (!others) {
+      throw new HttpException("List other not found", HttpStatus.NOT_FOUND);
+    }
+    return others;
   }
 
   async addNewReceriver(
@@ -135,24 +139,24 @@ export class MerchService {
           size: list_item_order[i].size,
           color: list_item_order[i].color,
           quantity: list_item_order[i].quantity,
-          id_transaction: list_item_order[i].id_transaction,
+          id_merch_list: list_item_order[i].id_merch_list,
         });
 
-        // update quantity transaction
+        // update quantity merchList
         // eslint-disable-next-line no-await-in-loop
-        const transaction = await this.transactionRepo.findOne({
-          where: { id_transaction: list_item_order[i].id_transaction },
+        const merchList = await this.merchListRepo.findOne({
+          where: { id_merch_list: list_item_order[i].id_merch_list },
         });
 
-        transaction.quantity -= list_item_order[i].quantity;
-        transaction.quantity_shipped += list_item_order[i].quantity;
+        merchList.quantity -= list_item_order[i].quantity;
+        merchList.quantity_shipped += list_item_order[i].quantity;
 
-        if (transaction.quantity - list_item_order[i].quantity === 0) {
-          transaction.isShipped = true;
+        if (merchList.quantity - list_item_order[i].quantity === 0) {
+          merchList.isShipped = true;
         }
 
         // eslint-disable-next-line no-await-in-loop
-        await this.transactionRepo.save(transaction);
+        await this.merchListRepo.save(merchList);
       }
 
       return true;
@@ -169,11 +173,11 @@ export class MerchService {
 
     for (let i = 0; i < length; i++) {
       // eslint-disable-next-line no-await-in-loop
-      const transaction = await this.transactionRepo.findOne({
-        where: { id_transaction: list_item[i].id_transaction },
+      const merchList = await this.merchListRepo.findOne({
+        where: { id_merch_list: list_item[i].id_merch_list },
       });
 
-      if (list_item[i].quantity > transaction.quantity) {
+      if (list_item[i].quantity > merchList.quantity) {
         return false;
       }
     }

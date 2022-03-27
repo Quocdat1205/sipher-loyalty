@@ -13,6 +13,7 @@ const tabs = [
   { label: "NFTs", name: "nft" },
   { label: "Tokens", name: "token" },
   { label: "Merch", name: "merch" },
+  { label: "Other", name: "other" },
 ]
 
 const AirdropUI = () => {
