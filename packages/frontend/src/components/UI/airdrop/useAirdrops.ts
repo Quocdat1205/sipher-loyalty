@@ -38,9 +38,9 @@ export const useAirdrops = () => {
       enabled: authenticated && !!account,
       initialData: {
         nft: [],
-        merch: [],
         token: [],
         other: [],
+        merchandise: [],
       },
     },
   )
@@ -110,7 +110,7 @@ export const useAirdrops = () => {
         console.log("claim")
       },
     })),
-    ...dataAirdrops!.merch.map(item => ({
+    ...dataAirdrops!.merchandise.map(item => ({
       ...item,
       isClaiming: claimId === item.id,
       isDisabled: true,

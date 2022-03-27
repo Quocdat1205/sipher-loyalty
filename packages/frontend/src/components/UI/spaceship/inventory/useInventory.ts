@@ -28,7 +28,7 @@ export const useInventory = () => {
   const toast = useChakraToast()
   const idError = useRef<number | null>()
 
-  const { refetch } = useQuery(
+  const { refetch, isFetched: isFetchedLootBox } = useQuery(
     ["lootBoxs", account, user],
     () =>
       client.api
@@ -141,11 +141,12 @@ export const useInventory = () => {
       },
       onError: (err: any) => {
         toast({ status: "error", title: "Error", message: err?.message })
+        mutateStatus({ id: idError!.current!, status: "Rejected" as MintStatus })
+
         if (err.code === 4001) {
-          mutateStatus({ id: idError!.current!, status: "Rejected" as MintStatus })
           setIsStatusModal("PENDING")
         } else {
-          mutateStatus({ id: idError!.current!, status: "Rejected" as MintStatus })
+          setIsStatusModal("ERROR")
         }
       },
     },
@@ -163,6 +164,7 @@ export const useInventory = () => {
   }
 
   return {
+    isFetchedLootBox,
     dataMinted,
     isLoading,
     isStatusModal,

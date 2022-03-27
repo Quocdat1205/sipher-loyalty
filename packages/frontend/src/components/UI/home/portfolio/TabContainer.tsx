@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
+import { Box, chakra, Flex, HStack, Image, Text } from "@sipher.dev/sipher-ui"
 
 import TokensContainer from "@components/UI/portfolio/tokens"
 
@@ -11,11 +11,11 @@ type Tab = typeof tabs[number]
 
 const TabContainer = () => {
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
-  const { collectionData, tokensData } = usePortFolioHome()
+  const { collectionData, tokensData, isFetched, totalNFTs, totalToken } = usePortFolioHome()
 
   const renderTabs = () => {
     if (currentTab === "NFTs") {
-      return <NFTsContainer collectionData={collectionData} />
+      return <NFTsContainer collectionData={collectionData} isFetched={isFetched} />
     }
     if (currentTab === "Tokens") {
       return <TokensContainer tokensData={tokensData} />
@@ -37,8 +37,15 @@ const TabContainer = () => {
             cursor="pointer"
           >
             <Text fontWeight={600} color={currentTab === tab ? "neutral.50" : "neutral.400"}>
-              {tab}
+              {tab} <chakra.span color="accent.500">{tab === "NFTs" ? totalNFTs : totalToken}</chakra.span>
             </Text>
+            <Flex ml={2} align="center" justify="center" minW="1.6rem" h="1.6rem" bg="neutral.700" rounded="full">
+              {tab === "NFTs" ? (
+                <Image src="/images/icons/coin1.png" h="1rem" objectFit="contain" />
+              ) : (
+                <Image src="/images/icons/coin.png" h="1rem" objectFit="contain" />
+              )}{" "}
+            </Flex>
           </Flex>
         ))}
       </HStack>

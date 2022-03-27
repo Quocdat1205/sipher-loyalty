@@ -24,26 +24,40 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
           role="group"
           alignItems="center"
           justifyContent="center"
-          bg="black"
           pos="relative"
           w="full"
+          overflow="hidden"
           h="12rem"
           sx={{
             img: {
               pos: "absolute",
               left: 0,
-              transition: "opacity 0.5s ease-in-out",
+              transition: "opacity 0.7s ease-in-out",
             },
           }}
           isLoaded={isFetched && data.imageUrls?.length > 0}
         >
-          <Img src={"/images/airdrops/sipher.png"} objectFit="contain" h="full" />
+          <Img
+            src={
+              data?.imageUrls.length > 0
+                ? data?.imageUrls?.find(item => item.color === "black")?.back || data.imageUrls[0].default
+                : ""
+            }
+            objectFit="cover"
+            w="full"
+            h="full"
+          />
           <Img
             _groupHover={{
               opacity: 0,
             }}
-            src={"https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/Lootbox_1.gif"}
-            objectFit="contain"
+            src={
+              data?.imageUrls.length > 0
+                ? data?.imageUrls?.find(item => item.color === "black")?.front || data.imageUrls[0].front
+                : ""
+            }
+            objectFit="cover"
+            w="full"
             h="full"
           />
         </Skeleton>
@@ -52,14 +66,16 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          bg="black"
           pos="relative"
+          overflow="hidden"
+          h="12rem"
           w="full"
           isLoaded={isFetched && data.imageUrls?.length > 0}
         >
           <Image
-            src={data.imageUrls?.length > 0 ? data.imageUrls[0].default : "/images/airdrops/sipher.png"}
+            src={(data.imageUrls?.length > 0 && data.imageUrls[0].default) || "/image/airdrops/sipher1.png"}
             objectFit="contain"
+            quality={100}
             width={212 * 1.5}
             height={188 * 1.5}
           />

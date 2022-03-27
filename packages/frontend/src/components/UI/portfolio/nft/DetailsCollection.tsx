@@ -1,6 +1,6 @@
 import React from "react"
 import Image from "next/image"
-import { Avatar, Box, Flex, Heading, Link, SimpleGrid, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Avatar, Box, Flex, Heading, Link, SimpleGrid, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { NotifyNetwork } from "@components/shared"
 import { SpVerified } from "@components/shared/icons"
@@ -16,16 +16,16 @@ interface DetailsCollectionProps {
 }
 
 const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
-  const { collectionData, columns, total, nftsData } = useNFTs(collectionId)
+  const { collectionData, columns, total, nftsData, isFetched } = useNFTs(collectionId)
 
   const renderNFTs = () => {
-    return nftsData?.map(i => <NFTCard key={i.id} data={i} />)
+    return nftsData?.map(i => <NFTCard key={i.id} data={i} isFetched={isFetched} />)
   }
 
   return (
     <Box pos="relative">
       <NotifyNetwork chainId={collectionData?.chainId} />
-      <Flex flexDir="column" w="full" justify="center" position="relative">
+      <Skeleton isLoaded={isFetched} flexDir="column" w="full" justify="center" position="relative">
         <Image
           layout="responsive"
           quality={100}
@@ -34,21 +34,25 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
           src={collectionData?.bannerImage ?? "/images/spaceship/banner.png"}
           alt={"banner"}
         />
-      </Flex>
+      </Skeleton>
       <Flex flexDir="column" w="full" align="center">
         <Box px={[4, 4, 4, 0, 0]} w="full" maxW="1200px">
           <Stack mb={4} flexDir="column" align="center" pos="relative">
-            <Avatar src={collectionData?.logoImage} pos="absolute" transform="translateY(-50%)" size="xl" />
-            <Flex pt={16} align="center">
-              <Heading mr={1} fontSize="3xl" fontWeight={600}>
-                {capitalize(collectionData?.name?.toLowerCase() ?? "")}
-              </Heading>
-              {collectionData?.isVerified && (
-                <Box>
-                  <SpVerified size="1.8rem" viewBox="-2 0 20 15" />
-                </Box>
-              )}
-            </Flex>
+            <Skeleton rounded="full" pos="absolute" transform="translateY(-50%)" isLoaded={isFetched}>
+              <Avatar src={collectionData?.logoImage} size="xl" />
+            </Skeleton>
+            <Skeleton isLoaded={isFetched}>
+              <Flex pt={16} align="center">
+                <Heading mr={1} fontSize="3xl" fontWeight={600}>
+                  {capitalize(collectionData?.name?.toLowerCase() ?? "")}
+                </Heading>
+                {collectionData?.isVerified && (
+                  <Box>
+                    <SpVerified size="1.8rem" viewBox="-2 0 20 15" />
+                  </Box>
+                )}
+              </Flex>
+            </Skeleton>
             <Text>
               Created by{" "}
               <Link color="cyan.600" isExternal>
@@ -57,9 +61,11 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
             </Text>
           </Stack>
           <Flex align="center" justify="space-between">
-            <Text color="neutral.300" fontWeight={600}>
-              TOTAL: {total} {total > 0 ? "NFTs" : "NFT"}
-            </Text>
+            <Skeleton isLoaded={isFetched}>
+              <Text color="neutral.300" fontWeight={600}>
+                TOTAL: {total} {total > 0 ? "NFTs" : "NFT"}
+              </Text>
+            </Skeleton>
             <GridSelector />
           </Flex>
           <SimpleGrid py={8} maxW="1200px" w="full" spacing={6} columns={columns}>

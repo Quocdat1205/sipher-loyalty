@@ -9,12 +9,13 @@ import FilterBar from "./FilterBar"
 interface CollectionContainerProps {
   filter: { categories: string }
   setFilter: (v: any) => void
+  isFetched: boolean
   collectionData: ReturnType<typeof usePortfolio>["collectionData"]
 }
 
-const CollectionContainer = ({ filter, setFilter, collectionData }: CollectionContainerProps) => {
+const CollectionContainer = ({ filter, setFilter, collectionData, isFetched }: CollectionContainerProps) => {
   const renderNFTs = () => {
-    return collectionData?.map(i => <CollectionCard key={i.id} data={i} />)
+    return collectionData?.map(i => <CollectionCard key={i.id} data={i} isFetched={isFetched} />)
   }
 
   return (

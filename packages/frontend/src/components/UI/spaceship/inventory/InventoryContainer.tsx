@@ -7,11 +7,19 @@ import { MintModal } from "./MintModal"
 import { BoxCard, useInventory } from "."
 
 export const InventoryContainer = () => {
-  const { dataMinted, isLoading, isStatusModal, handleMint, inventoryData, inventoryDataCheck, setIsStatusModal } =
-    useInventory()
+  const {
+    isFetchedLootBox,
+    dataMinted,
+    isLoading,
+    isStatusModal,
+    handleMint,
+    inventoryData,
+    inventoryDataCheck,
+    setIsStatusModal,
+  } = useInventory()
 
   const renderNFTs = () => {
-    return inventoryData!.map(i => <BoxCard key={i.id} data={i} />)
+    return inventoryData!.map(i => <BoxCard key={i.id} data={i} isFetched={isFetchedLootBox} />)
   }
 
   return (
