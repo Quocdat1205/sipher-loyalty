@@ -50,7 +50,7 @@ export class MintService {
         {
           to: publicAddress.toLowerCase(),
           type: MintType.Lootbox,
-          status: MintStatus.Minting,
+          status: MintStatus.Minting || MintStatus.Reject || MintStatus.Error,
         },
         {
           to: toChecksumAddress(publicAddress),

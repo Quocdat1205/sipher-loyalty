@@ -13,4 +13,4 @@ export * from "./mint.entity";
 export * from "./order.entity";
 export * from "./receiver.entity";
 export * from "./sculpture-transaction.entity";
-export * from "./transaction.entity";
+export * from "./merchList.entity";

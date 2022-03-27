@@ -79,5 +79,5 @@ export class itemOrder {
   quantity?: number;
 
   @ApiProperty({ type: String })
-  id_transaction: string;
+  id_merch_list: string;
 }

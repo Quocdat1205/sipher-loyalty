@@ -1,4 +1,4 @@
-import { IsEmail, isEmail } from "class-validator";
+import { IsEmail } from "class-validator";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 

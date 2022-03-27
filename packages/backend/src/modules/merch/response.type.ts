@@ -4,7 +4,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class MerchType {
   @ApiProperty({ type: Number })
-  id_transaction: number;
+  id_merch_list: number;
 
   @ApiProperty({ type: String })
   @IsEthereumAddress()
@@ -32,7 +32,7 @@ export class MerchType {
   description: string;
 
   @ApiProperty({ type: Image, isArray: true })
-  images: ImageUrl[];
+  imageUrls: ImageUrl[];
 
   @ApiProperty({ type: String, default: "MERCH" })
   type: string;
