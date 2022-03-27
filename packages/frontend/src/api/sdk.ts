@@ -266,7 +266,7 @@ export enum AirdropType {
   TOKEN = 'TOKEN',
   MERCH = 'MERCH',
   ALL = 'ALL',
-  CARD = 'CARD',
+  OTHER = 'OTHER',
 }
 
 export interface Airdrop {

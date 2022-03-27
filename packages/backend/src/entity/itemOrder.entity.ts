@@ -25,5 +25,5 @@ export class ItemOrder {
 
   @ApiProperty({ type: String })
   @Column()
-  id_transaction: string;
+  id_merch_list: string;
 }

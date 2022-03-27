@@ -76,5 +76,19 @@
         "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hat_white_front.png"
       }
     ]
+  },
+  {
+    "id": 5,
+    "merch_item": "Card",
+    "name": "SIPHER Exclusive Card",
+    "description": "merchandise for investor nft support Sipher team early",
+    "imageUrl": [
+      {
+        "color": "none",
+        "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/card_none_front.png",
+        "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/card_none_front.png",
+        "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/card_none_back.png"
+      }
+    ]
   }
 ]
