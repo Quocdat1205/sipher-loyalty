@@ -242,7 +242,7 @@ export enum ViewType {
   SIPHERExclusiveHoodie = 'SIPHER Exclusive Hoodie',
   SIPHERExclusiveTShirt = 'SIPHER Exclusive T-shirt',
   SIPHERExclusiveHat = 'SIPHER Exclusive Hat',
-  SIPHERExclusiveThankYouCard = 'SIPHER Exclusive Thank You Card',
+  ThankYouCard = 'Thank You Card',
 }
 
 export interface Item {
@@ -298,10 +298,25 @@ export interface Airdrop {
   createdAt: string;
 }
 
+export interface MerchType {
+  id_merch_list: number;
+  publicAddress: string;
+  tier: string;
+  merch_item: string;
+  quantity: number;
+  quantity_shipped: number;
+  isShipped: boolean;
+  name: ViewType;
+  description: string;
+  imageUrls: ImageUrl[];
+  type: string;
+}
+
 export interface ResAllAirdrop {
   token: Airdrop[];
   nft: Airdrop[];
-  merch: Airdrop[];
+  merch: MerchType[];
+  other: MerchType[];
 }
 
 export interface PriceData {
