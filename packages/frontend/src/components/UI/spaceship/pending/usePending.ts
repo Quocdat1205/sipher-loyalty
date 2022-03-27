@@ -16,7 +16,7 @@ export interface InventoryProps extends Lootbox {
 }
 
 export interface InputLootBoxProp {
-  id: string
+  id: number
   deadline: number
   batchID?: number
   amount?: number
@@ -30,8 +30,8 @@ export const usePending = () => {
   const { session, authenticated, user } = useAuth()
   const query = useQueryClient()
   const { account, scCaller, switchNetwork, chainId } = useWalletContext()
-  const [mintId, setMintId] = useState<string | null>(null)
-  const [cancelId, setCancelId] = useState<string | null>(null)
+  const [mintId, setMintId] = useState<number | null>(null)
+  const [cancelId, setCancelId] = useState<number | null>(null)
 
   const toast = useChakraToast()
   const { data: dataInit } = useQuery(
@@ -94,7 +94,7 @@ export const usePending = () => {
     },
   )
 
-  const { mutate: mutateCancel } = useMutation<unknown, unknown, { id: string; signature: string }>(
+  const { mutate: mutateCancel } = useMutation<unknown, unknown, { id: number; signature: string }>(
     ({ signature }) => scCaller.current!.SipherSpaceshipLootBox.cancelOrder(signature),
     {
       onMutate: ({ id }) => {

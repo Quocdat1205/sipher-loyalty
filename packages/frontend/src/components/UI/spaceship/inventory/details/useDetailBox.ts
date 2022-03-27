@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
+import { useRouter } from "next/router"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
@@ -21,6 +22,7 @@ export const useDetailBox = id => {
   const [isFetched, setIsFetched] = useState(false)
   const [slot, setSlot] = useState(1)
   const toast = useChakraToast()
+  const router = useRouter()
   const { data: details, isFetched: isFetching } = useQuery(
     ["detailsLootBox", account, user],
     () =>
@@ -99,6 +101,7 @@ export const useDetailBox = id => {
   )
 
   return {
+    router,
     isFetching,
     mutateMint,
     slot,

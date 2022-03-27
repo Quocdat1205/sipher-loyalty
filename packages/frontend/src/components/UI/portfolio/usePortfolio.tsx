@@ -35,7 +35,7 @@ const usePortfolio = () => {
   const router = useRouter()
   const { session, authenticated, user } = useAuth()
   const { account, chainId } = useWalletContext()
-  const { dataPrice, balance } = useBalanceContext()
+  const { dataPrice, balance, totalETHPrice, totalUsdPrice } = useBalanceContext()
   const [filter, setFilter] = useState(initFilter)
 
   const currentTab = router.query.tab || "nfts"
@@ -58,29 +58,31 @@ const usePortfolio = () => {
     },
   )
 
-  const tokensData = [
-    {
-      currency: "ETH",
-      balance: chainId === ETHEREUM_NETWORK ? balance.chainPrice : 0,
-      value: chainId === ETHEREUM_NETWORK ? balance.chainPrice * dataPrice!.ethereumPrice.usd : 0,
-      change: dataPrice!.ethereumPrice.change * 100,
-      icon: <EthereumIcon size="1.4rem" />,
-    },
-    {
-      currency: "MATIC",
-      balance: chainId === POLYGON_NETWORK ? balance.chainPrice : 0,
-      value: chainId === POLYGON_NETWORK ? balance.chainPrice * dataPrice!.maticPrice.usd : 0,
-      change: dataPrice!.maticPrice.change * 100,
-      icon: <Img src="/images/icons/matic.png" alt="matic" h="1.4rem" />,
-    },
-    {
-      currency: "SIPHER",
-      balance: balance.sipher,
-      value: balance.sipher * dataPrice!.sipherPrice.usd,
-      change: dataPrice!.sipherPrice.change * 100,
-      icon: <SipherIcon size="1.4rem" />,
-    },
-  ]
+  const tokensData = account
+    ? [
+        {
+          currency: "ETH",
+          balance: chainId === ETHEREUM_NETWORK ? balance.chainPrice : 0,
+          value: chainId === ETHEREUM_NETWORK ? balance.chainPrice * dataPrice!.ethereumPrice.usd : 0,
+          change: dataPrice!.ethereumPrice.change * 100,
+          icon: <EthereumIcon size="1.4rem" />,
+        },
+        {
+          currency: "MATIC",
+          balance: chainId === POLYGON_NETWORK ? balance.chainPrice : 0,
+          value: chainId === POLYGON_NETWORK ? balance.chainPrice * dataPrice!.maticPrice.usd : 0,
+          change: dataPrice!.maticPrice.change * 100,
+          icon: <Img src="/images/icons/matic.png" alt="matic" h="1.4rem" />,
+        },
+        {
+          currency: "SIPHER",
+          balance: balance.sipher,
+          value: balance.sipher * dataPrice!.sipherPrice.usd,
+          change: dataPrice!.sipherPrice.change * 100,
+          icon: <SipherIcon size="1.4rem" />,
+        },
+      ]
+    : []
 
   const collectionData = initData?.map(item => ({
     ...item,
@@ -89,13 +91,6 @@ const usePortfolio = () => {
 
   const totalNFTs = collectionData.reduce((accu, curr) => accu + curr.total, 0)
   const totalToken = tokensData.length
-  const totalETHPrice =
-    (chainId === ETHEREUM_NETWORK
-      ? dataPrice!.ethereumPrice.eth * balance.chainPrice + dataPrice!.sipherPrice.eth * balance.sipher
-      : chainId === POLYGON_NETWORK
-      ? dataPrice!.maticPrice.eth * balance.chainPrice + dataPrice!.sipherPrice.eth * balance.sipher
-      : 0) ?? 0
-  const totalUsdPrice = totalETHPrice * dataPrice!.ethereumPrice.usd ?? 0
 
   return {
     totalUsdPrice,

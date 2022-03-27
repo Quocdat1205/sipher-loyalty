@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { Box, Flex } from "@sipher.dev/sipher-ui"
+import { BiChevronLeft } from "react-icons/bi"
+import { Box, Button, Flex, Text } from "@sipher.dev/sipher-ui"
 
 import { useWidth } from "@hooks"
 
@@ -14,7 +15,7 @@ interface DetailBoxProps {
 
 export const DetailBox = ({ id }: DetailBoxProps) => {
   const [boxWidth, setBoxWidth] = useState(0)
-  const { isFetching, details, slot, setSlot, mutateMint, isLoading } = useDetailBox(id)
+  const { isFetching, details, slot, setSlot, mutateMint, isLoading, router } = useDetailBox(id)
   const windowWidth = useWidth()
   // right UI info details
   const widthContainer = 800
@@ -22,10 +23,19 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
   useEffect(() => {
     setBoxWidth(windowWidth.width - widthContainer)
   }, [windowWidth])
-
   return (
     <Flex flex={1} flexDir="column" align="center">
       <Flex w="full" flex={1} flexDir={["column", "row"]}>
+        <Flex pos="fixed" top="4rem" left={0} zIndex={1} flexDir="column">
+          <Box pt={8} px={8} w="full">
+            <Button onClick={() => router.back()} pl={2} bg="white" rounded="full" alignItems="center">
+              <Box color="neutral.500">
+                <BiChevronLeft size="1.4rem" />
+              </Box>
+              <Text color="neutral.500">Back</Text>
+            </Button>
+          </Box>
+        </Flex>
         <Box
           px={4}
           pos="fixed"
@@ -37,10 +47,11 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
           textAlign="center"
         >
           <NftImage
+            pt={8}
             mintable={details?.mintable ?? 0}
             isFetching={isFetching}
             windowHeight={windowWidth.height}
-            src={details?.propertyLootbox.image as string}
+            src={details?.propertyLootbox.image || ""}
             alt={"box"}
           />
         </Box>
@@ -50,13 +61,13 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
               <NftImage
                 mintable={details?.mintable ?? 0}
                 isFetching={isFetching}
-                src={details?.propertyLootbox.image as string}
+                src={details?.propertyLootbox.image || ""}
                 alt={"box"}
               />
             </Box>
             <Box maxWidth={`${widthContainer}px`} flex={1}>
               <HeaderDetails details={details} isFetching={isFetching} />
-              <ContentDetails isFetching={isFetching} />
+              <ContentDetails description={details?.propertyLootbox.description ?? ""} isFetching={isFetching} />
             </Box>
           </Box>
           <ActionContainer

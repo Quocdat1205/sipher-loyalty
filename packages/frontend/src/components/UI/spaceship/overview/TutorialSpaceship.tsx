@@ -52,7 +52,7 @@ export const TutorialSpaceship = () => {
                   {item.description}
                 </Text>
                 <Box pos="relative" h="14rem" w="full">
-                  <Image src={item.image} alt={item.id} objectFit="contain" layout="fill" />
+                  <Image quality={100} src={item.image} alt={item.id} objectFit="contain" layout="fill" />
                 </Box>
               </Flex>
             </Box>

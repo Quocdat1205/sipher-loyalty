@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "react-query"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
-import { ETHEREUM_NETWORK } from "@constant"
+import { ETHEREUM_NETWORK, POLYGON_NETWORK } from "@constant"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
@@ -63,8 +63,18 @@ const useBalance = () => {
     qc.invalidateQueries(["weth", account])
   }
 
+  const totalETHPrice =
+    (chainId === ETHEREUM_NETWORK
+      ? dataPrice!.ethereumPrice.eth * chainPrice! + dataPrice!.sipherPrice.eth * sipher!
+      : chainId === POLYGON_NETWORK
+      ? dataPrice!.maticPrice.eth * chainPrice! + dataPrice!.sipherPrice.eth * sipher!
+      : 0) ?? 0
+  const totalUsdPrice = totalETHPrice * dataPrice!.ethereumPrice.usd ?? 0
+
   return {
     dataPrice,
+    totalETHPrice,
+    totalUsdPrice,
     balance: {
       chainPrice: chainPrice ?? 0,
       sipher: sipher ?? 0,

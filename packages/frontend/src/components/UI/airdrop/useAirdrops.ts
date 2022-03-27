@@ -10,7 +10,7 @@ import { AirdropType } from "@sdk"
 import { useAuth } from "src/providers/auth"
 
 interface InputAirdrops {
-  id: string
+  id: number
   totalAmount: string
   proof: string[]
 }
@@ -20,7 +20,7 @@ export const useAirdrops = () => {
   const currentTab = router.query.tab || AirdropType.ALL.toLowerCase()
   const { session, authenticated, user } = useAuth()
   const { account, scCaller, chainId } = useWalletContext()
-  const [claimId, setClaimId] = useState<string | null>(null)
+  const [claimId, setClaimId] = useState<number | null>(null)
   const qc = useQueryClient()
   const toast = useChakraToast()
 
@@ -48,7 +48,6 @@ export const useAirdrops = () => {
     ["token-claimable-amount", dataAirdrops],
     () =>
       scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(
-        account!,
         dataAirdrops!.token.find(item => item.addressContract === SipherAirdropsAddress)!.totalAmount,
         dataAirdrops!.token.find(item => item.addressContract === SipherAirdropsAddress)!.proof,
       ),
@@ -57,7 +56,6 @@ export const useAirdrops = () => {
       initialData: 0,
     },
   )
-  console.log(claimableAmount)
 
   const { mutate: claim } = useMutation<unknown, unknown, InputAirdrops>(
     ({ totalAmount, proof }) => scCaller.current!.SipherAirdrops.claim(totalAmount, proof),
