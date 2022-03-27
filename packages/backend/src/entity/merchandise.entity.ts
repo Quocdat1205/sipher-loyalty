@@ -8,6 +8,8 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
+import { TransformLowercase } from "@utils/transfomers";
+
 import { Item, ItemType } from "./item.entity";
 
 @Entity()
@@ -16,6 +18,7 @@ export class Merchandise {
   @PrimaryGeneratedColumn("increment")
   id?: number;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column()
   publicAddress: string;

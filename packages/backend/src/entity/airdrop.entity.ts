@@ -9,6 +9,8 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
+import { TransformLowercase } from "@utils/transfomers";
+
 import { ImageUrl } from "./imageUrl.entity";
 
 export enum AirdropType {
@@ -38,10 +40,12 @@ export class Airdrop {
   @Column({ nullable: false })
   leaf?: string;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   claimer?: string;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   @IsEthereumAddress()

@@ -7,6 +7,8 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
+import { TransformLowercase } from "@utils/transfomers";
+
 export enum BurnType {
   Lootbox = "Lootbox",
   SpaceshipPart = "SpaceshipPart",
@@ -19,6 +21,7 @@ export class Burned {
   @PrimaryGeneratedColumn("increment")
   id?: number;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   to: string;

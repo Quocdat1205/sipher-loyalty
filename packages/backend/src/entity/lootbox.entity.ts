@@ -9,6 +9,8 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
+import { TransformLowercase } from "@utils/transfomers";
+
 import { ERC1155Lootbox } from "./erc1155.entity";
 
 @Entity()
@@ -17,6 +19,7 @@ export class Lootbox {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   @IsEthereumAddress()

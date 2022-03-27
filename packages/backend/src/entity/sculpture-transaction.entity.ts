@@ -7,6 +7,8 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
+import { TransformLowercase } from "@utils/transfomers";
+
 @Entity()
 export class SculptureTransaction {
   @ApiProperty({ type: String })
@@ -32,6 +34,7 @@ export class SculptureTransaction {
   })
   amount: number;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({
     type: "character varying",

@@ -7,6 +7,8 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
+import { TransformLowercase } from "@utils/transfomers";
+
 export enum MintStatus {
   Minting = "Minting",
   Minted = "Minted",
@@ -28,6 +30,7 @@ export class PendingMint {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   to: string;
