@@ -16,7 +16,6 @@ import {
   Stack,
   Text,
 } from "@sipher.dev/sipher-ui"
-import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
 import { useETHPrice, useSipherPrice } from "@api"

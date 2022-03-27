@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from "react"
 import { useMutation } from "react-query"
-import AtherIdAuth, { CognitoUser } from "@sipher.dev/ather-id"
+import AtherIdAuth from "@sipher.dev/ather-id"
 import { Button, chakra, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
 import { AuthType, SignUpAction } from "@store"
 

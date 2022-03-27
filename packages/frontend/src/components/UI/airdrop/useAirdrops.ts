@@ -27,6 +27,7 @@ export const useAirdrops = () => {
       initialData: {
         nft: [],
         token: [],
+        merch: [],
       },
     },
   )

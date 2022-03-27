@@ -1,11 +1,11 @@
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Button, FormControl, Text, VStack } from "@sipher.dev/sipher-ui"
-import { AuthType, ForgotPasswordAction, useAuthFlowStore, useStore } from "@store"
+import { AuthType, ForgotPasswordAction, useAuthFlowStore } from "@store"
 
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
 
