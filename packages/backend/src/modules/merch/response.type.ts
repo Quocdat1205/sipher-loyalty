@@ -33,6 +33,9 @@ export class MerchType {
 
   @ApiProperty({ type: String })
   imageUrl: string;
+
+  @ApiProperty({ type: String, default: "MERCH" })
+  type: string;
 }
 
 export class ReceiverType {

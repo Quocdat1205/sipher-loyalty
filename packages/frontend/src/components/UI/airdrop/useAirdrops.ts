@@ -117,5 +117,5 @@ export const useAirdrops = () => {
 
   console.log(allAirdrops)
 
-  return { claimId, currentTab, allAirdrops }
+  return { currentTab, allAirdrops }
 }

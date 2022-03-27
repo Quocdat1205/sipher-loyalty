@@ -4,48 +4,55 @@
     "name": "THE WANDERING ALICE LOOTBOX",
     "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Wandering_Alice.png",
     "description": "On every adventure, THE WANDERING ALICE grows more and more curious.\n The WANDERING ALICE has a knack for discovering the unknown. Benefits are tied to exploration and bringing treasures or loot back to the player.",
-    "attributes": []
+    "attributes": [],
+    "animation_url": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Wandering_Alice.png"
   },
   {
     "tokenId": "1",
     "name": "THE FLIK FLAK LOOTBOX",
     "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Flik_Flak.png",
-    "description": "This acrobatic trickster feels right at home in the air.\nThe FLIK FLAK is all about mobility.  Pilots that fly this ship understand that it's very important to avoid getting touched. As long as you're alive, you're a threat.",
-    "attributes": []
+    "description": "This acrobatic trickster feels right at home in the air.\n The FLIK FLAK is all about mobility.  Pilots that fly this ship understand that it's very important to avoid getting touched. As long as you're alive, you're a threat.",
+    "attributes": [],
+    "animation_url": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Flik_Flak.png"
   },
   {
     "tokenId": "2",
     "name": "THE AKAGI LOOTBOX",
     "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Akagi.png",
-    "description": "High risk, high reward - there's no gamble too large for the AKAGI.\nThe AKAGI is for those who have reached the peak of their craft. Why worry about being a glass cannon when you don't take any damage?",
-    "attributes": []
+    "description": "High risk, high reward - there's no gamble too large for the AKAGI.\n The AKAGI is for those who have reached the peak of their craft. Why worry about being a glass cannon when you don't take any damage?",
+    "attributes": [],
+    "animation_url": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Akagi.png"
   },
   {
     "tokenId": "3",
     "name": "THE AHAB LOOTBOX",
     "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Ahab.png",
-    "description": "This wicked whirlwind is a ceaseless pursuer.\nThe only way to win is by going forward. The AHAB rewards agression and bringing the fight to the enemy.",
-    "attributes": []
+    "description": "This wicked whirlwind is a ceaseless pursuer.\n The only way to win is by going forward. The AHAB rewards aggression and bringing the fight to the enemy.",
+    "attributes": [],
+    "animation_url": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Ahab.png"
   },
   {
     "tokenId": "4",
     "name": "THE ZED LEP LOOTBOX",
     "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Zed_Lep.png",
-    "description": "This NEKO ship will send enemies up the stairway to heaven.\nThe ZED LEPs are for NEKO mains. These ships confer bonuses to NEKO-specific weapons and their racial abilities. Only NEKO Pilots fully understand these ships.",
-    "attributes": []
+    "description": "This NEKO ship will send enemies up the stairway to heaven.\n The ZED LEPs are for NEKO mains. These ships confer bonuses to NEKO-specific weapons and their racial abilities. Only NEKO Pilots fully understand these ships.",
+    "attributes": [],
+    "animation_url": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Zed_Lep.png"
   },
   {
     "tokenId": "5",
-    "name": "THE BARKING BARON LOOTBOX6",
+    "name": "THE BARKING BARON",
     "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Barking_Baron.png",
-    "description": "This INU ship is named after the legendary dogfighter pilot - the Red Baron.\nAll INU fanatics sport this ship. Everyone wishes they could possess a BARKING BARON and reach the same acclaim as the legendary Red Baron, but only INUs are considered experts at flying these shipss",
-    "attributes": []
+    "description": "This INU ship is named after the legendary dogfighter pilot - the Red Baron.\n All INU fanatics sport this ship. Everyone wishes they could possess a BARKING BARON and reach the same acclaim as the legendary Red Baron, but only INUs are considered experts at flying these ships",
+    "attributes": [],
+    "animation_url": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Barking_Baron.png"
   },
   {
     "tokenId": "6",
     "name": "THE TUNKU LOOTBOX",
     "image": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Tunku.png",
-    "description": "The sovereign on the battlefield remains unchallenged.\nThe TUNKU Ships are for those that crave the battlefield, that are constantly engaging in combat, and that believe that battles can only be ended if they win.\nThe TUNKU will give bonuses to damage, in both it's base stats and it's boosts.",
-    "attributes": []
+    "description": "The sovereign on the battlefield remains unchallenged.\n The TUNKU Ships are for those that crave the battlefield, that are constantly engaging in combat, and that believe that battles can only be ended if they win.\n The TUNKU will give bonuses to damage, in both it's base stats and it's boosts.",
+    "attributes": [],
+    "animation_url": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/LootBox_Tunku.png"
   }
 ]

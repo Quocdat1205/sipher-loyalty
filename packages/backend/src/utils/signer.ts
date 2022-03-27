@@ -31,8 +31,6 @@ const signOrder = async (
   );
 
   const types = EIP712_LOOTBOX_ORDER_TYPES;
-  console.log(order);
-
   const signature = await signer._signTypedData(domain, types, order);
 
   return signature;
@@ -57,7 +55,6 @@ const signBatchOrder = async (
 
   const types = EIP712_LOOTBOX_BATCH_ORDER_TYPES;
 
-  console.log(encodeBatchOrder(batchOrder));
   const signature = await signer._signTypedData(
     domain,
     types,

@@ -54,6 +54,7 @@ export class MerchService {
       name: item.name,
       description: item.description,
       imageUrl: item.imageUrl,
+      type: "MERCH",
     };
   }
 
