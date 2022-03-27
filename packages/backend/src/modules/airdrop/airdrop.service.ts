@@ -48,7 +48,7 @@ export class AirdropService {
       id: merch.id,
       name: merch.item.name,
       description: merch.item.description,
-      imgageUrls: merch.item.imageUrls,
+      imageUrls: merch.item.imageUrls,
       type: merch.item.type,
     }));
   }
@@ -62,7 +62,7 @@ export class AirdropService {
       id: merch.id,
       name: merch.item.name,
       description: merch.item.description,
-      imgageUrls: merch.item.imageUrls,
+      imageUrls: merch.item.imageUrls,
       type: merch.item.type,
     }));
   }
