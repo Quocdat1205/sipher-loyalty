@@ -38,68 +38,50 @@ export class MerchService {
     private itemOrderRepo: Repository<ItemOrder>
   ) {}
 
-  async toMerchData(merchList: MerchList, type: AirdropType) {
-    const item = await this.itemRepo.findOne({
-      where: { merch_item: merchList.merch_item },
-    });
-
-    return {
-      id_merch_list: merchList.id_merch_list,
-      publicAddress: merchList.publicAddress,
-      tier: merchList.tier,
-      merch_item: merchList.merch_item,
-      quantity: merchList.quantity,
-      quantity_shipped: merchList.quantity_shipped,
-      isShipped: merchList.isShipped,
-      name: item.name,
-      description: item.description,
-      imageUrls: item.imageUrls,
-      type,
-    };
-  }
-
   async getAllMerchByPublicAddress(
     publicAddress: string
-  ): Promise<Array<MerchType> | undefined> {
+  ): Promise<Array<MerchList> | undefined> {
     LoggerService.log(`Get all merch`);
 
     const merchLists = await this.merchListRepo.find({
-      where: { publicAddress, isShip: true },
+      relations: ["item", "item.imageUrls"],
+      where: [
+        {
+          publicAddress,
+          item: {
+            type: AirdropType.MERCH,
+          },
+        },
+      ],
     });
 
     if (!merchLists) {
       throw new HttpException("List merch not found", HttpStatus.NOT_FOUND);
     }
-
-    const response: Array<MerchType> = await Promise.all(
-      merchLists.map(async (merchList) =>
-        this.toMerchData(merchList, AirdropType.MERCH)
-      )
-    );
-
-    return response;
+    return merchLists;
   }
 
   async getOtherMerchByPublicAddress(
     publicAddress: string
-  ): Promise<Array<MerchType> | undefined> {
-    LoggerService.log(`Get all merch`);
+  ): Promise<Array<MerchList> | undefined> {
+    LoggerService.log(`Get all other`);
 
-    const merchLists = await this.merchListRepo.find({
-      where: { publicAddress, isShip: false },
+    const others = await this.merchListRepo.find({
+      relations: ["item", "item.imageUrls"],
+      where: [
+        {
+          publicAddress,
+          item: {
+            type: AirdropType.OTHER,
+          },
+        },
+      ],
     });
 
-    if (!merchLists) {
-      throw new HttpException("List merch not found", HttpStatus.NOT_FOUND);
+    if (!others) {
+      throw new HttpException("List other not found", HttpStatus.NOT_FOUND);
     }
-
-    const response: Array<MerchType> = await Promise.all(
-      merchLists.map(async (merchList) =>
-        this.toMerchData(merchList, AirdropType.OTHER)
-      )
-    );
-
-    return response;
+    return others;
   }
 
   async addNewReceriver(

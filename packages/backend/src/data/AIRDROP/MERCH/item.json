@@ -4,7 +4,7 @@
     "merch_item": "Bomber",
     "name": "SIPHER Exclusive Bomber",
     "description": "merchandise for investor nft support Sipher team early",
-    "imageUrl": [
+    "imageUrls": [
       {
         "color": "black",
         "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/bomber_black_front.png",
@@ -17,14 +17,15 @@
         "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/bomber_white_front.png",
         "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/bomber_white_back.png"
       }
-    ]
+    ],
+    "type": "MERCH"
   },
   {
     "id": 2,
     "merch_item": "Hoodie",
     "name": "SIPHER Exclusive Hoodie",
     "description": "merchandise for investor nft support Sipher team early",
-    "imageUrl": [
+    "imageUrls": [
       {
         "color": "black",
         "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hoodie_black_front.png",
@@ -37,14 +38,15 @@
         "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hoodie_white_front.png",
         "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hoodie_white_back.png"
       }
-    ]
+    ],
+    "type": "MERCH"
   },
   {
     "id": 3,
     "merch_item": "Tshirt",
     "name": "SIPHER Exclusive T-shirt",
     "description": "merchandise for investor nft support Sipher team early",
-    "imageUrl": [
+    "imageUrls": [
       {
         "color": "black",
         "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/tshirt_black_front.png",
@@ -57,14 +59,15 @@
         "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/tshirt_white_front.png",
         "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/tshirt_white_back.png"
       }
-    ]
+    ],
+    "type": "MERCH"
   },
   {
     "id": 4,
     "merch_item": "Hat",
     "name": "SIPHER Exclusive Hat",
     "description": "merchandise for investor nft support Sipher team early",
-    "imageUrl": [
+    "imageUrls": [
       {
         "color": "black",
         "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hat_black_front.png",
@@ -75,20 +78,22 @@
         "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hat_white_front.png",
         "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hat_white_front.png"
       }
-    ]
+    ],
+    "type": "MERCH"
   },
   {
     "id": 5,
     "merch_item": "Card",
     "name": "Thank You Card",
     "description": "A personal note to thank our early backers from Sipher's team",
-    "imageUrl": [
+    "imageUrls": [
       {
         "color": "none",
         "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/card_none_front.png",
         "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/card_none_front.png",
         "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/card_none_back.png"
       }
-    ]
+    ],
+    "type": "OTHER"
   }
 ]

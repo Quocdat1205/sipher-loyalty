@@ -4,7 +4,7 @@
   "startTime": "1646067600",
   "vestingInterval": "2419200",
   "numberOfVestingPoint": "6",
-  "imageUrl": [
+  "imageUrls": [
     {
       "color": "none",
       "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_token.png"

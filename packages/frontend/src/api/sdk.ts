@@ -245,12 +245,34 @@ export enum ViewType {
   ThankYouCard = 'Thank You Card',
 }
 
+export enum AirdropType {
+  NFT = 'NFT',
+  TOKEN = 'TOKEN',
+  MERCH = 'MERCH',
+  ALL = 'ALL',
+  OTHER = 'OTHER',
+}
+
+export interface MerchList {
+  id_merch_list: number;
+  publicAddress: string;
+  tier: string;
+  merch_item: string;
+  quantity: number;
+  quantity_shipped: number;
+  isShipped: boolean;
+  isShip: boolean;
+  item: Item;
+}
+
 export interface Item {
   id_merch: number;
   merch_item: ItemType;
   name: ViewType;
+  type: AirdropType;
   description: string;
   imageUrls: ImageUrl[];
+  merchList: MerchList[];
 }
 
 export interface ImageUrl {
@@ -268,14 +290,6 @@ export interface ImageUrl {
 
   /** @format date-time */
   createdAt: string;
-}
-
-export enum AirdropType {
-  NFT = 'NFT',
-  TOKEN = 'TOKEN',
-  MERCH = 'MERCH',
-  ALL = 'ALL',
-  OTHER = 'OTHER',
 }
 
 export interface Airdrop {

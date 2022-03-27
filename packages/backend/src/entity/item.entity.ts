@@ -1,7 +1,9 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
+import { AirdropType } from "./airdrop.entity";
 import { ImageUrl } from "./imageUrl.entity";
+import { MerchList } from "./merchList.entity";
 
 export enum ItemType {
   Bomber = "Bomber",
@@ -43,6 +45,13 @@ export class Item {
   })
   name: ViewType;
 
+  @ApiProperty({ type: String, enum: AirdropType, enumName: "AirdropType" })
+  @Column({
+    type: "enum",
+    enum: AirdropType,
+  })
+  type: AirdropType;
+
   @ApiProperty({ type: String })
   @Column()
   description: string;
@@ -53,4 +62,11 @@ export class Item {
   })
   @OneToMany(() => ImageUrl, (imageUrls) => imageUrls.item)
   imageUrls?: ImageUrl[];
+
+  @ApiProperty({
+    type: () => MerchList,
+    isArray: true,
+  })
+  @OneToMany(() => MerchList, (merchList) => merchList.item)
+  merchList?: MerchList[];
 }
