@@ -30,4 +30,8 @@ export class Transaction {
   @ApiProperty({ type: Boolean })
   @Column({ default: false })
   isShipped?: boolean;
+
+  @ApiProperty({ type: Boolean })
+  @Column({ default: false })
+  isShip?: boolean;
 }

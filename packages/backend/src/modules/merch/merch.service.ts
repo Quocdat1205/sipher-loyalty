@@ -64,7 +64,7 @@ export class MerchService {
     LoggerService.log(`Get all merch`);
 
     const transactions = await this.transactionRepo.find({
-      where: { publicAddress },
+      where: { publicAddress, isShip: true },
     });
 
     if (!transactions) {
