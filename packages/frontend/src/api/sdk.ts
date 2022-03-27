@@ -333,6 +333,34 @@ export interface ResAllAirdrop {
   other: MerchType[];
 }
 
+export interface Receiver {
+  id_receiver: string;
+  publicAddress: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+}
+
+export interface Address {
+  id_address: string;
+  publicAddress: string;
+  street_address: string;
+  town: string;
+  country: string;
+  state: string;
+  zip_code: string;
+}
+
+export interface Shipping {
+  publicAddress: string;
+  id_receiver: string;
+  id_address: string;
+  receiver: Receiver;
+  address: Address;
+  item_order: any[][];
+}
+
 export interface PriceData {
   usd: number;
   eth: number;
@@ -794,6 +822,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}`,
         method: 'GET',
         secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags airdrop
+     * @name AirdropControllerShippingMerch
+     * @request POST:/api/sipher/loyalty/airdrop/shipping
+     */
+    airdropControllerShippingMerch: (data: Shipping, params: RequestParams = {}) =>
+      this.request<Shipping, any>({
+        path: `/api/sipher/loyalty/airdrop/shipping`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
