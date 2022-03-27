@@ -1,7 +1,6 @@
 import { Repository } from "typeorm";
 import {
   Address,
-  Airdrop,
   AirdropType,
   Item,
   ItemOrder,

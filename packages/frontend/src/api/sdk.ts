@@ -234,12 +234,21 @@ export enum ItemType {
   Hoodie = 'Hoodie',
   Tshirt = 'Tshirt',
   Hat = 'Hat',
+  Card = 'Card',
+}
+
+export enum ViewType {
+  SIPHERExclusiveBomber = 'SIPHER Exclusive Bomber',
+  SIPHERExclusiveHoodie = 'SIPHER Exclusive Hoodie',
+  SIPHERExclusiveTShirt = 'SIPHER Exclusive T-shirt',
+  SIPHERExclusiveHat = 'SIPHER Exclusive Hat',
+  SIPHERExclusiveThankYouCard = 'SIPHER Exclusive Thank You Card',
 }
 
 export interface Item {
   id_merch: number;
   merch_item: ItemType;
-  name: string;
+  name: ViewType;
   description: string;
   imageUrls: ImageUrl[];
 }
