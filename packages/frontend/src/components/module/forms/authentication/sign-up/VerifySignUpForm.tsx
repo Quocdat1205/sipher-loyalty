@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react"
-import { useMutation } from "react-query"
+import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Button, chakra, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
 import { AuthType, SignUpAction } from "@store"
@@ -13,10 +13,10 @@ import { useSignUpContext } from "./useSignUp"
 const VerifySignUpForm = () => {
   const toast = useChakraToast()
   const [code, setCode] = useState("")
-  const { setUser } = useAuth()
+  const { setUser, user } = useAuth()
 
   const { wallet, flowState, setFlowState, email, password } = useSignUpContext()
-
+  const qc = useQueryClient()
   useEffect(() => {
     if (flowState === null) setCode("")
   })
@@ -31,6 +31,7 @@ const VerifySignUpForm = () => {
     {
       onSuccess: () => {
         setFlowState(null)
+        qc.invalidateQueries(["owned-wallets", user?.email])
       },
       onError: async (e: any) => {
         wallet.reset()

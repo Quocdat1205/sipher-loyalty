@@ -138,8 +138,16 @@ const useWallet = () => {
   useEffect(() => {
     if (ethereum) {
       ethereum.on("accountsChanged", ([account]) => {
-        if (authenticated && account && !ownedWallets.includes(account) && flowState === null) {
-          setFlowState({ type: AuthType.ChangeWallet, action: ChangeWalletAction.Change })
+        if (authenticated && account) {
+          if (!ownedWallets.includes(account) && flowState === null) {
+            setFlowState({ type: AuthType.ChangeWallet, action: ChangeWalletAction.Change })
+          } else if (
+            ownedWallets.includes(account) &&
+            flowState?.type === AuthType.ChangeWallet &&
+            flowState.action === ChangeWalletAction.Change
+          ) {
+            setFlowState(null)
+          }
         }
       })
       ethereum.on("chainChanged", () => {

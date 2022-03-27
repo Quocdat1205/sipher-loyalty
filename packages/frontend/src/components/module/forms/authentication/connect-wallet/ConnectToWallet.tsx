@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useMutation } from "react-query"
+import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { chakra, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 import { AuthType, ConnectWalletAction, useAuthFlowStore } from "@store"
@@ -16,7 +16,7 @@ const ConnectToWallet = () => {
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
   const { connect, scCaller, reset, account, connector } = useWalletContext()
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
-
+  const qc = useQueryClient()
   // Initiate wallet connection => Sign the message to get signature => Confirm wallet connection
   const { mutate: mutateAddWallet } = useMutation<unknown, unknown, string>(
     async account => {
@@ -27,6 +27,7 @@ const ConnectToWallet = () => {
     {
       onSuccess: () => {
         setFlowState(null)
+        qc.invalidateQueries(["owned-wallets", user?.email])
       },
       onError: async (e: any) => {
         reset()

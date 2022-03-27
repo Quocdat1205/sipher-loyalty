@@ -1,4 +1,4 @@
-import { useMutation } from "react-query"
+import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, Button, chakra, Text } from "@sipher.dev/sipher-ui"
 import { AuthType, ChangeWalletAction, useAuthFlowStore } from "@store"
@@ -6,11 +6,14 @@ import { useWalletContext } from "@web3"
 
 import { ChakraModal } from "@components/shared"
 import { useChakraToast } from "@hooks"
+import { useAuth } from "src/providers/auth"
 
 const ChangeWallet = () => {
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
   const { account, scCaller, reset } = useWalletContext()
   const toast = useChakraToast()
+  const qc = useQueryClient()
+  const { user } = useAuth()
 
   const { mutate: mutateAddWallet, isLoading } = useMutation<unknown, unknown, string>(
     async account => {
@@ -21,6 +24,7 @@ const ChangeWallet = () => {
     {
       onSuccess: () => {
         setFlowState(null)
+        qc.invalidateQueries(["owned-wallets", user?.email])
       },
       onError: async (e: any) => {
         if (e?.code === 4001) {
