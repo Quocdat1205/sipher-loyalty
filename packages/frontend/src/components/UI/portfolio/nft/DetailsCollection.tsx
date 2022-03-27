@@ -25,21 +25,23 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
   return (
     <Box pos="relative">
       <NotifyNetwork chainId={collectionData?.chainId} />
-      <Box pos="relative" h="18rem">
+      <Flex flexDir="column" w="full" justify="center" position="relative">
         <Image
+          layout="responsive"
+          quality={100}
+          width={1440}
+          height={212}
           src={collectionData?.bannerImage ?? "/images/spaceship/banner.png"}
-          objectFit="cover"
-          layout="fill"
-          alt="banner"
+          alt={"banner"}
         />
-      </Box>
+      </Flex>
       <Flex flexDir="column" w="full" align="center">
         <Box px={[4, 4, 4, 0, 0]} w="full" maxW="1200px">
           <Stack mb={4} flexDir="column" align="center" pos="relative">
             <Avatar src={collectionData?.logoImage} pos="absolute" transform="translateY(-50%)" size="xl" />
             <Flex pt={16} align="center">
               <Heading mr={1} fontSize="3xl" fontWeight={600}>
-                {capitalize(collectionData?.name.toLowerCase() ?? "")}
+                {capitalize(collectionData?.name?.toLowerCase() ?? "")}
               </Heading>
               {collectionData?.isVerified && (
                 <Box>
