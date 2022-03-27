@@ -2,26 +2,22 @@ import { FormEvent, useEffect, useState } from "react"
 import { useMutation } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Button, chakra, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
+import { AuthType, SignInAction } from "@store"
 
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
 import { useChakraToast } from "@hooks"
 
-import ConnectToWallet from "./ConnectToWallet"
+import { useSignInContext } from "./useSignIn"
 
-interface VerifySignUpFormProps {
-  email: string
-  isWalletConnected?: boolean
-}
-
-const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpFormProps) => {
+const VerifySignInForm = () => {
   const toast = useChakraToast()
   const [code, setCode] = useState("")
 
-  const [isConnectingWallet, setIsConnectingWallet] = useState(false)
+  const { email, flowState, setFlowState, wallet } = useSignInContext()
 
   const { mutate, isLoading } = useMutation(() => AtherIdAuth.confirmSignUp(email, code), {
     onSuccess: () => {
-      if (!isWalletConnected) setIsConnectingWallet(true)
+      if (!wallet.isActive) setFlowState({ type: AuthType.SignIn, action: SignInAction.ConnectWallet })
       else
         toast({
           status: "success",
@@ -49,10 +45,10 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
   })
 
   useEffect(() => {
-    AtherIdAuth.resendSignUp(email)
-  }, [])
-
-  if (isConnectingWallet) return <ConnectToWallet onClose={() => setIsConnectingWallet(false)} />
+    if (flowState?.type === AuthType.SignIn && flowState.action === SignInAction.Verify) {
+      AtherIdAuth.resendSignUp(email)
+    }
+  }, [flowState])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -60,7 +56,12 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
   }
 
   return (
-    <ChakraModal title={"VERIFY YOUR ACCOUNT"} size="lg" isOpen={true} hideCloseButton={true}>
+    <ChakraModal
+      title={"VERIFY YOUR ACCOUNT"}
+      size="lg"
+      isOpen={flowState?.type === AuthType.SignIn && flowState.action === SignInAction.Verify}
+      hideCloseButton={true}
+    >
       <Form onSubmit={handleSubmit}>
         <Stack pos="relative" px={6} spacing={4} w="full">
           <Text color="neutral.300">
@@ -88,4 +89,4 @@ const VerifySignUpForm = ({ email, isWalletConnected = false }: VerifySignUpForm
   )
 }
 
-export default VerifySignUpForm
+export default VerifySignInForm

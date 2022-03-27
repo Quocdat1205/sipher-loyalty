@@ -16,26 +16,23 @@ interface SettingAccountModalProps {
 export const SettingModal = ({ onClose, setChangeForm }: SettingAccountModalProps) => {
   const { values, setValue, errors, initForm } = useFormCoreWithError({ name: "", bio: "" })
 
-  const { session, user } = useAuth()
+  const { user, bearerToken } = useAuth()
   const qc = useQueryClient()
   const toast = useChakraToast()
 
-  const { data: userProfile, refetch } = useQuery(
-    ["profile", user?.email],
-    () => getProfile(session?.getIdToken().getJwtToken() ?? ""),
-    {
-      onSuccess: data => initForm({ name: data.user.name, bio: data.user.bio }),
-    },
-  )
+  const { data: userProfile, refetch } = useQuery(["profile", bearerToken], () => getProfile(bearerToken), {
+    onSuccess: data => initForm({ name: data.user.name, bio: data.user.bio }),
+  })
+
   useEffect(() => {
     refetch()
   }, [])
 
   const { mutate: mutateUpdateProfile, isLoading } = useMutation(
-    () => updateProfile({ name: values.name, bio: values.bio }, session?.getIdToken().getJwtToken() ?? ""),
+    () => updateProfile({ name: values.name, bio: values.bio }, bearerToken),
     {
       onSuccess: () => {
-        qc.invalidateQueries(["profile", user?.email])
+        qc.invalidateQueries(["profile", bearerToken])
         toast({
           status: "success",
           title: "Update profile successfully",

@@ -1,3 +1,3 @@
-import SignInForm from "./SignInForm"
+import SignInFlow from "./SignInFlow"
 
-export default SignInForm
+export default SignInFlow

@@ -2,32 +2,24 @@ import { FormEvent, useEffect, useState } from "react"
 import { useMutation } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Button, chakra, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
-import { useStore } from "@store"
-import { useWalletContext } from "@web3"
+import { AuthType, SignUpAction } from "@store"
 
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
 import { useChakraToast } from "@hooks"
+import { useAuth } from "src/providers/auth"
 
-import ConnectingWallet from "./ConnectingWallet"
-import ConnectToWallet from "./ConnectToWallet"
+import { useSignUpContext } from "./useSignUp"
 
-interface VerifySignUpFormProps {
-  email: string
-  password: string
-  // address will be string when user connect wallet first, else
-  account?: string | null
-}
-
-// * CONFIRM SIGN UP => SIGN IN (=> ADD WALLET IF HAVE => CONFIRM WALLET)
-
-const VerifySignUpForm = ({ email, password, account = null }: VerifySignUpFormProps) => {
+const VerifySignUpForm = () => {
   const toast = useChakraToast()
   const [code, setCode] = useState("")
-  const [isOpen, setIsOpen] = useState(true)
-  const [isConnectingWallet, setIsConnectingWallet] = useState(false)
-  const [showConnectWallet, setShowConnectWallet] = useState(false)
-  const [authFlow] = useStore(s => [s.authFlow])
-  const wallet = useWalletContext()
+  const { setUser } = useAuth()
+
+  const { wallet, flowState, setFlowState, email, password } = useSignUpContext()
+
+  useEffect(() => {
+    if (flowState === null) setCode("")
+  })
 
   // Initiate wallet connection => Sign the message to get signature => Confirm wallet connection
   const { mutate: mutateAddWallet } = useMutation<unknown, unknown, string>(
@@ -38,12 +30,13 @@ const VerifySignUpForm = ({ email, password, account = null }: VerifySignUpFormP
     },
     {
       onSuccess: () => {
-        setIsOpen(false)
+        setFlowState(null)
       },
       onError: async (e: any) => {
         wallet.reset()
         if (e?.code === 4001) {
           await AtherIdAuth.signOut()
+          setFlowState(null)
           toast({ status: "error", title: "Signature error", message: "User denied to sign the message" })
         } else {
           toast({
@@ -58,11 +51,16 @@ const VerifySignUpForm = ({ email, password, account = null }: VerifySignUpFormP
 
   // Sign user in
   const { mutate: mutateSignIn, isLoading: isSigningIn } = useMutation(() => AtherIdAuth.signIn(email, password), {
-    onSuccess: () => {
-      if (account) {
-        setIsConnectingWallet(true)
-        mutateAddWallet(account)
-      } else setShowConnectWallet(true)
+    onMutate: () => {
+      console.log("3. SIGN IN")
+    },
+    onSuccess: data => {
+      console.log("3. USER:", data)
+      setUser(data)
+      if (wallet.account) {
+        setFlowState({ type: AuthType.SignUp, action: SignUpAction.ConnectingWallet })
+        mutateAddWallet(wallet.account)
+      } else setFlowState({ type: AuthType.SignUp, action: SignUpAction.ConnectWallet })
     },
   })
 
@@ -73,9 +71,11 @@ const VerifySignUpForm = ({ email, password, account = null }: VerifySignUpFormP
   const { mutate: mutateConfirmSignup, isLoading: isConfirmingSignup } = useMutation(
     () => AtherIdAuth.confirmSignUp(email, code),
     {
+      onMutate: () => {
+        console.log("2. VERIFY PASSCODE")
+      },
       onSuccess: () => {
         mutateSignIn()
-        setIsOpen(false)
       },
       onError: (e: any) => {
         toast({
@@ -88,10 +88,6 @@ const VerifySignUpForm = ({ email, password, account = null }: VerifySignUpFormP
   )
 
   const isLoading = isConfirmingSignup || isSigningIn
-
-  useEffect(() => {
-    if (authFlow === "SIGN_UP") setIsOpen(true)
-  }, [authFlow])
 
   const { mutate: mutateResendCode, isLoading: isResendingCode } = useMutation(() => AtherIdAuth.resendSignUp(email), {
     onSuccess: () => {
@@ -108,12 +104,13 @@ const VerifySignUpForm = ({ email, password, account = null }: VerifySignUpFormP
     mutateConfirmSignup()
   }
 
-  if (showConnectWallet) return <ConnectToWallet onClose={() => setShowConnectWallet(false)} />
-
-  if (isConnectingWallet) return <ConnectingWallet />
-
   return (
-    <ChakraModal title={"VERIFY YOUR ACCOUNT"} size="lg" isOpen={isOpen} hideCloseButton={true}>
+    <ChakraModal
+      title={"VERIFY YOUR ACCOUNT"}
+      size="lg"
+      isOpen={flowState?.type === AuthType.SignUp && flowState.action === SignUpAction.VerifySignUp}
+      hideCloseButton={true}
+    >
       <Form onSubmit={handleSubmit}>
         <Stack pos="relative" px={6} spacing={4} w="full">
           <Text color="neutral.300">

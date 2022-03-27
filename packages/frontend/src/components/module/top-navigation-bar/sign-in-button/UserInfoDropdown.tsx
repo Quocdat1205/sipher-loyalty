@@ -16,7 +16,6 @@ import {
   Stack,
   Text,
 } from "@sipher.dev/sipher-ui"
-import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
 import { EthereumIcon, SipherIcon } from "@components/shared"
@@ -35,19 +34,18 @@ interface UserInfoDropdownProps {
 }
 
 export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherClick }: UserInfoDropdownProps) => {
-  const { account } = useWalletContext()
+  const { account, reset } = useWalletContext()
   const {
     dataPrice,
     balance: { chainPrice, sipher, weth },
   } = useBalanceContext()
 
   const { signOut, userProfile } = useAuth()
-  const setAuthFlow = useStore(s => s.setAuthFlow)
 
   const { mutate: mutateSignOut, isLoading } = useMutation(signOut, {
     onSuccess: () => {
       onClose()
-      setAuthFlow(null)
+      reset()
     },
   })
 

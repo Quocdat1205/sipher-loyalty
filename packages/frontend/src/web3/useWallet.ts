@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ContractCaller } from "@contract"
 import AtherIdAuth from "@sipher.dev/ather-id"
+import { AuthType, ChangeWalletAction, useAuthFlowStore } from "@store"
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core"
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector"
 
@@ -11,7 +12,13 @@ import { ConnectorId, connectors } from "./connectors"
 import { ChainUnsupportedError } from "./errors"
 import { getChainName, SUPPORTED_CHAINS_INFO } from "./network"
 import { Status } from "./types"
-import { clearLastActiveAccount, setLastActiveAccount, setLastConnector } from "./utils"
+import {
+  clearLastActiveAccount,
+  getLastActiveAccount,
+  getLastConnector,
+  setLastActiveAccount,
+  setLastConnector,
+} from "./utils"
 
 declare global {
   interface Window {
@@ -29,7 +36,7 @@ const useWallet = () => {
   // Current chain id
   const chain = useMemo(() => (chainId ? getChainName(chainId) : null), [chainId])
   const scCaller = useRef<ContractCaller | null>(null)
-
+  const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
   const reset = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-extra-semi
     ;(connectors.walletConnect().web3ReactConnector as WalletConnectConnector).walletConnectProvider = undefined
@@ -63,7 +70,7 @@ const useWallet = () => {
     }
   }, [web3React.library])
 
-  const { ownedWallets } = useAuth()
+  const { ownedWallets, authenticated } = useAuth()
 
   // connect to wallet
   const connect = useCallback(
@@ -93,8 +100,10 @@ const useWallet = () => {
           }
           web3ReactConnector.getProvider().then(provider => {
             provider.on("accountsChanged", async ([account]: string[]) => {
-              if (!ownedWallets.includes(account)) {
+              if (authenticated && account && !ownedWallets.includes(account) && flowState === null) {
+                console.log("HANDLE ACCOUNT CHANGE")
                 try {
+                  setFlowState({ type: AuthType.ChangeWallet, action: ChangeWalletAction.Change })
                   const res = await AtherIdAuth.connectWallet(account!)
                   const signature = await scCaller.current?.sign(res.message)
                   await AtherIdAuth.confirmConectWallet(res, signature!)
@@ -181,14 +190,14 @@ const useWallet = () => {
   }
 
   // auto connect on refresh
-  //   useEffect(() => {
-  //       const lastConnector = getLastConnector()
-  //       const lastActiveAccount = getLastActiveAccount()
+  // useEffect(() => {
+  //   const lastConnector = getLastConnector()
+  //   const lastActiveAccount = getLastActiveAccount()
 
-  //       if (lastActiveAccount && lastConnector === "injected" && !account) {
-  //           connect()
-  //       }
-  //   }, [connect, account])
+  //   if (lastActiveAccount && lastConnector === "injected" && !account) {
+  //     connect()
+  //   }
+  // }, [connect, account])
 
   const wallet = {
     chainId,

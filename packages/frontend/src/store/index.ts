@@ -1,5 +1,7 @@
 import create from "zustand"
 
+export * from "./authFlow"
+
 type State = {
   isSidebarOpen: boolean
   toggleSidebar: () => void
@@ -11,8 +13,6 @@ type State = {
   setGridSize: (value: "small" | "medium") => void
   layoutType: "explorer" | "stats"
   setLayoutType: (value: "explorer" | "stats") => void
-  authFlow: "SIGN_IN" | "SIGN_UP" | "FORGET_PASSWORD" | null
-  setAuthFlow: (value: "SIGN_IN" | "SIGN_UP" | "FORGET_PASSWORD" | null) => void
 }
 
 export const useStore = create<State>(set => ({
@@ -29,6 +29,4 @@ export const useStore = create<State>(set => ({
   setGridSize: value => set(() => ({ gridSize: value })),
   layoutType: "explorer",
   setLayoutType: value => set(() => ({ layoutType: value })),
-  authFlow: null,
-  setAuthFlow: value => set(() => ({ authFlow: value })),
 }))

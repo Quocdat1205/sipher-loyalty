@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { MdInfo } from "react-icons/md"
 import { useMutation } from "react-query"
@@ -6,11 +5,12 @@ import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, Button, chakra, Flex, FormControl, Stack, Text } from "@sipher.dev/sipher-ui"
+import { AuthType, SignUpAction } from "@store"
 
 import { ChakraModal, CustomInput, CustomPopover, Form, FormField } from "@components/shared"
 import { useChakraToast } from "@hooks"
 
-import VerifySignUpForm from "./VerifySignUpForm"
+import { useSignUpContext } from "./useSignUp"
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required("Email is required").email("Must be a valid email address"),
@@ -25,15 +25,10 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref("password")], "Passwords must match"),
 })
 
-interface FillEmailFormProps {
-  onClose: () => void
-}
-
-const FillEmailForm = ({ onClose }: FillEmailFormProps) => {
-  const [showVerify, setShowVerify] = useState(false)
+const FillEmailForm = () => {
   const toast = useChakraToast()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+
+  const { flowState, setFlowState, setEmail, setPassword } = useSignUpContext()
 
   const {
     register,
@@ -45,7 +40,7 @@ const FillEmailForm = ({ onClose }: FillEmailFormProps) => {
     data => AtherIdAuth.signUp(data.email, data.password),
     {
       onSuccess: () => {
-        setShowVerify(true)
+        setFlowState({ type: AuthType.SignUp, action: SignUpAction.VerifySignUp })
       },
       onError: (e: any) =>
         toast({
@@ -56,10 +51,13 @@ const FillEmailForm = ({ onClose }: FillEmailFormProps) => {
     },
   )
 
-  if (showVerify) return <VerifySignUpForm email={email} password={password} />
-
   return (
-    <ChakraModal title={"YOU ARE ALMOST THERE"} size="lg" isOpen={true} onClose={onClose}>
+    <ChakraModal
+      title={"YOU ARE ALMOST THERE"}
+      size="lg"
+      isOpen={flowState?.type === AuthType.SignUp && flowState.action == SignUpAction.FillEmail}
+      onClose={() => setFlowState(null)}
+    >
       <Form onSubmit={handleSubmit(d => mutate(d))}>
         <Stack pos="relative" px={6} spacing={4} w="full">
           <Flex display="inline-block" align="center">

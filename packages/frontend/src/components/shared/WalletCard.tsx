@@ -8,7 +8,6 @@ interface WalletCardProps extends ButtonProps {
   colorScheme: ButtonProps["colorScheme"]
   text?: string
   isLoading?: boolean
-  spinnerColor?: string
 }
 
 export const WalletCard = ({ colorScheme, src, text, onClick, isLoading = false, ...rest }: WalletCardProps) => {

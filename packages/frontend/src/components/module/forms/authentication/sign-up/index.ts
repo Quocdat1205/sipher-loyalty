@@ -1,3 +1,3 @@
-import SignUpForm from "./SignUpForm"
+import SignUpFlow from "./SignUpFlow"
 
-export default SignUpForm
+export default SignUpFlow

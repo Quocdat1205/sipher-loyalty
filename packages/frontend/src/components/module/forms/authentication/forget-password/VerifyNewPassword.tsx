@@ -4,7 +4,7 @@ import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Button, chakra, FormControl, Spinner, Text, VStack } from "@sipher.dev/sipher-ui"
-import { useStore } from "@store"
+import { AuthType, ForgotPasswordAction, SignInAction, useAuthFlowStore } from "@store"
 
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
 import { useChakraToast } from "@hooks"
@@ -24,13 +24,11 @@ const validationSchema = Yup.object().shape({
 
 interface VerifySignUpFormProps {
   email: string
-  isOpen: boolean
-  onClose: () => void
 }
 
-const VerifySignUpForm = ({ email, isOpen, onClose }: VerifySignUpFormProps) => {
+const VerifyNewPassword = ({ email }: VerifySignUpFormProps) => {
   const toast = useChakraToast()
-  const setAuthFlow = useStore(s => s.setAuthFlow)
+  const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
 
   const {
     handleSubmit,
@@ -47,7 +45,7 @@ const VerifySignUpForm = ({ email, isOpen, onClose }: VerifySignUpFormProps) => 
           message: "Please login to continue.",
           status: "success",
         })
-        setAuthFlow("SIGN_IN")
+        setFlowState({ type: AuthType.SignIn, action: SignInAction.SignIn })
       },
       onError: (e: any) => {
         toast({
@@ -80,7 +78,12 @@ const VerifySignUpForm = ({ email, isOpen, onClose }: VerifySignUpFormProps) => 
   )
 
   return (
-    <ChakraModal title={"CHANGE YOUR PASSWORD"} size="lg" isOpen={isOpen} onClose={onClose}>
+    <ChakraModal
+      title={"CHANGE YOUR PASSWORD"}
+      size="lg"
+      isOpen={flowState?.type === AuthType.ForgotPassword && flowState.action === ForgotPasswordAction.Verify}
+      onClose={() => setFlowState(null)}
+    >
       <Form onSubmit={handleSubmit(d => mutateForgetPasswordSubmit(d))}>
         <VStack align="stretch" spacing={4} px={6}>
           <Text color="neutral.300" fontSize="sm">
@@ -117,4 +120,4 @@ const VerifySignUpForm = ({ email, isOpen, onClose }: VerifySignUpFormProps) => 
   )
 }
 
-export default VerifySignUpForm
+export default VerifyNewPassword
