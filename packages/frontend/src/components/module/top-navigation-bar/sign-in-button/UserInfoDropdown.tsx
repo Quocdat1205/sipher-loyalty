@@ -36,7 +36,7 @@ interface UserInfoDropdownProps {
 }
 
 export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherClick }: UserInfoDropdownProps) => {
-  const { account } = useWalletContext()
+  const { account, reset } = useWalletContext()
   const {
     balance: { ethereum, sipher, weth },
   } = useBalanceContext()
@@ -45,12 +45,11 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
   const ethPrice = useETHPrice()
 
   const { signOut, userProfile } = useAuth()
-  const setAuthFlow = useStore(s => s.setAuthFlow)
 
   const { mutate: mutateSignOut, isLoading } = useMutation(signOut, {
     onSuccess: () => {
       onClose()
-      setAuthFlow(null)
+      reset()
     },
   })
 

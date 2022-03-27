@@ -5,14 +5,13 @@ import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, Button, chakra, Flex, Link, Stack, Text } from "@sipher.dev/sipher-ui"
-import { useStore } from "@store"
-import { useWalletContext } from "@web3"
+import { AuthType, SignInAction, SignUpAction } from "@store"
 
 import { ChakraModal, CustomInput, Form, FormControl, FormField, WalletSignIn } from "@components/shared"
 import { useChakraToast } from "@hooks"
+import { shortenAddress } from "@utils"
 
-import FillEmailForm from "./FillEmailForm"
-import VerifySignUpForm from "./VerifySignUpForm"
+import { useSignUpContext } from "./useSignUp"
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required("Email is required").email("Must be a valid email address"),
@@ -27,44 +26,38 @@ const validationSchema = Yup.object().shape({
     .oneOf([Yup.ref("password")], "Passwords must match"),
 })
 
-interface SignUpFormProps {
-  isOpen: boolean
-  onClose: () => void
-}
-
-const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
+const SignUpForm = () => {
   const toast = useChakraToast()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [showVerify, setShowVerify] = useState(false)
-  const [showEmailForm, setShowEmailForm] = useState(false)
+
   const [connectingMethod, setConnectingMethod] = useState<string | null>(null)
-  const setAuthFlow = useStore(s => s.setAuthFlow)
-  const wallet = useWalletContext()
+  // const setAuthFlow = useStore(s => s.setAuthFlow)
+  const { flowState, setFlowState, wallet, setEmail, setPassword, setIsConnectWalletFirst } = useSignUpContext()
 
   useEffect(() => {
-    if (isOpen) {
+    if (flowState?.type === AuthType.SignUp && flowState.action === SignUpAction.SignUp) {
       setConnectingMethod(null)
-      setShowVerify(false)
-      setShowEmailForm(false)
     }
-  }, [isOpen])
-
-  useEffect(() => {
-    if (showVerify || showEmailForm) setAuthFlow(null)
-  }, [showVerify, showEmailForm])
+  }, [flowState])
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({ resolver: yupResolver(validationSchema) })
+
+  useEffect(() => {
+    if (flowState?.type === AuthType.SignUp && flowState?.action === SignUpAction.SignUp) reset()
+  }, [flowState])
 
   const { mutate: mutateSignUp, isLoading } = useMutation<unknown, unknown, FieldValues>(
     data => AtherIdAuth.signUp(data.email, data.password),
     {
+      onMutate: data => {
+        console.log("1. SIGN UP:", data.email, data.password)
+      },
       // Go to verify page after sign up
-      onSuccess: () => setShowVerify(true),
+      onSuccess: () => setFlowState({ type: AuthType.SignUp, action: SignUpAction.VerifySignUp }),
       onError: (e: any) => {
         toast({
           status: "error",
@@ -77,6 +70,7 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
 
   const handleConnectWallet = async (connectorId: Parameters<typeof wallet["connect"]>["0"]) => {
     // Try to connect wallet
+    setIsConnectWalletFirst(true)
     setConnectingMethod(connectorId!)
     const account = await wallet.connect(connectorId)
 
@@ -85,36 +79,28 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
         // Check if this address is already registered, if so, throw error, else navigate to fill email page
         const user = await AtherIdAuth.signIn(account)
         if (user) {
+          await AtherIdAuth.signOut()
+          wallet.reset()
           toast({
             status: "error",
             title: "Address is already registered!",
             message: "Please sign in to continue.",
           })
-        } else setShowEmailForm(true)
+        } else setFlowState({ type: AuthType.SignUp, action: SignUpAction.FillEmail })
       } catch (e: any) {
-        console.log("Error", e?.message)
-        setShowEmailForm(true)
+        setFlowState({ type: AuthType.SignUp, action: SignUpAction.FillEmail })
       }
     }
     setConnectingMethod(null)
   }
 
-  // show verify form after user has signed up
-  if (showVerify) return <VerifySignUpForm email={email} password={password} />
-
-  // show email filling form after user connect wallet first
-  if (showEmailForm)
-    return (
-      <FillEmailForm
-        onClose={() => {
-          setAuthFlow(null)
-          setShowEmailForm(false)
-        }}
-      />
-    )
-
   return (
-    <ChakraModal title={"SIGN IN OR CREATE ACCOUNT"} size="lg" isOpen={isOpen} onClose={onClose}>
+    <ChakraModal
+      title={"SIGN IN OR CREATE ACCOUNT"}
+      size="lg"
+      isOpen={flowState?.type === AuthType.SignUp && flowState?.action === SignUpAction.SignUp}
+      onClose={() => setFlowState(null)}
+    >
       <Form onSubmit={handleSubmit(d => mutateSignUp(d))}>
         <Stack px={6} spacing={4} w="full">
           <Text fontSize="sm" color="neutral.300">
@@ -171,10 +157,21 @@ const SignUpForm = ({ isOpen, onClose }: SignUpFormProps) => {
             onMetamaskConnect={() => handleConnectWallet("injected")}
             onWalletConnectConnect={() => handleConnectWallet("walletConnect")}
             connectingMethod={connectingMethod}
+            metamaskText={
+              wallet.account && wallet.connector === "injected" ? shortenAddress(wallet.account) : undefined
+            }
+            walletConnectText={
+              wallet.account && wallet.connector === "walletConnect" ? shortenAddress(wallet.account) : undefined
+            }
           />
           <Text color="neutral.400" textAlign="center">
             Already have an account?{" "}
-            <chakra.span textDecor="underline" cursor="pointer" color="cyan.600" onClick={() => setAuthFlow("SIGN_IN")}>
+            <chakra.span
+              textDecor="underline"
+              cursor="pointer"
+              color="cyan.600"
+              onClick={() => setFlowState({ type: AuthType.SignIn, action: SignInAction.SignIn })}
+            >
               Sign In
             </chakra.span>
           </Text>

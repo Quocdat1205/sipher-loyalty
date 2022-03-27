@@ -7,12 +7,16 @@ interface WalletSignInProps extends BoxProps {
   onMetamaskConnect: () => void
   onWalletConnectConnect: () => void
   connectingMethod: string | null
+  metamaskText?: string
+  walletConnectText?: string
 }
 
 export const WalletSignIn = ({
   onMetamaskConnect,
   onWalletConnectConnect,
   connectingMethod,
+  metamaskText = "Metamask",
+  walletConnectText = "WalletConnect",
   ...rest
 }: WalletSignInProps) => {
   return (
@@ -46,20 +50,18 @@ export const WalletSignIn = ({
       </Flex>
       <HStack spacing={4}>
         <WalletCard
-          text="Metamask"
+          text={metamaskText}
           colorScheme={"whiteAlpha"}
           src="/images/icons/wallets/metamask.svg"
           onClick={onMetamaskConnect}
           isLoading={connectingMethod === "injected"}
-          spinnerColor="black"
         />
         <WalletCard
-          text="ConnectWallet"
+          text={walletConnectText}
           colorScheme={"whiteAlpha"}
           src="/images/icons/wallets/walletconnect.svg"
           onClick={onWalletConnectConnect}
           isLoading={connectingMethod === "walletConnect"}
-          spinnerColor="black"
         />
       </HStack>
     </Box>

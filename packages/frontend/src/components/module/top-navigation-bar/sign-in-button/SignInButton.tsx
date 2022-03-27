@@ -1,9 +1,10 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { FaWallet } from "react-icons/fa"
 import { Avatar, Box, Flex, Text, useOutsideClick } from "@sipher.dev/sipher-ui"
-import { useStore } from "@store"
+import { AuthType, ConnectWalletAction, SignInAction, useAuthFlowStore } from "@store"
 import { useWalletContext } from "@web3"
 
+import ConnectToWallet from "@components/module/forms/authentication/connect-wallet"
 import ForgetPassword from "@components/module/forms/authentication/forget-password"
 import SignInForm from "@components/module/forms/authentication/sign-in"
 import SignUpForm from "@components/module/forms/authentication/sign-up"
@@ -19,10 +20,7 @@ const SignInButton = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [modal, setModal] = useState("")
 
-  const { authFlow, setAuthFlow } = useStore(s => ({
-    authFlow: s.authFlow,
-    setAuthFlow: s.setAuthFlow,
-  }))
+  const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
 
   const { authenticated, userProfile } = useAuth()
 
@@ -31,17 +29,23 @@ const SignInButton = () => {
     handler: () => setIsPopupOpen(false),
   })
 
+  useEffect(() => {
+    if (authenticated && !wallet.isActive) {
+      setFlowState({ type: AuthType.ConnectWallet, action: ConnectWalletAction.Connect })
+    }
+  }, [authenticated && !wallet.isActive])
+
   return (
     <SignInProvider>
       <Box minW="6rem" ref={popRef} pos="relative" zIndex={"modal"}>
         <Flex
-          bg={!(authenticated && wallet.isActive) ? "accent.500" : "transparent"}
+          bg={!(authenticated && wallet.isActive && flowState === null) ? "accent.500" : "transparent"}
           rounded="md"
           align="center"
           transform={"auto"}
           boxShadow={"base"}
         >
-          {!(authenticated && wallet.isActive) ? (
+          {!(authenticated && wallet.isActive && flowState === null) ? (
             <Flex
               px={2}
               py={2}
@@ -49,9 +53,7 @@ const SignInButton = () => {
               justify="center"
               w="full"
               cursor="pointer"
-              onClick={() => {
-                setAuthFlow("SIGN_IN")
-              }}
+              onClick={() => setFlowState({ type: AuthType.SignIn, action: SignInAction.SignIn })}
               transform={"auto"}
             >
               <Text color="neutral.900" display={["none", "block"]} fontWeight={600}>
@@ -92,9 +94,10 @@ const SignInButton = () => {
 
       <AccountModal isOpen={modal === "SETTING"} onClose={() => setModal("")} />
       <BuySipherModal isOpen={modal === "BUY"} onClose={() => setModal("")} />
-      <SignInForm isOpen={authFlow === "SIGN_IN"} onClose={() => setAuthFlow(null)} />
-      <SignUpForm isOpen={authFlow === "SIGN_UP"} onClose={() => setAuthFlow(null)} />
-      <ForgetPassword isOpen={authFlow === "FORGET_PASSWORD"} onClose={() => setAuthFlow(null)} />
+      <SignInForm />
+      <SignUpForm />
+      <ForgetPassword />
+      <ConnectToWallet />
     </SignInProvider>
   )
 }

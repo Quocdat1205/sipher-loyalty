@@ -16,12 +16,12 @@ interface SettingAccountModalProps {
 export const SettingModal = ({ onClose, setChangeForm }: SettingAccountModalProps) => {
   const { values, setValue, errors, initForm } = useFormCoreWithError({ name: "", bio: "" })
 
-  const { session, user } = useAuth()
+  const { session, cognitoUser } = useAuth()
   const qc = useQueryClient()
   const toast = useChakraToast()
 
   const { data: userProfile, refetch } = useQuery(
-    ["profile", user?.email],
+    ["profile", cognitoUser?.getUsername()],
     () => getProfile(session?.getIdToken().getJwtToken() ?? ""),
     {
       onSuccess: data => initForm({ name: data.user.name, bio: data.user.bio }),
@@ -35,7 +35,7 @@ export const SettingModal = ({ onClose, setChangeForm }: SettingAccountModalProp
     () => updateProfile({ name: values.name, bio: values.bio }, session?.getIdToken().getJwtToken() ?? ""),
     {
       onSuccess: () => {
-        qc.invalidateQueries(["profile", user?.email])
+        qc.invalidateQueries(["profile", cognitoUser?.getUsername()])
         toast({
           status: "success",
           title: "Update profile successfully",
@@ -82,7 +82,7 @@ export const SettingModal = ({ onClose, setChangeForm }: SettingAccountModalProp
         <FormLabel mb={1} fontSize="sm" color="neutral.400">
           Email
         </FormLabel>
-        <Text>{user?.email}</Text>
+        <Text>{cognitoUser?.getUsername()}</Text>
       </FormControl>
       <FormControl mb={4}>
         <FormLabel mb={1} fontSize="sm" color="neutral.400">

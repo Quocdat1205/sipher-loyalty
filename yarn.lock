@@ -3876,10 +3876,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sipher.dev/ather-id@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@sipher.dev/ather-id/-/ather-id-1.0.0.tgz#f0b6c455ace3d12256270bf2595334524e9cab69"
-  integrity sha512-W3RlDH7eRo66ByXaC3w2VkbdXGmBoKFPyW7IlWfiJuBqJFLICuPUvbc5gYq870M8mj3k3Y2RJL148VhZ4wxLlg==
+"@sipher.dev/ather-id@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@sipher.dev/ather-id/-/ather-id-1.1.0.tgz#09af0f458de3c63847411e77175c67099a7bb4e9"
+  integrity sha512-8Zl2DdvG9jID88ET7ya8yvY1qQ58irbN7aTRO7RF/J7QAw7bs3L24R7o1xL0kqoBs/b0kap6xI2H6mZhVq093Q==
   dependencies:
     "@aws-amplify/auth" "^4.4.4"
     "@aws-amplify/core" "^4.4.0"

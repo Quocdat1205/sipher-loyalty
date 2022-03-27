@@ -5,61 +5,38 @@ import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth, { CognitoUser } from "@sipher.dev/ather-id"
 import { Box, Button, chakra, Flex, FormControl, Stack, Text } from "@sipher.dev/sipher-ui"
-import { useStore } from "@store"
-import { useWalletContext } from "@web3"
+import { AuthType, ForgotPasswordAction, SignInAction, SignUpAction } from "@store"
 
 import { ChakraModal, CustomInput, Form, FormField, WalletSignIn } from "@components/shared"
 import { useChakraToast } from "@hooks"
 import { useAuth } from "src/providers/auth"
 
-import useSignInContext from "../useSignInContext"
-
-import ConnectToWallet from "./ConnectToWallet"
-import VerifySignUpForm from "./VerifySignUpForm"
+import { useSignInContext } from "./useSignIn"
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required("Email is required").email("Must be a valid email address"),
   password: Yup.string().required("Password is required"),
 })
 
-interface SignInFormProps {
-  isOpen: boolean
-  onClose: () => void
-}
-
-const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
-  const wallet = useWalletContext()
+const SignInForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({ resolver: yupResolver(validationSchema) })
 
   const toast = useChakraToast()
-  const { setUser: setSigningInUser } = useSignInContext()
+  // const { setUser: setSigningInUser } = useSignInContext()
   const { setUser } = useAuth()
 
-  const setAuthFlow = useStore(s => s.setAuthFlow)
+  const { wallet, flowState, setFlowState, setEmail } = useSignInContext()
 
-  const [connectWallet, setConnectWallet] = useState(false)
-  const [verifyCode, setVerifyCode] = useState(false)
-  const [email, setEmail] = useState("")
   const [connectingMethod, setConnectingMethod] = useState<string | null>(null)
 
-  // useEffect(() => {
-  //   if (authenticated && !wallet.isActive) setConnectWallet(true)
-  // }, [authenticated, !wallet.isActive])
-
   useEffect(() => {
-    if (connectWallet || verifyCode) setAuthFlow(null)
-  }, [connectWallet, verifyCode])
-
-  useEffect(() => {
-    if (isOpen) {
-      setConnectWallet(false)
-      setVerifyCode(false)
-    }
-  }, [isOpen])
+    if (flowState?.type === AuthType.SignIn && flowState?.action === SignInAction.SignIn) reset()
+  }, [flowState])
 
   const handleWalletChallenge = async (cogitoUser: CognitoUser, message: string) => {
     if (!wallet.scCaller.current) return
@@ -77,19 +54,20 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
 
     const user = await AtherIdAuth.responseToSignInChallenge(cogitoUser, response)
     setUser(user)
-    onClose()
+    setFlowState(null)
   }
 
   const handleChallenge = async (user: any) => {
     if (!user.challengeName) {
-      if (!wallet.isActive) setConnectWallet(true)
-      else onClose()
+      if (!wallet.isActive) setFlowState({ type: AuthType.SignIn, action: SignInAction.ConnectWallet })
+      else setFlowState(null)
       return setUser(user)
     }
 
+    // ! TO DO: handle the case when user need to change their password
     if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
       toast({ title: "Need new password" })
-      return setSigningInUser(user)
+      return
     } else if (user.challengeName === "CUSTOM_CHALLENGE") {
       const { TYPE } = user.challengeParam
       if (TYPE === "WALLET") {
@@ -110,13 +88,12 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
       onSuccess: handleChallenge,
       onError: (e: any) => {
         if (e?.message === "User is not confirmed.") {
-          setVerifyCode(true)
+          setFlowState({ type: AuthType.SignIn, action: SignInAction.Verify })
         } else if (e?.message === "Wallet is not connected with any account") {
           toast({
             title: "Wallet is not registered",
             message: "Please sign up to continue!",
           })
-          setAuthFlow("SIGN_UP")
         } else if (e?.code === 4001) {
           toast({
             status: "error",
@@ -144,12 +121,13 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
     mutateSignIn({ emailOrWallet: account! })
   }
 
-  if (connectWallet) return <ConnectToWallet onClose={() => setConnectWallet(false)} />
-
-  if (verifyCode) return <VerifySignUpForm email={email} />
-
   return (
-    <ChakraModal title={"SIGN IN"} size="lg" isOpen={isOpen} onClose={onClose}>
+    <ChakraModal
+      title={"SIGN IN"}
+      size="lg"
+      isOpen={flowState?.type === AuthType.SignIn && flowState.action === SignInAction.SignIn}
+      onClose={() => setFlowState(null)}
+    >
       <Form
         onSubmit={handleSubmit(d => {
           setConnectingMethod("email")
@@ -176,7 +154,11 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
               />
             </FormField>
           </FormControl>
-          <Text cursor="pointer" color="cyan.600" onClick={() => setAuthFlow("FORGET_PASSWORD")}>
+          <Text
+            cursor="pointer"
+            color="cyan.600"
+            onClick={() => setFlowState({ type: AuthType.ForgotPassword, action: ForgotPasswordAction.FillEmail })}
+          >
             Forgot password?
           </Text>
           <Button fontSize="md" py={6} fontWeight={600} type="submit" isLoading={connectingMethod === "email"}>
@@ -194,7 +176,12 @@ const SignInForm = ({ isOpen, onClose }: SignInFormProps) => {
 
           <Text color="neutral.400" textAlign="center">
             Don't have an account?{" "}
-            <chakra.span textDecor="underline" cursor="pointer" color="cyan.600" onClick={() => setAuthFlow("SIGN_UP")}>
+            <chakra.span
+              textDecor="underline"
+              cursor="pointer"
+              color="cyan.600"
+              onClick={() => setFlowState({ type: AuthType.SignUp, action: SignUpAction.SignUp })}
+            >
               Sign Up
             </chakra.span>
           </Text>

@@ -42,10 +42,13 @@ const useAuthState = () => {
     _setUser(obj)
   }
 
-  const getUser = async () =>
-    AtherIdAuth.currentAuthenticatedUser().catch(err => {
+  const getUser = async () => {
+    const currentUser = await AtherIdAuth.currentAuthenticatedUser().catch(err => {
       console.log("not authenticated", err)
     })
+    console.log("currentUser", currentUser)
+    return currentUser
+  }
 
   const setSession = (obj?: CognitoUserSession) => {
     sessionRef.current = obj
@@ -69,10 +72,10 @@ const useAuthState = () => {
   }
 
   const { data: userProfile } = useQuery(
-    ["profile", user?.email],
+    ["profile", cognitoUser?.getUsername()],
     () => getProfile(session?.getIdToken().getJwtToken() ?? ""),
     {
-      enabled: !!session,
+      enabled: !!cognitoUser && !!session,
     },
   )
 
@@ -96,6 +99,7 @@ const useAuthState = () => {
     })
 
     const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {
+      console.log("LISTEN", event, data)
       switch (event) {
         case "signIn":
         case "cognitoHostedUI":
@@ -123,6 +127,12 @@ const useAuthState = () => {
       clearInterval(sessionRefreshRef.current as any)
     }
   }, [])
+
+  useEffect(() => {
+    if (cognitoUser && !session) getSession().then(setSession)
+  }, [cognitoUser])
+
+  console.log("STATE", authenticated, cognitoUser?.getUsername(), session?.getIdToken()?.getJwtToken().slice(0, 10))
 
   return {
     authenticated,

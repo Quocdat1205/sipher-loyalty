@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ContractCaller } from "@contract"
 import AtherIdAuth from "@sipher.dev/ather-id"
+import { useAuthFlowStore } from "@store"
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core"
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector"
 
@@ -29,7 +30,7 @@ const useWallet = () => {
   // Current chain id
   const chain = useMemo(() => (chainId ? getChainName(chainId) : null), [chainId])
   const scCaller = useRef<ContractCaller | null>(null)
-
+  const flowState = useAuthFlowStore(s => s.state)
   const reset = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-extra-semi
     ;(connectors.walletConnect().web3ReactConnector as WalletConnectConnector).walletConnectProvider = undefined
@@ -63,7 +64,7 @@ const useWallet = () => {
     }
   }, [web3React.library])
 
-  const { ownedWallets } = useAuth()
+  const { ownedWallets, authenticated } = useAuth()
 
   // connect to wallet
   const connect = useCallback(
@@ -93,7 +94,8 @@ const useWallet = () => {
           }
           web3ReactConnector.getProvider().then(provider => {
             provider.on("accountsChanged", async ([account]: string[]) => {
-              if (!ownedWallets.includes(account)) {
+              if (authenticated && account && !ownedWallets.includes(account) && flowState === null) {
+                console.log("HANDLE ACCOUNT CHANGE")
                 try {
                   const res = await AtherIdAuth.connectWallet(account!)
                   const signature = await scCaller.current?.sign(res.message)
