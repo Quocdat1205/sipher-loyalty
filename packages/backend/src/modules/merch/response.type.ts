@@ -31,7 +31,7 @@ export class MerchType {
   @ApiProperty({ type: String })
   description: string;
 
-  @ApiProperty({ type: Image, isArray: true })
+  @ApiProperty({ type: ImageUrl, isArray: true })
   imageUrls: ImageUrl[];
 
   @ApiProperty({ type: String, default: "MERCH" })
