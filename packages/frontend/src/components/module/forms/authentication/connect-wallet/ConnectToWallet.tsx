@@ -12,7 +12,7 @@ import { useAuth } from "src/providers/auth"
 
 const ConnectToWallet = () => {
   const toast = useChakraToast()
-  const { ownedWallets } = useAuth()
+  const { ownedWallets, user } = useAuth()
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
   const { connect, scCaller, reset, account, connector } = useWalletContext()
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
@@ -36,7 +36,7 @@ const ConnectToWallet = () => {
         } else {
           toast({
             status: "error",
-            title: "Wallet already connected to another account",
+            title: "Wallet already connected to other account",
             message: "Please sign in by that address or switch to another address and try again",
           })
         }
@@ -64,6 +64,10 @@ const ConnectToWallet = () => {
       onClose={() => setFlowState(null)}
     >
       <Stack pos="relative" px={6} spacing={4} w="full">
+        <Text>
+          You're signed in as <chakra.span color="cyan.600">{user?.email}</chakra.span> but you didn't connect to your
+          wallet. Please connect to continue!
+        </Text>
         <HStack w="full" justify="space-between" align="center" spacing={4}>
           <WalletCard
             onClick={() => {

@@ -4,6 +4,7 @@ import { Avatar, Box, Flex, Text, useOutsideClick } from "@sipher.dev/sipher-ui"
 import { AuthType, ConnectWalletAction, SignInAction, useAuthFlowStore } from "@store"
 import { useWalletContext } from "@web3"
 
+import ChangeWallet from "@components/module/forms/authentication/change-wallet"
 import ConnectToWallet from "@components/module/forms/authentication/connect-wallet"
 import ForgetPassword from "@components/module/forms/authentication/forget-password"
 import SignInForm from "@components/module/forms/authentication/sign-in"
@@ -30,7 +31,7 @@ const SignInButton = () => {
   })
 
   useEffect(() => {
-    if (authenticated && !wallet.isActive) {
+    if (authenticated && !wallet.isActive && flowState === null) {
       setFlowState({ type: AuthType.ConnectWallet, action: ConnectWalletAction.Connect })
     }
   }, [authenticated && !wallet.isActive])
@@ -98,6 +99,7 @@ const SignInButton = () => {
       <SignUpForm />
       <ForgetPassword />
       <ConnectToWallet />
+      <ChangeWallet />
     </SignInProvider>
   )
 }

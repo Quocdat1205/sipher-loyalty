@@ -71,7 +71,6 @@ const useWallet = () => {
   }, [web3React.library])
 
   const { ownedWallets, authenticated } = useAuth()
-
   // connect to wallet
   const connect = useCallback(
     async (connectorId: ConnectorId = "injected") => {
@@ -98,33 +97,6 @@ const useWallet = () => {
           if (injectedAccount) {
             setLastActiveAccount(injectedAccount)
           }
-          web3ReactConnector.getProvider().then(provider => {
-            provider.on("accountsChanged", async ([account]: string[]) => {
-              if (authenticated && account && !ownedWallets.includes(account) && flowState === null) {
-                console.log("HANDLE ACCOUNT CHANGE")
-                try {
-                  setFlowState({ type: AuthType.ChangeWallet, action: ChangeWalletAction.Change })
-                  const res = await AtherIdAuth.connectWallet(account!)
-                  const signature = await scCaller.current?.sign(res.message)
-                  await AtherIdAuth.confirmConectWallet(res, signature!)
-                } catch (e: any) {
-                  if (e?.code === 4001) {
-                    toast({
-                      status: "error",
-                      title: "Signature error",
-                      message: "User denied to sign the message",
-                    })
-                    AtherIdAuth.signOut()
-                  }
-                }
-              }
-              reset()
-            })
-            provider.on("chainChanged", () => {
-              reset()
-              window.location.reload()
-            })
-          })
         }
         setStatus("connected")
         const account = await web3ReactConnector.getAccount()
@@ -162,6 +134,20 @@ const useWallet = () => {
     },
     [reset, toast, web3React],
   )
+
+  useEffect(() => {
+    if (ethereum) {
+      ethereum.on("accountsChanged", ([account]) => {
+        if (authenticated && account && !ownedWallets.includes(account) && flowState === null) {
+          setFlowState({ type: AuthType.ChangeWallet, action: ChangeWalletAction.Change })
+        }
+      })
+      ethereum.on("chainChanged", () => {
+        reset()
+        window.location.reload()
+      })
+    }
+  }, [ethereum, authenticated, ownedWallets, flowState, reset])
 
   function decimalToHexString(number: number) {
     if (number < 0) {
