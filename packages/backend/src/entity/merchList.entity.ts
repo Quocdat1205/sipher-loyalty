@@ -5,7 +5,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class MerchList {
   @ApiProperty({ type: Number })
   @PrimaryGeneratedColumn("increment")
-  id_transaction: number;
+  id_merch_list: number;
 
   @ApiProperty({ type: String })
   @Column()

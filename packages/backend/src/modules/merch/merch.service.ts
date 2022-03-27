@@ -1,5 +1,14 @@
 import { Repository } from "typeorm";
-import { Address, Item, ItemOrder, MerchList, Order, Receiver } from "@entity";
+import {
+  Address,
+  Airdrop,
+  AirdropType,
+  Item,
+  ItemOrder,
+  MerchList,
+  Order,
+  Receiver,
+} from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -17,7 +26,7 @@ import { MerchType, ReceiverType } from "./response.type";
 export class MerchService {
   constructor(
     @InjectRepository(MerchList)
-    private transactionRepo: Repository<MerchList>,
+    private merchListRepo: Repository<MerchList>,
     @InjectRepository(Item)
     private itemRepo: Repository<Item>,
     @InjectRepository(Receiver)
@@ -30,23 +39,23 @@ export class MerchService {
     private itemOrderRepo: Repository<ItemOrder>
   ) {}
 
-  async toMerchData(transaction: MerchList) {
+  async toMerchData(merchList: MerchList, type: AirdropType) {
     const item = await this.itemRepo.findOne({
-      where: { merch_item: transaction.merch_item },
+      where: { merch_item: merchList.merch_item },
     });
 
     return {
-      id_transaction: transaction.id_transaction,
-      publicAddress: transaction.publicAddress,
-      tier: transaction.tier,
-      merch_item: transaction.merch_item,
-      quantity: transaction.quantity,
-      quantity_shipped: transaction.quantity_shipped,
-      isShipped: transaction.isShipped,
+      id_merch_list: merchList.id_merch_list,
+      publicAddress: merchList.publicAddress,
+      tier: merchList.tier,
+      merch_item: merchList.merch_item,
+      quantity: merchList.quantity,
+      quantity_shipped: merchList.quantity_shipped,
+      isShipped: merchList.isShipped,
       name: item.name,
       description: item.description,
-      images: [], // item.images,
-      type: "MERCH",
+      imageUrls: item.imageUrls,
+      type,
     };
   }
 
@@ -55,29 +64,43 @@ export class MerchService {
   ): Promise<Array<MerchType> | undefined> {
     LoggerService.log(`Get all merch`);
 
-    const transactions = await this.transactionRepo.find({
+    const merchLists = await this.merchListRepo.find({
       where: { publicAddress, isShip: true },
     });
 
-    if (!transactions) {
+    if (!merchLists) {
       throw new HttpException("List merch not found", HttpStatus.NOT_FOUND);
     }
 
     const response: Array<MerchType> = await Promise.all(
-      transactions.map(async (transaction) => this.toMerchData(transaction))
+      merchLists.map(async (merchList) =>
+        this.toMerchData(merchList, AirdropType.MERCH)
+      )
     );
 
     return response;
   }
 
-  async getAllThanksCardByPublicAddress(
+  async getOtherMerchByPublicAddress(
     publicAddress: string
-  ): Promise<Array<MerchList> | undefined> {
-    const list_card = await this.transactionRepo.find({
+  ): Promise<Array<MerchType> | undefined> {
+    LoggerService.log(`Get all merch`);
+
+    const merchLists = await this.merchListRepo.find({
       where: { publicAddress, isShip: false },
     });
 
-    return list_card;
+    if (!merchLists) {
+      throw new HttpException("List merch not found", HttpStatus.NOT_FOUND);
+    }
+
+    const response: Array<MerchType> = await Promise.all(
+      merchLists.map(async (merchList) =>
+        this.toMerchData(merchList, AirdropType.OTHER)
+      )
+    );
+
+    return response;
   }
 
   async addNewReceriver(
@@ -135,24 +158,24 @@ export class MerchService {
           size: list_item_order[i].size,
           color: list_item_order[i].color,
           quantity: list_item_order[i].quantity,
-          id_transaction: list_item_order[i].id_transaction,
+          id_merch_list: list_item_order[i].id_merch_list,
         });
 
-        // update quantity transaction
+        // update quantity merchList
         // eslint-disable-next-line no-await-in-loop
-        const transaction = await this.transactionRepo.findOne({
-          where: { id_transaction: list_item_order[i].id_transaction },
+        const merchList = await this.merchListRepo.findOne({
+          where: { id_merch_list: list_item_order[i].id_merch_list },
         });
 
-        transaction.quantity -= list_item_order[i].quantity;
-        transaction.quantity_shipped += list_item_order[i].quantity;
+        merchList.quantity -= list_item_order[i].quantity;
+        merchList.quantity_shipped += list_item_order[i].quantity;
 
-        if (transaction.quantity - list_item_order[i].quantity === 0) {
-          transaction.isShipped = true;
+        if (merchList.quantity - list_item_order[i].quantity === 0) {
+          merchList.isShipped = true;
         }
 
         // eslint-disable-next-line no-await-in-loop
-        await this.transactionRepo.save(transaction);
+        await this.merchListRepo.save(merchList);
       }
 
       return true;
@@ -169,11 +192,11 @@ export class MerchService {
 
     for (let i = 0; i < length; i++) {
       // eslint-disable-next-line no-await-in-loop
-      const transaction = await this.transactionRepo.findOne({
-        where: { id_transaction: list_item[i].id_transaction },
+      const merchList = await this.merchListRepo.findOne({
+        where: { id_merch_list: list_item[i].id_merch_list },
       });
 
-      if (list_item[i].quantity > transaction.quantity) {
+      if (list_item[i].quantity > merchList.quantity) {
         return false;
       }
     }

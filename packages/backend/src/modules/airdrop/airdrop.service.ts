@@ -57,8 +57,8 @@ export class AirdropService {
       case AirdropType.MERCH:
         return this.getMerchAirdrop(publicAddress);
 
-      case AirdropType.CARD:
-        return this.merchService.getAllThanksCardByPublicAddress(publicAddress);
+      case AirdropType.OTHER:
+        return this.merchService.getOtherMerchByPublicAddress(publicAddress);
 
       default:
         return this.getAllAirdrop(publicAddress);

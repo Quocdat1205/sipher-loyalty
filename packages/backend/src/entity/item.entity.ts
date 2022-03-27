@@ -8,6 +8,7 @@ export enum ItemType {
   Hoodie = "Hoodie",
   Tshirt = "Tshirt",
   Hat = "Hat",
+  Card = "Card",
 }
 
 export enum ViewType {
@@ -15,6 +16,7 @@ export enum ViewType {
   Hoodie = "SIPHER Exclusive Hoodie",
   Tshirt = "SIPHER Exclusive T-shirt",
   Hat = "SIPHER Exclusive Hat",
+  Card = "SIPHER Exclusive Thank You Card",
 }
 
 @Entity()
@@ -25,24 +27,19 @@ export class Item {
 
   @ApiProperty({
     type: String,
-    enum: ["Bomber", "Hoodie", "Tshirt", "Hat"],
+    enum: ItemType,
     enumName: "ItemType",
   })
   @Column({
     type: "enum",
-    enum: ["Bomber", "Hoodie", "Tshirt", "Hat"],
+    enum: ItemType,
   })
   merch_item: ItemType;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String, enum: ViewType, enumName: "ViewType" })
   @Column({
     type: "enum",
-    enum: [
-      "SIPHER Exclusive Bomber",
-      "SIPHER Exclusive Hoodie",
-      "SIPHER Exclusive T-shirt",
-      "SIPHER Exclusive Hat",
-    ],
+    enum: ViewType,
   })
   name: ViewType;
 

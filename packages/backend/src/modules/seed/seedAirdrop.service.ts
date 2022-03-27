@@ -111,7 +111,7 @@ export class SeedAirdropService {
       const _item = this.itemRepo.create(item);
       await this.itemRepo.save(_item);
     } catch (err) {
-      LoggerService.error(item.imageUrl);
+      LoggerService.error(err);
     }
   };
 
@@ -131,7 +131,7 @@ export class SeedAirdropService {
       const _merch = this.merchListRepo.create(merch);
       await this.merchListRepo.save(_merch);
     } catch (err) {
-      LoggerService.error(err);
+      LoggerService.error(JSON.stringify(err));
     }
   };
 
