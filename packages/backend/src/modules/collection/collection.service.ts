@@ -227,16 +227,20 @@ export class CollectionService {
       const uriInfo = await this.uriService.getDataERC1155Spaceship(
         item.tokenId
       );
-      newItem.name = uriInfo.name;
-      newItem.imageUrl = uriInfo.image;
+      if (uriInfo) {
+        newItem.name = uriInfo.name;
+        newItem.imageUrl = uriInfo.image;
+      }
     }
     if (isSculptureContract(item.collectionId)) {
       LoggerService.debug("Is sculpture contract");
       const uriInfo = await this.uriService.getDataERC1155Sculpture(
         item.tokenId
       );
-      newItem.name = uriInfo.name;
-      newItem.imageUrl = uriInfo.image;
+      if (uriInfo) {
+        newItem.name = uriInfo.name;
+        newItem.imageUrl = uriInfo.image;
+      }
     }
     if (newItem.uri) {
       delete newItem.uri.id;
