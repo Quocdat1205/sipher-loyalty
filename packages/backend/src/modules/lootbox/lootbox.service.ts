@@ -312,9 +312,8 @@ export class LootBoxService {
       // caculate lootbox mintable/quantity/pending
       if (!lootboxs[i])
         throw new HttpException("not have tokenId ", HttpStatus.BAD_REQUEST);
-      if (lootboxs[i].quantity - lootboxs[i].pending < amount[i])
+      if (lootboxs[i].mintable < amount[i])
         throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
-      lootboxs[i].pending += amount[i];
       lootboxs[i].mintable -= amount[i];
     }
 
@@ -354,9 +353,8 @@ export class LootBoxService {
     await this.verifyBlockingLootbox(lootbox);
     await this.setBlockingLootbox(lootbox, true);
 
-    if (lootbox.quantity - lootbox.pending < amount)
+    if (lootbox.mintable < amount)
       throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
-    lootbox.pending += amount;
     lootbox.mintable -= amount;
 
     // update lootbox
@@ -387,10 +385,6 @@ export class LootBoxService {
 
       const promises = [];
       for (let i = 0; i < batchOrder.batchID.length; i++) {
-        lootboxs[i].pending =
-          lootboxs[i].pending > batchOrder.amount[i]
-            ? lootboxs[i].pending - batchOrder.amount[i]
-            : 0;
         lootboxs[i].quantity =
           lootboxs[i].quantity > batchOrder.amount[i]
             ? lootboxs[i].quantity - batchOrder.amount[i]
@@ -428,8 +422,6 @@ export class LootBoxService {
         await this.verifyBlockingLootbox(lootbox);
         await this.setBlockingLootbox(lootbox, true);
 
-        lootbox.pending =
-          lootbox.pending > order.amount ? lootbox.pending - order.amount : 0;
         lootbox.quantity =
           lootbox.quantity > order.amount ? lootbox.quantity - order.amount : 0;
 
@@ -590,10 +582,7 @@ export class LootBoxService {
         for (let i = 0; i < tokenIds.length; i++) {
           lootboxs[i].quantity += amounts[i];
           lootboxs[i].mintable += amounts[i];
-          lootboxs[i].pending =
-            lootboxs[i].pending > amounts[i]
-              ? lootboxs[i].pending - amounts[i]
-              : 0;
+
           promises.push(this.lootboxRepo.save(lootboxs[i]));
         }
         const result = await Promise.all(promises);

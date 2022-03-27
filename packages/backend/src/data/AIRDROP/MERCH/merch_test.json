@@ -1,7 +1,7 @@
 [
   {
     "id": "1",
-    "publicAddress": "0x162A591a4B5900c69f0ef29B6F32087e06C70F24",
+    "publicAddress": "0x33060a92194079615BD25DdD92A081E1777e3DEf",
     "tier": "Diamond",
     "merch_item": "Bomber",
     "quantity": "1",
@@ -13,10 +13,34 @@
   },
   {
     "id": "2",
-    "publicAddress": "0x83629905189464CC16F5E7c12D54dD5e87459B33",
-    "tier": "Silver",
+    "publicAddress": "0x33060a92194079615BD25DdD92A081E1777e3DEf",
+    "tier": "Siver",
+    "merch_item": "Hoodie",
+    "quantity": "2",
+    "quantity_shipped": "0",
+    "isShipped": false,
+    "name": "SIPHER Exclusive Hoodie",
+    "description": "merchandise for investor nft support Sipher team early",
+    "isShip": true
+  },
+  {
+    "id": "3",
+    "publicAddress": "0x33060a92194079615BD25DdD92A081E1777e3DEf",
+    "tier": "Gold",
+    "merch_item": "Tshirt",
+    "quantity": "3",
+    "quantity_shipped": "0",
+    "isShipped": false,
+    "name": "SIPHER Exclusive T-shirt",
+    "description": "merchandise for investor nft support Sipher team early",
+    "isShip": true
+  },
+  {
+    "id": "4",
+    "publicAddress": "0x33060a92194079615BD25DdD92A081E1777e3DEf",
+    "tier": "Gold",
     "merch_item": "Hat",
-    "quantity": "1",
+    "quantity": "4",
     "quantity_shipped": "0",
     "isShipped": false,
     "name": "SIPHER Exclusive Hat",
@@ -24,15 +48,52 @@
     "isShip": true
   },
   {
-    "id": "3",
+    "id": "5",
     "publicAddress": "0x83629905189464CC16F5E7c12D54dD5e87459B33",
-    "tier": "Silver",
-    "merch_item": "Card",
+    "tier": "Siver",
+    "merch_item": "Hoodie",
+    "quantity": "2",
+    "quantity_shipped": "0",
+    "isShipped": false,
+    "name": "SIPHER Exclusive Hoodie",
+    "description": "merchandise for investor nft support Sipher team early",
+    "isShip": true
+  },
+  {
+    "id": "6",
+    "publicAddress": "0x83629905189464CC16F5E7c12D54dD5e87459B33",
+    "tier": "Gold",
+    "merch_item": "Tshirt",
+    "quantity": "3",
+    "quantity_shipped": "0",
+    "isShipped": false,
+    "name": "SIPHER Exclusive T-shirt",
+    "description": "merchandise for investor nft support Sipher team early",
+    "isShip": true
+  },
+  {
+    "id": "7",
+    "publicAddress": "0x83629905189464CC16F5E7c12D54dD5e87459B33",
+    "tier": "Gold",
+    "merch_item": "Hat",
+    "quantity": "4",
+    "quantity_shipped": "0",
+    "isShipped": false,
+    "name": "SIPHER Exclusive Hat",
+    "description": "merchandise for investor nft support Sipher team early",
+    "isShip": true
+  },
+
+  {
+    "id": "8",
+    "publicAddress": "0x83629905189464CC16F5E7c12D54dD5e87459B33",
+    "tier": "Diamond",
+    "merch_item": "Bomber",
     "quantity": "1",
     "quantity_shipped": "0",
     "isShipped": false,
-    "name": "SIPHER Exclusive Card",
+    "name": "SIPHER Exclusive Bomber",
     "description": "merchandise for investor nft support Sipher team early",
-    "isShip": false
+    "isShip": true
   }
 ]

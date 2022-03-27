@@ -224,14 +224,25 @@ export class MintService {
         `Not found pending mint id ${bodyUpdatePendingMint.id}`,
         HttpStatus.BAD_REQUEST
       );
-    // verify status pending mint
+    // verify status pending mint transform to
     if (
-      pending.status === MintStatus.Expired ||
-      pending.status === MintStatus.Minted ||
-      pending.status === MintStatus.Canceled
+      bodyUpdatePendingMint.status !== MintStatus.Reject &&
+      bodyUpdatePendingMint.status !== MintStatus.Error &&
+      bodyUpdatePendingMint.status !== MintStatus.Minting &&
+      bodyUpdatePendingMint.status !== MintStatus.Minted
     )
       throw new HttpException(
-        `Not allow update ${pending.status} to this pending mint id ${bodyUpdatePendingMint.id}`,
+        `Not allow update from ${pending.status} to ${bodyUpdatePendingMint.status} for pending mint id ${bodyUpdatePendingMint.id}`,
+        HttpStatus.BAD_REQUEST
+      );
+    // verify status pending mint transform from
+    if (
+      pending.status !== MintStatus.Reject &&
+      pending.status !== MintStatus.Error &&
+      pending.status !== MintStatus.Minting
+    )
+      throw new HttpException(
+        `Not allow update from ${pending.status} to ${bodyUpdatePendingMint.status} for pending mint id ${bodyUpdatePendingMint.id}`,
         HttpStatus.BAD_REQUEST
       );
 

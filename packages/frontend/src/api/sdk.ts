@@ -93,7 +93,6 @@ export interface Lootbox {
   publicAddress: string;
   quantity: number;
   tokenId: number;
-  pending: number;
   mintable: number;
   propertyLootbox: ERC1155Lootbox;
 
@@ -831,6 +830,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags price
      * @name PriceControllerGetPrice
      * @request GET:/api/sipher/loyalty/price
      * @secure

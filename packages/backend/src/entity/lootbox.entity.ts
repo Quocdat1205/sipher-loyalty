@@ -34,10 +34,6 @@ export class Lootbox {
   tokenId: number;
 
   @ApiProperty({ type: Number })
-  @Column({ default: 0 })
-  pending: number;
-
-  @ApiProperty({ type: Number })
   @Column({ default: 1 })
   mintable: number;
 
