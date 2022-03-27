@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 
 import { Repository } from "typeorm";
-import { Airdrop, ImageUrl, Item, MerchList } from "@entity";
+import { Airdrop, ImageUrl, Item, Merchandise } from "@entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
@@ -23,7 +23,7 @@ export class SeedAirdropService {
         fs.readFileSync(`${this.src}/AIRDROP/TOKEN/holder_test.json`).toString()
       );
 
-  private airdropDataMerchList = constant.isProduction
+  private airdropDataMerchandise = constant.isProduction
     ? JSON.parse(
         fs.readFileSync(`${this.src}/AIRDROP/MERCH/merch.json`).toString()
       )
@@ -40,8 +40,8 @@ export class SeedAirdropService {
     private airdropRepo: Repository<Airdrop>,
     @InjectRepository(ImageUrl)
     private imageUrlRepo: Repository<ImageUrl>,
-    @InjectRepository(MerchList)
-    private merchListRepo: Repository<MerchList>,
+    @InjectRepository(Merchandise)
+    private merchListRepo: Repository<Merchandise>,
     @InjectRepository(Item)
     private itemRepo: Repository<Item>
   ) {}
@@ -108,7 +108,7 @@ export class SeedAirdropService {
     try {
       const imageUrl = await this.seedImageUrls(item.imageUrls);
       item.imageUrls = imageUrl;
-      item.merchList = await this.merchListRepo.find({
+      item.merchandise = await this.merchListRepo.find({
         merch_item: item.merch_item,
       });
       const _item = this.itemRepo.create(item);
@@ -139,11 +139,11 @@ export class SeedAirdropService {
   };
 
   seedMerchs = async () => {
-    await this.itemRepo.query(`delete from merch_list`);
+    await this.itemRepo.query(`delete from merchandise`);
 
     const promises = [];
-    for (let i = 0; i < this.airdropDataMerchList.length; i++) {
-      promises.push(this.seedMerch(this.airdropDataMerchList[i]));
+    for (let i = 0; i < this.airdropDataMerchandise.length; i++) {
+      promises.push(this.seedMerch(this.airdropDataMerchandise[i]));
     }
     await Promise.all(promises);
     LoggerService.log("Done merch");

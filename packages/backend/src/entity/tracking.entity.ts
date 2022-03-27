@@ -20,6 +20,6 @@ export class TrackedBlock {
   @CreateDateColumn({ default: new Date() })
   createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt?: Date;
 }

@@ -6,6 +6,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -45,4 +46,8 @@ export class ClaimableLootbox {
   @ApiProperty()
   @CreateDateColumn({ default: new Date() })
   createdAt?: Date;
+
+  @ApiProperty()
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt?: Date;
 }

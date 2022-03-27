@@ -4,6 +4,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -99,4 +100,8 @@ export class ERC1155Sculpture {
   @ApiProperty()
   @CreateDateColumn({ default: new Date() })
   createdAt: Date;
+
+  @ApiProperty()
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt?: Date;
 }

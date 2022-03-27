@@ -5,6 +5,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { Item } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
@@ -61,4 +62,8 @@ export class ImageUrl {
   @ApiProperty()
   @CreateDateColumn()
   createdAt?: Date;
+
+  @ApiProperty()
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt?: Date;
 }

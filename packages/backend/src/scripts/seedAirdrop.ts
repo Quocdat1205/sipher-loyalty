@@ -1,4 +1,4 @@
-import { ImageUrl, Item, MerchList } from "@entity";
+import { ImageUrl, Item, Merchandise } from "@entity";
 import { Module, OnApplicationBootstrap } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
@@ -14,7 +14,7 @@ import { Airdrop } from "src/entity/airdrop.entity";
     SeedModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([Airdrop, ImageUrl, MerchList, Item]),
+    TypeOrmModule.forFeature([Airdrop, ImageUrl, Merchandise, Item]),
   ],
   providers: [SeedAirdropService],
 })

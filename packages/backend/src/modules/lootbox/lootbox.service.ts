@@ -1,5 +1,5 @@
 import { toChecksumAddress } from "ethereumjs-util";
-import { MoreThan, MoreThanOrEqual, Repository } from "typeorm";
+import { In, MoreThan, MoreThanOrEqual, Repository } from "typeorm";
 import {
   BurnType,
   CancelType,
@@ -42,8 +42,13 @@ export class LootBoxService {
   ) => {
     const lootboxs = await this.lootboxRepo.findOne({
       where: [
-        { publicAddress: toChecksumAddress(publicAddress), tokenId },
-        { publicAddress: publicAddress.toLowerCase(), tokenId },
+        {
+          publicAddress: In([
+            publicAddress.toLowerCase(),
+            toChecksumAddress(publicAddress),
+          ]),
+          tokenId,
+        },
       ],
       relations: ["propertyLootbox"],
     });
@@ -58,11 +63,13 @@ export class LootBoxService {
     const lootboxs = await this.claimableLootboxRepo.findOne({
       where: [
         {
-          publicAddress: toChecksumAddress(publicAddress),
+          publicAddress: In([
+            publicAddress.toLowerCase(),
+            toChecksumAddress(publicAddress),
+          ]),
           tokenId,
           expiredDate,
         },
-        { publicAddress: publicAddress.toLowerCase(), tokenId, expiredDate },
       ],
     });
     return lootboxs;
@@ -187,10 +194,12 @@ export class LootBoxService {
     const lootboxs = await this.lootboxRepo.find({
       where: [
         {
-          publicAddress: toChecksumAddress(publicAddress),
+          publicAddress: In([
+            publicAddress.toLowerCase(),
+            toChecksumAddress(publicAddress),
+          ]),
           mintable: MoreThan(0),
         },
-        { publicAddress: publicAddress.toLowerCase(), mintable: MoreThan(0) },
       ],
       relations: ["propertyLootbox"],
     });
@@ -217,12 +226,10 @@ export class LootBoxService {
     const lootboxs = await this.claimableLootboxRepo.find({
       where: [
         {
-          publicAddress: toChecksumAddress(publicAddress),
-          expiredDate: MoreThanOrEqual(new Date()),
-          quantity: MoreThan(0),
-        },
-        {
-          publicAddress: publicAddress.toLowerCase(),
+          publicAddress: In([
+            publicAddress.toLowerCase(),
+            toChecksumAddress(publicAddress),
+          ]),
           expiredDate: MoreThanOrEqual(new Date()),
           quantity: MoreThan(0),
         },
