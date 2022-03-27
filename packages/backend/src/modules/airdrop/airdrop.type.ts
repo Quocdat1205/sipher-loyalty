@@ -10,8 +10,11 @@ export class ResAllAirdrop {
   @ApiProperty({ type: Airdrop, isArray: true })
   nft: Airdrop[];
 
-  @ApiProperty({ type: Airdrop, isArray: true })
+  @ApiProperty({ type: MerchType, isArray: true })
   merch: MerchType[];
+
+  @ApiProperty({ type: MerchType, isArray: true })
+  other: MerchType[];
 }
 
 export class ResNFTAirdrop {
@@ -25,7 +28,7 @@ export class ResTokenAirdrop {
 }
 
 export class ResMerchAirdrop {
-  @ApiProperty({ type: Airdrop, isArray: true })
+  @ApiProperty({ type: MerchType, isArray: true })
   merch: MerchType[];
 }
 

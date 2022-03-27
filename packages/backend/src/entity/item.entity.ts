@@ -16,7 +16,7 @@ export enum ViewType {
   Hoodie = "SIPHER Exclusive Hoodie",
   Tshirt = "SIPHER Exclusive T-shirt",
   Hat = "SIPHER Exclusive Hat",
-  Card = "SIPHER Exclusive Thank You Card",
+  Card = "Thank You Card",
 }
 
 @Entity()
