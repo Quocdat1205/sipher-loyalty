@@ -14,7 +14,7 @@ const usePortFolioHome = () => {
   const router = useRouter()
   const { session, authenticated, user } = useAuth()
   const { account, chainId } = useWalletContext()
-  const { dataPrice, balance } = useBalanceContext()
+  const { dataPrice, balance, totalUsdPrice } = useBalanceContext()
 
   const { data: dataInit } = useQuery<any>(
     ["collection", user, account],
@@ -32,35 +32,37 @@ const usePortFolioHome = () => {
     },
   )
 
-  const tokensData = [
-    {
-      currency: "ETH",
-      balance: chainId === ETHEREUM_NETWORK ? balance.chainPrice : 0,
-      value: balance.chainPrice * dataPrice!.ethereumPrice.usd,
-      change: dataPrice!.ethereumPrice.change * 100,
-      icon: <EthereumIcon size="1.4rem" />,
-    },
-    {
-      currency: "MATIC",
-      balance: chainId === POLYGON_NETWORK ? balance.chainPrice : 0,
-      value: chainId === POLYGON_NETWORK ? balance.chainPrice * dataPrice!.maticPrice.usd : 0,
-      change: dataPrice!.maticPrice.change * 100,
-      icon: <Img src="/images/icons/matic.png" alt="matic" h="1.4rem" />,
-    },
-    {
-      currency: "SIPHER",
-      balance: balance.sipher,
-      value: balance.sipher * dataPrice!.sipherPrice.usd,
-      change: dataPrice!.sipherPrice.change * 100,
-      icon: <SipherIcon size="1.4rem" />,
-    },
-  ]
+  const tokensData = account
+    ? [
+        {
+          currency: "ETH",
+          balance: chainId === ETHEREUM_NETWORK ? balance.chainPrice : 0,
+          value: balance.chainPrice * dataPrice!.ethereumPrice.usd,
+          change: dataPrice!.ethereumPrice.change * 100,
+          icon: <EthereumIcon size="1.4rem" />,
+        },
+        {
+          currency: "MATIC",
+          balance: chainId === POLYGON_NETWORK ? balance.chainPrice : 0,
+          value: chainId === POLYGON_NETWORK ? balance.chainPrice * dataPrice!.maticPrice.usd : 0,
+          change: dataPrice!.maticPrice.change * 100,
+          icon: <Img src="/images/icons/matic.png" alt="matic" h="1.4rem" />,
+        },
+        {
+          currency: "SIPHER",
+          balance: balance.sipher,
+          value: balance.sipher * dataPrice!.sipherPrice.usd,
+          change: dataPrice!.sipherPrice.change * 100,
+          icon: <SipherIcon size="1.4rem" />,
+        },
+      ]
+    : []
 
   const collectionData = dataInit?.map(item => ({
     ...item,
     onView: () => router.push(`/portfolio/${item.id}`),
   }))
 
-  return { tokensData, collectionData }
+  return { totalUsdPrice, tokensData, collectionData }
 }
 export default usePortFolioHome

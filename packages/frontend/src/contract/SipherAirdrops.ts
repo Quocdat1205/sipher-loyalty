@@ -20,14 +20,20 @@ export class SipherAirdrops {
     await tx.wait()
   }
 
-  async claimed(from: string) {
-    return weiToEther(await this.contract.claimed("0", from))
+  async claimed() {
+    const signer = this.provider.getSigner()
+    const publicAddress = await signer.getAddress()
+
+    return weiToEther(await this.contract.claimed("0", publicAddress))
   }
 
-  async getClaimableAmountAtTimestamp(from: string, totalAmount: string, proof: string[]) {
+  async getClaimableAmountAtTimestamp(totalAmount: string, proof: string[]) {
+    const signer = this.provider.getSigner()
+    const publicAddress = await signer.getAddress()
+
     return weiToEther(
       await this.contract.getClaimableAmountAtTimestamp(
-        from,
+        publicAddress,
         totalAmount,
         proof,
         Math.floor(new Date().getTime() / 1000).toString(),

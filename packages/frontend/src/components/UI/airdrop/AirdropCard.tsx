@@ -16,7 +16,7 @@ const AirdropCard = ({ data }: AirdropProps) => {
       bg="neutral.700"
       rounded="lg"
     >
-      <Image src={data.imageUrl || "/images/airdrops/sipher.png"} width={212} height={188} />
+      <Image src={data.imageUrls[0].default || "/images/airdrops/sipher.png"} width={212} height={188} />
       <Flex flexDir="column" flex={1} p={4}>
         <Box flex={1}>
           <Text fontWeight={600}>{data.name}</Text>

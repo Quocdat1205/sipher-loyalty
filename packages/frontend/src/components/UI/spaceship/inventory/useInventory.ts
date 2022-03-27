@@ -13,7 +13,7 @@ import { useAuth } from "src/providers/auth"
 export interface InventoryProps extends Lootbox {
   isChecked: boolean
   slot: number
-  onChange?: (id: string, slot: number) => void
+  onChange?: (id: number, slot: number) => void
 }
 
 export const useInventory = () => {
@@ -26,7 +26,7 @@ export const useInventory = () => {
   const [dataMinted, setDataMinted] = useState<InventoryProps[]>([])
   const [data, setData] = useState<InventoryProps[]>([])
   const toast = useChakraToast()
-  const idError = useRef<string | null>()
+  const idError = useRef<number | null>()
 
   const { refetch } = useQuery(
     ["lootBoxs", account, user],
@@ -69,7 +69,7 @@ export const useInventory = () => {
     setData(data?.map(item => ({ ...item, isChecked: false })))
   }, [account])
 
-  const { mutate: mutateStatus } = useMutation<unknown, unknown, { id: string; status: MintStatus }>(
+  const { mutate: mutateStatus } = useMutation<unknown, unknown, { id: number; status: MintStatus }>(
     ({ id, status }) =>
       client.api.mintControllerUpdateStatusPendingLootbox(
         {
