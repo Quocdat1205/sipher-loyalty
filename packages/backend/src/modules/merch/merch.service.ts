@@ -1,13 +1,5 @@
 import { Repository } from "typeorm";
-import { v4 as uuidv4 } from "uuid";
-import {
-  Address,
-  Item,
-  ItemOrder,
-  Order,
-  Receiver,
-  Transaction,
-} from "@entity";
+import { Address, Item, ItemOrder, MerchList, Order, Receiver } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -24,8 +16,8 @@ import { MerchType, ReceiverType } from "./response.type";
 @Injectable()
 export class MerchService {
   constructor(
-    @InjectRepository(Transaction)
-    private transactionRepo: Repository<Transaction>,
+    @InjectRepository(MerchList)
+    private transactionRepo: Repository<MerchList>,
     @InjectRepository(Item)
     private itemRepo: Repository<Item>,
     @InjectRepository(Receiver)
@@ -38,7 +30,7 @@ export class MerchService {
     private itemOrderRepo: Repository<ItemOrder>
   ) {}
 
-  async toMerchData(transaction: Transaction) {
+  async toMerchData(transaction: MerchList) {
     const item = await this.itemRepo.findOne({
       where: { merch_item: transaction.merch_item },
     });
@@ -80,7 +72,7 @@ export class MerchService {
 
   async getAllThanksCardByPublicAddress(
     publicAddress: string
-  ): Promise<Array<Transaction> | undefined> {
+  ): Promise<Array<MerchList> | undefined> {
     const list_card = await this.transactionRepo.find({
       where: { publicAddress, isShip: false },
     });

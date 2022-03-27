@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 
 import { Repository } from "typeorm";
-import { Airdrop, ImageUrl } from "@entity";
+import { Airdrop, ImageUrl, Item, MerchList } from "@entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
@@ -23,21 +23,27 @@ export class SeedAirdropService {
         fs.readFileSync(`${this.src}/AIRDROP/TOKEN/holder_test.json`).toString()
       );
 
-  private airdropDataMerchTransaction = constant.isProduction
+  private airdropDataMerchList = constant.isProduction
     ? JSON.parse(
-        fs.readFileSync(`${this.src}/AIRDROP/MERCH/transaction.json`).toString()
+        fs.readFileSync(`${this.src}/AIRDROP/MERCH/merch.json`).toString()
       )
     : JSON.parse(
-        fs
-          .readFileSync(`${this.src}/AIRDROP/MERCH/transaction_test.json`)
-          .toString()
+        fs.readFileSync(`${this.src}/AIRDROP/MERCH/merch_test.json`).toString()
       );
+
+  private airdropDataMerchItem = JSON.parse(
+    fs.readFileSync(`${this.src}/AIRDROP/MERCH/item.json`).toString()
+  );
 
   constructor(
     @InjectRepository(Airdrop)
     private airdropRepo: Repository<Airdrop>,
     @InjectRepository(ImageUrl)
-    private imageUrlRepo: Repository<ImageUrl>
+    private imageUrlRepo: Repository<ImageUrl>,
+    @InjectRepository(MerchList)
+    private merchListRepo: Repository<MerchList>,
+    @InjectRepository(Item)
+    private itemRepo: Repository<Item>
   ) {}
 
   private seedToken = async (token) => {
@@ -95,6 +101,48 @@ export class SeedAirdropService {
       promises.push(this.seedToken(tokenData[i]));
     }
     await Promise.all(promises);
-    LoggerService.log("Done");
+    LoggerService.log("Done token");
+  };
+
+  private seedItem = async (item) => {
+    try {
+      const imageUrl = await this.seedImageUrls(item.imageUrl);
+      item.imageUrl = imageUrl;
+      const _item = this.itemRepo.create(item);
+      await this.itemRepo.save(_item);
+    } catch (err) {
+      LoggerService.error(item.imageUrl);
+    }
+  };
+
+  seedItems = async () => {
+    await this.itemRepo.query(`delete from item`);
+
+    const promises = [];
+    for (let i = 0; i < this.airdropDataMerchItem.length; i++) {
+      promises.push(this.seedItem(this.airdropDataMerchItem[i]));
+    }
+    await Promise.all(promises);
+    LoggerService.log("Done item");
+  };
+
+  private seedMerch = async (merch) => {
+    try {
+      const _merch = this.merchListRepo.create(merch);
+      await this.merchListRepo.save(_merch);
+    } catch (err) {
+      LoggerService.error(err);
+    }
+  };
+
+  seedMerchs = async () => {
+    await this.itemRepo.query(`delete from merch_list`);
+
+    const promises = [];
+    for (let i = 0; i < this.airdropDataMerchList.length; i++) {
+      promises.push(this.seedMerch(this.airdropDataMerchList[i]));
+    }
+    await Promise.all(promises);
+    LoggerService.log("Done merch");
   };
 }

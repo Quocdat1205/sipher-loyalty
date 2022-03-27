@@ -31,7 +31,7 @@ import { AppService } from "./app.service";
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([SculptureTransaction]),
+    // TypeOrmModule.forFeature([SculptureTransaction]),
     SearchModule,
     LoggerModule,
     NftItemModule,

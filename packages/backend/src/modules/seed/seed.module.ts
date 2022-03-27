@@ -7,6 +7,7 @@ import {
   ImageUrl,
   Item,
   Lootbox,
+  MerchList,
 } from "@entity";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -32,6 +33,7 @@ import { SeedLootboxService } from "./seedLootbox.service";
       ClaimableLootbox,
       Item,
       ImageUrl,
+      MerchList,
     ]),
   ],
   providers: [

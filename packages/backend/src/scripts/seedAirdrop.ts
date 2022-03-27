@@ -1,11 +1,10 @@
-import { ImageUrl } from "@entity";
+import { ImageUrl, Item, MerchList } from "@entity";
 import { Module, OnApplicationBootstrap } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { configService } from "@setting/config.typeorm";
 
-import { LoggerService } from "@modules/logger/logger.service";
 import { SeedModule } from "@modules/seed/seed.module";
 import { SeedAirdropService } from "@modules/seed/seedAirdrop.service";
 import { Airdrop } from "src/entity/airdrop.entity";
@@ -15,7 +14,7 @@ import { Airdrop } from "src/entity/airdrop.entity";
     SeedModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    TypeOrmModule.forFeature([Airdrop, ImageUrl]),
+    TypeOrmModule.forFeature([Airdrop, ImageUrl, MerchList, Item]),
   ],
   providers: [SeedAirdropService],
 })
@@ -24,7 +23,8 @@ export class AppModule implements OnApplicationBootstrap {
 
   async onApplicationBootstrap(): Promise<void> {
     await this.seedingService.seedTokens();
-    LoggerService.log("Done");
+    await this.seedingService.seedItems();
+    await this.seedingService.seedMerchs();
   }
 }
 async function bootstrap() {

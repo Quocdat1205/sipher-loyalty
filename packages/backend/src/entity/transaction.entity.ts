@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
-export class Transaction {
+export class MerchList {
   @ApiProperty({ type: Number })
   @PrimaryGeneratedColumn("increment")
   id_transaction: number;
