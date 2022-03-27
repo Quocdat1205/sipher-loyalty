@@ -31,6 +31,14 @@ export class SeedAirdropService {
         fs.readFileSync(`${this.src}/AIRDROP/MERCH/merch_test.json`).toString()
       );
 
+  private airdropDataCard = constant.isProduction
+    ? JSON.parse(
+        fs.readFileSync(`${this.src}/AIRDROP/CARD/data.json`).toString()
+      )
+    : JSON.parse(
+        fs.readFileSync(`${this.src}/AIRDROP/CARD/data_test.json`).toString()
+      );
+
   private airdropDataMerchItem = JSON.parse(
     fs.readFileSync(`${this.src}/AIRDROP/MERCH/item.json`).toString()
   );
@@ -144,6 +152,10 @@ export class SeedAirdropService {
     const promises = [];
     for (let i = 0; i < this.airdropDataMerchandise.length; i++) {
       promises.push(this.seedMerch(this.airdropDataMerchandise[i]));
+    }
+
+    for (let i = 0; i < this.airdropDataCard.length; i++) {
+      promises.push(this.seedMerch(this.airdropDataCard[i]));
     }
     await Promise.all(promises);
     LoggerService.log("Done merch");

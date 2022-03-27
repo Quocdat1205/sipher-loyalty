@@ -7,8 +7,6 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { TransformLowercase } from "@utils/transfomers";
-
 export enum CollectionType {
   ERC721 = "ERC721",
   ERC1155 = "ERC1155",
@@ -33,7 +31,6 @@ export class SipherCollection {
   @ApiProperty({ type: String })
   name: string;
 
-  @TransformLowercase()
   @Column({
     type: "character varying",
   })

@@ -27,9 +27,7 @@ export class Merchandise {
   @Column()
   tier?: string;
 
-  @ApiProperty({
-    type: String,
-  })
+  @ApiProperty({ type: String, enum: ItemType, enumName: "ItemType" })
   @Column({
     type: String,
   })
