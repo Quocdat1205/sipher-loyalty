@@ -17,7 +17,7 @@ const tabs = [
 ]
 
 const AirdropUI = () => {
-  const { allAirdrops, currentTab } = useAirdrops()
+  const { allAirdrops, currentTab, isFetched } = useAirdrops()
 
   return (
     <Flex pos="relative" flexDir="column" align="center" flex={1}>
@@ -34,7 +34,7 @@ const AirdropUI = () => {
             allAirdrops.length > 0 ? (
               <SimpleGrid spacing={4} columns={5}>
                 {allAirdrops.map((item, index) => (
-                  <AirdropCard key={index} data={item} />
+                  <AirdropCard key={index} data={item} isFetched={isFetched} />
                 ))}
               </SimpleGrid>
             ) : (
@@ -45,7 +45,7 @@ const AirdropUI = () => {
               {allAirdrops
                 .filter(airdrop => airdrop.type === currentTab.toString().toUpperCase())
                 .map(item => (
-                  <AirdropCard key={item.id} data={item} />
+                  <AirdropCard key={item.id} data={item} isFetched={isFetched} />
                 ))}
             </SimpleGrid>
           ) : (
