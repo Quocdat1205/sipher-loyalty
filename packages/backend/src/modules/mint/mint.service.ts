@@ -101,7 +101,7 @@ export class MintService {
             toChecksumAddress(batchOrder.to),
           ]),
           type: MintType.Lootbox,
-          status: MintStatus.Minting,
+          status: In([MintStatus.Minting, MintStatus.Reject, MintStatus.Error]),
           salt: batchOrder.salt,
           batchIDs: batchOrder.batchID,
           amounts: batchOrder.amount,
@@ -122,7 +122,7 @@ export class MintService {
         {
           to: In([order.to.toLowerCase(), toChecksumAddress(order.to)]),
           type: MintType.Lootbox,
-          status: MintStatus.Minting,
+          status: In([MintStatus.Minting, MintStatus.Reject, MintStatus.Error]),
           salt: order.salt,
           batchID: order.batchID,
           amount: order.amount,
