@@ -4,7 +4,10 @@ import {
   ERC1155LootboxAttribute,
   ERC1155Sculpture,
   ERC1155SculptureAttribute,
+  ImageUrl,
+  Item,
   Lootbox,
+  MerchList,
 } from "@entity";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -14,7 +17,7 @@ import { Airdrop } from "src/entity/airdrop.entity";
 
 import { SeedAirdropService } from "./seedAirdrop.service";
 import { SeedERC1155LootboxService } from "./seedERC1155Lootbox.service";
-import { SeedERC1155SculptureService } from "./seedERC1155Sculpture.service";
+import { SeedERC1155SculptureService } from "./seedERC1155Sculpture.service copy";
 import { SeedLootboxService } from "./seedLootbox.service";
 
 @Module({
@@ -28,6 +31,9 @@ import { SeedLootboxService } from "./seedLootbox.service";
       Lootbox,
       Airdrop,
       ClaimableLootbox,
+      Item,
+      ImageUrl,
+      MerchList,
     ]),
   ],
   providers: [

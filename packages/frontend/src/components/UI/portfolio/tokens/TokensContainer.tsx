@@ -1,5 +1,5 @@
 import React from "react"
-import { BsFillTriangleFill } from "react-icons/bs"
+import { BsFillCaretDownFill, BsFillTriangleFill } from "react-icons/bs"
 import { Box, chakra, Flex, Text } from "@sipher.dev/sipher-ui"
 
 import { currency } from "@utils"
@@ -15,12 +15,11 @@ const header = [
 ] as const
 
 interface TokensContainerProps {
-  dataTokens: ReturnType<typeof usePortfolio>["dataTokens"]
+  tokensData: ReturnType<typeof usePortfolio>["tokensData"]
 }
 
-const TokensContainer = ({ dataTokens = [] }: TokensContainerProps) => {
-  const { items, requestSort, sortConfig } = useSortableData(dataTokens)
-
+const TokensContainer = ({ tokensData = [] }: TokensContainerProps) => {
+  const { items, requestSort, sortConfig } = useSortableData(tokensData)
   return (
     <Box bg="neutral.700" p={4} rounded="lg" overflowX="auto" whiteSpace="nowrap">
       <chakra.table w="full">
@@ -63,7 +62,19 @@ const TokensContainer = ({ dataTokens = [] }: TokensContainerProps) => {
               <chakra.td p={2}>
                 <Flex align="center">${currency(item.value || 0)}</Flex>
               </chakra.td>
-              <chakra.td p={2}>{currency(item.change)}%</chakra.td>
+              <chakra.td p={2}>
+                <Flex align="center">
+                  <Box
+                    mr={2}
+                    transform="auto"
+                    rotate={item.change > 0 ? "180deg" : "0"}
+                    color={item.change > 0 ? "teal.400" : "red.400"}
+                  >
+                    <BsFillCaretDownFill size="1.2rem" />
+                  </Box>
+                  <Text color={item.change > 0 ? "teal.400" : "red.400"}>{currency(Math.abs(item.change))}%</Text>
+                </Flex>
+              </chakra.td>
             </chakra.tr>
           ))}
         </chakra.tbody>

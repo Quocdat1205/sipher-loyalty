@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
@@ -6,7 +6,7 @@ import { useWalletContext } from "@web3"
 
 import { POLYGON_NETWORK } from "@constant"
 import { useChakraToast } from "@hooks"
-import { Lootbox } from "@sdk"
+import { Lootbox, MintStatus } from "@sdk"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
@@ -26,6 +26,8 @@ export const useInventory = () => {
   const [dataMinted, setDataMinted] = useState<InventoryProps[]>([])
   const [data, setData] = useState<InventoryProps[]>([])
   const toast = useChakraToast()
+  const idError = useRef<string | null>()
+
   const { refetch } = useQuery(
     ["lootBoxs", account, user],
     () =>
@@ -67,6 +69,23 @@ export const useInventory = () => {
     setData(data?.map(item => ({ ...item, isChecked: false })))
   }, [account])
 
+  const { mutate: mutateStatus } = useMutation<unknown, unknown, { id: string; status: MintStatus }>(
+    ({ id, status }) =>
+      client.api.mintControllerUpdateStatusPendingLootbox(
+        {
+          publicAddress: account!,
+          id: id,
+          status: status,
+        },
+        setBearerToken(session?.getIdToken().getJwtToken() as string),
+      ),
+    {
+      onSettled: () => {
+        idError.current = null
+      },
+    },
+  )
+
   const { mutate: mutateMintBatch, isLoading } = useMutation(
     async () => {
       if (inventoryDataCheck!.length > 1) {
@@ -80,6 +99,7 @@ export const useInventory = () => {
             setBearerToken(session?.getIdToken().getJwtToken() as string),
           )
           .then(res => res.data)
+        idError.current = data.id
         await scCaller.current!.SipherSpaceshipLootBox.mintBatch({
           deadline: data.deadline,
           batchIDs: data.batchIDs,
@@ -98,6 +118,7 @@ export const useInventory = () => {
             setBearerToken(session?.getIdToken().getJwtToken() as string),
           )
           .then(res => res.data)
+        idError.current = data.id
         await scCaller.current!.SipherSpaceshipLootBox.mint({
           deadline: data.deadline,
           batchID: data.batchID,
@@ -121,21 +142,20 @@ export const useInventory = () => {
       onError: (err: any) => {
         toast({ status: "error", title: "Error", message: err?.message })
         if (err.code === 4001) {
+          mutateStatus({ id: idError!.current!, status: "Rejected" as MintStatus })
           setIsStatusModal("PENDING")
         } else {
-          setIsStatusModal("ERROR")
+          mutateStatus({ id: idError!.current!, status: "Rejected" as MintStatus })
         }
       },
     },
   )
-
   useEffect(() => {
     setData(data.map(item => ({ ...item, slot: item.mintable })))
   }, [isStatusModal])
 
   const handleMint = () => {
     if (chainId !== POLYGON_NETWORK) {
-      toast({ status: "info", title: "Please switch to Polygon network!", duration: 5000 })
       switchNetwork(POLYGON_NETWORK)
     } else {
       mutateMintBatch()

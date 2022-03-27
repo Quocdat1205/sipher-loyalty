@@ -1,7 +1,7 @@
 import React, { Fragment } from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { Button, chakra, Divider, Flex, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Divider, Flex, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared/ChakraModal"
 
@@ -23,7 +23,14 @@ const ClaimStatusModal = ({ isOpen, onClose, status }: ClaimStatusModalProp) => 
       size="md"
     >
       <Flex flexDir="column" align="center" px={6}>
-        <Image src="/images/spaceship/box-1.png" alt="box" height={400} width={400} />
+        <Box blendMode="lighten">
+          <Image
+            src="https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/Lootbox_1.gif"
+            alt="box"
+            width={500}
+            height={300}
+          />
+        </Box>
         <Text textAlign="center" py={4} color="grey.400">
           {status === "SUCCESS" ? (
             <Fragment>

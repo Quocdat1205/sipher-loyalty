@@ -79,7 +79,7 @@ export class LootboxTrackerCancelService {
       return _fromBlock; // retry
     }
     LoggerService.log(
-      `Start tracking canceled from ${_fromBlock} to ${_currentBlock}`
+      `Start tracking canceled from block ${_fromBlock} to block ${_currentBlock}`
     );
     const filter = this.contract.filters.CancelOrder();
     const pastEvents = await this.contract

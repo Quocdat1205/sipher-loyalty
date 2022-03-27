@@ -9,9 +9,9 @@ import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class Order {
-  @ApiProperty({ type: String })
-  @PrimaryGeneratedColumn("uuid")
-  id_order: string;
+  @ApiProperty({ type: Number })
+  @PrimaryGeneratedColumn("increment")
+  id_order: number;
 
   @ApiProperty({ type: String })
   @IsEthereumAddress()

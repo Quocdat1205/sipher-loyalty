@@ -32,7 +32,7 @@ export interface InfoPendingMintDto {
 }
 
 export interface ResPendingMintDto {
-  id: string;
+  id: number;
   to: string;
   batchID: number;
   amount: number;
@@ -51,12 +51,12 @@ export interface ResPendingMintDto {
 
 export interface BodyUpdatePendingMint {
   publicAddress: string;
-  id: string;
+  id: number;
   status: MintStatus;
 }
 
 export interface PendingMint {
-  id: string;
+  id: number;
   to: string;
   batchID: number;
   amount: number;
@@ -73,7 +73,7 @@ export interface PendingMint {
 }
 
 export interface ERC1155LootboxAttribute {
-  id: string;
+  id: number;
   trait_type: string;
   value: string;
   erc1155: ERC1155Lootbox;
@@ -83,7 +83,7 @@ export interface ERC1155LootboxAttribute {
 }
 
 export interface Lootbox {
-  id: string;
+  id: number;
   publicAddress: string;
   quantity: number;
   tokenId: number;
@@ -96,7 +96,7 @@ export interface Lootbox {
 }
 
 export interface ClaimableLootbox {
-  id: string;
+  id: number;
   publicAddress: string;
   quantity: number;
   tokenId: number;
@@ -110,7 +110,7 @@ export interface ClaimableLootbox {
 }
 
 export interface ERC1155Lootbox {
-  id: string;
+  id: number;
   tokenId: string;
   name: string;
   description: string;
@@ -229,21 +229,54 @@ export interface PortfolioByCollectionResponse {
   items: NftItem;
 }
 
+export enum ItemType {
+  Bomber = 'Bomber',
+  Hoodie = 'Hoodie',
+  Tshirt = 'Tshirt',
+  Hat = 'Hat',
+}
+
+export interface Item {
+  id_merch: number;
+  merch_item: ItemType;
+  name: string;
+  description: string;
+  imageUrls: ImageUrl[];
+}
+
+export interface ImageUrl {
+  id: number;
+  color: string;
+  default: string;
+  front: string;
+  back: string;
+  left: string;
+  right: string;
+  top: string;
+  bot: string;
+  airdrop: Airdrop;
+  item: Item;
+
+  /** @format date-time */
+  createdAt: string;
+}
+
 export enum AirdropType {
   NFT = 'NFT',
   TOKEN = 'TOKEN',
   MERCH = 'MERCH',
   ALL = 'ALL',
+  CARD = 'CARD',
 }
 
 export interface Airdrop {
-  id: string;
+  id: number;
   merkleRoot: string;
   proof: string[];
   leaf: string;
   claimer: string;
   addressContract: string;
-  imageUrl: string;
+  imageUrls: ImageUrl[];
   totalAmount: string;
   type: AirdropType;
   startTime: string;
@@ -253,7 +286,7 @@ export interface Airdrop {
   numberOfVestingPoint: string;
 
   /** @format date-time */
-  created: string;
+  createdAt: string;
 }
 
 export interface ResAllAirdrop {

@@ -1,13 +1,5 @@
 import { Repository } from "typeorm";
-import { v4 as uuidv4 } from "uuid";
-import {
-  Address,
-  Item,
-  ItemOrder,
-  Order,
-  Receiver,
-  Transaction,
-} from "@entity";
+import { Address, Item, ItemOrder, MerchList, Order, Receiver } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -24,8 +16,8 @@ import { MerchType, ReceiverType } from "./response.type";
 @Injectable()
 export class MerchService {
   constructor(
-    @InjectRepository(Transaction)
-    private transactionRepo: Repository<Transaction>,
+    @InjectRepository(MerchList)
+    private transactionRepo: Repository<MerchList>,
     @InjectRepository(Item)
     private itemRepo: Repository<Item>,
     @InjectRepository(Receiver)
@@ -38,7 +30,7 @@ export class MerchService {
     private itemOrderRepo: Repository<ItemOrder>
   ) {}
 
-  async toMerchData(transaction: Transaction) {
+  async toMerchData(transaction: MerchList) {
     const item = await this.itemRepo.findOne({
       where: { merch_item: transaction.merch_item },
     });
@@ -53,7 +45,7 @@ export class MerchService {
       isShipped: transaction.isShipped,
       name: item.name,
       description: item.description,
-      imageUrl: item.imageUrl,
+      images: [], // item.images,
       type: "MERCH",
     };
   }
@@ -64,7 +56,7 @@ export class MerchService {
     LoggerService.log(`Get all merch`);
 
     const transactions = await this.transactionRepo.find({
-      where: { publicAddress },
+      where: { publicAddress, isShip: true },
     });
 
     if (!transactions) {
@@ -78,13 +70,22 @@ export class MerchService {
     return response;
   }
 
+  async getAllThanksCardByPublicAddress(
+    publicAddress: string
+  ): Promise<Array<MerchList> | undefined> {
+    const list_card = await this.transactionRepo.find({
+      where: { publicAddress, isShip: false },
+    });
+
+    return list_card;
+  }
+
   async addNewReceriver(
     info: shipping_info
   ): Promise<ReceiverType | undefined> {
     const { publicAddress, first_name, last_name, email, phone } = info;
 
     return this.receiverRepo.create({
-      id_receiver: uuidv4(),
       publicAddress,
       first_name,
       last_name,
@@ -98,7 +99,6 @@ export class MerchService {
       address;
 
     return this.addressRepo.create({
-      id_address: uuidv4(),
       publicAddress,
       street_address,
       town,
@@ -119,11 +119,9 @@ export class MerchService {
   async addNewOrder(order: ordertype): Promise<HttpException | boolean> {
     try {
       const { publicAddress, id_address, id_receiver, list_item_order } = order;
-      const id_order = uuidv4();
 
       // insert new Order
       this.orderRepo.create({
-        id_order,
         publicAddress,
         id_address,
         id_receiver,
@@ -134,7 +132,6 @@ export class MerchService {
 
       for (let i = 0; i < length; i++) {
         this.itemOrderRepo.create({
-          id_order,
           size: list_item_order[i].size,
           color: list_item_order[i].color,
           quantity: list_item_order[i].quantity,

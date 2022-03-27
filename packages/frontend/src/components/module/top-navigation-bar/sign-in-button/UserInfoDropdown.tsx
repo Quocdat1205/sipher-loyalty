@@ -18,7 +18,6 @@ import {
 } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
-import { useETHPrice, useSipherPrice } from "@api"
 import { EthereumIcon, SipherIcon } from "@components/shared"
 import { ClipboardCopy } from "@components/shared/ClipboardCopy"
 import { useBalanceContext } from "@hooks"
@@ -37,11 +36,9 @@ interface UserInfoDropdownProps {
 export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherClick }: UserInfoDropdownProps) => {
   const { account, reset } = useWalletContext()
   const {
-    balance: { ethereum, sipher, weth },
+    dataPrice,
+    balance: { chainPrice, sipher, weth },
   } = useBalanceContext()
-
-  const sipherPrice = useSipherPrice()
-  const ethPrice = useETHPrice()
 
   const { signOut, userProfile } = useAuth()
 
@@ -132,7 +129,10 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
               <Flex align="center">
                 <EthereumIcon size="1.4rem" />
                 <Text fontWeight={500} color="neutral.100">
-                  {currency(sipherPrice / ethPrice, "", { maximumFractionDigits: 5 })} (${currency(sipherPrice)})
+                  {currency(dataPrice!.sipherPrice.usd / dataPrice!.ethereumPrice.usd, "", {
+                    maximumFractionDigits: 5,
+                  })}{" "}
+                  (${currency(dataPrice!.sipherPrice.usd)})
                 </Text>
               </Flex>
             </HStack>
@@ -154,9 +154,9 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
                   <Text ml={2}>ETH</Text>
                 </Flex>
                 <Text fontWeight={600}>
-                  {currency(ethereum)}{" "}
+                  {currency(chainPrice)}{" "}
                   <chakra.span color="neutral.400" fontWeight={400}>
-                    (${currency(ethereum)})
+                    (${currency(chainPrice * dataPrice!.ethereumPrice.usd)})
                   </chakra.span>
                 </Text>
               </Flex>
@@ -170,7 +170,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
                 <Text fontWeight={600}>
                   {currency(weth)}{" "}
                   <chakra.span fontWeight={400} color="neutral.400">
-                    (${currency(weth)})
+                    (${currency(weth * dataPrice!.ethereumPrice.usd)})
                   </chakra.span>
                 </Text>
               </Flex>
@@ -184,7 +184,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
                 <Text fontWeight={600}>
                   {currency(sipher)}{" "}
                   <chakra.span fontWeight={400} color="neutral.400">
-                    (${currency(sipher)})
+                    (${currency(sipher * dataPrice!.sipherPrice.usd)})
                   </chakra.span>
                 </Text>
               </Flex>

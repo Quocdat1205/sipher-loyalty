@@ -4,27 +4,77 @@
     "merch_item": "Bomber",
     "name": "SIPHER Exclusive Bomber",
     "description": "merchandise for investor nft support Sipher team early",
-    "imageUrl": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_bomber.png"
+    "imageUrl": [
+      {
+        "color": "black",
+        "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/bomber_black_front.png",
+        "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/bomber_black_front.png",
+        "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/bomber_black_back.png"
+      },
+      {
+        "color": "white",
+        "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/bomber_white_front.png",
+        "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/bomber_white_front.png",
+        "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/bomber_white_back.png"
+      }
+    ]
   },
   {
     "id": 2,
     "merch_item": "Hoodie",
     "name": "SIPHER Exclusive Hoodie",
     "description": "merchandise for investor nft support Sipher team early",
-    "imageUrl": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_hoodie.png"
+    "imageUrl": [
+      {
+        "color": "black",
+        "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hoodie_black_front.png",
+        "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hoodie_black_front.png",
+        "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hoodie_black_back.png"
+      },
+      {
+        "color": "white",
+        "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hoodie_white_front.png",
+        "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hoodie_white_front.png",
+        "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hoodie_white_back.png"
+      }
+    ]
   },
   {
     "id": 3,
     "merch_item": "Tshirt",
     "name": "SIPHER Exclusive T-shirt",
     "description": "merchandise for investor nft support Sipher team early",
-    "imageUrl": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_tshirt.png"
+    "imageUrl": [
+      {
+        "color": "black",
+        "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/tshirt_black_front.png",
+        "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/tshirt_black_front.png",
+        "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/tshirt_black_back.png"
+      },
+      {
+        "color": "white",
+        "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/tshirt_white_front.png",
+        "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/tshirt_white_front.png",
+        "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/tshirt_white_back.png"
+      }
+    ]
   },
   {
     "id": 4,
     "merch_item": "Hat",
     "name": "SIPHER Exclusive Hat",
     "description": "merchandise for investor nft support Sipher team early",
-    "imageUrl": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_hat.png"
+    "imageUrl": [
+      {
+        "color": "black",
+        "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hat_black_front.png",
+        "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hat_black_front.png"
+      },
+      {
+        "color": "black",
+        "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hat_white_front.png",
+        "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/hat_white_front.png"
+      }
+    ]
   }
 ]

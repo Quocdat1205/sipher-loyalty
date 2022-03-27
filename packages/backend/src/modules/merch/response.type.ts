@@ -1,5 +1,5 @@
 import { IsEthereumAddress } from "class-validator";
-import { ViewType } from "@entity";
+import { ImageUrl, ViewType } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class MerchType {
@@ -31,16 +31,16 @@ export class MerchType {
   @ApiProperty({ type: String })
   description: string;
 
-  @ApiProperty({ type: String })
-  imageUrl: string;
+  @ApiProperty({ type: Image, isArray: true })
+  images: ImageUrl[];
 
   @ApiProperty({ type: String, default: "MERCH" })
   type: string;
 }
 
 export class ReceiverType {
-  @ApiProperty({ type: String })
-  id_receiver: string;
+  @ApiProperty({ type: Number })
+  id_receiver: number;
 
   @ApiProperty({ type: String })
   first_name: string;

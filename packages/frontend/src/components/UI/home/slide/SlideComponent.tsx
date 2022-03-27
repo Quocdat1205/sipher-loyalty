@@ -72,7 +72,7 @@ const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: SlideshowP
   }
 
   return (
-    <Box pos="relative" h={["20rem", "22.5rem"]} w="full" overflow="hidden" bg="#151515">
+    <Box pos="relative" h={["6rem", "16rem", "18rem", "20rem", "23rem"]} w="full" overflow="hidden" bg="#151515">
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={page}

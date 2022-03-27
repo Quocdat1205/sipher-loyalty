@@ -2,7 +2,8 @@ export const SUPPORTED_CHAINS_INFO = [
   {
     chainId: 1,
     chainName: "Mainnet",
-    rpcUrl: "https://mainnet.infura.io/v3/204406a8342c4a1c9ac7627f2d00a1f1",
+    rpcUrls: ["https://api.mycryptoapi.com/eth", "https://mainnet.infura.io/v3/204406a8342c4a1c9ac7627f2d00a1f1"],
+    blockExplorerUrls: ["https://etherscan.io"],
   },
   {
     chainId: 4,

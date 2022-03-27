@@ -15,7 +15,7 @@ const useNFTs = collectionId => {
   const columns = gridSize === "small" ? [2, 3, 4, 5, 5] : [1, 2, 3, 4, 4]
 
   const { data: initData } = useQuery<any>(
-    ["nfts", user, account, collectionId],
+    ["nfts", user, account!, collectionId],
     () =>
       client.api
         .collectionControllerGetPortfolioByCollection(

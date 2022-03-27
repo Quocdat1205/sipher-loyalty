@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
-export class Transaction {
+export class MerchList {
   @ApiProperty({ type: Number })
   @PrimaryGeneratedColumn("increment")
   id_transaction: number;
@@ -30,4 +30,8 @@ export class Transaction {
   @ApiProperty({ type: Boolean })
   @Column({ default: false })
   isShipped?: boolean;
+
+  @ApiProperty({ type: Boolean })
+  @Column({ default: false })
+  isShip?: boolean;
 }

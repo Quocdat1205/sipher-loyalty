@@ -3,11 +3,10 @@ import fs from "fs";
 import path from "path";
 
 import { Repository } from "typeorm";
+import { Airdrop, ImageUrl, Item, MerchList } from "@entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
-
-import { Airdrop } from "src/entity/airdrop.entity";
 
 // import module
 import { LoggerService } from "../logger/logger.service";
@@ -24,14 +23,12 @@ export class SeedAirdropService {
         fs.readFileSync(`${this.src}/AIRDROP/TOKEN/holder_test.json`).toString()
       );
 
-  private airdropDataMerchTransaction = constant.isProduction
+  private airdropDataMerchList = constant.isProduction
     ? JSON.parse(
-        fs.readFileSync(`${this.src}/AIRDROP/MERCH/transaction.json`).toString()
+        fs.readFileSync(`${this.src}/AIRDROP/MERCH/merch.json`).toString()
       )
     : JSON.parse(
-        fs
-          .readFileSync(`${this.src}/AIRDROP/MERCH/transaction_test.json`)
-          .toString()
+        fs.readFileSync(`${this.src}/AIRDROP/MERCH/merch_test.json`).toString()
       );
 
   private airdropDataMerchItem = JSON.parse(
@@ -40,11 +37,50 @@ export class SeedAirdropService {
 
   constructor(
     @InjectRepository(Airdrop)
-    private airdropRepo: Repository<Airdrop>
+    private airdropRepo: Repository<Airdrop>,
+    @InjectRepository(ImageUrl)
+    private imageUrlRepo: Repository<ImageUrl>,
+    @InjectRepository(MerchList)
+    private merchListRepo: Repository<MerchList>,
+    @InjectRepository(Item)
+    private itemRepo: Repository<Item>
   ) {}
 
-  seedAirdropHolder = async () => {
-    const flaternAirdrop = this.airdropDataHolder.data.map((el) => ({
+  private seedToken = async (token) => {
+    try {
+      const imageUrl = await this.seedImageUrls(token.imageUrl);
+      token.imageUrl = imageUrl;
+      const _token = this.airdropRepo.create(token);
+      await this.airdropRepo.save(_token);
+    } catch (err) {
+      LoggerService.error(err);
+    }
+  };
+
+  private seedImageUrl = async (imageUrl) => {
+    try {
+      const _imageUrl = this.imageUrlRepo.create(imageUrl);
+      const result = await this.imageUrlRepo.save(_imageUrl);
+      return result;
+    } catch (err) {
+      LoggerService.error(err);
+      return {};
+    }
+  };
+
+  private seedImageUrls = async (imageUrls) => {
+    const promises = [];
+    for (let i = 0; i < imageUrls.length; i++) {
+      promises.push(this.seedImageUrl(imageUrls[i]));
+    }
+    return Promise.all(promises);
+  };
+
+  seedTokens = async () => {
+    await this.imageUrlRepo.query(`delete from image_url`);
+    await this.airdropRepo.query(`delete from airdrop`);
+
+    const tokenData = this.airdropDataHolder.data.map((el) => ({
       merkleRoot: this.airdropDataHolder.merkleRoot,
       imageUrl: this.airdropDataHolder.imageUrl,
       ...el,
@@ -54,104 +90,59 @@ export class SeedAirdropService {
       numberOfVestingPoint: this.airdropDataHolder.numberOfVestingPoint,
       name: this.airdropDataHolder.name,
       description: this.airdropDataHolder.description,
+      type: "TOKEN",
     }));
     await this.airdropRepo.query(
       `delete from airdrop where "addressContract"='${this.airdropDataHolder.addressContract}';`
     );
 
     const promises = [];
-    for (let i = 0; i < flaternAirdrop.length; i++) {
-      const query = `insert into airdrop ("merkleRoot","imageUrl","proof","leaf","claimer","addressContract","totalAmount","startTime","vestingInterval","numberOfVestingPoint","name","description","type") values (
-            '${flaternAirdrop[i].merkleRoot}',
-            '${flaternAirdrop[i].imageUrl}',
-            '${`{${flaternAirdrop[i].proof.join(",")}}`}',
-            '${flaternAirdrop[i].leaf}',
-            '${flaternAirdrop[i].claimer.toLowerCase()}',
-            '${flaternAirdrop[i].addressContract}',
-            '${flaternAirdrop[i].totalAmount}',
-            '${flaternAirdrop[i].startTime}',
-            '${flaternAirdrop[i].vestingInterval}',
-            '${flaternAirdrop[i].numberOfVestingPoint}',
-            '${flaternAirdrop[i].name}',
-            '${flaternAirdrop[i].description}',
-            'TOKEN');`;
-      // LoggerService.log(query);
-      promises.push(this.airdropRepo.query(query));
+    for (let i = 0; i < tokenData.length; i++) {
+      promises.push(this.seedToken(tokenData[i]));
     }
     await Promise.all(promises);
-
-    const airdropCount = await this.airdropRepo.query(
-      `select count(*) from airdrop where "addressContract"='${this.airdropDataHolder.addressContract}';`
-    );
-    LoggerService.log(
-      `Check airdrop Holder : ${
-        parseInt(airdropCount[0].count, 10) === flaternAirdrop.length
-          ? "OK"
-          : "Failed"
-      }
-        `
-    );
+    LoggerService.log("Done token");
   };
 
-  private seedMerchTransaction = async () => {
-    await this.airdropRepo.query(`delete from transaction`);
-    const promises = [];
-
-    for (let i = 0; i < this.airdropDataMerchTransaction.length; i++) {
-      const query = `insert into transaction ("publicAddress","tier","merch_item","quantity","quantity_shipped") values (
-            '${this.airdropDataMerchTransaction[i].publicAddress}',
-            '${this.airdropDataMerchTransaction[i].investor_type}',
-            '${this.airdropDataMerchTransaction[i].merch_item}',
-            '${this.airdropDataMerchTransaction[i].quantity}',
-            '${this.airdropDataMerchTransaction[i].quantity}');`;
-      // LoggerService.log(query);
-      promises.push(this.airdropRepo.query(query));
+  private seedItem = async (item) => {
+    try {
+      const imageUrl = await this.seedImageUrls(item.imageUrl);
+      item.imageUrl = imageUrl;
+      const _item = this.itemRepo.create(item);
+      await this.itemRepo.save(_item);
+    } catch (err) {
+      LoggerService.error(item.imageUrl);
     }
-    await Promise.all(promises);
-
-    const airdropCount = await this.airdropRepo.query(
-      `select count(*) from transaction `
-    );
-    LoggerService.log(
-      `Check airdrop merch transaction : ${
-        parseInt(airdropCount[0].count, 10) ===
-        this.airdropDataMerchTransaction.length
-          ? "OK"
-          : "Failed"
-      }
-        `
-    );
   };
 
-  private seedMerchItem = async () => {
-    await this.airdropRepo.query(`delete from item`);
+  seedItems = async () => {
+    await this.itemRepo.query(`delete from item`);
 
     const promises = [];
     for (let i = 0; i < this.airdropDataMerchItem.length; i++) {
-      const query = `insert into item ("merch_item","description","name","imageUrl") values (
-            '${this.airdropDataMerchItem[i].merch_item}',
-            '${this.airdropDataMerchItem[i].description}',
-            '${this.airdropDataMerchItem[i].name}',
-            '${this.airdropDataMerchItem[i].imageUrl}');`;
-      // LoggerService.log(query);
-      promises.push(this.airdropRepo.query(query));
+      promises.push(this.seedItem(this.airdropDataMerchItem[i]));
     }
     await Promise.all(promises);
-
-    const airdropCount = await this.airdropRepo.query(
-      `select count(*) from item `
-    );
-    LoggerService.log(
-      `Check airdrop merch item : ${
-        parseInt(airdropCount[0].count, 10) === this.airdropDataMerchItem.length
-          ? "OK"
-          : "Failed"
-      }
-        `
-    );
+    LoggerService.log("Done item");
   };
 
-  async seedMerch() {
-    await Promise.all([this.seedMerchItem(), this.seedMerchTransaction()]);
-  }
+  private seedMerch = async (merch) => {
+    try {
+      const _merch = this.merchListRepo.create(merch);
+      await this.merchListRepo.save(_merch);
+    } catch (err) {
+      LoggerService.error(err);
+    }
+  };
+
+  seedMerchs = async () => {
+    await this.itemRepo.query(`delete from merch_list`);
+
+    const promises = [];
+    for (let i = 0; i < this.airdropDataMerchList.length; i++) {
+      promises.push(this.seedMerch(this.airdropDataMerchList[i]));
+    }
+    await Promise.all(promises);
+    LoggerService.log("Done merch");
+  };
 }

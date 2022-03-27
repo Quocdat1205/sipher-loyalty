@@ -3,23 +3,27 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
+
+import { ImageUrl } from "./imageUrl.entity";
 
 export enum AirdropType {
   NFT = "NFT",
   TOKEN = "TOKEN",
   MERCH = "MERCH",
   ALL = "ALL",
+  CARD = "CARD",
 }
 
 @Entity()
 export class Airdrop {
-  @ApiProperty({ type: String })
-  @PrimaryGeneratedColumn()
+  @ApiProperty({ type: Number })
+  @PrimaryGeneratedColumn("increment")
   @IsString()
-  id: string;
+  id: number;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
@@ -42,9 +46,12 @@ export class Airdrop {
   @IsEthereumAddress()
   addressContract: string;
 
-  @ApiProperty({ type: String })
-  @Column({ nullable: true })
-  imageUrl: string;
+  @ApiProperty({
+    type: () => ImageUrl,
+    isArray: true,
+  })
+  @OneToMany(() => ImageUrl, (imageUrls) => imageUrls.airdrop)
+  imageUrls?: ImageUrl[];
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
@@ -79,5 +86,5 @@ export class Airdrop {
 
   @ApiProperty()
   @CreateDateColumn()
-  created?: Date;
+  createdAt?: Date;
 }

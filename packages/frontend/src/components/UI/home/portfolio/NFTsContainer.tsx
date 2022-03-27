@@ -4,9 +4,11 @@ import { Box } from "@sipher.dev/sipher-ui"
 import { Carousel } from "./Carousel"
 import usePortFolioHome from "./usePortFolioHome"
 
-const NFTsContainer = () => {
-  const { collectionData } = usePortFolioHome()
+interface NFTsContainerProps {
+  collectionData: ReturnType<typeof usePortFolioHome>["collectionData"]
+}
 
+const NFTsContainer = ({ collectionData }: NFTsContainerProps) => {
   return (
     <Box>
       <Carousel slideData={collectionData} />

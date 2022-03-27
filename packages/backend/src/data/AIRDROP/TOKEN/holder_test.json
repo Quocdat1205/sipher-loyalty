@@ -4,7 +4,12 @@
   "startTime": "1646067600",
   "vestingInterval": "2419200",
   "numberOfVestingPoint": "6",
-  "imageUrl": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_token.png",
+  "imageUrl": [
+    {
+      "color": "none",
+      "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_token.png"
+    }
+  ],
   "name": "Holder Airdrop",
   "description": "Airdrop for holder nft Inu / Neko",
   "data": [

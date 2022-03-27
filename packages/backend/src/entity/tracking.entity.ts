@@ -9,7 +9,7 @@ import {
 @Entity()
 export class TrackedBlock {
   @PrimaryGeneratedColumn("increment")
-  id: string;
+  id: number;
 
   @Column({ nullable: false })
   type: string;
