@@ -21,7 +21,7 @@ export class LootboxTrackerExpiredService {
 
   private updateExpiredPending = async () => {
     const pendings = await this.pendingMintRepo.find({
-      where: [{ deadline: LessThan(getNow()), status: MintStatus.Pending }],
+      where: [{ deadline: LessThan(getNow()), status: MintStatus.Minting }],
     });
     const promises = [];
     for (let i = 0; i < pendings.length; i++) {

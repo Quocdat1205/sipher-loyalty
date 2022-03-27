@@ -1,4 +1,5 @@
 import { Transform } from "class-transformer";
+import { IsEthereumAddress } from "class-validator";
 import {
   Column,
   CreateDateColumn,
@@ -18,6 +19,7 @@ export class ClaimableLootbox {
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
+  @IsEthereumAddress()
   publicAddress: string;
 
   @ApiProperty({ type: Number })

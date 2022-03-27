@@ -23,6 +23,7 @@ export class AppModule implements OnApplicationBootstrap {
 
   async onApplicationBootstrap(): Promise<void> {
     await this.seedingService.seedAirdropHolder();
+    await this.seedingService.seedMerch();
     LoggerService.log("Done");
   }
 }

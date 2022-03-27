@@ -3,6 +3,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class ItemOrder {
+  @ApiProperty({ type: Number })
   @PrimaryGeneratedColumn("increment")
   id_item_order: number;
 
@@ -12,16 +13,17 @@ export class ItemOrder {
 
   @ApiProperty({ type: String })
   @Column()
-  size: string;
+  size?: string;
 
   @ApiProperty({ type: String })
   @Column()
-  color: string;
+  color?: string;
 
   @ApiProperty({ type: Number })
   @Column()
   quantity: number;
 
+  @ApiProperty({ type: String })
   @Column()
   id_transaction: string;
 }

@@ -7,12 +7,12 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
+import { ClaimableLootbox } from "./claimableLootbox.entity";
 import {
   ERC1155LootboxAttribute,
   ERC1155SculptureAttribute,
 } from "./erc1155Attributes.entity";
 import { Lootbox } from "./lootbox.entity";
-import { ClaimableLootbox } from "./claimableLootbox.entity";
 
 @Entity()
 export class ERC1155Lootbox {

@@ -1,4 +1,3 @@
-import constant from "@setting/constant";
 import { Api } from "./marketplaceSdk";
 
 const marketplaceClient = new Api({

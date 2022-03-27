@@ -17,6 +17,7 @@ import { CacheService } from "@modules/cache/cache.service";
 import { CancelService } from "@modules/cancel/cancel.service";
 import { MintService } from "@modules/mint/mint.service";
 import { BatchOrder, Order } from "@utils/type";
+import { insertDetailStringToImage } from "@utils/utils";
 import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 import { LoggerService } from "../logger/logger.service";
@@ -107,8 +108,6 @@ export class LootBoxService {
       publicAddress,
       tokenId
     );
-    await this.verifyBlockingLootbox(lootbox);
-    await this.cacheService.setBlockingLootbox(lootbox.id, true);
     if (!lootbox) {
       lootbox = this.lootboxRepo.create({
         publicAddress,
@@ -118,6 +117,8 @@ export class LootBoxService {
         mintable: quantity,
       });
     } else {
+      await this.verifyBlockingLootbox(lootbox);
+      await this.cacheService.setBlockingLootbox(lootbox.id, true);
       lootbox.quantity += quantity;
       lootbox.mintable += quantity;
     }
@@ -174,6 +175,9 @@ export class LootBoxService {
       ],
       relations: ["propertyLootbox"],
     });
+    lootbox.propertyLootbox.image = insertDetailStringToImage(
+      lootbox.propertyLootbox.image
+    );
     return lootbox;
   };
 
@@ -335,12 +339,14 @@ export class LootBoxService {
       batchID
     );
 
+    if (!lootbox) {
+      throw new HttpException("not have tokenId ", HttpStatus.BAD_REQUEST);
+    }
+
     // verify blocked lootbox
     await this.verifyBlockingLootbox(lootbox);
     await this.setBlockingLootbox(lootbox, true);
 
-    if (!lootbox)
-      throw new HttpException("not have tokenId ", HttpStatus.BAD_REQUEST);
     if (lootbox.quantity - lootbox.pending < amount)
       throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
     lootbox.pending += amount;
@@ -410,28 +416,33 @@ export class LootBoxService {
         order.batchID
       );
 
-      // verify blocked lootbox
-      await this.verifyBlockingLootbox(lootbox);
-      await this.setBlockingLootbox(lootbox, true);
+      if (lootbox) {
+        // verify blocked lootbox
+        await this.verifyBlockingLootbox(lootbox);
+        await this.setBlockingLootbox(lootbox, true);
 
-      lootbox.pending =
-        lootbox.pending > order.amount ? lootbox.pending - order.amount : 0;
-      lootbox.quantity =
-        lootbox.quantity > order.amount ? lootbox.quantity - order.amount : 0;
+        lootbox.pending =
+          lootbox.pending > order.amount ? lootbox.pending - order.amount : 0;
+        lootbox.quantity =
+          lootbox.quantity > order.amount ? lootbox.quantity - order.amount : 0;
 
-      const promises = [];
-      // update batch lootbox
-      pending.status = MintStatus.Minted;
-      promises.push(this.mintService.updatePendingMint(pending));
-      promises.push(this.lootboxRepo.save(lootbox));
-      const result = await Promise.all(promises);
+        const promises = [];
+        // update batch lootbox
+        pending.status = MintStatus.Minted;
+        promises.push(this.mintService.updatePendingMint(pending));
+        promises.push(this.lootboxRepo.save(lootbox));
+        const result = await Promise.all(promises);
 
-      await this.setBlockingLootbox(lootbox, false);
+        await this.setBlockingLootbox(lootbox, false);
 
-      LoggerService.log(
-        `update lootbox from tracker minted done :${JSON.stringify(result)}`
-      );
-    } else LoggerService.log("event resoved or not in pending minted db");
+        LoggerService.log(
+          `update lootbox from tracker minted done :${JSON.stringify(result)}`
+        );
+      } else
+        LoggerService.log(
+          `can't find lootbox with minting info ${JSON.stringify(pending)} `
+        );
+    } else LoggerService.log("event resoved or not in pending mint db");
   };
 
   updateLootboxFromTrackerBurnedBatchOrder = async (batchOrder: BatchOrder) => {
@@ -494,33 +505,38 @@ export class LootBoxService {
         order.batchID
       );
 
-      // verify blocked lootbox
-      await this.verifyBlockingLootbox(lootbox);
-      await this.setBlockingLootbox(lootbox, true);
+      if (lootbox) {
+        // verify blocked lootbox
+        await this.verifyBlockingLootbox(lootbox);
+        await this.setBlockingLootbox(lootbox, true);
 
-      lootbox.quantity += order.amount;
-      lootbox.mintable += order.amount;
+        lootbox.quantity += order.amount;
+        lootbox.mintable += order.amount;
 
-      const promises = [];
-      // update burned lootbox
-      const _burned = {
-        to: order.to,
-        batchID: order.batchID,
-        amount: order.amount,
-        salt: order.salt,
-        batchIDs: [],
-        amounts: [],
-        type: BurnType.Lootbox,
-      };
-      promises.push(this.burnService.createBurned(_burned));
-      promises.push(this.lootboxRepo.save(lootbox));
-      const result = await Promise.all(promises);
+        const promises = [];
+        // update burned lootbox
+        const _burned = {
+          to: order.to,
+          batchID: order.batchID,
+          amount: order.amount,
+          salt: order.salt,
+          batchIDs: [],
+          amounts: [],
+          type: BurnType.Lootbox,
+        };
+        promises.push(this.burnService.createBurned(_burned));
+        promises.push(this.lootboxRepo.save(lootbox));
+        const result = await Promise.all(promises);
 
-      this.setBlockingLootbox(lootbox, true);
+        this.setBlockingLootbox(lootbox, true);
 
-      LoggerService.log(
-        `update lootbox from tracker burned done :${JSON.stringify(result)}`
-      );
+        LoggerService.log(
+          `update lootbox from tracker burned done :${JSON.stringify(result)}`
+        );
+      } else
+        LoggerService.log(
+          `can't find lootbox with burned info ${JSON.stringify(burned)} `
+        );
     } else LoggerService.log("event resoved or in burned database");
   };
 
@@ -539,7 +555,7 @@ export class LootBoxService {
         signature
       );
 
-      if (pendingMint && pendingMint.status === MintStatus.Pending) {
+      if (pendingMint && pendingMint.status === MintStatus.Minting) {
         pendingMint.status = MintStatus.Canceled;
         await this.mintService.updatePendingMint(pendingMint);
         const tokenIds = pendingMint.batchID

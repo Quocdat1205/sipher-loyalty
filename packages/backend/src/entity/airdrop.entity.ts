@@ -1,3 +1,4 @@
+import { IsEthereumAddress, IsString } from "class-validator";
 import {
   Column,
   CreateDateColumn,
@@ -17,6 +18,7 @@ export enum AirdropType {
 export class Airdrop {
   @ApiProperty({ type: String })
   @PrimaryGeneratedColumn()
+  @IsString()
   id: string;
 
   @ApiProperty({ type: String })
@@ -37,6 +39,7 @@ export class Airdrop {
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
+  @IsEthereumAddress()
   addressContract: string;
 
   @ApiProperty({ type: String })
@@ -61,6 +64,14 @@ export class Airdrop {
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   vestingInterval: string;
+
+  @ApiProperty({ type: String })
+  @Column({ nullable: true })
+  name: string;
+
+  @ApiProperty({ type: String })
+  @Column({ nullable: true })
+  description: string;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })

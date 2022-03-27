@@ -1,4 +1,3 @@
-import { ApiProperty } from "@nestjs/swagger";
 import {
   Column,
   CreateDateColumn,
@@ -6,6 +5,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { ApiProperty } from "@nestjs/swagger";
 
 export enum CollectionType {
   ERC721 = "ERC721",

@@ -1,35 +1,5 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
-
-@Entity()
-export class User {
-  @ApiProperty({ type: String })
-  @PrimaryGeneratedColumn("uuid")
-  ather_id: string;
-
-  @ApiProperty({ type: String })
-  @Column({ nullable: true })
-  email: string;
-
-  @ApiProperty({ type: String })
-  @Column({ nullable: true })
-  attachment: string;
-
-  @ApiProperty({ type: String })
-  @Column({ nullable: true })
-  bio: string;
-
-  @Column({ default: new Date() })
-  last_active: Date;
-
-  @CreateDateColumn({ default: new Date() })
-  createdAt?: Date;
-}
 
 @Entity()
 export class Address {
