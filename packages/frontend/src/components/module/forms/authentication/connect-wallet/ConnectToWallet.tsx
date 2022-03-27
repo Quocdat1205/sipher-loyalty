@@ -2,33 +2,26 @@ import { useState } from "react"
 import { useMutation } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { chakra, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
-import { AuthType, SignInAction } from "@store"
+import { AuthType, ConnectWalletAction, useAuthFlowStore } from "@store"
+import { useWalletContext } from "@web3"
 
 import { ChakraModal, WalletCard } from "@components/shared"
 import { useChakraToast } from "@hooks"
+import { shortenAddress } from "@utils"
 import { useAuth } from "src/providers/auth"
-
-import { useSignInContext } from "./useSignIn"
 
 const ConnectToWallet = () => {
   const toast = useChakraToast()
   const { ownedWallets } = useAuth()
-  const {
-    flowState,
-    setFlowState,
-    wallet: { connect, scCaller, reset },
-  } = useSignInContext()
-
-  const [progress, setProgress] = useState("Loading")
-
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
+  const { connect, scCaller, reset, account, connector } = useWalletContext()
+  const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
 
+  // Initiate wallet connection => Sign the message to get signature => Confirm wallet connection
   const { mutate: mutateAddWallet } = useMutation<unknown, unknown, string>(
     async account => {
       const res = await AtherIdAuth.connectWallet(account!)
-      setProgress("Signing")
       const signature = await scCaller.current?.sign(res.message)
-      setProgress("Confirming")
       await AtherIdAuth.confirmConectWallet(res, signature!)
     },
     {
@@ -50,15 +43,14 @@ const ConnectToWallet = () => {
       },
       onSettled: () => {
         setConnectingMethod(null)
-        setProgress("Loading")
       },
     },
   )
 
   const handleConnectWallet = async (connectorId: Parameters<typeof connect>["0"]) => {
     setConnectingMethod(connectorId)
-    setProgress("Checking")
     const account = await connect(connectorId)
+    // Try to add wallet to account if not linked yet
     if (account && !ownedWallets.includes(account)) {
       mutateAddWallet(account)
     } else setFlowState(null)
@@ -68,7 +60,7 @@ const ConnectToWallet = () => {
     <ChakraModal
       title={"CONNECT TO A WALLET"}
       size="lg"
-      isOpen={flowState?.type === AuthType.SignIn && flowState.action === SignInAction.ConnectWallet}
+      isOpen={flowState?.type === AuthType.ConnectWallet && flowState.action === ConnectWalletAction.Connect}
       onClose={() => setFlowState(null)}
     >
       <Stack pos="relative" px={6} spacing={4} w="full">
@@ -77,21 +69,19 @@ const ConnectToWallet = () => {
             onClick={() => {
               handleConnectWallet("injected")
             }}
-            text={"Metamask"}
+            text={account && connector === "injected" ? shortenAddress(account) : "Metamask"}
             src="/images/icons/wallets/metamask.svg"
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "injected"}
-            loadingText={progress}
           />
           <WalletCard
             onClick={() => {
               handleConnectWallet("walletConnect")
             }}
-            text={"ConnectWallet"}
+            text={account && connector === "walletConnect" ? shortenAddress(account) : "WalletConnect"}
             src="/images/icons/wallets/walletconnect.svg"
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "walletConnect"}
-            loadingText={progress}
           />
         </HStack>
 

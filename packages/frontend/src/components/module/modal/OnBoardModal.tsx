@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import { Box, Button, Flex, Heading, HStack, Text } from "@sipher.dev/sipher-ui"
-import { useStore } from "@store"
+import { AuthType, SignUpAction, useAuthFlowStore } from "@store"
 
 import { ChakraModal } from "@components/shared"
 import { getSignIn, setSignIn } from "@utils"
@@ -27,11 +27,8 @@ const imageData = [
 ]
 
 export const OnBoardModal = () => {
-  const { setAuthFlow } = useStore(s => ({
-    setAuthFlow: s.setAuthFlow,
-  }))
-
   const [isOnboard, setIsOnboard] = useState(false)
+  const setFlowState = useAuthFlowStore(s => s.setState)
 
   useEffect(() => {
     if (!getSignIn()) {
@@ -40,7 +37,7 @@ export const OnBoardModal = () => {
   }, [])
 
   const handleClick = () => {
-    setAuthFlow("SIGN_UP")
+    setFlowState({ type: AuthType.SignUp, action: SignUpAction.SignUp })
     setSignIn("true")
     setIsOnboard(false)
   }
