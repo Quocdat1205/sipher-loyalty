@@ -20,8 +20,6 @@ export class DistributeSculptureService {
     }.json`
   );
 
-  // private src1 = path.resolve(__dirname, `../../../src/data/test.json`);
-
   private sculptureHolder = JSON.parse(fs.readFileSync(this.src).toString());
 
   private provider: providers.Provider;
@@ -126,22 +124,27 @@ export class DistributeSculptureService {
       BothHolder.length
     );
     const dataResult = [];
-    await onlyNekoHolder.reduce(async (promise, data) => {
-      await promise;
-      LoggerService.log(data);
-      dataResult.push(await this.safeTransferFrom(data));
-    }, Promise.resolve());
-    await onlyNekoHolder.reduce(async (promise, data) => {
-      await promise;
-      LoggerService.log(data);
-      dataResult.push(await this.safeTransferFrom(data));
-    }, Promise.resolve());
-    await BothHolder.reduce(async (promise, data) => {
-      await promise;
-      LoggerService.log(data);
-      dataResult.push(await this.safeBatchTransferFrom(data));
-    }, Promise.resolve());
-    await fs.writeFileSync(`./Result.json`, JSON.stringify(dataResult));
+    try {
+      await onlyNekoHolder.reduce(async (promise, data) => {
+        await promise;
+        LoggerService.log(data);
+        dataResult.push(await this.safeTransferFrom(data));
+      }, Promise.resolve());
+      await onlyNekoHolder.reduce(async (promise, data) => {
+        await promise;
+        LoggerService.log(data);
+        dataResult.push(await this.safeTransferFrom(data));
+      }, Promise.resolve());
+      await BothHolder.reduce(async (promise, data) => {
+        await promise;
+        LoggerService.log(data);
+        dataResult.push(await this.safeBatchTransferFrom(data));
+      }, Promise.resolve());
+    } catch (err) {
+      LoggerService.error(err);
+    } finally {
+      fs.writeFileSync(`./src/data/Result.json`, JSON.stringify(dataResult));
+    }
   }
 
   async safeTransferFrom(data) {

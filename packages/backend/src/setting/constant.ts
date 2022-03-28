@@ -88,8 +88,8 @@ export class SystemConfigProvider {
     const rpcUrls = {
       [Chain.Mainnet]: `https://mainnet.infura.io/v3/${this.SC_INFURA}`,
       [Chain.Rinkeby]: `https://rinkeby.infura.io/v3/${this.SC_INFURA}`,
-      [Chain.Mumbai]: `https://polygon-mainnet.infura.io/v3/${this.SC_INFURA}`,
-      [Chain.Polygon]: `https://polygon-mumbai.infura.io/v3/${this.SC_INFURA}`,
+      [Chain.Mumbai]: `https://polygon-mumbai.infura.io/v3/${this.SC_INFURA}`,
+      [Chain.Polygon]: `https://polygon-mainnet.infura.io/v3/${this.SC_INFURA}`,
     };
 
     const erc1155LootBox = {
@@ -116,7 +116,7 @@ export class SystemConfigProvider {
         address: ZERO_ADDRESS,
       },
       [Chain.Mumbai]: {
-        address: "0x3EdB954303D0A13ee347C6989189294B0422E7D6",
+        address: "0x8832B826C4194Ed54bA9f1423fdB82295c09f0c9",
       },
 
       [Chain.Polygon]: {
