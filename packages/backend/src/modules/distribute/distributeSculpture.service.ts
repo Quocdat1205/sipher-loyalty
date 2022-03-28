@@ -9,12 +9,14 @@ import { erc1155Abi } from "@setting/blockchain/abis";
 import { getContract, getProvider } from "@setting/blockchain/ethers";
 import constant, { Chain } from "@setting/constant";
 
+import { LoggerService } from "@modules/logger/logger.service";
+
 @Injectable()
 export class DistributeSculptureService {
   private src = path.resolve(
     __dirname,
     `../../../src/data/DISTRIBUTE/SCULPTURE/data${
-      constant.isProduction ? "" : "_test"
+      constant.isProduction ? "" : ""
     }.json`
   );
 
@@ -52,16 +54,40 @@ export class DistributeSculptureService {
     return -1;
   }
 
+  private findDuplicatesAddress(arr) {
+    const nonDuplicate = [];
+    const duplicate = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (
+        nonDuplicate.findIndex(
+          (el) => el.toLowerCase() === arr[i].toLowerCase()
+        ) === -1
+      )
+        nonDuplicate.push(arr[i].toLowerCase());
+      else duplicate.push(arr[i].toLowerCase());
+    }
+    return { nonDuplicate, duplicate };
+  }
+
   async transferAll() {
     const allHolder = this.sculptureHolder.map((el) => ({
       address: el.address.toLowerCase(),
       INU: el.INU,
       NEKO: el.NEKO,
     }));
-    if (this.findDuplicates(allHolder) > -1) {
-      console.log("duplicate at ", this.findDuplicates(allHolder));
+
+    if (
+      this.findDuplicatesAddress(allHolder.map((el) => el.address)).duplicate
+        .length > 0
+    ) {
+      LoggerService.log(
+        `duplicate : ${this.findDuplicatesAddress(
+          allHolder.map((el) => el.address)
+        ).duplicate.join(", ")}`
+      );
       return;
     }
+
     const onlyNekoHolder = allHolder
       .filter((el) => el.INU === "0")
       .map((el) => ({
@@ -85,7 +111,7 @@ export class DistributeSculptureService {
         ids: ["0", "1"],
         amounts: [el.INU, el.NEKO],
       }));
-    console.log(
+    LoggerService.log(
       "all: ",
       this.sculptureHolder.length,
       "lower: ",
@@ -99,17 +125,17 @@ export class DistributeSculptureService {
     );
     await onlyNekoHolder.reduce(async (promise, data) => {
       await promise;
-      console.log(data);
+      LoggerService.log(data);
       await this.safeTransferFrom(data);
     }, Promise.resolve());
     await onlyNekoHolder.reduce(async (promise, data) => {
       await promise;
-      console.log(data);
+      LoggerService.log(data);
       await this.safeTransferFrom(data);
     }, Promise.resolve());
     await BothHolder.reduce(async (promise, data) => {
       await promise;
-      console.log(data);
+      LoggerService.log(data);
       await this.safeBatchTransferFrom(data);
     }, Promise.resolve());
   }
@@ -124,9 +150,9 @@ export class DistributeSculptureService {
         data.amount,
         "0x"
       );
-    console.log(tx.hash);
+    LoggerService.log(tx.hash);
     const result = await tx.wait();
-    console.log(result);
+    LoggerService.log(result);
   }
 
   async safeBatchTransferFrom(data) {
@@ -139,8 +165,8 @@ export class DistributeSculptureService {
         data.amounts,
         "0x"
       );
-    console.log(tx.hash);
+    LoggerService.log(tx.hash);
     const result = await tx.wait();
-    console.log(result);
+    LoggerService.log(result);
   }
 }
