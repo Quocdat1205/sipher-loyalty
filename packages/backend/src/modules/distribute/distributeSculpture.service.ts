@@ -16,9 +16,11 @@ export class DistributeSculptureService {
   private src = path.resolve(
     __dirname,
     `../../../src/data/DISTRIBUTE/SCULPTURE/data${
-      constant.isProduction ? "" : ""
+      constant.isProduction ? "" : "_test"
     }.json`
   );
+
+  // private src1 = path.resolve(__dirname, `../../../src/data/test.json`);
 
   private sculptureHolder = JSON.parse(fs.readFileSync(this.src).toString());
 
@@ -34,24 +36,10 @@ export class DistributeSculptureService {
     );
     this.wallet = new ethers.Wallet(constant.PRIVATE_KEY, this.provider);
     this.contract = getContract(
-      constant.config.erc1155Sculpture.verifyingContract,
+      "0x8832B826C4194Ed54bA9f1423fdB82295c09f0c9", // constant.config.erc1155Sculpture.verifyingContract,
       erc1155Abi,
       this.provider
     );
-  }
-
-  private findDuplicates(arr) {
-    const holder = [];
-    for (let i = 0; i < arr.length; i++) {
-      if (
-        holder.findIndex(
-          (el) => el.toLowerCase() === arr[i].address.toLowerCase()
-        ) === -1
-      )
-        holder.push(arr[i].address.toLowerCase());
-      else return arr[i].address.toLowerCase();
-    }
-    return -1;
   }
 
   private findDuplicatesAddress(arr) {
@@ -67,6 +55,20 @@ export class DistributeSculptureService {
       else duplicate.push(arr[i].toLowerCase());
     }
     return { nonDuplicate, duplicate };
+  }
+
+  async checkDuplicateManual() {
+    if (
+      this.findDuplicatesAddress(
+        this.sculptureHolder.map((el) => el.walletAddress)
+      ).duplicate.length > 0
+    ) {
+      LoggerService.log(
+        `duplicate : ${this.findDuplicatesAddress(
+          this.sculptureHolder.map((el) => el.walletAddress)
+        ).duplicate.join(", ")}`
+      );
+    }
   }
 
   async transferAll() {
@@ -123,21 +125,23 @@ export class DistributeSculptureService {
       "both: ",
       BothHolder.length
     );
+    const dataResult = [];
     await onlyNekoHolder.reduce(async (promise, data) => {
       await promise;
       LoggerService.log(data);
-      await this.safeTransferFrom(data);
+      dataResult.push(await this.safeTransferFrom(data));
     }, Promise.resolve());
     await onlyNekoHolder.reduce(async (promise, data) => {
       await promise;
       LoggerService.log(data);
-      await this.safeTransferFrom(data);
+      dataResult.push(await this.safeTransferFrom(data));
     }, Promise.resolve());
     await BothHolder.reduce(async (promise, data) => {
       await promise;
       LoggerService.log(data);
-      await this.safeBatchTransferFrom(data);
+      dataResult.push(await this.safeBatchTransferFrom(data));
     }, Promise.resolve());
+    await fs.writeFileSync(`./Result.json`, JSON.stringify(dataResult));
   }
 
   async safeTransferFrom(data) {
@@ -151,8 +155,24 @@ export class DistributeSculptureService {
         "0x"
       );
     LoggerService.log(tx.hash);
-    const result = await tx.wait();
-    LoggerService.log(result);
+    let result = {};
+    try {
+      result = await tx.wait();
+    } catch (err) {
+      LoggerService.error(err);
+      return {
+        address: toChecksumAddress(data.address),
+        tx,
+        result,
+        error: true,
+      };
+    }
+    return {
+      address: toChecksumAddress(data.address),
+      tx,
+      result,
+      error: false,
+    };
   }
 
   async safeBatchTransferFrom(data) {
@@ -166,7 +186,23 @@ export class DistributeSculptureService {
         "0x"
       );
     LoggerService.log(tx.hash);
-    const result = await tx.wait();
-    LoggerService.log(result);
+    let result = {};
+    try {
+      result = await tx.wait();
+    } catch (err) {
+      LoggerService.error(err);
+      return {
+        address: toChecksumAddress(data.address),
+        tx,
+        result,
+        error: true,
+      };
+    }
+    return {
+      address: toChecksumAddress(data.address),
+      tx,
+      result,
+      error: false,
+    };
   }
 }
