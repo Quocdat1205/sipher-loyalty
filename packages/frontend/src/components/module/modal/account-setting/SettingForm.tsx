@@ -35,7 +35,7 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
     () => updateProfile({ name: values.name, bio: values.bio }, bearerToken),
     {
       onSuccess: () => {
-        qc.invalidateQueries(["profile", bearerToken])
+        qc.invalidateQueries("profile")
         toast({
           status: "success",
           title: "Update profile successfully",

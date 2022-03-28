@@ -12,22 +12,16 @@ import { useAuth } from "src/providers/auth"
 
 const usePortFolioHome = () => {
   const router = useRouter()
-  const { session, authenticated, user } = useAuth()
+  const { bearerToken } = useAuth()
   const { account, chainId } = useWalletContext()
   const { dataPrice, balance, totalUsdPrice } = useBalanceContext()
 
   const { data: dataInit, isFetched } = useQuery<any>(
-    ["collection", user, account],
+    ["collection", bearerToken, account],
     () =>
-      client.api
-        .collectionControllerGetUserCollection(
-          account!,
-          {},
-          setBearerToken(session?.getIdToken().getJwtToken() as string),
-        )
-        .then(res => res.data),
+      client.api.collectionControllerGetUserCollection(account!, {}, setBearerToken(bearerToken)).then(res => res.data),
     {
-      enabled: authenticated && !!account,
+      enabled: !!bearerToken && !!account,
       initialData: [],
     },
   )

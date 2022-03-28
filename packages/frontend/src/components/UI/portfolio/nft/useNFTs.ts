@@ -9,7 +9,7 @@ import { useAuth } from "src/providers/auth"
 
 const useNFTs = collectionId => {
   const router = useRouter()
-  const { session, authenticated, user } = useAuth()
+  const { user, bearerToken } = useAuth()
   const { account } = useWalletContext()
   const gridSize = useStore(state => state.gridSize)
   const columns = gridSize === "small" ? [2, 3, 4, 5, 5] : [1, 2, 3, 4, 4]
@@ -18,14 +18,10 @@ const useNFTs = collectionId => {
     ["nfts", user, account, collectionId],
     () =>
       client.api
-        .collectionControllerGetPortfolioByCollection(
-          account!,
-          collectionId,
-          setBearerToken(session?.getIdToken().getJwtToken() as string),
-        )
+        .collectionControllerGetPortfolioByCollection(account!, collectionId, setBearerToken(bearerToken))
         .then(res => res.data),
     {
-      enabled: authenticated && !!account,
+      enabled: !!bearerToken && !!account,
       initialData: [],
     },
   )

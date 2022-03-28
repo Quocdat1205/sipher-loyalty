@@ -9,7 +9,7 @@ import { useAuth } from "src/providers/auth"
 
 const useBalance = () => {
   const { scCaller, account, chainId } = useWalletContext()
-  const { session, authenticated, user } = useAuth()
+  const { session, authenticated, user, bearerToken } = useAuth()
   const [isFetched, setIsFetched] = useState(false)
   const qc = useQueryClient()
 
@@ -27,13 +27,10 @@ const useBalance = () => {
   })
 
   const { data: dataPrice } = useQuery(
-    ["dataPrice", user, account],
-    () =>
-      client.api
-        .priceControllerGetPrice(setBearerToken(session?.getIdToken().getJwtToken() as string))
-        .then(res => res.data),
+    "dataPrice",
+    () => client.api.priceControllerGetPrice(setBearerToken(bearerToken)).then(res => res.data),
     {
-      enabled: !isFetched && authenticated && !!account,
+      enabled: !!bearerToken,
       initialData: {
         sipherPrice: {
           eth: 0,

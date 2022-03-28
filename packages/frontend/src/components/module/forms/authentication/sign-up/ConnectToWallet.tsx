@@ -32,7 +32,7 @@ const ConnectToWallet = () => {
     {
       onSuccess: () => {
         setFlowState(null)
-        qc.invalidateQueries(["owned-wallets", user?.email])
+        qc.invalidateQueries("owned-wallets")
       },
       onError: async (e: any) => {
         reset()

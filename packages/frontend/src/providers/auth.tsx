@@ -73,11 +73,11 @@ const useAuthState = () => {
 
   const bearerToken = session?.getIdToken().getJwtToken() ?? ""
 
-  const { data: userProfile } = useQuery(["profile", bearerToken], () => getProfile(bearerToken), {
+  const { data: userProfile } = useQuery("profile", () => getProfile(bearerToken), {
     enabled: !!bearerToken,
   })
 
-  const { data: ownedWallets } = useQuery(["owned-wallets", user?.email], () => AtherIdAuth.ownedWallets(), {
+  const { data: ownedWallets } = useQuery("owned-wallets", () => AtherIdAuth.ownedWallets(), {
     initialData: [],
     enabled: authenticated,
   })

@@ -36,7 +36,7 @@ export const AccountModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
         setIsChoosingAvatar(false)
       },
       onSuccess: () => {
-        qc.invalidateQueries(["profile", bearerToken])
+        qc.invalidateQueries("profile")
       },
       onError: (e: any) => {
         toast({
