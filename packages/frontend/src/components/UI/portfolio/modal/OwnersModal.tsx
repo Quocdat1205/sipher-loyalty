@@ -2,10 +2,11 @@ import React from "react"
 import { Avatar, Box, Flex, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
+import { Erc1155Owner } from "@sdk"
 import { shortenAddress } from "@utils"
 
 interface OwnersModalProps {
-  ownersData: Record<string, any>
+  ownersData: Erc1155Owner[]
   isOpen: boolean
   onClose: () => void
 }

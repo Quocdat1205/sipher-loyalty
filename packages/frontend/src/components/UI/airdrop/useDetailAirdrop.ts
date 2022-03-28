@@ -29,7 +29,5 @@ export const useDetailAirdrop = () => {
     },
   )
 
-  console.log(detailAirdrop)
-
   return { detailAirdrop, router, isOpen, onClose, isFetched }
 }

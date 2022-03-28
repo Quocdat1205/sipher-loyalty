@@ -39,11 +39,12 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
       <Flex flexDir="column" w="full" align="center">
         <Box px={[4, 4, 4, 0, 0]} w="full" maxW="1200px">
           <Stack mb={4} flexDir="column" align="center" pos="relative">
-            <Skeleton rounded="full" pos="absolute" transform="translateY(-50%)" isLoaded={isFetched}>
+            <Skeleton pos="absolute" transform="translateY(-50%)" isLoaded={isFetched} rounded="full">
               <Avatar src={collectionData?.logoImage} size="xl" />
             </Skeleton>
+            <Box pt={16} />
             <Skeleton isLoaded={isFetched}>
-              <Flex pt={16} align="center">
+              <Flex align="center">
                 <Heading mr={1} fontSize="3xl" fontWeight={600}>
                   {capitalize(collectionData?.name?.toLowerCase() ?? "")}
                 </Heading>

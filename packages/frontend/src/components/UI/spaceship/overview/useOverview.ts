@@ -84,7 +84,6 @@ const useOverview = () => {
   const ONE_DAY = 60 * 60 * 24
   const startTime = 1647953250000
   const weekNum = Math.floor(differenceInSeconds(new Date(), new Date(startTime)) / (ONE_DAY * 7)) % 7
-
   const mappedData = data.map((item, index) => ({ ...item, isActive: index === weekNum }))
 
   const activeData = mappedData.find(item => item.isActive)!

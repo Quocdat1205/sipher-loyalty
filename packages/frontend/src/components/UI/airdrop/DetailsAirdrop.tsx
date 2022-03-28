@@ -25,12 +25,16 @@ export function DetailsAirdrop() {
   const handleImage = id => {
     if (id === "black" && detailAirdrop) {
       setSelectedColor(id)
-      setImageState({ ...imageState, front: detailAirdrop?.imageUrls.find(item => item.color === "black")!.default })
-      setImageState({ ...imageState, back: detailAirdrop?.imageUrls.find(item => item.color === "black")!.back })
+      setImageState({
+        front: detailAirdrop?.imageUrls.find(item => item.color === id)!.default,
+        back: detailAirdrop?.imageUrls.find(item => item.color === id)!.back,
+      })
     } else if (id === "white" && detailAirdrop) {
       setSelectedColor(id)
-      setImageState({ ...imageState, front: detailAirdrop?.imageUrls.find(item => item.color === "white")!.default })
-      setImageState({ ...imageState, back: detailAirdrop?.imageUrls.find(item => item.color === "white")!.back })
+      setImageState({
+        front: detailAirdrop?.imageUrls.find(item => item.color === id)!.default,
+        back: detailAirdrop?.imageUrls.find(item => item.color === id)!.back,
+      })
     }
   }
 
@@ -62,6 +66,7 @@ export function DetailsAirdrop() {
             align="center"
             justify="center"
             pos="relative"
+            role="group"
           >
             {videos.includes(extension) ? (
               <video src={detailAirdrop?.imageUrls[0]?.default} autoPlay loop muted datatype="video/mp4"></video>
@@ -81,7 +86,7 @@ export function DetailsAirdrop() {
                   left={0}
                   transition="opacity 0.7s ease-in-out"
                   _groupHover={{
-                    opacity: 0,
+                    opacity: !!imageState.back ? 0 : 1,
                   }}
                   src={imageState.front}
                   objectFit="cover"
