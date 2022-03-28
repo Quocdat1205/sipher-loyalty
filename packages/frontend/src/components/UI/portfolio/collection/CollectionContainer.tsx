@@ -21,7 +21,7 @@ const CollectionContainer = ({ filter, setFilter, collectionData, isFetched }: C
   return (
     <Box>
       <FilterBar filter={filter} setFilter={setFilter} />
-      <SimpleGrid pt={8} spacing={6} columns={3}>
+      <SimpleGrid pt={8} spacing={6} columns={[1, 2, 3]}>
         {renderNFTs()}
       </SimpleGrid>
     </Box>

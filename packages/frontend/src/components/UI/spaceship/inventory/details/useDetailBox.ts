@@ -16,7 +16,7 @@ export interface DetailsBox extends Lootbox {
 }
 
 export const useDetailBox = id => {
-  const { session, authenticated, user, bearerToken } = useAuth()
+  const { bearerToken } = useAuth()
   const { scCaller } = useWalletContext()
   const query = useQueryClient()
   const { account, chainId, switchNetwork } = useWalletContext()
@@ -26,7 +26,7 @@ export const useDetailBox = id => {
   const router = useRouter()
 
   const { data: details, isFetched: isFetching } = useQuery(
-    ["detailsLootBox", account],
+    ["detailsLootBox", account, id],
     () => client.api.lootBoxControllerGetLootboxById(account!, id, setBearerToken(bearerToken)).then(res => res.data),
     {
       enabled: !!bearerToken && !isFetched,
@@ -74,7 +74,7 @@ export const useDetailBox = id => {
       },
       onSettled: () => {
         setIsFetched(false)
-        query.invalidateQueries(["detailsLootBox", account, user])
+        query.invalidateQueries(["detailsLootBox", account, id])
       },
       onError: (err: any) => {
         if (err.code === 4001) {

@@ -3,6 +3,7 @@ import { BigNumber, providers } from "ethers"
 import { SIPHER_TOKEN_ABI, SipherTokenAddress, WETH_ADDRESS } from "@constant"
 import { weiToEther } from "@utils"
 
+import DynamicERC721 from "./DynamicERC721"
 import ERC20 from "./ERC20"
 import { LPSipherWethKyber } from "./LPSipherWethKyber"
 import { LPSipherWethUniswap } from "./LPSipherWethUniswap"
@@ -26,6 +27,7 @@ export class ContractCaller {
   StakingLPSipherWethUniswap: StakingLPSipherWethUniswap
   SipherSpaceshipLootBox: SipherSpaceshipLootBox
   SipherAirdrops: SipherAirdrops
+  DynamicERC721: DynamicERC721
 
   constructor(provider: any) {
     this.provider = new providers.Web3Provider(provider)
@@ -39,6 +41,7 @@ export class ContractCaller {
     this.StakingLPSipherWethUniswap = new StakingLPSipherWethUniswap(this.provider)
     this.SipherSpaceshipLootBox = new SipherSpaceshipLootBox(this.provider)
     this.SipherAirdrops = new SipherAirdrops(this.provider)
+    this.DynamicERC721 = new DynamicERC721(this.provider)
   }
 
   public async getEtherBalance(from: string) {
@@ -48,7 +51,7 @@ export class ContractCaller {
 
   public async getSipherBalance(from: string) {
     const balance = await this.SipherToken.getBalance(from)
-    return weiToEther(balance.toString())
+    return balance
   }
 
   public async getWETHBalance(from: string) {
