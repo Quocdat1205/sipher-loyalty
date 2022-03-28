@@ -2,6 +2,8 @@ import React from "react"
 import Image from "next/image"
 import { Box, Button, Flex, Img, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
+import { videos } from "../portfolio/nft/NFTCard"
+
 import { useAirdrops } from "./useAirdrops"
 
 interface AirdropProps {
@@ -10,6 +12,8 @@ interface AirdropProps {
 }
 
 const AirdropCard = ({ data, isFetched }: AirdropProps) => {
+  const extension = data.imageUrls[0]?.default.split(".")[5]
+
   return (
     <Flex
       flexDir="column"
@@ -17,6 +21,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
       bg="neutral.700"
       rounded="lg"
       overflow="hidden"
+      onClick={data.onView}
     >
       {data.type === "MERCH" ? (
         <Skeleton
@@ -72,13 +77,17 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
           w="full"
           isLoaded={isFetched && data.imageUrls?.length > 0}
         >
-          <Image
-            src={(data.imageUrls?.length > 0 && data.imageUrls[0].default) || "/image/airdrops/sipher1.png"}
-            objectFit="contain"
-            quality={100}
-            width={212 * 1.5}
-            height={188 * 1.5}
-          />
+          {videos.includes(extension) ? (
+            <video src={data.imageUrls[0]?.default} autoPlay loop muted datatype="video/mp4"></video>
+          ) : (
+            <Image
+              src={(data.imageUrls?.length > 0 && data.imageUrls[0].default) || "/image/airdrops/sipher1.png"}
+              objectFit="contain"
+              quality={100}
+              width={212 * 1.5}
+              height={188 * 1.5}
+            />
+          )}
         </Skeleton>
       )}
       <Flex flexDir="column" flex={1} p={4}>

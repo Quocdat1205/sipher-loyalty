@@ -1,15 +1,10 @@
 import CoinGecko from "coingecko-api";
 import { format } from "date-fns";
 import { Injectable } from "@nestjs/common";
-import constant from "@setting/constant";
 
 @Injectable()
 export class PriceService {
   private coingeckoClient = new CoinGecko();
-
-  private apiKey = constant.API_KEY_CMC;
-
-  private id_sipher = constant.ID_SIPHER;
 
   private currentPrice = {
     timestamp: 0,

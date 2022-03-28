@@ -18,7 +18,9 @@
         "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/merch/bomber_white_back.png"
       }
     ],
-    "type": "MERCH"
+    "type": "MERCH",
+    "size": ["S", "M", "L"],
+    "color": ["black", "white"]
   },
   {
     "id": 2,
@@ -39,7 +41,9 @@
         "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/merch/hoodie_white_back.png"
       }
     ],
-    "type": "MERCH"
+    "type": "MERCH",
+    "size": ["S", "M", "L"],
+    "color": ["black", "white"]
   },
   {
     "id": 3,
@@ -60,7 +64,9 @@
         "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/merch/tshirt_white_back.png"
       }
     ],
-    "type": "MERCH"
+    "type": "MERCH",
+    "size": ["S", "M", "L"],
+    "color": ["black", "white"]
   },
   {
     "id": 4,
@@ -79,7 +85,9 @@
         "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/merch/hat_white_front.png"
       }
     ],
-    "type": "MERCH"
+    "type": "MERCH",
+    "size": ["S", "M", "L"],
+    "color": ["black", "white"]
   },
   {
     "id": 5,

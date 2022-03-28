@@ -6,6 +6,7 @@ import NoItemUI from "@components/shared/NoItemUI"
 import { ETHEREUM_NETWORK } from "@constant"
 
 import AirdropCard from "./AirdropCard"
+import { DetailsAirdrop } from "./DetailsAirdrop"
 import { useAirdrops } from "./useAirdrops"
 
 const tabs = [
@@ -53,6 +54,7 @@ const AirdropUI = () => {
           )}
         </Box>
       </Flex>
+      <DetailsAirdrop />
     </Flex>
   )
 }

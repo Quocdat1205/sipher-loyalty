@@ -9,7 +9,7 @@ import { LoggerService } from "../logger/logger.service";
 export class MerchService {
   constructor(
     @InjectRepository(Merchandise)
-    private merchListRepo: Repository<Merchandise>,
+    private merchRepo: Repository<Merchandise>,
     @InjectRepository(SculptureTransaction)
     private sculptureTransactionRepo: Repository<SculptureTransaction>
   ) {}
@@ -17,9 +17,9 @@ export class MerchService {
   async getAllMerchByPublicAddress(
     publicAddress: string
   ): Promise<Array<Merchandise> | undefined> {
-    LoggerService.log(`Get all merch`);
+    LoggerService.log(`Get all merch of publicAddress: ${publicAddress}`);
 
-    const merchandises = await this.merchListRepo.find({
+    const merchandises = await this.merchRepo.find({
       relations: ["item", "item.imageUrls"],
       where: [
         {
@@ -40,9 +40,9 @@ export class MerchService {
   async getOtherMerchByPublicAddress(
     publicAddress: string
   ): Promise<Array<Merchandise> | undefined> {
-    LoggerService.log(`Get all other`);
+    LoggerService.log(`Get all other of publicAddress: ${publicAddress}`);
 
-    const others = await this.merchListRepo.find({
+    const others = await this.merchRepo.find({
       relations: ["item", "item.imageUrls"],
       where: [
         {
@@ -58,5 +58,19 @@ export class MerchService {
       throw new HttpException("List other not found", HttpStatus.NOT_FOUND);
     }
     return others;
+  }
+
+  async getOtherAndMerchById(id: string): Promise<Merchandise> | undefined {
+    LoggerService.log(`Get merch id: ${id}`);
+
+    const other = await this.merchRepo.findOne({
+      relations: ["item", "item.imageUrls"],
+      where: { id },
+    });
+
+    if (!other) {
+      throw new HttpException("List other not found", HttpStatus.NOT_FOUND);
+    }
+    return other;
   }
 }

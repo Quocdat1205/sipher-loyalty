@@ -29,7 +29,7 @@ const CollectionCard = ({ data, isFetched }: CardProps) => {
         <Flex align="center" py={0.5} px={2} rounded="full" bg="white" pos="absolute" bottom="0.5rem" left="0.5rem">
           <SpLayer />
           <Text ml={1} color="neutral.900" fontWeight={600}>
-            {data.total}
+            {data.total ?? 0}
           </Text>
         </Flex>
       </Skeleton>

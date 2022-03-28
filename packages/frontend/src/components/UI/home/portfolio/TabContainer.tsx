@@ -11,11 +11,11 @@ type Tab = typeof tabs[number]
 
 const TabContainer = () => {
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
-  const { collectionData, tokensData, isFetched, totalNFTs, totalToken } = usePortFolioHome()
+  const { collectionData, tokensData, totalNFTs, totalToken } = usePortFolioHome()
 
   const renderTabs = () => {
     if (currentTab === "NFTs") {
-      return <NFTsContainer collectionData={collectionData} isFetched={isFetched} />
+      return <NFTsContainer collectionData={collectionData} />
     }
     if (currentTab === "Tokens") {
       return <TokensContainer tokensData={tokensData} />

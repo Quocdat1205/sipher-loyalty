@@ -9,6 +9,7 @@ import { ParseEthereumAddress } from "src/pipes/ethereum-address..pipe";
 
 import { AirdropService } from "./airdrop.service";
 import {
+  ResAirdrop,
   ResAllAirdrop,
   ResMerchAirdrop,
   ResNFTAirdrop,
@@ -29,12 +30,28 @@ export class AirdropController {
     type: ResAllAirdrop || ResNFTAirdrop || ResTokenAirdrop || ResMerchAirdrop,
   })
   @Get("/:airdropType/:publicAddress")
-  async getAirdropByType(
+  async getAirdropsByType(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Param("airdropType") airdropType: AirdropType,
     @Req() req: Request
   ) {
     await this.authService.verifyAddress(publicAddress, req.userData);
-    return this.airdropService.getAirdropByType(publicAddress, airdropType);
+    return this.airdropService.getAirdropsByType(publicAddress, airdropType);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @ApiOkResponse({
+    type: ResAirdrop,
+  })
+  @Get("/:airdropType/:publicAddress/:id")
+  async getAirdropByType(
+    @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
+    @Param("id") id: string,
+    @Param("airdropType") airdropType: AirdropType,
+    @Req() req: Request
+  ) {
+    await this.authService.verifyAddress(publicAddress, req.userData);
+    return this.airdropService.getAirdropByType(id, airdropType);
   }
 }

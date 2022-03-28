@@ -17,7 +17,7 @@ export interface InventoryProps extends Lootbox {
 }
 
 export const useInventory = () => {
-  const { user, bearerToken } = useAuth()
+  const { bearerToken } = useAuth()
   const [isStatusModal, setIsStatusModal] = useState("")
   const query = useQueryClient()
   const { account, scCaller, chainId, switchNetwork } = useWalletContext()
@@ -134,7 +134,7 @@ export const useInventory = () => {
       },
       onSettled: () => {
         refetch()
-        query.invalidateQueries(["pending", account, user])
+        query.invalidateQueries("lootBoxs")
       },
       onError: (err: any) => {
         toast({ status: "error", title: "Error", message: err?.message })
