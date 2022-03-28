@@ -150,7 +150,9 @@ export class CollectionService {
       );
     }
 
-    return filteredPortfolio;
+    return filteredPortfolio.sort(
+      (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
+    );
   }
 
   async getPortfolioByCollection(userAddress: string, collectionId: string) {

@@ -29,6 +29,7 @@ export default class InsertSipherCollection implements Seeder {
             "https://lh3.googleusercontent.com/I3bpxVjzPhD-Gs8z5DX__anyxgqPVVYBQjtKroEBV5H7j3iFRRsjXh7uyM-9lCxB8C_1sEUNh0wCR3-wKY5XQVoMO_he68X3sRoduQ=s2500",
           logoImage:
             "https://lh3.googleusercontent.com/05CzjTR4KwoX_qTY_U68CegfrCVTAYMmY3txcaauGpjJNZBac2-6hFMQtfcnMIx7g1B3BhBqWmta_mzNyunLLtDygyrW0U6n4nhc=s0",
+          createdAt: new Date(1630918537 * 1000),
         },
         {
           id: "0x9c57d0278199c931cf149cc769f37bb7847091e7".toLowerCase(),
@@ -45,6 +46,7 @@ export default class InsertSipherCollection implements Seeder {
             "https://lh3.googleusercontent.com/LrdoFh3E8rq43JucGYm9Xkhh0OLoERNCa5yJi98D1a6Tb0KlYGWmrmqhZF0JqsTezncOXCInL7iGnv-JV0YjIe9lSwrSknzaVW8orw=h600",
           logoImage:
             "https://lh3.googleusercontent.com/-V0eEOrC5W9AcbS_tvv_Ew9zp-Gf5WLS0WNdBGhd2b9CKVjO2IMDUsbN5uEzwxRuLpR_AiUU_TDfANQuh9uO-auOxW5Cdu435MFcKg=s0",
+          createdAt: new Date(1636098740 * 1000),
         },
         {
           id: "0x3EdB954303D0A13ee347C6989189294B0422E7D6".toLowerCase(),
