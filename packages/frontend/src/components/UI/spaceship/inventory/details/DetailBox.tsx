@@ -15,7 +15,7 @@ interface DetailBoxProps {
 
 export const DetailBox = ({ id }: DetailBoxProps) => {
   const [boxWidth, setBoxWidth] = useState(0)
-  const { isFetching, details, slot, setSlot, mutateMint, isLoading, router } = useDetailBox(id)
+  const { isFetched, details, slot, setSlot, mutateMint, isLoading, router } = useDetailBox(id)
   const windowWidth = useWidth()
   // right UI info details
   const widthContainer = 800
@@ -49,7 +49,7 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
           <NftImage
             pt={8}
             mintable={details?.mintable ?? 0}
-            isFetching={isFetching}
+            isFetching={isFetched}
             windowHeight={windowWidth.height}
             src={details?.propertyLootbox.image || ""}
             alt={"box"}
@@ -60,18 +60,18 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
             <Box mb={4} display={["block", "block", "none"]} textAlign="center">
               <NftImage
                 mintable={details?.mintable ?? 0}
-                isFetching={isFetching}
+                isFetching={isFetched}
                 src={details?.propertyLootbox.image || ""}
                 alt={"box"}
               />
             </Box>
             <Box maxWidth={`${widthContainer}px`} flex={1}>
-              <HeaderDetails details={details} isFetching={isFetching} />
-              <ContentDetails description={details?.propertyLootbox.description ?? ""} isFetching={isFetching} />
+              <HeaderDetails details={details} isFetching={isFetched} />
+              <ContentDetails description={details?.propertyLootbox.description ?? ""} isFetching={isFetched} />
             </Box>
           </Box>
           <ActionContainer
-            isFetching={isFetching}
+            isFetching={isFetched}
             details={details}
             slot={slot}
             setSlot={setSlot}

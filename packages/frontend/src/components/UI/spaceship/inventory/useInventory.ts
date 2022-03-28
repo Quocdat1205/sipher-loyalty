@@ -97,13 +97,7 @@ export const useInventory = () => {
           )
           .then(res => res.data)
         idError.current = data.id
-        await scCaller.current!.SipherSpaceshipLootBox.mintBatch({
-          deadline: data.deadline,
-          batchIDs: data.batchIDs,
-          amounts: data.amounts,
-          salt: data.salt,
-          signature: data.signature,
-        })
+        await scCaller.current!.SipherSpaceshipLootBox.mintBatch(data)
       } else {
         const data = await client.api
           .lootBoxControllerMintLootbox(
@@ -116,13 +110,7 @@ export const useInventory = () => {
           )
           .then(res => res.data)
         idError.current = data.id
-        await scCaller.current!.SipherSpaceshipLootBox.mint({
-          deadline: data.deadline,
-          batchID: data.batchID,
-          amount: data.amount,
-          salt: data.salt,
-          signature: data.signature,
-        })
+        await scCaller.current!.SipherSpaceshipLootBox.mint(data)
       }
     },
     {

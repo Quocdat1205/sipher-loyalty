@@ -111,8 +111,8 @@ const SignInForm = () => {
         } else {
           toast({
             status: "error",
-            title: "Wallet connection error",
-            message: e.message || "User denied to sign message.",
+            title: "Something went wrong!",
+            message: e.message || "Please try again later.",
           })
         }
       },

@@ -57,7 +57,7 @@ export const usePending = () => {
       onSuccess: () => {
         toast({
           status: "success",
-          title: "Transaction pending",
+          title: "Minted successfully!",
           message: "Please review your wallet notifications.",
           duration: 10000,
         })
@@ -83,7 +83,7 @@ export const usePending = () => {
       onSuccess: () => {
         toast({
           status: "success",
-          title: "Transaction pending",
+          title: "Minted successfully!",
           message: "Please review your wallet notifications.",
           duration: 10000,
         })
@@ -102,7 +102,7 @@ export const usePending = () => {
       onSuccess: () => {
         toast({
           status: "success",
-          title: "Transaction pending",
+          title: "Cancel order successfully!",
           message: "Please review your wallet notifications.",
           duration: 10000,
         })

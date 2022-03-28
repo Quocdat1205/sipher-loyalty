@@ -20,19 +20,17 @@ export const useDetailBox = id => {
   const { scCaller } = useWalletContext()
   const query = useQueryClient()
   const { account, chainId, switchNetwork } = useWalletContext()
-  const [isFetched, setIsFetched] = useState(false)
   const [slot, setSlot] = useState(1)
   const toast = useChakraToast()
   const router = useRouter()
 
-  const { data: details, isFetched: isFetching } = useQuery(
+  const { data: details, isFetched } = useQuery(
     ["detailsLootBox", account, id],
     () => client.api.lootBoxControllerGetLootboxById(account!, id, setBearerToken(bearerToken)).then(res => res.data),
     {
-      enabled: !!bearerToken && !isFetched,
+      enabled: !!bearerToken,
       onSuccess: data => {
         setSlot(data.mintable)
-        setIsFetched(true)
       },
     },
   )
@@ -53,35 +51,27 @@ export const useDetailBox = id => {
             setBearerToken(bearerToken),
           )
           .then(res => res.data)
-        await scCaller.current!.SipherSpaceshipLootBox.mint({
-          deadline: data.deadline,
-          batchID: data.batchID,
-          amount: data.amount,
-          salt: data.salt,
-          signature: data.signature,
-        })
+        await scCaller.current!.SipherSpaceshipLootBox.mint(data)
       }
     },
     {
       onSuccess: () => {
-        setIsFetched(false)
         toast({
           status: "success",
-          title: "Transaction Successful",
+          title: "Minted successfully!",
           message: "Please review your wallet notifications.",
           duration: 10000,
         })
       },
       onSettled: () => {
-        setIsFetched(false)
         query.invalidateQueries(["detailsLootBox", account, id])
       },
       onError: (err: any) => {
         if (err.code === 4001) {
           toast({
             status: "error",
-            title: "Transaction rejected",
-            message: "Please check pending tab if you want minted again",
+            title: "Transaction rejected!",
+            message: "Please check the pending tab if you want to mint again",
             duration: 10000,
           })
         } else {
@@ -93,7 +83,7 @@ export const useDetailBox = id => {
 
   return {
     router,
-    isFetching,
+    isFetched,
     mutateMint,
     slot,
     setSlot,
