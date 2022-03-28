@@ -6,13 +6,12 @@ import usePortFolioHome from "./usePortFolioHome"
 
 interface NFTsContainerProps {
   collectionData: ReturnType<typeof usePortFolioHome>["collectionData"]
-  isFetched: boolean
 }
 
-const NFTsContainer = ({ collectionData, isFetched }: NFTsContainerProps) => {
+const NFTsContainer = ({ collectionData }: NFTsContainerProps) => {
   return (
     <Box>
-      <Carousel isFetched={isFetched} slideData={collectionData} />
+      <Carousel slideData={collectionData} />
     </Box>
   )
 }

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { MouseEvent, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
@@ -98,7 +98,11 @@ export const useAirdrops = () => {
       ...item,
       isClaiming: claimId === item.id,
       isDisabled: chainId !== ETHEREUM_NETWORK && claimableAmount !== 0,
-      onClaim: () => {
+      onView: () => {
+        router.push(`?id=${item.id}`, undefined, { scroll: false })
+      },
+      onClaim: (e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation()
         claim({ id: item.id, totalAmount: item.totalAmount, proof: item.proof })
       },
     })),
@@ -106,16 +110,33 @@ export const useAirdrops = () => {
       ...item,
       isClaiming: claimId === item.id,
       isDisabled: true,
-      onClaim: () => {
-        console.log("claim")
+      onView: () => {
+        router.push(`?id=${item.id}`, undefined, { scroll: false })
+      },
+      onClaim: (e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation()
       },
     })),
     ...dataAirdrops!.merchandise.map(item => ({
       ...item,
       isClaiming: claimId === item.id,
       isDisabled: true,
-      onClaim: () => {
-        console.log("claim")
+      onView: () => {
+        router.push(`?id=${item.id}`, undefined, { scroll: false })
+      },
+      onClaim: (e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation()
+      },
+    })),
+    ...dataAirdrops!.other.map(item => ({
+      ...item,
+      isClaiming: claimId === item.id,
+      isDisabled: true,
+      onView: () => {
+        router.push(`?id=${item.id}`, undefined, { scroll: false })
+      },
+      onClaim: (e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation()
       },
     })),
   ]

@@ -29,7 +29,7 @@ export const useInventory = () => {
   const idError = useRef<number | null>()
 
   const { refetch, isFetched: isFetchedLootBox } = useQuery(
-    ["lootBoxs", account, user],
+    ["lootBoxs", user],
     () =>
       client.api
         .lootBoxControllerGetLootboxFromUserId(setBearerToken(session?.getIdToken().getJwtToken() as string))
@@ -137,7 +137,7 @@ export const useInventory = () => {
       },
       onSettled: () => {
         refetch()
-        query.invalidateQueries(["pending", account, user])
+        query.invalidateQueries(["lootBoxs", user])
       },
       onError: (err: any) => {
         toast({ status: "error", title: "Error", message: err?.message })

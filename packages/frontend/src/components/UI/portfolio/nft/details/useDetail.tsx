@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
+import { NftContracts } from "@constant"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
@@ -35,6 +36,8 @@ const useDetail = () => {
     },
   )
 
+  const collectionName = NftContracts.find(contract => contract.address === tokenDetails?.collection.id)?.name
+
   const isOwner = wallet.account === tokenDetails?.owner
 
   const revalidate = () => {
@@ -44,6 +47,7 @@ const useDetail = () => {
   const getUserById = (id: string) => tokenDetails?.users?.find(user => user.id === id)
 
   return {
+    collectionName,
     router,
     isFetched,
     tokenDetails,

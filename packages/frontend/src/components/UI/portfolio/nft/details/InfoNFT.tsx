@@ -16,6 +16,7 @@ interface InfoNFTProps {
 const InfoNFT = ({ tokenDetails, isFetched }: InfoNFTProps) => {
   const collectionName = NftContracts.find(contract => contract.address === tokenDetails?.collection.id)?.name
   const [isModal, setIsModal] = useState(false)
+
   return (
     <HStack mb={8} spacing={8}>
       <Flex align="center" flex={1} minW={0}>
@@ -53,7 +54,8 @@ const InfoNFT = ({ tokenDetails, isFetched }: InfoNFTProps) => {
         <Avatar
           bg="gray"
           sx={{ img: { rounded: "none" } }}
-          src="/images/collection/collection1.png"
+          src={tokenDetails?.collection.logoImage}
+          overflow="hidden"
           rounded="lg"
           boxShadow="rgba(255, 255, 255, 0.1) 4px 3px, rgba(255, 255, 255, 0.05) 8px 6px"
         />

@@ -32,6 +32,7 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
           width={1440}
           height={212}
           src={collectionData?.bannerImage ?? "/images/spaceship/banner.png"}
+          objectFit="cover"
           alt={"banner"}
         />
       </Skeleton>

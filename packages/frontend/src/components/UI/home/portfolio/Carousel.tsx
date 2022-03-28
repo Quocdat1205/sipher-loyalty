@@ -9,7 +9,6 @@ interface SlideshowProps {
   isAuto?: boolean
   deplay?: number
   slideData: Record<string, any>
-  isFetched: boolean
 }
 
 const variants = {
@@ -38,7 +37,7 @@ const swipePower = (offset: number, velocity: number) => {
   return Math.abs(offset) * velocity
 }
 
-export const Carousel = ({ deplay = 10000, slideData, isAuto = false, isFetched }: SlideshowProps) => {
+export const Carousel = ({ deplay = 10000, slideData, isAuto = false }: SlideshowProps) => {
   const [[page, direction], setPage] = useState([0, 0])
   const pageSize = 3
   const pageNumber =
@@ -112,7 +111,7 @@ export const Carousel = ({ deplay = 10000, slideData, isAuto = false, isFetched 
           <Box pos="absolute" w="full" h="full">
             <SimpleGrid p={1} w="full" spacing={6} columns={pageSize}>
               {slideData.slice(index * pageSize, (index + 1) * pageSize).map(item => (
-                <CollectionCard key={item.id} data={item} isFetched={isFetched} />
+                <CollectionCard key={item.id} data={item} isFetched={true} />
               ))}
             </SimpleGrid>
           </Box>
