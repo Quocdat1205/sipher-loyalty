@@ -90,6 +90,8 @@ export const useAirdrops = () => {
     },
   )
 
+  console.log(claimableAmount)
+
   const allAirdrops = [
     ...dataAirdrops!.nft.map(item => ({
       ...item,
