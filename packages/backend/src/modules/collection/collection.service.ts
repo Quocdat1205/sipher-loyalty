@@ -10,7 +10,7 @@ import constant from "@setting/constant";
 import { LoggerService } from "@modules/logger/logger.service";
 import { NftItemService } from "@modules/nft/nftItem.service";
 import { URIService } from "@modules/uri/uri.service";
-import { isSculptureContract, isSpaceshipContract } from "@utils/utils";
+import { isSculptureContract, isLooboxContract } from "@utils/utils";
 import marketplaceClient from "src/api/marketplaceClient";
 import {
   CollectionType,
@@ -260,17 +260,17 @@ export class CollectionService {
   private async addUriToItem(items: any) {
     const newItems = [];
     for (const item of items) {
-      const newItem = await this.addUriToSculptureOrSpaceship(item);
+      const newItem = await this.addUriToSculptureOrLootbox(item);
       newItems.push(newItem);
     }
     return newItems;
   }
 
   // Best practice? Never heard of him 💀
-  private async addUriToSculptureOrSpaceship(item: any) {
+  private async addUriToSculptureOrLootbox(item: any) {
     const newItem = { ...item, type: TokenType.ERC1155 };
-    if (isSpaceshipContract(item.collectionId)) {
-      LoggerService.debug("Is spaceship contract");
+    if (isLooboxContract(item.collectionId)) {
+      LoggerService.debug("Is lootbox contract");
       const uriInfo = await this.uriService.getDataERC1155Lootbox(item.tokenId);
       if (uriInfo) {
         newItem.name = uriInfo.name;

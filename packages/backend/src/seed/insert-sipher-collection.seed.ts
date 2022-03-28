@@ -63,12 +63,12 @@ export default class InsertSipherCollection implements Seeder {
         },
         {
           id: "0x3e445d426c8fde12f5f0c223019ca9158f7da93b".toLowerCase(),
-          name: "SIPHER SPACESHIP",
+          name: "SIPHER LOOTBOX",
           collectionType: CollectionType.ERC1155,
-          collectionSlug: "sipherspaceship",
+          collectionSlug: "sipherlootbox",
           chainId: 80001,
 
-          category: CollectionCategory.SPACESHIP,
+          category: CollectionCategory.LOOTBOX,
           isVerified: false,
           siteUrl: "https://sipher.xyz",
           bannerImage:

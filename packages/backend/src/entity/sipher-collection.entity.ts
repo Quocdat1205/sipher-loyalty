@@ -15,7 +15,7 @@ export enum CollectionType {
 export enum CollectionCategory {
   CHARACTER = "character",
   SCULPTURE = "sculpture",
-  LOOTBOXE = "lootbox",
+  LOOTBOX = "lootbox",
   SPACESHIP = "spaceship",
 }
 
