@@ -30,9 +30,6 @@ const ConnectToWallet = () => {
       await AtherIdAuth.confirmConectWallet(res, signature!)
     },
     {
-      onMutate: () => {
-        console.log("4. ADD WALLET")
-      },
       onSuccess: () => {
         setFlowState(null)
         qc.invalidateQueries(["owned-wallets", user?.email])

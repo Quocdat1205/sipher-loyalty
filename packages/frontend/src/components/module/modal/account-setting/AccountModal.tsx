@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
-import { toast } from "@sipher.dev/sipher-ui"
 
 import { updateProfile } from "@api"
 import { useChakraToast } from "@hooks"
