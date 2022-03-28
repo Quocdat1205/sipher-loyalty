@@ -1,5 +1,3 @@
-export * from "./AccountModal"
+export * from "./account-setting"
 export * from "./BuySipherModal"
-export * from "./ChooseAvatarModal"
 export * from "./OnBoardModal"
-export * from "./SettingModal"

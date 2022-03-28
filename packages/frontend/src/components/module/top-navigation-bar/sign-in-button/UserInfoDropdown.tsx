@@ -83,7 +83,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
             color="neutral.400"
             aria-label="close"
             onClick={onClose}
-            icon={<IoMdClose size="1.5rem" />}
+            icon={<IoMdClose size="1.2rem" />}
           />
           <Stack mb={4} w="full" align="center" spacing={4}>
             <Avatar
@@ -97,7 +97,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
               {userProfile?.user.name}
             </Text>
             <Flex>
-              <Flex align="center" p={2} rounded="base" border="1px" borderColor="neutral.600">
+              <Flex align="center" h="40px" rounded="base" border="1px" borderColor="neutral.600" px={2}>
                 <Text mr={4}>{shortenAddress(account)}</Text>
                 <ClipboardCopy color="#E7E7ED" text={account ?? ""} />
               </Flex>
@@ -106,10 +106,9 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
                 onClick={onSettingClick}
                 boxSize="40px"
                 rounded="base"
-                color="neutral.50"
-                _focus={{ boxShadow: "none" }}
-                _hover={{ bg: "accent.600", color: "neutral.900" }}
                 aria-label="setting"
+                colorScheme={"neutral"}
+                variant="secondary"
                 border="1px"
                 borderColor="neutral.600"
                 bg="transparent"

@@ -101,7 +101,6 @@ const FillEmailForm = () => {
           <FormControl mb={2} as="fieldset">
             <FormField error={errors?.password?.message}>
               <CustomInput
-                pr="2.5rem"
                 type={"password"}
                 placeholder="Password"
                 autoComplete="new-password"
@@ -112,7 +111,6 @@ const FillEmailForm = () => {
           <FormControl mb={2} as="fieldset">
             <FormField error={errors?.confirmPassword?.message}>
               <CustomInput
-                pr="2.5rem"
                 type={"password"}
                 placeholder="Confirm your password"
                 autoComplete="new-password"

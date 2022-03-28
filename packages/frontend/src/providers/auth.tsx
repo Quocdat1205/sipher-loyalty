@@ -129,8 +129,6 @@ const useAuthState = () => {
     if (cognitoUser) getSession().then(setSession)
   }, [cognitoUser])
 
-  console.log("STATE", authenticated, user?.email, bearerToken.slice(0, 10))
-
   return {
     authenticated,
     session,

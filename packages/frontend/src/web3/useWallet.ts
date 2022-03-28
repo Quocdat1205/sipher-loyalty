@@ -150,10 +150,6 @@ const useWallet = () => {
           }
         }
       })
-      ethereum.on("chainChanged", () => {
-        reset()
-        window.location.reload()
-      })
     }
   }, [ethereum, authenticated, ownedWallets, flowState, reset])
 
@@ -181,6 +177,8 @@ const useWallet = () => {
         ],
       })
     }
+    reset()
+    window.location.reload()
   }
 
   // auto connect on refresh
