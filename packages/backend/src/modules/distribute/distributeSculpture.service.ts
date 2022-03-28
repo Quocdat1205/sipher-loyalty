@@ -2,9 +2,10 @@
 import fs from "fs";
 import path from "path";
 
-import { Contract, ethers, providers } from "ethers";
+import { toChecksumAddress } from "ethereumjs-util";
+import { Contract, ethers, providers, Wallet } from "ethers";
 import { Injectable } from "@nestjs/common";
-import { sculptureAbi } from "@setting/blockchain/abis/sculpture";
+import { erc1155Abi } from "@setting/blockchain/abis";
 import { getContract, getProvider } from "@setting/blockchain/ethers";
 import constant, { Chain } from "@setting/constant";
 
@@ -12,7 +13,9 @@ import constant, { Chain } from "@setting/constant";
 export class DistributeSculptureService {
   private src = path.resolve(
     __dirname,
-    `../../../src/data/LOOTBOX/data${constant.isProduction ? "" : "_test"}.json`
+    `../../../src/data/DISTRIBUTE/SCULPTURE/data${
+      constant.isProduction ? "" : "_test"
+    }.json`
   );
 
   private sculptureHolder = JSON.parse(fs.readFileSync(this.src).toString());
@@ -21,48 +24,121 @@ export class DistributeSculptureService {
 
   private contract: Contract;
 
-  private wallet;
-
-  private contractWithSigner;
+  private wallet: Wallet;
 
   constructor() {
     this.provider = getProvider(
       constant.isProduction ? Chain.Polygon : Chain.Mumbai
     );
+    this.wallet = new ethers.Wallet(constant.PRIVATE_KEY, this.provider);
     this.contract = getContract(
       constant.config.erc1155Sculpture.verifyingContract,
-      sculptureAbi,
+      erc1155Abi,
       this.provider
     );
-    this.wallet = new ethers.Wallet(constant.PRIVATE_KEY, this.provider);
-    this.contractWithSigner = this.contract.connect(this.wallet);
   }
 
-  private findDuplicates = (arr) =>
-    arr.filter((item, index) => arr.indexOf(item.address) !== index);
+  private findDuplicates(arr) {
+    const holder = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (
+        holder.findIndex(
+          (el) => el.toLowerCase() === arr[i].address.toLowerCase()
+        ) === -1
+      )
+        holder.push(arr[i].address.toLowerCase());
+      else return arr[i].address.toLowerCase();
+    }
+    return -1;
+  }
 
-  async mintAll() {
-    console.log(this.sculptureHolder);
+  async transferAll() {
     const allHolder = this.sculptureHolder.map((el) => ({
-      address: el.address,
+      address: el.address.toLowerCase(),
       INU: el.INU,
       NEKO: el.NEKO,
     }));
-    console.log("dup: ", this.findDuplicates(allHolder));
-    const onlyNekoHolder = allHolder.filter((el) => el.INU === "0");
-    const onlyInuHolder = allHolder.filter((el) => el.NEKO === "0");
-    const BothHolder = allHolder.filter(
-      (el) => el.NEKO !== "0" && el.INU !== "0"
+    if (this.findDuplicates(allHolder) > -1) {
+      console.log("duplicate at ", this.findDuplicates(allHolder));
+      return;
+    }
+    const onlyNekoHolder = allHolder
+      .filter((el) => el.INU === "0")
+      .map((el) => ({
+        address: toChecksumAddress(el.address),
+        id: "1",
+        amount: el.NEKO,
+      }));
+
+    const onlyInuHolder = allHolder
+      .filter((el) => el.NEKO === "0")
+      .map((el) => ({
+        address: toChecksumAddress(el.address),
+        id: "0",
+        amount: el.INU,
+      }));
+
+    const BothHolder = allHolder
+      .filter((el) => el.NEKO !== "0" && el.INU !== "0")
+      .map((el) => ({
+        address: toChecksumAddress(el.address),
+        ids: ["0", "1"],
+        amounts: [el.INU, el.NEKO],
+      }));
+    console.log(
+      "all: ",
+      this.sculptureHolder.length,
+      "lower: ",
+      allHolder.length,
+      "Neko: ",
+      onlyNekoHolder.length,
+      "Inu: ",
+      onlyInuHolder.length,
+      "both: ",
+      BothHolder.length
     );
-    console.log(onlyNekoHolder, onlyInuHolder, BothHolder);
+    await onlyNekoHolder.reduce(async (promise, data) => {
+      await promise;
+      console.log(data);
+      await this.safeTransferFrom(data);
+    }, Promise.resolve());
+    await onlyNekoHolder.reduce(async (promise, data) => {
+      await promise;
+      console.log(data);
+      await this.safeTransferFrom(data);
+    }, Promise.resolve());
+    await BothHolder.reduce(async (promise, data) => {
+      await promise;
+      console.log(data);
+      await this.safeBatchTransferFrom(data);
+    }, Promise.resolve());
   }
 
-  async mintBacthTo() {
-    const tx = await this.contractWithSigner.mintBatchTo(
-      "0x42c07BBEFE0AD00D55D1fa1BeC0E72D80d25fF94",
-      [1],
-      [1]
-    );
+  async safeTransferFrom(data) {
+    const tx = await this.contract
+      .connect(this.wallet)
+      .safeTransferFrom(
+        toChecksumAddress(this.wallet.address),
+        toChecksumAddress(data.address),
+        data.id,
+        data.amount,
+        "0x"
+      );
+    console.log(tx.hash);
+    const result = await tx.wait();
+    console.log(result);
+  }
+
+  async safeBatchTransferFrom(data) {
+    const tx = await this.contract
+      .connect(this.wallet)
+      .safeBatchTransferFrom(
+        this.wallet.address,
+        data.address,
+        data.ids,
+        data.amounts,
+        "0x"
+      );
     console.log(tx.hash);
     const result = await tx.wait();
     console.log(result);

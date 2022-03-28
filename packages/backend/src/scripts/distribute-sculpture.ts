@@ -15,7 +15,7 @@ export class AppModule implements OnApplicationBootstrap {
   ) {}
 
   async onApplicationBootstrap(): Promise<void> {
-    await this.distributeSculptureService.mintAll();
+    await this.distributeSculptureService.transferAll();
   }
 }
 async function bootstrap() {
