@@ -4,13 +4,14 @@ import { useRouter } from "next/router"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
+import { NftContracts } from "@constant"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 const useDetail = () => {
   const wallet = useWalletContext()
   const router = useRouter()
-  const { session, authenticated, user } = useAuth()
+  const { bearerToken } = useAuth()
   const qc = useQueryClient()
   const { collectionId, id } = router.query
 
@@ -20,30 +21,29 @@ const useDetail = () => {
     isFetched,
     refetch,
   } = useQuery<any>(
-    ["detailNFT", user, id, wallet.account, collectionId],
+    ["detailNFT", wallet.account, id],
     () =>
       client.api
-        .collectionControllerGetItemById(
-          wallet.account!,
-          id as string,
-          setBearerToken(session?.getIdToken().getJwtToken() as string),
-        )
+        .collectionControllerGetItemById(wallet.account!, id as string, setBearerToken(bearerToken))
         .then(res => res.data),
     {
-      enabled: router.isReady && authenticated,
+      enabled: router.isReady && !!bearerToken,
       retry: false,
     },
   )
 
+  const collectionName = NftContracts.find(contract => contract.address === tokenDetails?.collection.id)?.name
+
   const isOwner = wallet.account === tokenDetails?.owner
 
   const revalidate = () => {
-    qc.invalidateQueries(["detailNFT", user, id, wallet.account, collectionId])
+    qc.invalidateQueries(["detailNFT", wallet.account, id])
   }
 
   const getUserById = (id: string) => tokenDetails?.users?.find(user => user.id === id)
 
   return {
+    collectionName,
     router,
     isFetched,
     tokenDetails,

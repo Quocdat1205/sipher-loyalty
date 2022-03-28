@@ -7,6 +7,7 @@ import { useWalletContext } from "@web3"
 import { POLYGON_NETWORK } from "@constant"
 import { useChakraToast } from "@hooks"
 import { Lootbox } from "@sdk"
+import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 export interface DetailsBox extends Lootbox {
@@ -15,7 +16,7 @@ export interface DetailsBox extends Lootbox {
 }
 
 export const useDetailBox = id => {
-  const { session, authenticated, user } = useAuth()
+  const { session, authenticated, user, bearerToken } = useAuth()
   const { scCaller } = useWalletContext()
   const query = useQueryClient()
   const { account, chainId, switchNetwork } = useWalletContext()
@@ -23,18 +24,12 @@ export const useDetailBox = id => {
   const [slot, setSlot] = useState(1)
   const toast = useChakraToast()
   const router = useRouter()
+
   const { data: details, isFetched: isFetching } = useQuery(
-    ["detailsLootBox", account, user],
-    () =>
-      client.api
-        .lootBoxControllerGetLootboxById(account!, id, {
-          headers: {
-            Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
-          },
-        })
-        .then(res => res.data),
+    ["detailsLootBox", account],
+    () => client.api.lootBoxControllerGetLootboxById(account!, id, setBearerToken(bearerToken)).then(res => res.data),
     {
-      enabled: authenticated && !isFetched,
+      enabled: !!bearerToken && !isFetched,
       onSuccess: data => {
         setSlot(data.mintable)
         setIsFetched(true)
@@ -55,11 +50,7 @@ export const useDetailBox = id => {
               batchID: details!.tokenId,
               amount: slot,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
-              },
-            },
+            setBearerToken(bearerToken),
           )
           .then(res => res.data)
         await scCaller.current!.SipherSpaceshipLootBox.mint({

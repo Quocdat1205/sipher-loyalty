@@ -7,33 +7,25 @@ import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 export const useClaim = () => {
-  const { session, authenticated, user } = useAuth()
+  const { bearerToken } = useAuth()
   const [isStatusModal, setIsStatusModal] = useState("")
   const query = useQueryClient()
   const { account } = useWalletContext()
 
   const { data } = useQuery(
-    ["claimableLootBox", user],
-    () =>
-      client.api
-        .lootBoxControllerGetClaimableLootboxFromUserId(setBearerToken(session?.getIdToken().getJwtToken() as string))
-        .then(res => res.data),
+    "claimableLootBox",
+    () => client.api.lootBoxControllerGetClaimableLootboxFromUserId(setBearerToken(bearerToken)).then(res => res.data),
     {
-      enabled: authenticated,
+      enabled: !!bearerToken,
       initialData: [],
     },
   )
   const { mutate: mutateOnClaim, isLoading } = useMutation(
-    () =>
-      client.api.lootBoxControllerClaim(account!, {
-        headers: {
-          Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
-        },
-      }),
+    () => client.api.lootBoxControllerClaim(account!, setBearerToken(bearerToken)),
     {
       onSuccess: () => {
         setIsStatusModal("SUCCESS")
-        query.invalidateQueries(["claimableLootBox", user])
+        query.invalidateQueries("claimableLootBox")
       },
       onError: () => {
         setIsStatusModal("FAILED")

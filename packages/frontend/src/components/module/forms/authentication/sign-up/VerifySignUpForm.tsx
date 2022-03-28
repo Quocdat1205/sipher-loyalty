@@ -31,7 +31,7 @@ const VerifySignUpForm = () => {
     {
       onSuccess: () => {
         setFlowState(null)
-        qc.invalidateQueries(["owned-wallets", user?.email])
+        qc.invalidateQueries("owned-wallets")
       },
       onError: async (e: any) => {
         wallet.reset()
@@ -52,11 +52,7 @@ const VerifySignUpForm = () => {
 
   // Sign user in
   const { mutate: mutateSignIn, isLoading: isSigningIn } = useMutation(() => AtherIdAuth.signIn(email, password), {
-    onMutate: () => {
-      console.log("3. SIGN IN")
-    },
     onSuccess: data => {
-      console.log("3. USER:", data)
       setUser(data)
       if (wallet.account) {
         setFlowState({ type: AuthType.SignUp, action: SignUpAction.ConnectingWallet })
@@ -72,9 +68,6 @@ const VerifySignUpForm = () => {
   const { mutate: mutateConfirmSignup, isLoading: isConfirmingSignup } = useMutation(
     () => AtherIdAuth.confirmSignUp(email, code),
     {
-      onMutate: () => {
-        console.log("2. VERIFY PASSCODE")
-      },
       onSuccess: () => {
         mutateSignIn()
       },

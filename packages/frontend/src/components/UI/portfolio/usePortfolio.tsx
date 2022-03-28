@@ -33,7 +33,7 @@ const initFilter = {
 
 const usePortfolio = () => {
   const router = useRouter()
-  const { session, authenticated, user } = useAuth()
+  const { bearerToken } = useAuth()
   const { account, chainId } = useWalletContext()
   const { dataPrice, balance, totalETHPrice, totalUsdPrice } = useBalanceContext()
   const [filter, setFilter] = useState(initFilter)
@@ -41,7 +41,7 @@ const usePortfolio = () => {
   const currentTab = router.query.tab || "nfts"
 
   const { data: initData, isFetched } = useQuery<any>(
-    ["collection", user, account, filter],
+    ["collection", bearerToken, account, filter],
     () =>
       client.api
         .collectionControllerGetUserCollection(
@@ -49,11 +49,11 @@ const usePortfolio = () => {
           {
             category: (filter.categories !== "" ? filter.categories : undefined) as CollectionCategory,
           },
-          setBearerToken(session?.getIdToken().getJwtToken() as string),
+          setBearerToken(bearerToken),
         )
         .then(res => res.data),
     {
-      enabled: authenticated && !!account,
+      enabled: !!bearerToken && !!account,
       initialData: [],
     },
   )

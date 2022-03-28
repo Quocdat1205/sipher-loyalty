@@ -11,6 +11,7 @@ import SignInForm from "@components/module/forms/authentication/sign-in"
 import SignUpForm from "@components/module/forms/authentication/sign-up"
 import { SignInProvider } from "@components/module/forms/authentication/useSignInContext"
 import { AccountModal, BuySipherModal } from "@components/module/modal"
+import { shortenAddress } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 import UserInfoDropdown from "./UserInfoDropdown"
@@ -73,9 +74,14 @@ const SignInButton = () => {
                 name={userProfile?.user.name}
                 bgGradient="linear(to-l, #FCD11F, #DF6767, #200B9F)"
               />
-              <Text color="white" display={["none", "block"]} ml={2} maxW="10rem" isTruncated>
-                {userProfile?.user.name}
-              </Text>
+              <Flex direction="column" w="8rem" ml={2}>
+                <Text color="white" display={["none", "block"]} isTruncated>
+                  {userProfile?.user.name}
+                </Text>
+                <Text w="full" isTruncated fontSize="sm">
+                  {shortenAddress(wallet.account)}
+                </Text>
+              </Flex>
             </Flex>
           )}
         </Flex>

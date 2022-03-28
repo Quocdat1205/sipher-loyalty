@@ -1,3 +1,4 @@
+import React from "react"
 import {
   Flex,
   Heading,
@@ -15,7 +16,7 @@ interface ChakraModalProps extends Omit<ModalProps, "onClose"> {
   isOpen: boolean
   onClose?: () => void
   hideCloseButton?: boolean
-  title: string
+  title?: string
   children: React.ReactNode
   titleProps?: HeadingProps
   styleProps?: ModalContentProps
@@ -45,14 +46,18 @@ export const ChakraModal = ({
     >
       <ModalOverlay bg="blackAlpha.400" />
       <ModalContent pos="relative" overflow={"hidden"} {...styleProps}>
-        <Flex backdropFilter="blur(20px)" px={6} pt={6} w="full" justify="space-between" align="center" mb={2}>
-          <Heading fontWeight={600} {...titleProps}>
-            {title}
-          </Heading>
-          {!hideCloseButton && (
-            <ModalCloseButton color="neutral.400" _focus={{ shadow: "none" }} position="static" size="sm" />
-          )}
-        </Flex>
+        {title ? (
+          <Flex backdropFilter="blur(20px)" px={6} pt={6} w="full" justify="space-between" align="center" mb={2}>
+            <Heading fontWeight={600} {...titleProps}>
+              {title}
+            </Heading>
+            {!hideCloseButton && (
+              <ModalCloseButton color="neutral.400" _focus={{ shadow: "none" }} position="static" size="sm" />
+            )}
+          </Flex>
+        ) : (
+          <ModalCloseButton color="neutral.400" _focus={{ shadow: "none" }} size="sm" />
+        )}
         <ModalBody px={0} pb={6}>
           {children}
         </ModalBody>
