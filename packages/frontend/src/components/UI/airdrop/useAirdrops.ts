@@ -7,6 +7,7 @@ import { useWalletContext } from "@web3"
 import { ETHEREUM_NETWORK, SipherAirdropsAddress } from "@constant"
 import { useChakraToast } from "@hooks"
 import { AirdropType } from "@sdk"
+import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 interface InputAirdrops {
@@ -18,24 +19,20 @@ interface InputAirdrops {
 export const useAirdrops = () => {
   const router = useRouter()
   const currentTab = router.query.tab || AirdropType.ALL.toLowerCase()
-  const { session, authenticated, user } = useAuth()
+  const { bearerToken, user } = useAuth()
   const { account, scCaller, chainId } = useWalletContext()
   const [claimId, setClaimId] = useState<number | null>(null)
   const qc = useQueryClient()
   const toast = useChakraToast()
 
   const { data: dataAirdrops, isFetched } = useQuery(
-    ["airdrops", currentTab, user, account],
+    ["airdrops", account],
     () =>
       client.api
-        .airdropControllerGetAirdropByType(account!, AirdropType.ALL, {
-          headers: {
-            Authorization: `Bearer ${session?.getIdToken().getJwtToken()}`,
-          },
-        })
+        .airdropControllerGetAirdropByType(account!, AirdropType.ALL, setBearerToken(bearerToken))
         .then(res => res.data),
     {
-      enabled: authenticated && !!account,
+      enabled: !!bearerToken && !!account,
       initialData: {
         nft: [],
         token: [],
@@ -76,7 +73,7 @@ export const useAirdrops = () => {
           message: "Please review your wallet notifications.",
           duration: 10000,
         })
-        qc.invalidateQueries(["airdrops", currentTab, user, account])
+        qc.invalidateQueries(["airdrops", account])
         qc.invalidateQueries(["token-claimable-amount", dataAirdrops])
       },
       onSettled: () => {

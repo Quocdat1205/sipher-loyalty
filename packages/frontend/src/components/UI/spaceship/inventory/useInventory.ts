@@ -17,7 +17,7 @@ export interface InventoryProps extends Lootbox {
 }
 
 export const useInventory = () => {
-  const { session, authenticated, user } = useAuth()
+  const { bearerToken } = useAuth()
   const [isStatusModal, setIsStatusModal] = useState("")
   const query = useQueryClient()
   const { account, scCaller, chainId, switchNetwork } = useWalletContext()
@@ -29,13 +29,10 @@ export const useInventory = () => {
   const idError = useRef<number | null>()
 
   const { refetch, isFetched: isFetchedLootBox } = useQuery(
-    ["lootBoxs", user],
-    () =>
-      client.api
-        .lootBoxControllerGetLootboxFromUserId(setBearerToken(session?.getIdToken().getJwtToken() as string))
-        .then(res => res.data),
+    "lootBoxs",
+    () => client.api.lootBoxControllerGetLootboxFromUserId(setBearerToken(bearerToken)).then(res => res.data),
     {
-      enabled: authenticated && !!account && !isFetched,
+      enabled: !!bearerToken && !isFetched,
       onSuccess: data => {
         setData(data.map(item => ({ ...item, slot: item.mintable, isChecked: false }))), setIsFetched(true)
       },
@@ -77,7 +74,7 @@ export const useInventory = () => {
           id: id,
           status: status,
         },
-        setBearerToken(session?.getIdToken().getJwtToken() as string),
+        setBearerToken(bearerToken),
       ),
     {
       onSettled: () => {
@@ -96,7 +93,7 @@ export const useInventory = () => {
               batchID: inventoryDataCheck!.map(item => item.tokenId)!,
               amount: inventoryDataCheck!.map(item => item.slot)!,
             },
-            setBearerToken(session?.getIdToken().getJwtToken() as string),
+            setBearerToken(bearerToken),
           )
           .then(res => res.data)
         idError.current = data.id
@@ -115,7 +112,7 @@ export const useInventory = () => {
               batchID: inventoryDataCheck![0].tokenId,
               amount: inventoryDataCheck![0].slot,
             },
-            setBearerToken(session?.getIdToken().getJwtToken() as string),
+            setBearerToken(bearerToken),
           )
           .then(res => res.data)
         idError.current = data.id
@@ -137,7 +134,7 @@ export const useInventory = () => {
       },
       onSettled: () => {
         refetch()
-        query.invalidateQueries(["lootBoxs", user])
+        query.invalidateQueries("lootBoxs")
       },
       onError: (err: any) => {
         toast({ status: "error", title: "Error", message: err?.message })

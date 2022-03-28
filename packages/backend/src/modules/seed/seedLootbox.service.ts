@@ -6,6 +6,7 @@ import { Repository } from "typeorm";
 import { ClaimableLootbox, ERC1155Lootbox } from "@entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import constant from "@setting/constant";
 
 import { LootBoxService } from "@modules/lootbox/lootbox.service";
 
@@ -14,7 +15,10 @@ import { LoggerService } from "../logger/logger.service";
 
 @Injectable()
 export class SeedLootboxService {
-  private src = path.resolve(__dirname, "../../../src/data/LOOTBOX/data.json");
+  private src = path.resolve(
+    __dirname,
+    `../../../src/data/LOOTBOX/data${constant.isProduction ? "" : "_test"}.json`
+  );
 
   private lootboxData = JSON.parse(fs.readFileSync(this.src).toString());
 

@@ -31,7 +31,7 @@ export class LootboxTrackerBurnedService {
       constant.isProduction ? Chain.Polygon : Chain.Mumbai
     );
     this.contract = getContract(
-      constant.config.erc1155Spaceship.verifyingContract,
+      constant.config.erc1155LootBox.verifyingContract,
       erc1155Abi,
       this.provider
     );

@@ -47,8 +47,18 @@ export const getProfile = async (token: string): Promise<{ user: ProfileOutput; 
   return data
 }
 
-export const getAvailableAvatars = async (token: string) => {
-  const { data } = await fetcher.get("/user/available-avatars?from=0&take=20", {
+interface Avatar {
+  id: string
+  imageUrl: string
+  imageThumbnailUrl: string
+}
+
+export const getAvailableAvatars = async (
+  token: string,
+  from = 0,
+  take = 20,
+): Promise<{ data: Avatar[]; total: number }> => {
+  const { data } = await fetcher.get(`/user/available-avatars?from=${from}&take=${take}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -53,9 +53,6 @@ const SignUpForm = () => {
   const { mutate: mutateSignUp, isLoading } = useMutation<unknown, unknown, FieldValues>(
     data => AtherIdAuth.signUp(data.email, data.password),
     {
-      onMutate: data => {
-        console.log("1. SIGN UP:", data.email, data.password)
-      },
       // Go to verify page after sign up
       onSuccess: () => setFlowState({ type: AuthType.SignUp, action: SignUpAction.VerifySignUp }),
       onError: (e: any) => {

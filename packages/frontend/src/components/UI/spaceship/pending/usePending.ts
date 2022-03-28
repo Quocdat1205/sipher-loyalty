@@ -27,7 +27,7 @@ export interface InputLootBoxProp {
 }
 
 export const usePending = () => {
-  const { session, authenticated, user } = useAuth()
+  const { user, bearerToken } = useAuth()
   const query = useQueryClient()
   const { account, scCaller, switchNetwork, chainId } = useWalletContext()
   const [mintId, setMintId] = useState<number | null>(null)
@@ -35,13 +35,11 @@ export const usePending = () => {
 
   const toast = useChakraToast()
   const { data: dataInit } = useQuery(
-    ["pending", account, user],
-    () =>
-      client.api
-        .mintControllerGetPendingLootbox(account!, setBearerToken(session?.getIdToken().getJwtToken() as string))
-        .then(res => res.data),
-    { enabled: authenticated && !!account, initialData: [] },
+    ["pending", account],
+    () => client.api.mintControllerGetPendingLootbox(account!, setBearerToken(bearerToken)).then(res => res.data),
+    { enabled: !!bearerToken && !!account, initialData: [] },
   )
+
   const { mutate: mutateMintBatch, isLoading: isLoadingMintBacth } = useMutation<unknown, unknown, InputLootBoxProp>(
     ({ deadline, batchIDs, amounts, salt, signature }) =>
       scCaller.current!.SipherSpaceshipLootBox.mintBatch({
