@@ -6,14 +6,12 @@ import { useWalletContext } from "@web3"
 
 import { ChakraModal } from "@components/shared"
 import { useChakraToast } from "@hooks"
-import { useAuth } from "src/providers/auth"
 
 const ChangeWallet = () => {
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
   const { account, scCaller, reset } = useWalletContext()
   const toast = useChakraToast()
   const qc = useQueryClient()
-  const { user } = useAuth()
 
   const { mutate: mutateAddWallet, isLoading } = useMutation<unknown, unknown, string>(
     async account => {
@@ -35,8 +33,8 @@ const ChangeWallet = () => {
         } else {
           toast({
             status: "error",
-            title: "Wallet already connected to another account",
-            message: "Please sign in by that address or switch to another address and try again",
+            title: "Wallet linked to other account",
+            message: "Please sign in by that wallet or switch to another wallet and try again",
           })
         }
       },

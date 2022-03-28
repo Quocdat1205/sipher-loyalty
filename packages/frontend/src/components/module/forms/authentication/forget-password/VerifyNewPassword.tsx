@@ -1,9 +1,10 @@
+import { useEffect } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Button, chakra, FormControl, Spinner, Text, VStack } from "@sipher.dev/sipher-ui"
+import { Button, chakra, Divider, FormControl, Spinner, Text, VStack } from "@sipher.dev/sipher-ui"
 import { AuthType, ForgotPasswordAction, SignInAction, useAuthFlowStore } from "@store"
 
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
@@ -34,7 +35,12 @@ const VerifyNewPassword = ({ email }: VerifySignUpFormProps) => {
     handleSubmit,
     register,
     formState: { errors },
+    reset,
   } = useForm({ resolver: yupResolver(validationSchema) })
+
+  useEffect(() => {
+    if (flowState === null) reset()
+  }, [flowState])
 
   const { mutate: mutateForgetPasswordSubmit, isLoading } = useMutation<unknown, unknown, FieldValues>(
     d => AtherIdAuth.forgotPasswordSubmit(email, d.code, d.password),
@@ -68,6 +74,7 @@ const VerifyNewPassword = ({ email }: VerifySignUpFormProps) => {
         })
       },
       onError: (e: any) => {
+        console.log(e)
         toast({
           status: "error",
           title: "Something went wrong!",
@@ -101,7 +108,7 @@ const VerifyNewPassword = ({ email }: VerifySignUpFormProps) => {
           </FormControl>
           <FormControl>
             <FormField error={errors?.code?.message}>
-              <CustomInput placeholder="Enter passcode" type="text" {...register("code")} />
+              <CustomInput placeholder="Enter passcode" {...register("code")} />
             </FormField>
           </FormControl>
           <Text color="neutral.400" textAlign="center">
@@ -111,6 +118,7 @@ const VerifyNewPassword = ({ email }: VerifySignUpFormProps) => {
             </chakra.span>
             {isResendingCode && <Spinner size="xs" color="cyan.600" ml={2} />}
           </Text>
+          <Divider />
           <Button type="submit" fontSize="md" py={6} fontWeight={600} isLoading={isLoading}>
             COMPLETE
           </Button>

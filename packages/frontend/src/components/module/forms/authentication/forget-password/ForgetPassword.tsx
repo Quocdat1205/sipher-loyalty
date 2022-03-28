@@ -4,10 +4,11 @@ import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Button, FormControl, Text, VStack } from "@sipher.dev/sipher-ui"
+import { Button, Divider, FormControl, Text, VStack } from "@sipher.dev/sipher-ui"
 import { AuthType, ForgotPasswordAction, useAuthFlowStore } from "@store"
 
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
+import { useChakraToast } from "@hooks"
 
 import VerifyNewPassword from "./VerifyNewPassword"
 
@@ -20,6 +21,8 @@ const ForgetPassword = () => {
 
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
 
+  const toast = useChakraToast()
+
   const {
     register,
     handleSubmit,
@@ -29,6 +32,11 @@ const ForgetPassword = () => {
   const { mutate, isLoading } = useMutation<unknown, unknown, string>(email => AtherIdAuth.forgotPassword(email), {
     onSuccess: () => {
       setFlowState({ type: AuthType.ForgotPassword, action: ForgotPasswordAction.Verify })
+      toast({
+        status: "success",
+        title: "Reset password request sent successfully!",
+        message: "Please check the passcode sent to your email.",
+      })
     },
   })
 
@@ -55,6 +63,7 @@ const ForgetPassword = () => {
                 />
               </FormField>
             </FormControl>
+            <Divider />
             <Button py={6} fontWeight={600} isLoading={isLoading} type="submit" w="full" fontSize={"md"}>
               NEXT
             </Button>

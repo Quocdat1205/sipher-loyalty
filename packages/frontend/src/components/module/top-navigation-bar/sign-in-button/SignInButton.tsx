@@ -74,11 +74,11 @@ const SignInButton = () => {
                 name={userProfile?.user.name}
                 bgGradient="linear(to-l, #FCD11F, #DF6767, #200B9F)"
               />
-              <Flex direction="column" w="8rem" ml={2}>
+              <Flex direction="column" maxW="10rem" ml={2}>
                 <Text color="white" display={["none", "block"]} isTruncated>
                   {userProfile?.user.name}
                 </Text>
-                <Text w="full" isTruncated fontSize="sm">
+                <Text w="full" isTruncated fontSize="sm" color="neutral.300">
                   {shortenAddress(wallet.account)}
                 </Text>
               </Flex>

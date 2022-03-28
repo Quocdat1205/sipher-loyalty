@@ -16,7 +16,7 @@ export interface DetailsBox extends Lootbox {
 }
 
 export const useDetailBox = id => {
-  const { session, authenticated, user, bearerToken } = useAuth()
+  const { user, bearerToken } = useAuth()
   const { scCaller } = useWalletContext()
   const query = useQueryClient()
   const { account, chainId, switchNetwork } = useWalletContext()

@@ -34,12 +34,12 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   )
 
   return (
-    <QueryClientProvider client={qcRef.current}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <Web3ReactProvider getLibrary={e => e}>
-          <AuthProvider>
-            <UseWalletProvider>
-              <SipherProvider>
+    <SipherProvider>
+      <QueryClientProvider client={qcRef.current}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <Web3ReactProvider getLibrary={e => e}>
+            <AuthProvider>
+              <UseWalletProvider>
                 <BalanceProvider>
                   <Head>
                     <meta charSet="utf-8" />
@@ -55,12 +55,12 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
                   </Head>
                   {getLayout(<Component {...pageProps} />)}
                 </BalanceProvider>
-              </SipherProvider>
-            </UseWalletProvider>
-          </AuthProvider>
-        </Web3ReactProvider>
-      </Hydrate>
-    </QueryClientProvider>
+              </UseWalletProvider>
+            </AuthProvider>
+          </Web3ReactProvider>
+        </Hydrate>
+      </QueryClientProvider>
+    </SipherProvider>
   )
 }
 

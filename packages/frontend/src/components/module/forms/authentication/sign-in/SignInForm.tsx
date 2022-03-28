@@ -30,7 +30,7 @@ const SignInForm = () => {
   // const { setUser: setSigningInUser } = useSignInContext()
   const { setUser } = useAuth()
 
-  const { wallet, flowState, setFlowState, setEmail } = useSignInContext()
+  const { wallet, flowState, setFlowState, setEmail, setPassword } = useSignInContext()
 
   const [connectingMethod, setConnectingMethod] = useState<string | null>(null)
 
@@ -58,8 +58,10 @@ const SignInForm = () => {
   }
 
   const handleChallenge = async (user: any) => {
+    const wallets = (await AtherIdAuth.ownedWallets()).map(wallet => wallet.address)
     if (!user.challengeName) {
-      if (!wallet.isActive) setFlowState({ type: AuthType.SignIn, action: SignInAction.ConnectWallet })
+      if (!(wallet.isActive && wallets.includes(wallet.account!)))
+        setFlowState({ type: AuthType.SignIn, action: SignInAction.ConnectWallet })
       else setFlowState(null)
       return setUser(user)
     }
@@ -100,6 +102,12 @@ const SignInForm = () => {
             title: "Signature error",
             message: "User denied to sign the message",
           })
+        } else if (e?.message === "Incorrect username or password.") {
+          toast({
+            status: "error",
+            title: "Invalid credentials",
+            message: "Please check email and password and try again",
+          })
         } else {
           toast({
             status: "error",
@@ -118,7 +126,7 @@ const SignInForm = () => {
     if (!account) {
       account = (await wallet.connect(connectorId)) as string
     }
-    mutateSignIn({ emailOrWallet: account! })
+    if (account) mutateSignIn({ emailOrWallet: account! })
   }
 
   return (
@@ -149,7 +157,7 @@ const SignInForm = () => {
                 pr="2.5rem"
                 type={"password"}
                 placeholder="Password"
-                {...register("password", { required: true })}
+                {...register("password", { required: true, onChange: e => setPassword(e.target.value) })}
               />
             </FormField>
           </FormControl>

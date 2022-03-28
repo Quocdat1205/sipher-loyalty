@@ -13,7 +13,7 @@ import { useSignUpContext } from "./useSignUp"
 
 const ConnectToWallet = () => {
   const toast = useChakraToast()
-  const { ownedWallets, user } = useAuth()
+  const { ownedWallets } = useAuth()
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
   const {
     wallet: { connect, scCaller, reset, account, connector },
@@ -42,8 +42,8 @@ const ConnectToWallet = () => {
         } else {
           toast({
             status: "error",
-            title: "Wallet already connected to another account",
-            message: "Please sign in by that address or switch to another address and try again",
+            title: "Wallet linked to other account",
+            message: "Please sign in by that wallet or switch to another wallet and try again",
           })
         }
       },

@@ -19,7 +19,7 @@ interface InputAirdrops {
 export const useAirdrops = () => {
   const router = useRouter()
   const currentTab = router.query.tab || AirdropType.ALL.toLowerCase()
-  const { bearerToken, user } = useAuth()
+  const { bearerToken } = useAuth()
   const { account, scCaller, chainId } = useWalletContext()
   const [claimId, setClaimId] = useState<number | null>(null)
   const qc = useQueryClient()
