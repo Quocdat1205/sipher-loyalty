@@ -74,7 +74,7 @@
         "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/merch/hat_black_front.png"
       },
       {
-        "color": "black",
+        "color": "white",
         "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/merch/hat_white_front.png",
         "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/merch/hat_white_front.png"
       }
@@ -88,10 +88,9 @@
     "description": "A personal note to thank our early backers from Sipher's team",
     "imageUrls": [
       {
-        "color": "none",
-        "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/merch/card_none_front.png",
-        "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/merch/card_none_front.png",
-        "back": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/merch/card_none_back.png"
+        "color": "black",
+        "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/merch/card_none_front.mp4",
+        "front": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/merch/card_none_front.mp4"
       }
     ],
     "type": "OTHER"

@@ -15,7 +15,7 @@ export enum Chain {
 type BlockchainConfiguration = {
   rpcUrls: { [k in Chain]: string };
   contracts: {
-    erc1155Spaceship: {
+    erc1155LootBox: {
       [k in Chain]: { address: string };
     };
     erc1155Sculpture: {
@@ -25,7 +25,7 @@ type BlockchainConfiguration = {
 };
 
 type ConfigMint = {
-  erc1155Spaceship: {
+  erc1155LootBox: {
     chainId: number;
     verifyingContract: string;
   };
@@ -116,7 +116,7 @@ export class SystemConfigProvider {
       [Chain.Polygon]: `${this.POLYGON_RPC_URL}`,
     };
 
-    const erc1155Spaceship = {
+    const erc1155LootBox = {
       [Chain.Mainnet]: {
         address: ZERO_ADDRESS,
       },
@@ -148,15 +148,15 @@ export class SystemConfigProvider {
       },
     };
 
-    return { rpcUrls, contracts: { erc1155Spaceship, erc1155Sculpture } };
+    return { rpcUrls, contracts: { erc1155LootBox, erc1155Sculpture } };
   }
 
   public get config(): ConfigMint {
     return {
-      erc1155Spaceship: {
+      erc1155LootBox: {
         chainId: this.isProduction ? Chain.Polygon : Chain.Mumbai,
         verifyingContract:
-          this.blockchain.contracts.erc1155Spaceship[
+          this.blockchain.contracts.erc1155LootBox[
             this.isProduction ? Chain.Polygon : Chain.Mumbai
           ].address,
       },

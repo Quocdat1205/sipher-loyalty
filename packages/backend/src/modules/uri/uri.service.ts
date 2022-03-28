@@ -1,9 +1,9 @@
 import { Repository } from "typeorm";
 import {
-  ERC1155Sculpture,
-  ERC1155SculptureAttribute,
   ERC1155Lootbox,
   ERC1155LootboxAttribute,
+  ERC1155Sculpture,
+  ERC1155SculptureAttribute,
 } from "@entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -21,7 +21,7 @@ export class URIService {
     private ERC1155SculptureAttributeRepo: Repository<ERC1155SculptureAttribute>
   ) {}
 
-  async getDataERC1155Spaceship(tokenId: number) {
+  async getDataERC1155Lootbox(tokenId: number) {
     return this.ERC1155LootboxRepo.findOne({
       where: [{ tokenId }],
       relations: ["attributes"],

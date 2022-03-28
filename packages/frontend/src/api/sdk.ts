@@ -488,26 +488,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags nft
-     * @name NftItemControllerGetByOwner
-     * @request GET:/api/sipher/loyalty/nft/get-by-owner
-     */
-    nftItemControllerGetByOwner: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/sipher/loyalty/nft/get-by-owner`,
-        method: 'GET',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags nft
      * @name NftItemControllerGetByCollection
-     * @request GET:/api/sipher/loyalty/nft/get-by-collection
+     * @request GET:/api/sipher/loyalty/nft/get-by-collection/{id}
      */
-    nftItemControllerGetByCollection: (params: RequestParams = {}) =>
+    nftItemControllerGetByCollection: (id: string, params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/nft/get-by-collection`,
+        path: `/api/sipher/loyalty/nft/get-by-collection/${id}`,
         method: 'GET',
         ...params,
       }),

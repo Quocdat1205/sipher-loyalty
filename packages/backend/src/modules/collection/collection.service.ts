@@ -224,9 +224,7 @@ export class CollectionService {
     const newItem = { ...item };
     if (isSpaceshipContract(item.collectionId)) {
       LoggerService.debug("Is spaceship contract");
-      const uriInfo = await this.uriService.getDataERC1155Spaceship(
-        item.tokenId
-      );
+      const uriInfo = await this.uriService.getDataERC1155Lootbox(item.tokenId);
       if (uriInfo) {
         newItem.name = uriInfo.name;
         newItem.imageUrl = uriInfo.image;
