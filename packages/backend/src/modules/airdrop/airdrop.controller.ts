@@ -9,6 +9,7 @@ import { ParseEthereumAddress } from "src/pipes/ethereum-address..pipe";
 
 import { AirdropService } from "./airdrop.service";
 import {
+  ResAirdrop,
   ResAllAirdrop,
   ResMerchAirdrop,
   ResNFTAirdrop,
@@ -41,7 +42,7 @@ export class AirdropController {
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({
-    type: ResAllAirdrop || ResNFTAirdrop || ResTokenAirdrop || ResMerchAirdrop,
+    type: ResAirdrop,
   })
   @Get("/:airdropType/:publicAddress/:id")
   async getAirdropByType(
