@@ -17,7 +17,9 @@ import { LoggerService } from "../logger/logger.service";
 export class SeedLootboxService {
   private src = path.resolve(
     __dirname,
-    `../../../src/data/LOOTBOX/data${constant.isProduction ? "" : "_test"}.json`
+    `../../../src/data/DISTRIBUTE/LOOTBOX/data${
+      constant.isProduction ? "" : "_test"
+    }.json`
   );
 
   private lootboxData = JSON.parse(fs.readFileSync(this.src).toString());

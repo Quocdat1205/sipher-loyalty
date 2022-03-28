@@ -6,7 +6,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { configService } from "@setting/config.typeorm";
 
 import { SeedModule } from "@modules/seed/seed.module";
-import { SeedERC1155SculptureService } from "@modules/seed/seedERC1155Sculpture.service copy";
+import { SeedERC1155SculptureService } from "@modules/seed/seedERC1155Sculpture.service";
 
 @Module({
   imports: [
