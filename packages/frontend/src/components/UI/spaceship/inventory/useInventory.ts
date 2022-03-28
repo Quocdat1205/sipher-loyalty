@@ -40,16 +40,18 @@ export const useInventory = () => {
     },
   )
 
-  const inventoryData = data!.map(item => ({
-    ...item,
-    isDisabled: item.publicAddress !== account,
-    onSelect: (isChecked = false) => {
-      const oldState = data
-      oldState.find(i => i.id === item.id)!.isChecked = isChecked
-      setData([...oldState])
-    },
-    onView: () => router.push(`/spaceship/${item.id}`),
-  }))
+  const inventoryData = !!account
+    ? data!.map(item => ({
+        ...item,
+        isDisabled: item.publicAddress.toUpperCase() !== account?.toUpperCase(),
+        onSelect: (isChecked = false) => {
+          const oldState = data
+          oldState.find(i => i.id === item.id)!.isChecked = isChecked
+          setData([...oldState])
+        },
+        onView: () => router.push(`/spaceship/${item.id}`),
+      }))
+    : []
 
   const inventoryDataCheck = data!
     .filter(i => i.isChecked)

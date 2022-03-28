@@ -1,6 +1,6 @@
 import React from "react"
 import Image from "next/image"
-import { Avatar, Box, Flex, Heading, Link, SimpleGrid, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Avatar, Box, chakra, Flex, Heading, SimpleGrid, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { NotifyNetwork } from "@components/shared"
 import { SpVerified } from "@components/shared/icons"
@@ -42,9 +42,9 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
             <Skeleton pos="absolute" transform="translateY(-50%)" isLoaded={isFetched} rounded="full">
               <Avatar src={collectionData?.logoImage} size="xl" />
             </Skeleton>
-            <Box pt={16} />
+            <Box pt={12} />
             <Skeleton isLoaded={isFetched}>
-              <Flex align="center">
+              <Flex minW="10rem" minH="2.5rem" align="center">
                 <Heading mr={1} fontSize="3xl" fontWeight={600}>
                   {capitalize(collectionData?.name?.toLowerCase() ?? "")}
                 </Heading>
@@ -55,12 +55,11 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
                 )}
               </Flex>
             </Skeleton>
-            <Text>
-              Created by{" "}
-              <Link color="cyan.600" isExternal>
-                Sipher
-              </Link>
-            </Text>
+            <Skeleton isLoaded={isFetched}>
+              <Text>
+                Created by <chakra.span color="cyan.600">Sipher</chakra.span>
+              </Text>
+            </Skeleton>
           </Stack>
           <Flex align="center" justify="space-between">
             <Skeleton isLoaded={isFetched}>

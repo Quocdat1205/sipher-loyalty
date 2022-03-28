@@ -21,7 +21,7 @@ const Slide1 = () => {
             MINTED AND TRADEABLE
           </Text>
           <Button
-            onClick={() => router.push("/portfolio")}
+            onClick={() => router.push("/spaceship")}
             bg="transparent"
             border="1px"
             borderColor="white"

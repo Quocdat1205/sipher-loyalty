@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useQueryClient } from "react-query"
 import { differenceInSeconds } from "date-fns"
+import { Text, TextProps } from "@sipher.dev/sipher-ui"
 
 import Colon from "./Colon"
 import TimeCell from "./TimeCell"
@@ -9,11 +10,11 @@ const ONE_DAY = 60 * 60 * 24
 const ONE_HOUR = 60 * 60
 const ONE_MINUTE = 60
 
-interface CountDownProps {
+interface CountDownProps extends TextProps {
   deadline: number
 }
 
-const CountDown = ({ deadline }: CountDownProps) => {
+const CountDown = ({ deadline, ...rest }: CountDownProps) => {
   const runTimeOut = useRef(true)
   const queryClient = useQueryClient()
   const timeToCountdown = () => {
@@ -46,7 +47,7 @@ const CountDown = ({ deadline }: CountDownProps) => {
   })
 
   return (
-    <>
+    <Text {...rest}>
       <TimeCell value={countdown.days} unit="D" />
       <Colon />
       <TimeCell value={countdown.hours} unit="H" />
@@ -54,7 +55,7 @@ const CountDown = ({ deadline }: CountDownProps) => {
       <TimeCell value={countdown.minutes} unit="M" />
       {/* <Colon />
       <TimeCell value={countdown.seconds} unit="S" /> */}
-    </>
+    </Text>
   )
 }
 

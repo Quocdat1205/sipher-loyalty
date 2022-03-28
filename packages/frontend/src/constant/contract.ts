@@ -97,10 +97,6 @@ export const NftContracts = [
     address: SipherSculptureAddress,
   },
   {
-    name: "Sipher Spaceship",
-    address: SipherSpaceshipAddress,
-  },
-  {
     name: "Sipher Lootbox",
     address: SipherLootBoxAddress,
   },

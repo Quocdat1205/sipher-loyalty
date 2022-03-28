@@ -8,20 +8,20 @@ const tutorialData = [
   {
     id: "OPEN LOOTBOX",
     description: "Wonders waiting for you to unravel inside this Lootbox.",
-    flex: 1,
-    image: "/images/spaceship/tutorial1.png",
+    flex: 2,
+    image: "/images/spaceship/tutorial3.png",
   },
   {
     id: "GATHER SHIP PARTS",
     description: "Build your own spaceship with rarity-based components, from the basics to a full anatomy.",
-    flex: 2,
-    image: "/images/spaceship/tutorial2.png",
+    flex: 3,
+    image: "/images/spaceship/tutorial1.png",
   },
   {
     id: "UP TO FLY",
     description: "Launch your tailored spaceship to embark on an epic ride across Sipheria.",
-    flex: 1,
-    image: "/images/spaceship/tutorial3.png",
+    flex: 2,
+    image: "/images/spaceship/tutorial1.png",
   },
 ]
 
@@ -38,7 +38,7 @@ export const TutorialSpaceship = () => {
             the random ship parts and build up a Spaceship for using in Sipher game.
           </Text>
         </Flex>
-        <HStack spacing={16}>
+        <HStack spacing={8}>
           {tutorialData.map((item, index) => (
             <Box key={index} flex={item.flex}>
               <Text borderBottom="1px" borderColor="whiteAlpha.200" pb={2} mb={2} fontWeight={600}>

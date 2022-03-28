@@ -4,6 +4,8 @@ import { Box, Button, Flex, Text } from "@sipher.dev/sipher-ui"
 
 import { useWidth } from "@hooks"
 
+import CountDown from "../../CountDown"
+
 import { ContentDetails } from "./ContentDetails"
 import { HeaderDetails } from "./HeaderDetails"
 import { useDetailBox } from "./useDetailBox"
@@ -25,7 +27,7 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
   }, [windowWidth])
   return (
     <Flex flex={1} flexDir="column" align="center">
-      <Flex w="full" flex={1} flexDir={["column", "row"]}>
+      <Flex pos="relative" w="full" flex={1} flexDir={["column", "row"]}>
         <Flex pos="fixed" top="4rem" left={0} zIndex={1} flexDir="column">
           <Box pt={8} px={8} w="full">
             <Button onClick={() => router.back()} pl={2} bg="white" rounded="full" alignItems="center">
@@ -54,6 +56,12 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
             src={details?.propertyLootbox.image || ""}
             alt={"box"}
           />
+          <Box pos="absolute" bottom="1rem" left="50%" zIndex={1} transform="translate(-50% ,-50%)">
+            <Text fontSize="sm" color="neutral.400" fontWeight={600}>
+              Reveal Date
+            </Text>
+            <CountDown fontWeight={600} deadline={1650024000000} />
+          </Box>
         </Box>
         <Flex flex={1} pl={[0, `${boxWidth - 8}px`]} flexDir="column">
           <Box flex={1} py={8} px={[4, 0]}>

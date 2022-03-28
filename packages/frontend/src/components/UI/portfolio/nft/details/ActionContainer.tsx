@@ -25,7 +25,7 @@ const ActionContainer = ({ isFetched }: ActionContainerProps) => {
           <Fragment>
             <Skeleton isLoaded={isFetched} flex={1}>
               <Button isDisabled py={5} colorScheme="accent" w="full">
-                {tokenDetails?.collection.category === "spaceship" ? "BRING TO OFF-CHAIN" : "REDEEM SCULPTURE"}
+                {tokenDetails?.collection.category === "lootbox" ? "BRING TO OFF-CHAIN" : "REDEEM SCULPTURE"}
               </Button>
             </Skeleton>
             <Skeleton isLoaded={isFetched} flex={1}>

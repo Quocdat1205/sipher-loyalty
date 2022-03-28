@@ -65,6 +65,19 @@ export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest
               </Text>
             </Flex>
           </Box>
+
+          <Box pos="absolute" bottom="0" right="0" transform="translate(-1rem, -1.5rem)">
+            <IconButton
+              onClick={() => setIsOpen("FULL_SCREEN")}
+              size="lg"
+              color="white"
+              bg="rgba(41, 42, 64, 0.6)"
+              _focus={{ boxShadow: "none" }}
+              _hover={{ bg: "accent.600", color: "neutral.900" }}
+              aria-label="resize"
+              icon={<BiFullscreen size="1.4rem" />}
+            />
+          </Box>
           <Box pos="absolute" bottom="0" right="0" transform="translate(-1rem, -1.5rem)">
             <IconButton
               onClick={() => setIsOpen("FULL_SCREEN")}

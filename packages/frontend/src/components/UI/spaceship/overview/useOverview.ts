@@ -70,7 +70,7 @@ const initData: SpaceshipDataProps[] = [
   },
   {
     week: 7,
-    id: "???",
+    id: "MYSTERY BOX",
     y: "-0.5rem",
     title: "The Barking Baron - INU-only limited edition Loot box claim (INU only claim)",
     image: "/images/spaceship/ship/6.png",

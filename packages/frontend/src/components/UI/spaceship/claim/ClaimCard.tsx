@@ -37,7 +37,7 @@ const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
           onLoad={() => setImageLoaded(true)}
         />
       </Skeleton>
-      <Stack p={4} w="full">
+      <Stack p={4}>
         <Box mb={2} w="3rem" h="1px" bg="whiteAlpha.200" />
         <Flex flexDir="column" mb={4}>
           <Flex mb={2} align="center">

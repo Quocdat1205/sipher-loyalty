@@ -40,7 +40,9 @@ export const useClaim = () => {
 
   const totalQuantity = claimData.reduce((accu, curr) => accu + curr.quantity, 0)
 
-  const isCheckAccountClaim = claimData.every(item => item.publicAddress === account)
+  const isCheckAccountClaim = claimData.every(
+    item => item.publicAddress.toLocaleUpperCase() === account?.toLocaleUpperCase(),
+  )
 
   return {
     account,

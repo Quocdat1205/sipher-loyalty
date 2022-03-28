@@ -21,9 +21,6 @@ export const HeaderDetails = ({ details, isFetching }: HeaderDetailsProps) => {
           <Text color="neutral.400" fontWeight={600}>
             Quantity: {details?.mintable}
           </Text>
-          {/* <Text color="neutral.400" fontWeight={600}>
-          Reveal Box in <chakra.span color="white">7D : 1H : 1M</chakra.span>
-        </Text> */}
         </Flex>
       </Skeleton>
     </Box>
