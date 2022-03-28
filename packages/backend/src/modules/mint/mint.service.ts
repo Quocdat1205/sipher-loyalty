@@ -26,7 +26,7 @@ import { BodyUpdatePendingMint } from "./mint.type";
 export class MintService {
   private infoPendings: Array<{ name: string; image: string }>;
 
-  private config = constant.config.erc1155Spaceship;
+  private config = constant.config.erc1155LootBox;
 
   constructor(
     @InjectRepository(PendingMint)

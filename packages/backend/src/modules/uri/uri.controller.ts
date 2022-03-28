@@ -10,8 +10,8 @@ export class URIController {
   constructor(private uriService: URIService) {}
 
   @Get("erc1155-lootbox/:tokenId")
-  async getDataERC1155Spaceship(@Param("tokenId") tokenId: number) {
-    return this.uriService.getDataERC1155Spaceship(tokenId);
+  async getDataERC1155Lootbox(@Param("tokenId") tokenId: number) {
+    return this.uriService.getDataERC1155Lootbox(tokenId);
   }
 
   @Get("erc1155-sculpture/:tokenId")
