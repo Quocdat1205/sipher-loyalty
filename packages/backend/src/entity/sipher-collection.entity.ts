@@ -60,7 +60,35 @@ export class SipherCollection {
     nullable: true,
   })
   @ApiProperty({ type: Number })
-  floorPrice: number;
+  floorPrice?: number;
+
+  @Column({
+    type: "decimal",
+    nullable: true,
+  })
+  @ApiProperty({ type: Number })
+  totalVolume?: number;
+
+  @Column({
+    type: "decimal",
+    nullable: true,
+  })
+  @ApiProperty({ type: Number })
+  marketCap?: number;
+
+  @Column({
+    type: "integer",
+    nullable: true,
+  })
+  @ApiProperty({ type: Number })
+  totalSupply?: number;
+
+  @Column({
+    type: "integer",
+    nullable: true,
+  })
+  @ApiProperty({ type: Number })
+  totalSales?: number;
 
   @Column({
     type: "text",

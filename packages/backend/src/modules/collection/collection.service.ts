@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { map, Observable } from "rxjs";
+import { lastValueFrom, map, Observable } from "rxjs";
 import { Repository } from "typeorm";
 import { HttpService } from "@nestjs/axios";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
@@ -17,7 +17,9 @@ import {
   SipherCollection,
 } from "src/entity/sipher-collection.entity";
 
-import { Portfolio, PortfolioQuery } from "./collection.dto";
+import { CollectionStats, Portfolio, PortfolioQuery } from "./collection.dto";
+import { TokenType } from "@modules/nft/nft.dto";
+import { Cron, CronExpression } from "@nestjs/schedule";
 
 @Injectable()
 export class CollectionService {
@@ -31,6 +33,12 @@ export class CollectionService {
   ) {}
 
   private openseaApiBaseUrl = "https://api.opensea.io/api/v1";
+  private openseaApiTestBaseUrl = "https://testnets-api.opensea.io/api/v1/";
+
+  @Cron(CronExpression.EVERY_HOUR)
+  async handleCron() {
+    await this.updateEveryCollectionStats();
+  }
 
   async getAllCollection() {
     const collections = await this.sipherCollectionRepo.find();
@@ -40,9 +48,11 @@ export class CollectionService {
     return collections;
   }
 
-  getCollectionStats(collectionSlug: string): Observable<any> {
+  getCollectionStats(collectionSlug: string, mainnet = true): Observable<any> {
     const data = this.httpService.get(
-      `${this.openseaApiBaseUrl}/collection/${collectionSlug}/stats`,
+      `${
+        mainnet ? this.openseaApiBaseUrl : this.openseaApiTestBaseUrl
+      }/collection/${collectionSlug}/stats`,
       {
         headers: {
           Accept: "application/json",
@@ -58,6 +68,43 @@ export class CollectionService {
         return camelCaseStats;
       })
     );
+  }
+
+  private async updateCollectionStats(
+    collectionId: string,
+    stats: CollectionStats
+  ) {
+    const collection = await this.sipherCollectionRepo.findOne({
+      id: collectionId,
+    });
+    if (collection) {
+      collection.floorPrice = stats.floorPrice;
+      collection.totalSales = stats.totalSales;
+      collection.totalSupply = stats.totalSupply;
+      collection.totalVolume = stats.totalVolume;
+      collection.marketCap = stats.marketCap;
+      await this.sipherCollectionRepo.save(collection);
+    }
+  }
+
+  private async updateEveryCollectionStats() {
+    const collections = await this.sipherCollectionRepo.find();
+    for (let i = 0; i < collections.length; i++) {
+      try {
+        const stats = await lastValueFrom(
+          this.getCollectionStats(
+            collections[i].collectionSlug,
+            collections[i].chainId === 1
+          )
+        );
+        await this.updateCollectionStats(collections[i].id, stats);
+      } catch (err) {
+        if (err.response && err.response.status === 404) {
+        } else {
+          LoggerService.error(err);
+        }
+      }
+    }
   }
 
   async getPortfolio(userAddress: string, query: PortfolioQuery) {
@@ -221,7 +268,7 @@ export class CollectionService {
 
   // Best practice? Never heard of him 💀
   private async addUriToSculptureOrSpaceship(item: any) {
-    const newItem = { ...item };
+    const newItem = { ...item, type: TokenType.ERC1155 };
     if (isSpaceshipContract(item.collectionId)) {
       LoggerService.debug("Is spaceship contract");
       const uriInfo = await this.uriService.getDataERC1155Lootbox(item.tokenId);

@@ -1,4 +1,10 @@
-import { IsEnum, IsNumberString, IsOptional } from "class-validator";
+import {
+  IsDecimal,
+  IsEnum,
+  IsNumber,
+  IsNumberString,
+  IsOptional,
+} from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 import { NftItem } from "@modules/nft/nft-item.dto";
@@ -40,4 +46,26 @@ export class PortfolioByCollectionResponse {
 export class Portfolio extends SipherCollection {
   @ApiProperty({ type: Number })
   total: number;
+}
+
+export class CollectionStats {
+  @IsDecimal()
+  @ApiProperty({ type: Number })
+  floorPrice: number;
+
+  @IsDecimal()
+  @ApiProperty({ type: Number })
+  totalVolume: number;
+
+  @IsDecimal()
+  @ApiProperty({ type: Number })
+  marketCap: number;
+
+  @IsNumber()
+  @ApiProperty({ type: Number })
+  totalSupply: number;
+
+  @IsNumber()
+  @ApiProperty({ type: Number })
+  totalSales: number;
 }
