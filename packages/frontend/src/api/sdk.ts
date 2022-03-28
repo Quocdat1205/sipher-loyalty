@@ -167,6 +167,10 @@ export interface Portfolio {
   collectionType: CollectionType;
   category: CollectionCategory;
   floorPrice: number;
+  totalVolume: number;
+  marketCap: number;
+  totalSupply: number;
+  totalSales: number;
   description: string;
   logoImage: string;
   bannerImage: string;
@@ -189,6 +193,10 @@ export interface SipherCollection {
   collectionType: CollectionType;
   category: CollectionCategory;
   floorPrice: number;
+  totalVolume: number;
+  marketCap: number;
+  totalSupply: number;
+  totalSales: number;
   description: string;
   logoImage: string;
   bannerImage: string;
