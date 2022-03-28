@@ -4,7 +4,6 @@ import { NestFactory } from "@nestjs/core";
 
 import { DistributeSculptureModule } from "@modules/distribute/distributeSculpture.module";
 import { DistributeSculptureService } from "@modules/distribute/distributeSculpture.service";
-import { SeedLootboxService } from "@modules/seed/seedLootbox.service";
 
 @Module({
   imports: [DistributeSculptureModule, ConfigModule.forRoot()],
@@ -16,7 +15,7 @@ export class AppModule implements OnApplicationBootstrap {
   ) {}
 
   async onApplicationBootstrap(): Promise<void> {
-    await this.distributeSculptureService.();
+    await this.distributeSculptureService.mintAll();
   }
 }
 async function bootstrap() {
