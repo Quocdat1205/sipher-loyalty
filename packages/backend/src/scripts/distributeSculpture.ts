@@ -2,6 +2,8 @@ import { Module, OnApplicationBootstrap } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 
+import { DistributeSculptureModule } from "@modules/distribute/distributeSculpture.module";
+import { DistributeSculptureService } from "@modules/distribute/distributeSculpture.service";
 import { SeedLootboxService } from "@modules/seed/seedLootbox.service";
 
 @Module({
@@ -9,10 +11,12 @@ import { SeedLootboxService } from "@modules/seed/seedLootbox.service";
   providers: [],
 })
 export class AppModule implements OnApplicationBootstrap {
-  constructor(private readonly seedingService: SeedLootboxService) {}
+  constructor(
+    private readonly distributeSculptureService: DistributeSculptureService
+  ) {}
 
   async onApplicationBootstrap(): Promise<void> {
-    await this.seedingService.seedLootboxCustom();
+    await this.distributeSculptureService.();
   }
 }
 async function bootstrap() {

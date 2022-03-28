@@ -167,6 +167,10 @@ export interface Portfolio {
   collectionType: CollectionType;
   category: CollectionCategory;
   floorPrice: number;
+  totalVolume: number;
+  marketCap: number;
+  totalSupply: number;
+  totalSales: number;
   description: string;
   logoImage: string;
   bannerImage: string;
@@ -189,6 +193,10 @@ export interface SipherCollection {
   collectionType: CollectionType;
   category: CollectionCategory;
   floorPrice: number;
+  totalVolume: number;
+  marketCap: number;
+  totalSupply: number;
+  totalSales: number;
   description: string;
   logoImage: string;
   bannerImage: string;
@@ -788,13 +796,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags airdrop
-     * @name AirdropControllerGetAirdropByType
+     * @name AirdropControllerGetAirdropsByType
      * @request GET:/api/sipher/loyalty/airdrop/{airdropType}/{publicAddress}
      * @secure
      */
-    airdropControllerGetAirdropByType: (publicAddress: string, airdropType: string, params: RequestParams = {}) =>
+    airdropControllerGetAirdropsByType: (publicAddress: string, airdropType: string, params: RequestParams = {}) =>
       this.request<ResAllAirdrop, any>({
         path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags airdrop
+     * @name AirdropControllerGetAirdropByType
+     * @request GET:/api/sipher/loyalty/airdrop/{airdropType}/{publicAddress}/{id}
+     * @secure
+     */
+    airdropControllerGetAirdropByType: (publicAddress: string, id: string, airdropType: string, params: RequestParams = {}) =>
+      this.request<ResAllAirdrop, any>({
+        path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}/${id}`,
         method: 'GET',
         secure: true,
         format: 'json',

@@ -29,6 +29,10 @@ type ConfigMint = {
     chainId: number;
     verifyingContract: string;
   };
+  erc1155Sculpture: {
+    chainId: number;
+    verifyingContract: string;
+  };
 };
 @Injectable()
 export class SystemConfigProvider {
@@ -133,6 +137,13 @@ export class SystemConfigProvider {
         chainId: this.isProduction ? Chain.Polygon : Chain.Mumbai,
         verifyingContract:
           this.blockchain.contracts.erc1155LootBox[
+            this.isProduction ? Chain.Polygon : Chain.Mumbai
+          ].address,
+      },
+      erc1155Sculpture: {
+        chainId: this.isProduction ? Chain.Polygon : Chain.Mumbai,
+        verifyingContract:
+          this.blockchain.contracts.erc1155Sculpture[
             this.isProduction ? Chain.Polygon : Chain.Mumbai
           ].address,
       },

@@ -1,16 +1,9 @@
 import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { LootBoxModule } from "@modules/lootbox/lootbox.module";
-import { Airdrop } from "src/entity/airdrop.entity";
+import { DistributeSculptureService } from "./distributeSculpture.service";
 
 @Module({
-  imports: 
-  providers: [
-    DistributeSculptureService,
-  ],
-  exports: [
-    DistributeSculptureService,
-  ],
+  providers: [DistributeSculptureService],
+  exports: [DistributeSculptureService],
 })
 export class DistributeSculptureModule {}

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { map, Observable } from "rxjs";
+import { lastValueFrom, map, Observable } from "rxjs";
 import { Repository } from "typeorm";
 import { HttpService } from "@nestjs/axios";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
@@ -10,14 +10,16 @@ import constant from "@setting/constant";
 import { LoggerService } from "@modules/logger/logger.service";
 import { NftItemService } from "@modules/nft/nftItem.service";
 import { URIService } from "@modules/uri/uri.service";
-import { isSculptureContract, isSpaceshipContract } from "@utils/utils";
+import { isSculptureContract, isLooboxContract } from "@utils/utils";
 import marketplaceClient from "src/api/marketplaceClient";
 import {
   CollectionType,
   SipherCollection,
 } from "src/entity/sipher-collection.entity";
 
-import { Portfolio, PortfolioQuery } from "./collection.dto";
+import { CollectionStats, Portfolio, PortfolioQuery } from "./collection.dto";
+import { TokenType } from "@modules/nft/nft.dto";
+import { Cron, CronExpression } from "@nestjs/schedule";
 
 @Injectable()
 export class CollectionService {
@@ -31,6 +33,12 @@ export class CollectionService {
   ) {}
 
   private openseaApiBaseUrl = "https://api.opensea.io/api/v1";
+  private openseaApiTestBaseUrl = "https://testnets-api.opensea.io/api/v1/";
+
+  @Cron(CronExpression.EVERY_HOUR)
+  async handleCron() {
+    await this.updateEveryCollectionStats();
+  }
 
   async getAllCollection() {
     const collections = await this.sipherCollectionRepo.find();
@@ -40,9 +48,11 @@ export class CollectionService {
     return collections;
   }
 
-  getCollectionStats(collectionSlug: string): Observable<any> {
+  getCollectionStats(collectionSlug: string, mainnet = true): Observable<any> {
     const data = this.httpService.get(
-      `${this.openseaApiBaseUrl}/collection/${collectionSlug}/stats`,
+      `${
+        mainnet ? this.openseaApiBaseUrl : this.openseaApiTestBaseUrl
+      }/collection/${collectionSlug}/stats`,
       {
         headers: {
           Accept: "application/json",
@@ -58,6 +68,43 @@ export class CollectionService {
         return camelCaseStats;
       })
     );
+  }
+
+  private async updateCollectionStats(
+    collectionId: string,
+    stats: CollectionStats
+  ) {
+    const collection = await this.sipherCollectionRepo.findOne({
+      id: collectionId,
+    });
+    if (collection) {
+      collection.floorPrice = stats.floorPrice;
+      collection.totalSales = stats.totalSales;
+      collection.totalSupply = stats.totalSupply;
+      collection.totalVolume = stats.totalVolume;
+      collection.marketCap = stats.marketCap;
+      await this.sipherCollectionRepo.save(collection);
+    }
+  }
+
+  private async updateEveryCollectionStats() {
+    const collections = await this.sipherCollectionRepo.find();
+    for (let i = 0; i < collections.length; i++) {
+      try {
+        const stats = await lastValueFrom(
+          this.getCollectionStats(
+            collections[i].collectionSlug,
+            collections[i].chainId === 1
+          )
+        );
+        await this.updateCollectionStats(collections[i].id, stats);
+      } catch (err) {
+        if (err.response && err.response.status === 404) {
+        } else {
+          LoggerService.error(err);
+        }
+      }
+    }
   }
 
   async getPortfolio(userAddress: string, query: PortfolioQuery) {
@@ -103,7 +150,9 @@ export class CollectionService {
       );
     }
 
-    return filteredPortfolio;
+    return filteredPortfolio.sort(
+      (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
+    );
   }
 
   async getPortfolioByCollection(userAddress: string, collectionId: string) {
@@ -213,17 +262,17 @@ export class CollectionService {
   private async addUriToItem(items: any) {
     const newItems = [];
     for (const item of items) {
-      const newItem = await this.addUriToSculptureOrSpaceship(item);
+      const newItem = await this.addUriToSculptureOrLootbox(item);
       newItems.push(newItem);
     }
     return newItems;
   }
 
   // Best practice? Never heard of him 💀
-  private async addUriToSculptureOrSpaceship(item: any) {
-    const newItem = { ...item };
-    if (isSpaceshipContract(item.collectionId)) {
-      LoggerService.debug("Is spaceship contract");
+  private async addUriToSculptureOrLootbox(item: any) {
+    const newItem = { ...item, type: TokenType.ERC1155 };
+    if (isLooboxContract(item.collectionId)) {
+      LoggerService.debug("Is lootbox contract");
       const uriInfo = await this.uriService.getDataERC1155Lootbox(item.tokenId);
       if (uriInfo) {
         newItem.name = uriInfo.name;
