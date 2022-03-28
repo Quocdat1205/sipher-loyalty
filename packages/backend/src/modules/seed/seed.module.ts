@@ -17,7 +17,7 @@ import { Airdrop } from "src/entity/airdrop.entity";
 
 import { SeedAirdropService } from "./seedAirdrop.service";
 import { SeedERC1155LootboxService } from "./seedERC1155Lootbox.service";
-import { SeedERC1155SculptureService } from "./seedERC1155Sculpture.service copy";
+import { SeedERC1155SculptureService } from "./seedERC1155Sculpture.service";
 import { SeedLootboxService } from "./seedLootbox.service";
 
 @Module({
