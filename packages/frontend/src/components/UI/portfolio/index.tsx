@@ -25,11 +25,19 @@ const ContentPortfolio = () => {
     collectionData,
     filter,
     setFilter,
+    isFetched,
   } = usePortfolio()
 
   const renderTabs = () => {
     if (currentTab === "nfts") {
-      return <CollectionContainer filter={filter} setFilter={setFilter} collectionData={collectionData} />
+      return (
+        <CollectionContainer
+          isFetched={isFetched}
+          filter={filter}
+          setFilter={setFilter}
+          collectionData={collectionData}
+        />
+      )
     }
     if (currentTab === "tokens") {
       return <TokensContainer tokensData={tokensData} />

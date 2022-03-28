@@ -1,32 +1,37 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { Item } from "./item.entity";
+import { TransformLowercase } from "@utils/transfomers";
+
+import { Item, ItemType } from "./item.entity";
 
 @Entity()
-export class MerchList {
+export class Merchandise {
   @ApiProperty({ type: Number })
   @PrimaryGeneratedColumn("increment")
-  id_merch_list: number;
+  id?: number;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column()
   publicAddress: string;
 
   @ApiProperty({ type: String })
   @Column()
-  tier: string;
+  tier?: string;
 
-  @ApiProperty({ type: String })
-  @Column()
-  merch_item: string;
+  @ApiProperty({ type: String, enum: ItemType, enumName: "ItemType" })
+  @Column({
+    type: String,
+  })
+  merch_item: ItemType;
 
   @ApiProperty({ type: Number })
   @Column()
@@ -45,6 +50,14 @@ export class MerchList {
   isShip?: boolean;
 
   @ApiProperty({ type: () => Item })
-  @ManyToOne(() => Item, (item) => item.merchList)
-  item: Item;
+  @ManyToOne(() => Item, (item) => item.merchandise)
+  item?: Item;
+
+  @ApiProperty()
+  @CreateDateColumn({ default: new Date() })
+  createdAt?: Date;
+
+  @ApiProperty()
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt?: Date;
 }

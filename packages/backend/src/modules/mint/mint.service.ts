@@ -1,7 +1,6 @@
 // import library
 import { toChecksumAddress } from "ethereumjs-util";
-import { async } from "rxjs";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { ERC1155Lootbox, MintStatus, MintType, PendingMint } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -48,14 +47,12 @@ export class MintService {
     const pendings = await this.PendingMintRepo.find({
       where: [
         {
-          to: publicAddress.toLowerCase(),
+          to: In([
+            publicAddress.toLowerCase(),
+            toChecksumAddress(publicAddress),
+          ]),
           type: MintType.Lootbox,
-          status: MintStatus.Minting || MintStatus.Reject || MintStatus.Error,
-        },
-        {
-          to: toChecksumAddress(publicAddress),
-          type: MintType.Lootbox,
-          status: MintStatus.Minting,
+          status: In([MintStatus.Minting, MintStatus.Reject, MintStatus.Error]),
         },
       ],
     });
@@ -99,17 +96,12 @@ export class MintService {
     const pending = await this.PendingMintRepo.findOne({
       where: [
         {
-          to: batchOrder.to.toLowerCase(),
+          to: In([
+            batchOrder.to.toLowerCase(),
+            toChecksumAddress(batchOrder.to),
+          ]),
           type: MintType.Lootbox,
-          status: MintStatus.Minting,
-          salt: batchOrder.salt,
-          batchIDs: batchOrder.batchID,
-          amounts: batchOrder.amount,
-        },
-        {
-          to: toChecksumAddress(batchOrder.to),
-          type: MintType.Lootbox,
-          status: MintStatus.Minting,
+          status: In([MintStatus.Minting, MintStatus.Reject, MintStatus.Error]),
           salt: batchOrder.salt,
           batchIDs: batchOrder.batchID,
           amounts: batchOrder.amount,
@@ -128,19 +120,9 @@ export class MintService {
     const pending = await this.PendingMintRepo.findOne({
       where: [
         {
-          to: order.to.toLowerCase(),
+          to: In([order.to.toLowerCase(), toChecksumAddress(order.to)]),
           type: MintType.Lootbox,
-          status: MintStatus.Minting,
-          salt: order.salt,
-          batchID: order.batchID,
-          amount: order.amount,
-          batchIDs: [],
-          amounts: [],
-        },
-        {
-          to: toChecksumAddress(order.to),
-          type: MintType.Lootbox,
-          status: MintStatus.Minting,
+          status: In([MintStatus.Minting, MintStatus.Reject, MintStatus.Error]),
           salt: order.salt,
           batchID: order.batchID,
           amount: order.amount,
@@ -242,14 +224,25 @@ export class MintService {
         `Not found pending mint id ${bodyUpdatePendingMint.id}`,
         HttpStatus.BAD_REQUEST
       );
-    // verify status pending mint
+    // verify status pending mint transform to
     if (
-      pending.status === MintStatus.Expired ||
-      pending.status === MintStatus.Minted ||
-      pending.status === MintStatus.Canceled
+      bodyUpdatePendingMint.status !== MintStatus.Reject &&
+      bodyUpdatePendingMint.status !== MintStatus.Error &&
+      bodyUpdatePendingMint.status !== MintStatus.Minting &&
+      bodyUpdatePendingMint.status !== MintStatus.Minted
     )
       throw new HttpException(
-        `Not allow update ${pending.status} to this pending mint id ${bodyUpdatePendingMint.id}`,
+        `Not allow update from ${pending.status} to ${bodyUpdatePendingMint.status} for pending mint id ${bodyUpdatePendingMint.id}`,
+        HttpStatus.BAD_REQUEST
+      );
+    // verify status pending mint transform from
+    if (
+      pending.status !== MintStatus.Reject &&
+      pending.status !== MintStatus.Error &&
+      pending.status !== MintStatus.Minting
+    )
+      throw new HttpException(
+        `Not allow update from ${pending.status} to ${bodyUpdatePendingMint.status} for pending mint id ${bodyUpdatePendingMint.id}`,
         HttpStatus.BAD_REQUEST
       );
 

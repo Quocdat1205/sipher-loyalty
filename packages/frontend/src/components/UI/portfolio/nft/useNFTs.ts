@@ -14,8 +14,8 @@ const useNFTs = collectionId => {
   const gridSize = useStore(state => state.gridSize)
   const columns = gridSize === "small" ? [2, 3, 4, 5, 5] : [1, 2, 3, 4, 4]
 
-  const { data: initData } = useQuery<any>(
-    ["nfts", user, account!, collectionId],
+  const { data: initData, isFetched } = useQuery<any>(
+    ["nfts", user, account, collectionId],
     () =>
       client.api
         .collectionControllerGetPortfolioByCollection(
@@ -35,7 +35,6 @@ const useNFTs = collectionId => {
   }))
 
   const collectionData = initData!.collection
-
-  return { collectionData, columns, total: initData!.total, nftsData }
+  return { collectionData, columns, total: initData!.total, nftsData, isFetched }
 }
 export default useNFTs

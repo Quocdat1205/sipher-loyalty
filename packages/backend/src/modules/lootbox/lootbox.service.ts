@@ -1,5 +1,5 @@
 import { toChecksumAddress } from "ethereumjs-util";
-import { MoreThan, MoreThanOrEqual, Repository } from "typeorm";
+import { In, MoreThan, MoreThanOrEqual, Repository } from "typeorm";
 import {
   BurnType,
   CancelType,
@@ -42,8 +42,13 @@ export class LootBoxService {
   ) => {
     const lootboxs = await this.lootboxRepo.findOne({
       where: [
-        { publicAddress: toChecksumAddress(publicAddress), tokenId },
-        { publicAddress: publicAddress.toLowerCase(), tokenId },
+        {
+          publicAddress: In([
+            publicAddress.toLowerCase(),
+            toChecksumAddress(publicAddress),
+          ]),
+          tokenId,
+        },
       ],
       relations: ["propertyLootbox"],
     });
@@ -58,11 +63,13 @@ export class LootBoxService {
     const lootboxs = await this.claimableLootboxRepo.findOne({
       where: [
         {
-          publicAddress: toChecksumAddress(publicAddress),
+          publicAddress: In([
+            publicAddress.toLowerCase(),
+            toChecksumAddress(publicAddress),
+          ]),
           tokenId,
           expiredDate,
         },
-        { publicAddress: publicAddress.toLowerCase(), tokenId, expiredDate },
       ],
     });
     return lootboxs;
@@ -187,10 +194,12 @@ export class LootBoxService {
     const lootboxs = await this.lootboxRepo.find({
       where: [
         {
-          publicAddress: toChecksumAddress(publicAddress),
+          publicAddress: In([
+            publicAddress.toLowerCase(),
+            toChecksumAddress(publicAddress),
+          ]),
           mintable: MoreThan(0),
         },
-        { publicAddress: publicAddress.toLowerCase(), mintable: MoreThan(0) },
       ],
       relations: ["propertyLootbox"],
     });
@@ -217,12 +226,10 @@ export class LootBoxService {
     const lootboxs = await this.claimableLootboxRepo.find({
       where: [
         {
-          publicAddress: toChecksumAddress(publicAddress),
-          expiredDate: MoreThanOrEqual(new Date()),
-          quantity: MoreThan(0),
-        },
-        {
-          publicAddress: publicAddress.toLowerCase(),
+          publicAddress: In([
+            publicAddress.toLowerCase(),
+            toChecksumAddress(publicAddress),
+          ]),
           expiredDate: MoreThanOrEqual(new Date()),
           quantity: MoreThan(0),
         },
@@ -305,9 +312,8 @@ export class LootBoxService {
       // caculate lootbox mintable/quantity/pending
       if (!lootboxs[i])
         throw new HttpException("not have tokenId ", HttpStatus.BAD_REQUEST);
-      if (lootboxs[i].quantity - lootboxs[i].pending < amount[i])
+      if (lootboxs[i].mintable < amount[i])
         throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
-      lootboxs[i].pending += amount[i];
       lootboxs[i].mintable -= amount[i];
     }
 
@@ -347,9 +353,8 @@ export class LootBoxService {
     await this.verifyBlockingLootbox(lootbox);
     await this.setBlockingLootbox(lootbox, true);
 
-    if (lootbox.quantity - lootbox.pending < amount)
+    if (lootbox.mintable < amount)
       throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
-    lootbox.pending += amount;
     lootbox.mintable -= amount;
 
     // update lootbox
@@ -380,10 +385,6 @@ export class LootBoxService {
 
       const promises = [];
       for (let i = 0; i < batchOrder.batchID.length; i++) {
-        lootboxs[i].pending =
-          lootboxs[i].pending > batchOrder.amount[i]
-            ? lootboxs[i].pending - batchOrder.amount[i]
-            : 0;
         lootboxs[i].quantity =
           lootboxs[i].quantity > batchOrder.amount[i]
             ? lootboxs[i].quantity - batchOrder.amount[i]
@@ -421,8 +422,6 @@ export class LootBoxService {
         await this.verifyBlockingLootbox(lootbox);
         await this.setBlockingLootbox(lootbox, true);
 
-        lootbox.pending =
-          lootbox.pending > order.amount ? lootbox.pending - order.amount : 0;
         lootbox.quantity =
           lootbox.quantity > order.amount ? lootbox.quantity - order.amount : 0;
 
@@ -555,7 +554,12 @@ export class LootBoxService {
         signature
       );
 
-      if (pendingMint && pendingMint.status === MintStatus.Minting) {
+      if (
+        pendingMint &&
+        pendingMint.status !== MintStatus.Canceled &&
+        pendingMint.status !== MintStatus.Expired &&
+        pendingMint.status !== MintStatus.Minted
+      ) {
         pendingMint.status = MintStatus.Canceled;
         await this.mintService.updatePendingMint(pendingMint);
         const tokenIds = pendingMint.batchID
@@ -583,10 +587,7 @@ export class LootBoxService {
         for (let i = 0; i < tokenIds.length; i++) {
           lootboxs[i].quantity += amounts[i];
           lootboxs[i].mintable += amounts[i];
-          lootboxs[i].pending =
-            lootboxs[i].pending > amounts[i]
-              ? lootboxs[i].pending - amounts[i]
-              : 0;
+
           promises.push(this.lootboxRepo.save(lootboxs[i]));
         }
         const result = await Promise.all(promises);

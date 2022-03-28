@@ -3,8 +3,11 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
+
+import { TransformLowercase } from "@utils/transfomers";
 
 export enum BurnType {
   Lootbox = "Lootbox",
@@ -18,6 +21,7 @@ export class Burned {
   @PrimaryGeneratedColumn("increment")
   id?: number;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   to: string;
@@ -48,12 +52,15 @@ export class Burned {
     enumName: "BurnType",
   })
   @Column({
-    type: "enum",
-    enum: BurnType,
+    type: String,
   })
   type: BurnType;
 
   @ApiProperty()
   @CreateDateColumn({ default: new Date() })
   createdAt?: Date;
+
+  @ApiProperty()
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt?: Date;
 }

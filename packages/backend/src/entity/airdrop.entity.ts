@@ -5,8 +5,11 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
+
+import { TransformLowercase } from "@utils/transfomers";
 
 import { ImageUrl } from "./imageUrl.entity";
 
@@ -27,24 +30,26 @@ export class Airdrop {
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
-  merkleRoot: string;
+  merkleRoot?: string;
 
   @ApiProperty({ type: String, isArray: true })
   @Column("character varying", { array: true })
-  proof: string[];
+  proof?: string[];
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
-  leaf: string;
+  leaf?: string;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
-  claimer: string;
+  claimer?: string;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   @IsEthereumAddress()
-  addressContract: string;
+  addressContract?: string;
 
   @ApiProperty({
     type: () => ImageUrl,
@@ -55,22 +60,21 @@ export class Airdrop {
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
-  totalAmount: string;
+  totalAmount?: string;
 
   @ApiProperty({ type: String, enum: AirdropType, enumName: "AirdropType" })
   @Column({
-    type: "enum",
-    enum: AirdropType,
+    type: String,
   })
   type: AirdropType;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
-  startTime: string;
+  startTime?: string;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
-  vestingInterval: string;
+  vestingInterval?: string;
 
   @ApiProperty({ type: String })
   @Column({ nullable: true })
@@ -82,9 +86,13 @@ export class Airdrop {
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
-  numberOfVestingPoint: string;
+  numberOfVestingPoint?: string;
 
   @ApiProperty()
   @CreateDateColumn()
   createdAt?: Date;
+
+  @ApiProperty()
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt?: Date;
 }

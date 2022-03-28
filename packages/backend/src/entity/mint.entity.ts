@@ -3,8 +3,11 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
+
+import { TransformLowercase } from "@utils/transfomers";
 
 export enum MintStatus {
   Minting = "Minting",
@@ -27,6 +30,7 @@ export class PendingMint {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   to: string;
@@ -57,16 +61,14 @@ export class PendingMint {
 
   @ApiProperty({ type: String, enum: MintStatus, enumName: "MintStatus" })
   @Column({
-    type: "enum",
-    enum: MintStatus,
+    type: String,
     default: MintStatus.Minting,
   })
   status: MintStatus;
 
   @ApiProperty({ type: String, enum: MintType, enumName: "MintType" })
   @Column({
-    type: "enum",
-    enum: MintType,
+    type: String,
   })
   type: MintType;
 
@@ -77,4 +79,8 @@ export class PendingMint {
   @ApiProperty()
   @CreateDateColumn({ default: new Date() })
   createdAt: Date;
+
+  @ApiProperty()
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt?: Date;
 }

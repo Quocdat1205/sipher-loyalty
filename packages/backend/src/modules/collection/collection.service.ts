@@ -34,6 +34,9 @@ export class CollectionService {
 
   async getAllCollection() {
     const collections = await this.sipherCollectionRepo.find();
+    if (constant.isProduction) {
+      return collections.filter((col) => col.chainId === 1);
+    }
     return collections;
   }
 
@@ -65,25 +68,21 @@ export class CollectionService {
 
     /* Aggregate collections */
     const groupedInventoryByCollectionId = _.groupBy(inventory, "collectionId");
+    const collections = await this.getAllCollection();
     const portfolio: Portfolio[] = [];
     // eslint-disable-next-line no-restricted-syntax
-    for (const collectionId of Object.keys(groupedInventoryByCollectionId)) {
+    for (const collection of collections) {
       // eslint-disable-next-line no-await-in-loop
-      const collection = await this.sipherCollectionRepo.findOne({
-        where: {
-          id: collectionId,
-        },
-      });
-
-      if (!collection) continue;
       let total = 0;
-      if (collection.collectionType === CollectionType.ERC721) {
-        total = groupedInventoryByCollectionId[collectionId].length;
-      } else {
-        total = groupedInventoryByCollectionId[collectionId].reduce(
-          (prev, curr) => prev + curr.value,
-          0
-        );
+      if (groupedInventoryByCollectionId[collection.id]) {
+        if (collection.collectionType === CollectionType.ERC721) {
+          total = groupedInventoryByCollectionId[collection.id].length;
+        } else {
+          total = groupedInventoryByCollectionId[collection.id].reduce(
+            (prev, curr) => prev + curr.value,
+            0
+          );
+        }
       }
       portfolio.push({
         ...collection,
@@ -228,16 +227,20 @@ export class CollectionService {
       const uriInfo = await this.uriService.getDataERC1155Spaceship(
         item.tokenId
       );
-      newItem.name = uriInfo.name;
-      newItem.imageUrl = uriInfo.image;
+      if (uriInfo) {
+        newItem.name = uriInfo.name;
+        newItem.imageUrl = uriInfo.image;
+      }
     }
     if (isSculptureContract(item.collectionId)) {
       LoggerService.debug("Is sculpture contract");
       const uriInfo = await this.uriService.getDataERC1155Sculpture(
         item.tokenId
       );
-      newItem.name = uriInfo.name;
-      newItem.imageUrl = uriInfo.image;
+      if (uriInfo) {
+        newItem.name = uriInfo.name;
+        newItem.imageUrl = uriInfo.image;
+      }
     }
     if (newItem.uri) {
       delete newItem.uri.id;

@@ -42,16 +42,14 @@ export class SipherCollection {
   chainId: number;
 
   @Column({
-    type: "enum",
-    enum: CollectionType,
+    type: String,
     default: CollectionType.ERC721,
   })
   @ApiProperty({ enum: CollectionType, enumName: "CollectionType" })
   collectionType: CollectionType;
 
   @Column({
-    type: "enum",
-    enum: CollectionCategory,
+    type: String,
     default: CollectionCategory.CHARACTER,
   })
   @ApiProperty({ enum: CollectionCategory, enumName: "CollectionCategory" })
@@ -99,7 +97,7 @@ export class SipherCollection {
   @ApiProperty({ type: Date })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ default: new Date() })
   @ApiProperty({ type: Date })
-  updatedAt: Date;
+  updatedAt?: Date;
 }

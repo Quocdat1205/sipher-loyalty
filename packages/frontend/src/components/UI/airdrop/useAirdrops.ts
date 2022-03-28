@@ -24,7 +24,7 @@ export const useAirdrops = () => {
   const qc = useQueryClient()
   const toast = useChakraToast()
 
-  const { data: dataAirdrops } = useQuery(
+  const { data: dataAirdrops, isFetched } = useQuery(
     ["airdrops", currentTab, user, account],
     () =>
       client.api
@@ -39,7 +39,8 @@ export const useAirdrops = () => {
       initialData: {
         nft: [],
         token: [],
-        merch: [],
+        other: [],
+        merchandise: [],
       },
     },
   )
@@ -52,7 +53,12 @@ export const useAirdrops = () => {
         dataAirdrops!.token.find(item => item.addressContract === SipherAirdropsAddress)!.proof,
       ),
     {
-      enabled: !!scCaller.current && !!account && dataAirdrops!.token.length > 0 && chainId === ETHEREUM_NETWORK,
+      enabled:
+        !!scCaller.current &&
+        !!account &&
+        dataAirdrops!.token.length > 0 &&
+        chainId === ETHEREUM_NETWORK &&
+        dataAirdrops!.token.find(item => item.addressContract === SipherAirdropsAddress)!.totalAmount === "0",
       initialData: 0,
     },
   )
@@ -104,7 +110,7 @@ export const useAirdrops = () => {
         console.log("claim")
       },
     })),
-    ...dataAirdrops!.merch.map(item => ({
+    ...dataAirdrops!.merchandise.map(item => ({
       ...item,
       isClaiming: claimId === item.id,
       isDisabled: true,
@@ -114,5 +120,5 @@ export const useAirdrops = () => {
     })),
   ]
 
-  return { currentTab, allAirdrops }
+  return { currentTab, allAirdrops, isFetched }
 }

@@ -46,6 +46,9 @@ export interface ResPendingMintDto {
 
   /** @format date-time */
   createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
   info: InfoPendingMintDto[];
 }
 
@@ -70,6 +73,9 @@ export interface PendingMint {
 
   /** @format date-time */
   createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
 }
 
 export interface ERC1155LootboxAttribute {
@@ -87,12 +93,14 @@ export interface Lootbox {
   publicAddress: string;
   quantity: number;
   tokenId: number;
-  pending: number;
   mintable: number;
   propertyLootbox: ERC1155Lootbox;
 
   /** @format date-time */
   createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
 }
 
 export interface ClaimableLootbox {
@@ -107,6 +115,9 @@ export interface ClaimableLootbox {
 
   /** @format date-time */
   createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
 }
 
 export interface ERC1155Lootbox {
@@ -253,8 +264,8 @@ export enum AirdropType {
   OTHER = 'OTHER',
 }
 
-export interface MerchList {
-  id_merch_list: number;
+export interface Merchandise {
+  id: number;
   publicAddress: string;
   tier: string;
   merch_item: string;
@@ -263,16 +274,28 @@ export interface MerchList {
   isShipped: boolean;
   isShip: boolean;
   item: Item;
+
+  /** @format date-time */
+  createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
 }
 
 export interface Item {
-  id_merch: number;
+  id: number;
   merch_item: ItemType;
   name: ViewType;
   type: AirdropType;
   description: string;
   imageUrls: ImageUrl[];
-  merchList: MerchList[];
+  merchandise: Merchandise[];
+
+  /** @format date-time */
+  createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
 }
 
 export interface ImageUrl {
@@ -290,6 +313,9 @@ export interface ImageUrl {
 
   /** @format date-time */
   createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
 }
 
 export interface Airdrop {
@@ -310,27 +336,16 @@ export interface Airdrop {
 
   /** @format date-time */
   createdAt: string;
-}
 
-export interface MerchType {
-  id_merch_list: number;
-  publicAddress: string;
-  tier: string;
-  merch_item: string;
-  quantity: number;
-  quantity_shipped: number;
-  isShipped: boolean;
-  name: ViewType;
-  description: string;
-  imageUrls: ImageUrl[];
-  type: string;
+  /** @format date-time */
+  updatedAt: string;
 }
 
 export interface ResAllAirdrop {
   token: Airdrop[];
   nft: Airdrop[];
-  merch: MerchType[];
-  other: MerchType[];
+  merchandise: Airdrop[];
+  other: Airdrop[];
 }
 
 export interface PriceData {
@@ -815,6 +830,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags price
      * @name PriceControllerGetPrice
      * @request GET:/api/sipher/loyalty/price
      * @secure

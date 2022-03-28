@@ -1,9 +1,16 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
 import { AirdropType } from "./airdrop.entity";
 import { ImageUrl } from "./imageUrl.entity";
-import { MerchList } from "./merchList.entity";
+import { Merchandise } from "./merchandise.entity";
 
 export enum ItemType {
   Bomber = "Bomber",
@@ -25,7 +32,7 @@ export enum ViewType {
 export class Item {
   @ApiProperty({ type: Number })
   @PrimaryGeneratedColumn("increment")
-  id_merch: number;
+  id: number;
 
   @ApiProperty({
     type: String,
@@ -33,22 +40,19 @@ export class Item {
     enumName: "ItemType",
   })
   @Column({
-    type: "enum",
-    enum: ItemType,
+    type: String,
   })
   merch_item: ItemType;
 
   @ApiProperty({ type: String, enum: ViewType, enumName: "ViewType" })
   @Column({
-    type: "enum",
-    enum: ViewType,
+    type: String,
   })
   name: ViewType;
 
   @ApiProperty({ type: String, enum: AirdropType, enumName: "AirdropType" })
   @Column({
-    type: "enum",
-    enum: AirdropType,
+    type: String,
   })
   type: AirdropType;
 
@@ -64,9 +68,17 @@ export class Item {
   imageUrls?: ImageUrl[];
 
   @ApiProperty({
-    type: () => MerchList,
+    type: () => Merchandise,
     isArray: true,
   })
-  @OneToMany(() => MerchList, (merchList) => merchList.item)
-  merchList?: MerchList[];
+  @OneToMany(() => Merchandise, (merchandise) => merchandise.item)
+  merchandise?: Merchandise[];
+
+  @ApiProperty()
+  @CreateDateColumn({ default: new Date() })
+  createdAt: Date;
+
+  @ApiProperty()
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt?: Date;
 }

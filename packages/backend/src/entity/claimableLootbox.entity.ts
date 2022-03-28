@@ -6,8 +6,11 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
+
+import { TransformLowercase } from "@utils/transfomers";
 
 import { ERC1155Lootbox } from "./erc1155.entity";
 
@@ -17,6 +20,7 @@ export class ClaimableLootbox {
   @PrimaryGeneratedColumn("increment")
   id?: number;
 
+  @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   @IsEthereumAddress()
@@ -45,4 +49,8 @@ export class ClaimableLootbox {
   @ApiProperty()
   @CreateDateColumn({ default: new Date() })
   createdAt?: Date;
+
+  @ApiProperty()
+  @UpdateDateColumn({ default: new Date() })
+  updatedAt?: Date;
 }

@@ -1,8 +1,7 @@
-import { Address, Airdrop, ItemOrder, Receiver } from "@entity";
+import { Airdrop } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { MerchType } from "@modules/merch/response.type";
-
+// convert type of merch and other from merchandise to airdrop
 export class ResAllAirdrop {
   @ApiProperty({ type: Airdrop, isArray: true })
   token: Airdrop[];
@@ -10,11 +9,11 @@ export class ResAllAirdrop {
   @ApiProperty({ type: Airdrop, isArray: true })
   nft: Airdrop[];
 
-  @ApiProperty({ type: MerchType, isArray: true })
-  merch: MerchType[];
+  @ApiProperty({ type: Airdrop, isArray: true })
+  merchandise: Airdrop[];
 
-  @ApiProperty({ type: MerchType, isArray: true })
-  other: MerchType[];
+  @ApiProperty({ type: Airdrop, isArray: true })
+  other: Airdrop[];
 }
 
 export class ResNFTAirdrop {
@@ -28,26 +27,6 @@ export class ResTokenAirdrop {
 }
 
 export class ResMerchAirdrop {
-  @ApiProperty({ type: MerchType, isArray: true })
-  merch: MerchType[];
-}
-
-export class Shipping {
-  @ApiProperty({ type: String })
-  publicAddress: string;
-
-  @ApiProperty({ type: String })
-  id_receiver?: string;
-
-  @ApiProperty({ type: String })
-  id_address?: string;
-
-  @ApiProperty({ type: Receiver })
-  receiver?: Receiver;
-
-  @ApiProperty({ type: Address })
-  address?: Address;
-
-  @ApiProperty({ type: Array, isArray: true })
-  item_order: ItemOrder;
+  @ApiProperty({ type: Airdrop, isArray: true })
+  merch: Airdrop[];
 }
