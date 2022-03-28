@@ -16,7 +16,7 @@ const usePortFolioHome = () => {
   const { account, chainId } = useWalletContext()
   const { dataPrice, balance, totalUsdPrice } = useBalanceContext()
 
-  const { data: dataInit } = useQuery<any>(
+  const { data: dataInit, isFetched } = useQuery<any>(
     ["collection", user, account],
     () =>
       client.api
@@ -63,6 +63,9 @@ const usePortFolioHome = () => {
     onView: () => router.push(`/portfolio/${item.id}`),
   }))
 
-  return { totalUsdPrice, tokensData, collectionData }
+  const totalNFTs = collectionData.reduce((accu, curr) => accu + curr.total, 0)
+  const totalToken = tokensData.length
+
+  return { totalNFTs, totalToken, totalUsdPrice, tokensData, collectionData, isFetched }
 }
 export default usePortFolioHome

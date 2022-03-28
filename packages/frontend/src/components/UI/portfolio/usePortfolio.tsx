@@ -40,7 +40,7 @@ const usePortfolio = () => {
 
   const currentTab = router.query.tab || "nfts"
 
-  const { data: initData } = useQuery<any>(
+  const { data: initData, isFetched } = useQuery<any>(
     ["collection", user, account, filter],
     () =>
       client.api
@@ -91,7 +91,6 @@ const usePortfolio = () => {
 
   const totalNFTs = collectionData.reduce((accu, curr) => accu + curr.total, 0)
   const totalToken = tokensData.length
-
   return {
     totalUsdPrice,
     totalETHPrice,
@@ -103,6 +102,7 @@ const usePortfolio = () => {
     setFilter,
     currentTab,
     router,
+    isFetched,
   }
 }
 export default usePortfolio

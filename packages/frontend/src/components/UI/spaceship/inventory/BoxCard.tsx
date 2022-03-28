@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { BiChevronRight } from "react-icons/bi"
 import Image from "next/image"
 import { Box, Button, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
@@ -10,11 +10,11 @@ import { useInventory } from "./useInventory"
 
 interface CardProps {
   data: ReturnType<typeof useInventory>["inventoryData"][number]
+  isFetched: boolean
 }
 
-export const BoxCard = ({ data }: CardProps) => {
+export const BoxCard = ({ data, isFetched }: CardProps) => {
   const { isChecked, onSelect, isDisabled, onView, propertyLootbox, mintable } = data
-  const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
     <Box
@@ -67,7 +67,7 @@ export const BoxCard = ({ data }: CardProps) => {
           </Box>
         </Flex>
       </Button>
-      <Skeleton bg="black" sx={{ img: { transform: "auto", scale: "1.4" } }} pos="relative" isLoaded={imageLoaded}>
+      <Skeleton bg="black" sx={{ img: { transform: "auto", scale: "1.4" } }} pos="relative" isLoaded={isFetched}>
         <Image
           quality={100}
           width={500}
@@ -76,7 +76,6 @@ export const BoxCard = ({ data }: CardProps) => {
           src={propertyLootbox.image}
           alt={propertyLootbox.name}
           loading="lazy"
-          onLoad={() => setImageLoaded(true)}
         />
         <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white" pos="absolute" bottom="1rem" left="0.5rem">
           <SpLayer />
@@ -86,8 +85,12 @@ export const BoxCard = ({ data }: CardProps) => {
         </Flex>
       </Skeleton>
       <Stack spacing={2} px={4} pt={2} pb={4}>
-        <Text fontWeight={600}>{propertyLootbox.name}</Text>
-        <Text color="neutral.400">{propertyLootbox.description.slice(0, 60)}...</Text>
+        <Skeleton isLoaded={isFetched}>
+          <Text fontWeight={600}>{propertyLootbox.name}</Text>
+        </Skeleton>
+        <Skeleton isLoaded={isFetched}>
+          <Text color="neutral.400">{propertyLootbox.description.slice(0, 60)}...</Text>
+        </Skeleton>
       </Stack>
     </Box>
   )

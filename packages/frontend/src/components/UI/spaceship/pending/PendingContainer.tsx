@@ -77,6 +77,7 @@ export const PendingContainer = () => {
                     <chakra.td w="20%" textAlign="right" py={4}>
                       <Button
                         isLoading={item.isMinting}
+                        isDisabled={item.isDisabled}
                         onClick={() => {
                           item.batchIDs && item.batchIDs.length > 0 ? item.onMintBatch() : item.onMint()
                         }}

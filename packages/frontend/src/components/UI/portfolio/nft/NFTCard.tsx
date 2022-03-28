@@ -1,6 +1,6 @@
 import React from "react"
 import Image from "next/image"
-import { Box, Flex, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { SpLayer } from "@components/shared/icons"
 import { NftContracts } from "@constant"
@@ -9,12 +9,13 @@ import useNFTs from "./useNFTs"
 
 interface CardProps {
   data: ReturnType<typeof useNFTs>["nftsData"][number]
+  isFetched: boolean
 }
 
 export const images = ["jpg", "gif", "png"]
 export const videos = ["mp4", "3gp", "ogg"]
 
-const NFTCard = ({ data }: CardProps) => {
+const NFTCard = ({ data, isFetched }: CardProps) => {
   const collectionName = NftContracts.find(
     property => property.address.toUpperCase() === data.collectionId.toUpperCase(),
   )?.name
@@ -30,7 +31,11 @@ const NFTCard = ({ data }: CardProps) => {
       bg="neutral.700"
       pos="relative"
     >
-      <Box pos="relative">
+      <Skeleton
+        sx={{ img: { transform: "auto", scale: collectionName === "Sipher Spaceship" ? "1.25" : "1" } }}
+        isLoaded={isFetched}
+        pos="relative"
+      >
         {videos.includes(extension) ? (
           <video src={data.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
         ) : (
@@ -40,7 +45,8 @@ const NFTCard = ({ data }: CardProps) => {
             loading="lazy"
             height={480}
             width={436}
-            objectFit="cover"
+            quality={100}
+            objectFit="contain"
           />
         )}
         {data.type === "ERC1155" && (
@@ -51,10 +57,14 @@ const NFTCard = ({ data }: CardProps) => {
             </Text>
           </Flex>
         )}
-      </Box>
+      </Skeleton>
       <Stack spacing={1} pt={2} pb={4} px={4}>
-        <Text fontWeight={600}>{data.name}</Text>
-        <Text color="neutral.400">{collectionName}</Text>
+        <Skeleton isLoaded={isFetched}>
+          <Text fontWeight={600}>{data.name}</Text>
+        </Skeleton>
+        <Skeleton isLoaded={isFetched}>
+          <Text color="neutral.400">{collectionName}</Text>
+        </Skeleton>
       </Stack>
     </Box>
   )

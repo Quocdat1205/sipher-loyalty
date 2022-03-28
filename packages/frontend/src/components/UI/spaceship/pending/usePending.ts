@@ -42,7 +42,7 @@ export const usePending = () => {
         .then(res => res.data),
     { enabled: authenticated && !!account, initialData: [] },
   )
-  const { mutate: mutateMintBatch } = useMutation<unknown, unknown, InputLootBoxProp>(
+  const { mutate: mutateMintBatch, isLoading: isLoadingMintBacth } = useMutation<unknown, unknown, InputLootBoxProp>(
     ({ deadline, batchIDs, amounts, salt, signature }) =>
       scCaller.current!.SipherSpaceshipLootBox.mintBatch({
         deadline: deadline,
@@ -68,7 +68,7 @@ export const usePending = () => {
     },
   )
 
-  const { mutate: mutateMint } = useMutation<unknown, unknown, InputLootBoxProp>(
+  const { mutate: mutateMint, isLoading: isLoadingMint } = useMutation<unknown, unknown, InputLootBoxProp>(
     ({ deadline, batchID, amount, salt, signature }) =>
       scCaller.current!.SipherSpaceshipLootBox.mint({
         deadline: deadline,
@@ -118,6 +118,7 @@ export const usePending = () => {
     ...item,
     isMinting: mintId === item.id,
     isCancel: cancelId === item.id,
+    isDisabled: isLoadingMintBacth || isLoadingMint,
     onCancel: () => {
       if (chainId === POLYGON_NETWORK) {
         mutateCancel({ id: item.id, signature: item.signature })
