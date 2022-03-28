@@ -40,12 +40,7 @@ export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest
   return (
     <Box h="full">
       <Flex align="center" justify="center" h="full" {...rest}>
-        <Skeleton
-          sx={{ span: { rounded: "md" }, video: { rounded: "md" } }}
-          isLoaded={isFetching}
-          maxW="38rem"
-          pos="relative"
-        >
+        <Skeleton rounded="lg" overflow="hidden" isLoaded={isFetching} maxW="38rem" pos="relative">
           {videos.includes(extension) ? (
             <video src={src} autoPlay loop muted datatype="video/mp4"></video>
           ) : (
@@ -85,7 +80,7 @@ export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest
           <ModalBody p={0} display="flex" justifyContent="center">
             <Flex direction="column" align={"flex-end"}>
               <ModalCloseButton pos="static" mb={2} _focus={{ shadow: "none" }} rounded="full" />
-              <Box sx={{ span: { rounded: "md" }, video: { rounded: "md" } }}>
+              <Box overflow="hidden" rounded="lg">
                 {videos.includes(extension) ? (
                   <video src={src} autoPlay loop muted datatype="video/mp4"></video>
                 ) : (
