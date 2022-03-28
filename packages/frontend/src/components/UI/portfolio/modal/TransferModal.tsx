@@ -1,5 +1,20 @@
-import React, { useState } from "react"
-import { Box, chakra, Flex, FormControl, FormLabel, Img, Link, Skeleton, Text } from "@sipher.dev/sipher-ui"
+import React, { MouseEvent, useState } from "react"
+import { MdAccountBalanceWallet } from "react-icons/md"
+import {
+  Box,
+  Button,
+  chakra,
+  Flex,
+  FormControl,
+  FormLabel,
+  HStack,
+  Img,
+  InputGroup,
+  InputRightElement,
+  Link,
+  Skeleton,
+  Text,
+} from "@sipher.dev/sipher-ui"
 
 import { ChakraModal, CustomInput, EthereumIcon, Form } from "@components/shared"
 
@@ -11,11 +26,21 @@ interface TransferModalProps {
 }
 
 export function TransferModal({ isOpen, onClose }: TransferModalProps) {
-  const { tokenDetails, isFetched, collectionName } = useDetailContext()
-  const [address, setAddress] = useState("")
+  const { tokenDetails, isFetched, collectionName, addressTo, setAddressTo, isLoadingTranfer, mutateTransfer } =
+    useDetailContext()
+  const [error, setError] = useState("")
+
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    if (!addressTo) {
+      setError("This field is required")
+    } else {
+      mutateTransfer()
+    }
+  }
 
   return (
-    <ChakraModal title={"SHIPPING INFO"} isOpen={isOpen} onClose={onClose} size="2xl">
+    <ChakraModal title={"SHIPPING INFO"} isOpen={isOpen} onClose={onClose} size="xl">
       <Box px={6}>
         <Flex align="center" mb="6">
           <Skeleton isLoaded={isFetched}>
@@ -31,7 +56,7 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
             <Flex align="center" mb="1">
               <EthereumIcon mr={1} />
               <Text fontWeight="500" color="white">
-                0.85 ETH
+                0.00 ETH
               </Text>
             </Flex>
           </Flex>
@@ -41,12 +66,44 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
             <FormLabel>
               Wallet address<chakra.span color="red.500"> *</chakra.span>
             </FormLabel>
-            <CustomInput />
+            <InputGroup rounded="base" border={!!error ? "1px" : "none"} borderColor="red.500" size="md">
+              <CustomInput
+                pr="4.5rem"
+                value={addressTo}
+                onChange={e => {
+                  setError(""), setAddressTo(e.target.value)
+                }}
+              />
+              <InputRightElement color="neutral.400" width="4.5rem">
+                <MdAccountBalanceWallet />
+              </InputRightElement>
+            </InputGroup>
+            {!!error && (
+              <Text mt={1} fontSize="xs" color="red.500">
+                {error}
+              </Text>
+            )}
           </FormControl>
         </Form>
         <Text color="neutral.400" mb="6">
           By clicking Transfer, I agree Sipher‘s <Link color="cyan.500">Term of Service</Link>
         </Text>
+        <HStack justify="center">
+          <Button isLoading={isLoadingTranfer} onClick={handleClick} py={5} fontSize="md">
+            Transfer
+          </Button>
+          <Button
+            onClick={onClose}
+            py={5}
+            fontSize="md"
+            variant="secondary"
+            colorScheme="neutral"
+            border="1px"
+            borderColor="neutral.600"
+          >
+            Cancel
+          </Button>
+        </HStack>
       </Box>
     </ChakraModal>
   )

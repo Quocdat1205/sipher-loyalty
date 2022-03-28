@@ -25,11 +25,11 @@ export const useAirdrops = () => {
   const qc = useQueryClient()
   const toast = useChakraToast()
 
-  const { data: dataAirdrops, isFetched } = useQuery(
+  const { data: airdropsData, isFetched } = useQuery(
     ["airdrops", account],
     () =>
       client.api
-        .airdropControllerGetAirdropByType(account!, AirdropType.ALL, setBearerToken(bearerToken))
+        .airdropControllerGetAirdropsByType(account!, AirdropType.ALL, setBearerToken(bearerToken))
         .then(res => res.data),
     {
       enabled: !!bearerToken && !!account,
@@ -43,19 +43,19 @@ export const useAirdrops = () => {
   )
 
   const { data: claimableAmount } = useQuery(
-    ["token-claimable-amount", dataAirdrops],
+    ["token-claimable-amount", airdropsData],
     () =>
       scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(
-        dataAirdrops!.token.find(item => item.addressContract === SipherAirdropsAddress)!.totalAmount,
-        dataAirdrops!.token.find(item => item.addressContract === SipherAirdropsAddress)!.proof,
+        airdropsData!.token.find(item => item.addressContract === SipherAirdropsAddress)!.totalAmount,
+        airdropsData!.token.find(item => item.addressContract === SipherAirdropsAddress)!.proof,
       ),
     {
       enabled:
         !!scCaller.current &&
         !!account &&
-        dataAirdrops!.token.length > 0 &&
+        airdropsData!.token?.length > 0 &&
         chainId === ETHEREUM_NETWORK &&
-        dataAirdrops!.token.find(item => item.addressContract === SipherAirdropsAddress)!.totalAmount === "0",
+        airdropsData!.token.find(item => item.addressContract === SipherAirdropsAddress)!.totalAmount === "0",
       initialData: 0,
     },
   )
@@ -74,7 +74,7 @@ export const useAirdrops = () => {
           duration: 10000,
         })
         qc.invalidateQueries(["airdrops", account])
-        qc.invalidateQueries(["token-claimable-amount", dataAirdrops])
+        qc.invalidateQueries(["token-claimable-amount", airdropsData])
       },
       onSettled: () => {
         setClaimId(null)
@@ -90,53 +90,59 @@ export const useAirdrops = () => {
     },
   )
 
-  const allAirdrops = [
-    ...dataAirdrops!.nft.map(item => ({
-      ...item,
-      isClaiming: claimId === item.id,
-      isDisabled: chainId !== ETHEREUM_NETWORK && claimableAmount !== 0,
-      onView: () => {
-        router.push(`?id=${item.id}`, undefined, { scroll: false })
-      },
-      onClaim: (e: MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation()
-        claim({ id: item.id, totalAmount: item.totalAmount, proof: item.proof })
-      },
-    })),
-    ...dataAirdrops!.token.map(item => ({
-      ...item,
-      isClaiming: claimId === item.id,
-      isDisabled: true,
-      onView: () => {
-        router.push(`?id=${item.id}`, undefined, { scroll: false })
-      },
-      onClaim: (e: MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation()
-      },
-    })),
-    ...dataAirdrops!.merchandise.map(item => ({
-      ...item,
-      isClaiming: claimId === item.id,
-      isDisabled: true,
-      onView: () => {
-        router.push(`?id=${item.id}`, undefined, { scroll: false })
-      },
-      onClaim: (e: MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation()
-      },
-    })),
-    ...dataAirdrops!.other.map(item => ({
-      ...item,
-      isClaiming: claimId === item.id,
-      isDisabled: true,
-      onView: () => {
-        router.push(`?id=${item.id}`, undefined, { scroll: false })
-      },
-      onClaim: (e: MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation()
-      },
-    })),
-  ]
+  const allAirdrops = airdropsData
+    ? [
+        ...airdropsData!.nft?.map(item => ({
+          ...item,
+          buttonText: "Claim",
+          isClaiming: claimId === item.id,
+          isDisabled: chainId !== ETHEREUM_NETWORK && claimableAmount !== 0,
+          onView: () => {
+            router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
+          },
+          onClaim: (e: MouseEvent<HTMLButtonElement>) => {
+            e.stopPropagation()
+            claim({ id: item.id, totalAmount: item.totalAmount, proof: item.proof })
+          },
+        })),
+        ...airdropsData!.token?.map(item => ({
+          ...item,
+          isClaiming: claimId === item.id,
+          isDisabled: true,
+          buttonText: "Claim",
+          onView: () => {
+            router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
+          },
+          onClaim: (e: MouseEvent<HTMLButtonElement>) => {
+            e.stopPropagation()
+          },
+        })),
+        ...airdropsData!.merchandise?.map(item => ({
+          ...item,
+          isClaiming: claimId === item.id,
+          isDisabled: true,
+          buttonText: "Redeem",
+          onView: () => {
+            router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
+          },
+          onClaim: (e: MouseEvent<HTMLButtonElement>) => {
+            e.stopPropagation()
+          },
+        })),
+        ...airdropsData!.other?.map(item => ({
+          ...item,
+          buttonText: "Redeem",
+          isClaiming: claimId === item.id,
+          isDisabled: true,
+          onView: () => {
+            router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
+          },
+          onClaim: (e: MouseEvent<HTMLButtonElement>) => {
+            e.stopPropagation()
+          },
+        })),
+      ]
+    : []
 
   return { currentTab, allAirdrops, isFetched }
 }

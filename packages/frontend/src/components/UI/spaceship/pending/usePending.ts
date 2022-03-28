@@ -27,7 +27,7 @@ export interface InputLootBoxProp {
 }
 
 export const usePending = () => {
-  const { user, bearerToken } = useAuth()
+  const { bearerToken } = useAuth()
   const query = useQueryClient()
   const { account, scCaller, switchNetwork, chainId } = useWalletContext()
   const [mintId, setMintId] = useState<number | null>(null)
@@ -61,7 +61,7 @@ export const usePending = () => {
           message: "Please review your wallet notifications.",
           duration: 10000,
         })
-        query.invalidateQueries(["pending", account, user])
+        query.invalidateQueries(["pending", account])
       },
     },
   )
@@ -87,7 +87,7 @@ export const usePending = () => {
           message: "Please review your wallet notifications.",
           duration: 10000,
         })
-        query.invalidateQueries(["pending", account, user])
+        query.invalidateQueries(["pending", account])
       },
     },
   )
@@ -106,8 +106,8 @@ export const usePending = () => {
           message: "Please review your wallet notifications.",
           duration: 10000,
         })
-        query.invalidateQueries(["lootBoxs", account, user])
-        query.invalidateQueries(["pending", account, user])
+        query.invalidateQueries("lootBoxs")
+        query.invalidateQueries(["pending", account])
       },
     },
   )

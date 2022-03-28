@@ -45,9 +45,9 @@ const DetailNFT = () => {
           <NftImage
             pt={8}
             isFetching={isFetched}
-            mintable={tokenDetails?.value}
+            mintable={tokenDetails?.value ?? 0}
             windowHeight={windowWidth.height}
-            src={tokenDetails?.imageUrl}
+            src={tokenDetails?.imageUrl ?? ""}
             alt={"Image NFT"}
           />
         </Box>
@@ -55,9 +55,9 @@ const DetailNFT = () => {
           <Box flex={1} py={8} px={[4, 0]}>
             <Box mb={4} display={["block", "block", "none"]} textAlign="center">
               <NftImage
-                mintable={tokenDetails?.value}
+                mintable={tokenDetails?.value ?? 0}
                 isFetching={isFetched}
-                src={tokenDetails?.imageUrl}
+                src={tokenDetails?.imageUrl ?? ""}
                 alt={"Image NFT"}
               />
             </Box>

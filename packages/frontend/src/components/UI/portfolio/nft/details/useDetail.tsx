@@ -1,10 +1,11 @@
-import { createContext, ReactNode, useContext } from "react"
-import { useQuery, useQueryClient } from "react-query"
+import { createContext, ReactNode, useContext, useState } from "react"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
-import { NftContracts } from "@constant"
+import { ETHEREUM_NETWORK, NftContracts } from "@constant"
+import { useChakraToast } from "@hooks"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
@@ -14,13 +15,15 @@ const useDetail = () => {
   const { bearerToken } = useAuth()
   const qc = useQueryClient()
   const { collectionId, id } = router.query
+  const toast = useChakraToast()
+  const [addressTo, setAddressTo] = useState("")
 
   const {
     data: tokenDetails,
     isLoading,
     isFetched,
     refetch,
-  } = useQuery<any>(
+  } = useQuery(
     ["detailNFT", wallet.account, id],
     () =>
       client.api
@@ -32,7 +35,7 @@ const useDetail = () => {
     },
   )
 
-  const collectionName = NftContracts.find(contract => contract.address === tokenDetails?.collection.id)?.name
+  const collectionName = NftContracts.find(contract => contract.address === tokenDetails?.collection.id)?.name ?? ""
 
   const isOwner = wallet.account === tokenDetails?.owner
 
@@ -40,9 +43,32 @@ const useDetail = () => {
     qc.invalidateQueries(["detailNFT", wallet.account, id])
   }
 
-  const getUserById = (id: string) => tokenDetails?.users?.find(user => user.id === id)
+  const { mutate: mutateTransfer, isLoading: isLoadingTranfer } = useMutation(
+    async () => {
+      if (wallet.chainId !== ETHEREUM_NETWORK) {
+        wallet.switchNetwork(ETHEREUM_NETWORK)
+      } else {
+        wallet.scCaller.current!.DynamicERC721.transfer(tokenDetails!.collectionId, addressTo, tokenDetails!.tokenId)
+      }
+    },
+    {
+      onSuccess: () => {
+        toast({
+          status: "success",
+          title: "Transaction pending",
+          message: "Please review your wallet notifications.",
+          duration: 10000,
+        })
+        revalidate()
+      },
+    },
+  )
 
   return {
+    isLoadingTranfer,
+    addressTo,
+    setAddressTo,
+    mutateTransfer,
     collectionName,
     router,
     isFetched,
@@ -54,7 +80,6 @@ const useDetail = () => {
     tokenId: id as string,
     refetch,
     revalidate,
-    getUserById,
   }
 }
 

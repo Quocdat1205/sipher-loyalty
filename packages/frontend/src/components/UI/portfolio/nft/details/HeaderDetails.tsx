@@ -9,7 +9,7 @@ import InfoNFT from "./InfoNFT"
 import { useDetailContext } from "./useDetail"
 
 interface HeaderDetailsProps {
-  tokenDetails: ReturnType<typeof useDetailContext>["tokenDetails"][number]
+  tokenDetails: ReturnType<typeof useDetailContext>["tokenDetails"]
   isFetched: boolean
 }
 
@@ -34,7 +34,7 @@ const HeaderDetails = ({ tokenDetails, isFetched }: HeaderDetailsProps) => {
                 Token ID:
               </Text>
               <Text mr={2}>{tokenDetails?.tokenId}</Text>
-              <ClipboardCopy text={tokenDetails?.tokenId} />
+              <ClipboardCopy text={tokenDetails?.tokenId ?? ""} />
             </Flex>
             <Flex align="center">
               <Text fontWeight={600} color="neutral.400" mr={1}>

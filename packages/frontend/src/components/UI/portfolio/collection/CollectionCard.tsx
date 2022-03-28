@@ -25,7 +25,15 @@ const CollectionCard = ({ data, isFetched }: CardProps) => {
       pos="relative"
     >
       <Skeleton pos="relative" display="flex" isLoaded={isFetched}>
-        <Image src={data.bannerImage || ""} alt={data.name} loading="lazy" height={170} width={383} objectFit="cover" />
+        <Image
+          src={data.bannerImage || ""}
+          alt={data.name}
+          loading="lazy"
+          height={200}
+          width={500}
+          objectFit="cover"
+          quality={100}
+        />
         <Flex align="center" py={0.5} px={2} rounded="full" bg="white" pos="absolute" bottom="0.5rem" left="0.5rem">
           <SpLayer />
           <Text ml={1} color="neutral.900" fontWeight={600}>
