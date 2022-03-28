@@ -207,8 +207,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
             onClick={() => mutateSignOut()}
             w="full"
             color="white"
-            _hover={{ bg: "red.300" }}
-            backgroundColor="red.400"
+            colorScheme={"red"}
             rounded="base"
           >
             SIGN OUT

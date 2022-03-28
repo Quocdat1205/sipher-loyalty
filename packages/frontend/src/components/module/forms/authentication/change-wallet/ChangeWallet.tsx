@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Box, Button, chakra, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Divider, Text } from "@sipher.dev/sipher-ui"
 import { AuthType, ChangeWalletAction, useAuthFlowStore } from "@store"
 import { useWalletContext } from "@web3"
 
@@ -57,6 +57,7 @@ const ChangeWallet = () => {
         <Text mb={4}>
           New wallet address: <chakra.span color="cyan.600">{account}</chakra.span>
         </Text>
+        <Divider mb={4} />
         <Button
           py={6}
           fontWeight={600}

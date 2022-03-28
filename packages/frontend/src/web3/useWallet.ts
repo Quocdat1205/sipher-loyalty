@@ -24,6 +24,7 @@ declare global {
 }
 
 const useWallet = () => {
+  const [isListened, setIsListened] = useState(false)
   const [connectorName, setConnectorName] = useState<ConnectorId | null>(null)
   const web3React = useWeb3React()
   const { account, chainId, library: ethereum } = web3React
@@ -113,9 +114,13 @@ const useWallet = () => {
   )
 
   useEffect(() => {
-    if (ethereum) {
+    if (ethereum && !isListened) {
+      console.log("Setting up account listener")
+      setIsListened(true)
       ethereum.on("accountsChanged", ([account]) => {
+        console.log("Event: accountsChanged", account)
         if (authenticated && account) {
+          console.log(ownedWallets, flowState)
           if (!ownedWallets.includes(account) && flowState === null) {
             setFlowState({ type: AuthType.ChangeWallet, action: ChangeWalletAction.Change })
           } else if (
@@ -128,7 +133,7 @@ const useWallet = () => {
         }
       })
     }
-  }, [ethereum, authenticated, ownedWallets, flowState, reset])
+  }, [ethereum, authenticated, ownedWallets, flowState, reset, isListened])
 
   const switchNetwork = async (id: number) => {
     const decimalToHexString = (value: number) =>

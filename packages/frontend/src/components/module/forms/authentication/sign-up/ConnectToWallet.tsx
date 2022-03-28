@@ -35,9 +35,9 @@ const ConnectToWallet = () => {
         qc.invalidateQueries("owned-wallets")
       },
       onError: async (e: any) => {
+        console.log(e?.message)
         reset()
         if (e?.code === 4001) {
-          await AtherIdAuth.signOut()
           toast({ status: "error", title: "Signature error", message: "User denied to sign the message" })
         } else {
           toast({
@@ -62,12 +62,17 @@ const ConnectToWallet = () => {
     } else setFlowState(null)
   }
 
+  const handleClose = () => {
+    setFlowState(null)
+    AtherIdAuth.signOut()
+  }
+
   return (
     <ChakraModal
       title={"CONNECT TO A WALLET"}
       size="lg"
       isOpen={flowState?.type === AuthType.SignUp && flowState.action === SignUpAction.ConnectWallet}
-      onClose={() => setFlowState(null)}
+      onClose={handleClose}
     >
       <Stack pos="relative" px={6} spacing={4} w="full">
         <HStack w="full" justify="space-between" align="center" spacing={4}>
