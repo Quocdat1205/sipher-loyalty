@@ -70,43 +70,6 @@ export class CollectionService {
     );
   }
 
-  private async updateCollectionStats(
-    collectionId: string,
-    stats: CollectionStats
-  ) {
-    const collection = await this.sipherCollectionRepo.findOne({
-      id: collectionId,
-    });
-    if (collection) {
-      collection.floorPrice = stats.floorPrice;
-      collection.totalSales = stats.totalSales;
-      collection.totalSupply = stats.totalSupply;
-      collection.totalVolume = stats.totalVolume;
-      collection.marketCap = stats.marketCap;
-      await this.sipherCollectionRepo.save(collection);
-    }
-  }
-
-  private async updateEveryCollectionStats() {
-    const collections = await this.sipherCollectionRepo.find();
-    for (let i = 0; i < collections.length; i++) {
-      try {
-        const stats = await lastValueFrom(
-          this.getCollectionStats(
-            collections[i].collectionSlug,
-            collections[i].chainId === 1
-          )
-        );
-        await this.updateCollectionStats(collections[i].id, stats);
-      } catch (err) {
-        if (err.response && err.response.status === 404) {
-        } else {
-          LoggerService.error(err);
-        }
-      }
-    }
-  }
-
   async getPortfolio(userAddress: string, query: PortfolioQuery) {
     /* Get user items */
     const inventory = await this.nftService.search({
@@ -226,6 +189,43 @@ export class CollectionService {
     const itemWithUri = (await this.addUriToItem([item]))[0];
 
     return itemWithUri;
+  }
+
+  private async updateCollectionStats(
+    collectionId: string,
+    stats: CollectionStats
+  ) {
+    const collection = await this.sipherCollectionRepo.findOne({
+      id: collectionId,
+    });
+    if (collection) {
+      collection.floorPrice = stats.floorPrice;
+      collection.totalSales = stats.totalSales;
+      collection.totalSupply = stats.totalSupply;
+      collection.totalVolume = stats.totalVolume;
+      collection.marketCap = stats.marketCap;
+      await this.sipherCollectionRepo.save(collection);
+    }
+  }
+
+  private async updateEveryCollectionStats() {
+    const collections = await this.sipherCollectionRepo.find();
+    for (let i = 0; i < collections.length; i++) {
+      try {
+        const stats = await lastValueFrom(
+          this.getCollectionStats(
+            collections[i].collectionSlug,
+            collections[i].chainId === 1
+          )
+        );
+        await this.updateCollectionStats(collections[i].id, stats);
+      } catch (err) {
+        if (err.response && err.response.status === 404) {
+        } else {
+          LoggerService.error(err);
+        }
+      }
+    }
   }
 
   private isErc1155Id(id: string) {
