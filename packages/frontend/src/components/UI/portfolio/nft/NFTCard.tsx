@@ -42,9 +42,10 @@ const NFTCard = ({ data, isFetched }: CardProps) => {
           <Image
             src={data.imageUrl || "/images/nft/sipher1.png"}
             alt={data.tokenId}
+            layout="responsive"
             loading="lazy"
             height={480}
-            width={436}
+            width={425}
             quality={100}
             objectFit="contain"
           />

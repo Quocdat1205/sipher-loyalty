@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react"
 import { useMutation } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Button, chakra, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Divider, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
 import { AuthType, SignInAction } from "@store"
 
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
@@ -64,9 +64,12 @@ const VerifySignInForm = () => {
     >
       <Form onSubmit={handleSubmit}>
         <Stack pos="relative" px={6} spacing={4} w="full">
-          <Text color="neutral.300">
-            Please enter Passcode sent to <chakra.span fontWeight={600}>{email}</chakra.span>
-          </Text>
+          <Box>
+            <Text color="red.500">Your account is not confirmed.</Text>
+            <Text color="neutral.300">
+              Please enter passcode sent to <chakra.span fontWeight={600}>{email}</chakra.span>
+            </Text>
+          </Box>
           <FormControl as="fieldset">
             <FormField>
               <CustomInput placeholder="Passcode" value={code} onChange={e => setCode(e.target.value)} />
@@ -79,7 +82,7 @@ const VerifySignInForm = () => {
             </chakra.span>
             {isResendingCode && <Spinner size="xs" color="cyan.600" ml={2} />}
           </Text>
-
+          <Divider />
           <Button type="submit" fontSize="md" py={6} fontWeight={600} isLoading={isLoading}>
             COMPLETE
           </Button>

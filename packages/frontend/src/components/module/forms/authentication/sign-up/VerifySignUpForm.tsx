@@ -1,7 +1,7 @@
 import { FormEvent, useEffect, useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Button, chakra, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Button, chakra, Divider, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
 import { AuthType, SignUpAction } from "@store"
 
 import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
@@ -13,9 +13,9 @@ import { useSignUpContext } from "./useSignUp"
 const VerifySignUpForm = () => {
   const toast = useChakraToast()
   const [code, setCode] = useState("")
-  const { setUser, user } = useAuth()
+  const { setUser } = useAuth()
 
-  const { wallet, flowState, setFlowState, email, password } = useSignUpContext()
+  const { wallet, flowState, setFlowState, email, password, isConnectWalletFirst } = useSignUpContext()
   const qc = useQueryClient()
   useEffect(() => {
     if (flowState === null) setCode("")
@@ -42,8 +42,8 @@ const VerifySignUpForm = () => {
         } else {
           toast({
             status: "error",
-            title: "Wallet already connected to another account",
-            message: "Please sign in by that address or switch to another address and try again",
+            title: "Wallet linked to other account",
+            message: "Please sign in by that wallet or switch to another wallet and try again",
           })
         }
       },
@@ -54,9 +54,9 @@ const VerifySignUpForm = () => {
   const { mutate: mutateSignIn, isLoading: isSigningIn } = useMutation(() => AtherIdAuth.signIn(email, password), {
     onSuccess: data => {
       setUser(data)
-      if (wallet.account) {
+      if (isConnectWalletFirst) {
         setFlowState({ type: AuthType.SignUp, action: SignUpAction.ConnectingWallet })
-        mutateAddWallet(wallet.account)
+        mutateAddWallet(wallet.account!)
       } else setFlowState({ type: AuthType.SignUp, action: SignUpAction.ConnectWallet })
     },
   })
@@ -122,6 +122,7 @@ const VerifySignUpForm = () => {
             </chakra.span>
             {isResendingCode && <Spinner size="xs" color="cyan.600" ml={2} />}
           </Text>
+          <Divider />
           <Button type="submit" fontSize="md" py={6} fontWeight={600} isLoading={isLoading}>
             COMPLETE
           </Button>

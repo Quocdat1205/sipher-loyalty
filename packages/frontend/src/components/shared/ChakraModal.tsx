@@ -16,7 +16,7 @@ interface ChakraModalProps extends Omit<ModalProps, "onClose"> {
   isOpen: boolean
   onClose?: () => void
   hideCloseButton?: boolean
-  title?: string
+  title?: React.ReactNode
   children: React.ReactNode
   titleProps?: HeadingProps
   styleProps?: ModalContentProps

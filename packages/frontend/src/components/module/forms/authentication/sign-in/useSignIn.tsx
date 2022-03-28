@@ -4,6 +4,7 @@ import { useWalletContext } from "@web3"
 
 const useSignIn = () => {
   const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
 
@@ -16,6 +17,8 @@ const useSignIn = () => {
   return {
     email,
     setEmail,
+    password,
+    setPassword,
     flowState,
     setFlowState,
     wallet,

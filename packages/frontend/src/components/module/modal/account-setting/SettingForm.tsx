@@ -55,13 +55,15 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
     <ChakraModal title={"ACCOUNT SETTING"} isOpen={isOpen} onClose={onClose} size="xl">
       <Box px={6}>
         <Flex mb={8} align="center">
-          <Avatar
-            bg="gray"
-            size="2xl"
-            src={userProfile?.user.avatarImage}
-            name={userProfile?.user.name}
-            bgGradient="linear(to-l, #FCD11F, #DF6767, #200B9F)"
-          />
+          <Box rounded="full" pos="relative" overflow="hidden">
+            <Avatar
+              bg="gray"
+              size="2xl"
+              src={userProfile?.user.avatarImage}
+              name={userProfile?.user.name}
+              bgGradient="linear(to-l, #FCD11F, #DF6767, #200B9F)"
+            />
+          </Box>
           <Box ml={8}>
             <Text mb={4}>Change your Profile picture</Text>
             <Button

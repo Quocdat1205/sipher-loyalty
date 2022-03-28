@@ -9,7 +9,7 @@ import { OwnersModal } from "../../modal"
 import { useDetailContext } from "./useDetail"
 
 interface InfoNFTProps {
-  tokenDetails: ReturnType<typeof useDetailContext>["tokenDetails"][number]
+  tokenDetails: ReturnType<typeof useDetailContext>["tokenDetails"]
   isFetched: boolean
 }
 
@@ -48,7 +48,7 @@ const InfoNFT = ({ tokenDetails, isFetched }: InfoNFTProps) => {
             )}
           </Skeleton>
         </Flex>
-        <OwnersModal ownersData={tokenDetails?.allOwner} isOpen={isModal} onClose={() => setIsModal(false)} />
+        <OwnersModal ownersData={tokenDetails?.allOwner ?? []} isOpen={isModal} onClose={() => setIsModal(false)} />
       </Flex>
       <Flex align="center" flex={1} minW={0}>
         <Avatar

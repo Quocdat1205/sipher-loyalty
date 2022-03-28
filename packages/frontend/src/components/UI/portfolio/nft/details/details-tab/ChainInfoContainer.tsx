@@ -29,9 +29,9 @@ const ChainInfoContainer = () => {
           <Text flex={1}>Contract Address</Text>
           <Flex flex={1} align="center">
             <Text color="cyan.600" isTruncated title={tokenDetails?.collection.id}>
-              {shortenAddress(tokenDetails?.collection.id)}
+              {shortenAddress(tokenDetails?.collection.id || "")}
             </Text>
-            <ClipboardCopy ml={2} text={tokenDetails?.collection.id} />
+            <ClipboardCopy ml={2} text={tokenDetails?.collection.id || ""} />
           </Flex>
         </Flex>
         <Flex align="center">
@@ -44,7 +44,9 @@ const ChainInfoContainer = () => {
         </Flex>
         <Flex align="center">
           <Text flex={1}>Blockchain</Text>
-          <Text flex={1}>{dataBlockchain.find(item => item.chainId === tokenDetails?.chainId)?.name}</Text>
+          <Text flex={1}>
+            {dataBlockchain.find(item => item.chainId === parseInt(tokenDetails?.chainId || "1"))?.name}
+          </Text>
         </Flex>
       </Stack>
     </Box>

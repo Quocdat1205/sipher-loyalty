@@ -2,11 +2,10 @@ import { useState } from "react"
 import { useQuery } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
-import { Img } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
 import { EthereumIcon, SipherIcon } from "@components/shared"
-import { ETHEREUM_NETWORK, POLYGON_NETWORK } from "@constant"
+import { ETHEREUM_NETWORK } from "@constant"
 import { useBalanceContext } from "@hooks"
 import { CollectionCategory } from "@sdk"
 import { setBearerToken } from "@utils"
@@ -67,13 +66,13 @@ const usePortfolio = () => {
           change: dataPrice!.ethereumPrice.change * 100,
           icon: <EthereumIcon size="1.4rem" />,
         },
-        {
-          currency: "MATIC",
-          balance: chainId === POLYGON_NETWORK ? balance.chainPrice : 0,
-          value: chainId === POLYGON_NETWORK ? balance.chainPrice * dataPrice!.maticPrice.usd : 0,
-          change: dataPrice!.maticPrice.change * 100,
-          icon: <Img src="/images/icons/matic.png" alt="matic" h="1.4rem" />,
-        },
+        // {
+        //   currency: "MATIC",
+        //   balance: chainId === POLYGON_NETWORK ? balance.chainPrice : 0,
+        //   value: chainId === POLYGON_NETWORK ? balance.chainPrice * dataPrice!.maticPrice.usd : 0,
+        //   change: dataPrice!.maticPrice.change * 100,
+        //   icon: <Img src="/images/icons/matic.png" alt="matic" h="1.4rem" />,
+        // },
         {
           currency: "SIPHER",
           balance: balance.sipher,

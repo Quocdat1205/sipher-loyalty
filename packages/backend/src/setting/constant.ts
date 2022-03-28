@@ -42,8 +42,6 @@ export class SystemConfigProvider {
 
   NODE_ENV = this.get("NODE_ENV");
 
-  JWT_EXPIRATION_TIME = this.get("JWT_EXPIRATION_TIME");
-
   SESSION_PORT = this.get("SESSION_PORT");
 
   SESSION_PASS = this.get("SESSION_PASS");
@@ -68,8 +66,6 @@ export class SystemConfigProvider {
 
   PRIVATE_KEY = this.get("PRIVATE_KEY");
 
-  CHAIN_ID = parseInt(this.get("CHAIN_ID"), 10);
-
   ATHER_ID_URL = this.get("ATHER_ID_URL");
 
   PENDING_TIME_LOOTBOX_MINT = 86400 * 3;
@@ -92,8 +88,8 @@ export class SystemConfigProvider {
     const rpcUrls = {
       [Chain.Mainnet]: `https://mainnet.infura.io/v3/${this.SC_INFURA}`,
       [Chain.Rinkeby]: `https://rinkeby.infura.io/v3/${this.SC_INFURA}`,
-      [Chain.Mumbai]: `${this.POLYGON_RPC_URL}`,
-      [Chain.Polygon]: `${this.POLYGON_RPC_URL}`,
+      [Chain.Mumbai]: `https://polygon-mainnet.infura.io/v3/${this.SC_INFURA}`,
+      [Chain.Polygon]: `https://polygon-mumbai.infura.io/v3/${this.SC_INFURA}`,
     };
 
     const erc1155LootBox = {
@@ -124,7 +120,7 @@ export class SystemConfigProvider {
       },
 
       [Chain.Polygon]: {
-        address: ZERO_ADDRESS,
+        address: "0x315Bc085A14E251f129A361afa37205E3313bF15",
       },
     };
 
@@ -132,20 +128,17 @@ export class SystemConfigProvider {
   }
 
   public get config(): ConfigMint {
+    const chainId = this.isProduction ? Chain.Polygon : Chain.Mumbai;
     return {
       erc1155LootBox: {
-        chainId: this.isProduction ? Chain.Polygon : Chain.Mumbai,
+        chainId,
         verifyingContract:
-          this.blockchain.contracts.erc1155LootBox[
-            this.isProduction ? Chain.Polygon : Chain.Mumbai
-          ].address,
+          this.blockchain.contracts.erc1155LootBox[chainId].address,
       },
       erc1155Sculpture: {
-        chainId: this.isProduction ? Chain.Polygon : Chain.Mumbai,
+        chainId,
         verifyingContract:
-          this.blockchain.contracts.erc1155Sculpture[
-            this.isProduction ? Chain.Polygon : Chain.Mumbai
-          ].address,
+          this.blockchain.contracts.erc1155Sculpture[chainId].address,
       },
     };
   }

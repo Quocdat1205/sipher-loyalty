@@ -358,6 +358,16 @@ export interface ResAllAirdrop {
   other: Airdrop[];
 }
 
+export interface ResAirdrop {
+  id: number;
+  name: string;
+  description: string;
+  imageUrls: ImageUrl[];
+  size: string[] | null;
+  color: string[] | null;
+  type: string;
+}
+
 export interface PriceData {
   usd: number;
   eth: number;
@@ -818,7 +828,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @secure
      */
     airdropControllerGetAirdropByType: (publicAddress: string, id: string, airdropType: string, params: RequestParams = {}) =>
-      this.request<ResAllAirdrop, any>({
+      this.request<ResAirdrop, any>({
         path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}/${id}`,
         method: 'GET',
         secure: true,

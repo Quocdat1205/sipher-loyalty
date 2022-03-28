@@ -19,7 +19,7 @@ const ChooseAvatarForm = ({ isOpen, onClose, onBack, onChangeAvatar }: ChooseAva
 
   const { data: availableAvatars } = useQuery(
     ["available-avatars", bearerToken],
-    () => getAvailableAvatars(bearerToken),
+    () => getAvailableAvatars(bearerToken, 0, 2),
     {
       enabled: !!bearerToken,
       initialData: { data: [], total: 0 },
@@ -42,7 +42,7 @@ const ChooseAvatarForm = ({ isOpen, onClose, onBack, onChangeAvatar }: ChooseAva
     >
       <Box px={6}>
         <Heading fontSize={"md"} fontWeight={600} mb={4}>
-          CHOOSE NFT
+          CHOOSE AVATAR
         </Heading>
         <SimpleGrid columns={4} spacing={4}>
           {availableAvatars?.data.map(avatar => (

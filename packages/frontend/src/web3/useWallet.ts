@@ -1,17 +1,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ContractCaller } from "@contract"
-import AtherIdAuth from "@sipher.dev/ather-id"
 import { AuthType, ChangeWalletAction, useAuthFlowStore } from "@store"
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core"
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector"
 
-import { useChakraToast, useOwnedWallets } from "@hooks"
+import { useChakraToast } from "@hooks"
 import { useAuth } from "src/providers/auth"
 
 import { ConnectorId, connectors } from "./connectors"
-import { ChainUnsupportedError } from "./errors"
 import { getChainName, SUPPORTED_CHAINS_INFO } from "./network"
-import { Status } from "./types"
 import {
   clearLastActiveAccount,
   getLastActiveAccount,
@@ -28,8 +25,6 @@ declare global {
 
 const useWallet = () => {
   const [connectorName, setConnectorName] = useState<ConnectorId | null>(null)
-  const [status, setStatus] = useState<Status>("disconnected")
-  const [error, setError] = useState<Error | null>(null)
   const web3React = useWeb3React()
   const { account, chainId, library: ethereum } = web3React
   const activationId = useRef(0)
@@ -49,18 +44,7 @@ const useWallet = () => {
 
     clearLastActiveAccount()
     setConnectorName(null)
-    setError(null)
-    setStatus("disconnected")
   }, [web3React])
-
-  // if the user switched networks on the wallet itself
-  // return unsupported error.
-  useMemo(() => {
-    if (web3React.error instanceof UnsupportedChainIdError) {
-      setStatus("error")
-      setError(new ChainUnsupportedError(web3React.error.message))
-    }
-  }, [web3React.error])
 
   const toast = useChakraToast()
 
@@ -83,7 +67,6 @@ const useWallet = () => {
 
       const connector = connectors[connectorId]()
       const { web3ReactConnector } = connector
-      setStatus("connecting")
       setConnectorName(connectorId)
 
       try {
@@ -98,15 +81,12 @@ const useWallet = () => {
             setLastActiveAccount(injectedAccount)
           }
         }
-        setStatus("connected")
         const account = await web3ReactConnector.getAccount()
         return account?.toLowerCase()
       } catch (err: any) {
         if (id !== activationId.current) return
         setConnectorName(null)
-        setStatus("error")
         if (err instanceof UnsupportedChainIdError) {
-          setError(new ChainUnsupportedError(err.message))
           toast({
             status: "error",
             title: "Unsupported network chain",
@@ -120,16 +100,13 @@ const useWallet = () => {
           const handledError = connector.handleActivationError(err)
           if (handledError) {
             toast({
+              status: "error",
               title: handledError.name,
               message: handledError.message,
             })
-            setError(handledError)
             return
           }
         }
-
-        // otherwise, set to state the received error
-        setError(err)
       }
     },
     [reset, toast, web3React],
@@ -153,22 +130,17 @@ const useWallet = () => {
     }
   }, [ethereum, authenticated, ownedWallets, flowState, reset])
 
-  function decimalToHexString(number: number) {
-    if (number < 0) {
-      number = 0xffffffff + number + 1
-    }
+  const switchNetwork = async (id: number) => {
+    const decimalToHexString = (value: number) =>
+      value < 0 ? (0xffffffff + value + 1).toString() : "0x" + value.toString(16).toUpperCase()
 
-    return "0x" + number.toString(16).toUpperCase()
-  }
-
-  const switchNetwork = (id: number) => {
     if (id === 1) {
-      ethereum.request({
+      await ethereum.request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId: decimalToHexString(1) }],
       })
     } else {
-      ethereum.request({
+      await ethereum.request({
         method: "wallet_addEthereumChain",
         params: [
           SUPPORTED_CHAINS_INFO.map(i => ({ ...i, chainId: decimalToHexString(i.chainId) })).find(
@@ -177,30 +149,28 @@ const useWallet = () => {
         ],
       })
     }
-    reset()
+
     window.location.reload()
   }
 
   // auto connect on refresh
-  // useEffect(() => {
-  //   const lastConnector = getLastConnector()
-  //   const lastActiveAccount = getLastActiveAccount()
+  useEffect(() => {
+    const lastConnector = getLastConnector()
+    const lastActiveAccount = getLastActiveAccount()
 
-  //   if (lastActiveAccount && lastConnector === "injected" && !account) {
-  //     connect()
-  //   }
-  // }, [connect, account])
+    if (lastActiveAccount && lastConnector === "injected" && !account) {
+      connect()
+    }
+  }, [connect, account])
 
   const wallet = {
     chainId,
     web3React,
-    account: account || null,
+    account: account?.toLowerCase() || null,
     connect,
     connector: connectorName,
     reset,
     chain,
-    isConnecting: status === "connecting",
-    error,
     isActive: web3React.active,
     ethereum,
     scCaller,

@@ -30,13 +30,13 @@ export class DistributeSculptureService {
 
   private wallet: Wallet;
 
+  private chain = constant.isProduction ? Chain.Polygon : Chain.Mumbai;
+
   constructor() {
-    this.provider = getProvider(
-      constant.isProduction ? Chain.Polygon : Chain.Mumbai
-    );
+    this.provider = getProvider(this.chain);
     this.wallet = new ethers.Wallet(constant.PRIVATE_KEY, this.provider);
     this.contract = getContract(
-      "0x8832B826C4194Ed54bA9f1423fdB82295c09f0c9", // constant.config.erc1155Sculpture.verifyingContract,
+      constant.config.erc1155Sculpture.verifyingContract,
       erc1155Abi,
       this.provider
     );

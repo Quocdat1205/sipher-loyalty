@@ -17,16 +17,16 @@ export class ScupltureTrackerService {
 
   private provider: providers.Provider;
 
+  private chain = constant.isProduction ? Chain.Polygon : Chain.Mumbai;
+
   constructor(
     private scupltureService: SculptureService,
     @InjectRepository(TrackedBlock)
     private trackBlockRepo: Repository<TrackedBlock>
   ) {
-    this.provider = getProvider(
-      constant.isProduction ? Chain.Polygon : Chain.Mumbai
-    );
+    this.provider = getProvider(this.chain);
     this.sculptureContract = getContract(
-      constant.blockchain.contracts.erc1155Sculpture[constant.CHAIN_ID].address,
+      constant.blockchain.contracts.erc1155Sculpture[this.chain].address,
       sculptureAbi,
       this.provider
     );

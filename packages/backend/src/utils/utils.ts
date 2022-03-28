@@ -43,7 +43,7 @@ export {
   getDeadline3Day,
   getNow,
   insertDetailStringToImage,
-  isSculptureContract,
   isLooboxContract,
+  isSculptureContract,
   randomSalt,
 };

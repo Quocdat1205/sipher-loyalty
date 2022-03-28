@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { chakra, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
+import { chakra, Divider, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 import { AuthType, SignInAction } from "@store"
 
 import { ChakraModal, WalletCard } from "@components/shared"
@@ -22,7 +22,6 @@ const ConnectToWallet = () => {
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
 
   const qc = useQueryClient()
-  const { user } = useAuth()
 
   const { mutate: mutateAddWallet } = useMutation<unknown, unknown, string>(
     async account => {
@@ -43,8 +42,8 @@ const ConnectToWallet = () => {
         } else {
           toast({
             status: "error",
-            title: "Wallet already connected to another account",
-            message: "Please sign in by that address or switch to another address and try again",
+            title: "Wallet linked to other account",
+            message: "Please sign in by that wallet or switch to another wallet and try again",
           })
         }
       },
@@ -90,7 +89,7 @@ const ConnectToWallet = () => {
             isLoading={connectingMethod === "walletConnect"}
           />
         </HStack>
-
+        <Divider />
         <Text color="neutral.400" textAlign="center">
           Don't have a Wallet?{" "}
           <chakra.span textDecor="underline" cursor="pointer" color="cyan.600">

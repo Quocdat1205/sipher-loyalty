@@ -34,24 +34,26 @@ export const Toast = ({ status, title, message, onClose }: ToastProps) => {
   }
 
   return (
-    <Box w="full" overflow="hidden" borderRadius="base">
-      <Box p={4} bg={background}>
+    <Box w="full" overflow="hidden" borderRadius="base" maxW="25rem">
+      <Box bg="neutral.800" px={4} py={2}>
         <Flex align="center" justify="space-between">
-          <Flex flex={1} align="center" justify="flex-start">
-            <Box color="white" rounded="full" p={0.5}>
-              <Icon size="1.2rem" />
+          <Flex flex={1} align="center" justify="flex-start" color={background}>
+            <Box rounded="full">
+              <Icon size="1.25rem" />
             </Box>
-            <Text color="white" fontWeight={600} ml={2}>
+            <Text fontWeight={600} ml={2}>
               {title}
             </Text>
           </Flex>
-          <Box cursor="pointer" onClick={onClose}>
-            <BsX size="1.4rem" />
+          <Box cursor="pointer" onClick={onClose} ml={2}>
+            <BsX size="1.25rem" />
           </Box>
         </Flex>
         {message && (
-          <Box pt={2}>
-            <Text color="white">{message}</Text>
+          <Box mt={2}>
+            <Text color="neutral.100" fontSize={"sm"}>
+              {message}
+            </Text>
           </Box>
         )}
       </Box>
