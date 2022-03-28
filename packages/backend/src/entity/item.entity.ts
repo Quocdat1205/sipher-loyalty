@@ -74,6 +74,14 @@ export class Item {
   @OneToMany(() => Merchandise, (merchandise) => merchandise.item)
   merchandise?: Merchandise[];
 
+  @ApiProperty({ type: String, isArray: true, default: [], nullable: true })
+  @Column("character varying", { array: true, default: [], nullable: true })
+  size?: string[];
+
+  @ApiProperty({ type: String, isArray: true, default: [], nullable: true })
+  @Column("character varying", { array: true, default: [], nullable: true })
+  color?: string[];
+
   @ApiProperty()
   @CreateDateColumn({ default: new Date() })
   createdAt: Date;

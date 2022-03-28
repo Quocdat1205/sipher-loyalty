@@ -36,8 +36,6 @@ export class SystemConfigProvider {
 
   MODE = this.get("MODE");
 
-  SECRET_KEY = this.get("SECRET_KEY");
-
   NODE_ENV = this.get("NODE_ENV");
 
   JWT_EXPIRATION_TIME = this.get("JWT_EXPIRATION_TIME");
@@ -52,22 +50,6 @@ export class SystemConfigProvider {
 
   POLYGON_RPC_URL = this.get("POLYGON_RPC_URL");
 
-  SC_NFT_INU = this.get("SC_NFT_INU");
-
-  SC_NFT_NEKO = this.get("SC_NFT_NEKO");
-
-  USERNAME = this.get("USERNAME");
-
-  PASSWORD = this.get("PASSWORD");
-
-  TK_WEB = this.get("TK_WEB");
-
-  PW_WEB = this.get("PW_WEB");
-
-  ID_SIPHER = this.get("ID_SIPHER");
-
-  API_KEY_CMC = this.get("API_KEY_CMC");
-
   AWS_ACCESS_KEY_ID = this.get("AWS_ACCESS_KEY_ID");
 
   AWS_SECRET_ACCESS_KEY = this.get("AWS_SECRET_ACCESS_KEY");
@@ -76,15 +58,9 @@ export class SystemConfigProvider {
 
   AWS_NAME_BUCKET = this.get("AWS_NAME_BUCKET");
 
-  AWS_UPLOAD_FILE_URL_LINK = this.get("AWS_UPLOAD_FILE_URL_LINK");
-
   ELASTICSEARCH_ENDPOINT = this.get("ELASTICSEARCH_ENDPOINT");
 
   ELASTICSEARCH_INDEX = this.get("ELASTICSEARCH_INDEX");
-
-  AWS_REGION_S3 = this.get("AWS_REGION_S3");
-
-  AWS_ACCESS_KEY_ID_S3 = this.get("AWS_ACCESS_KEY_ID_S3");
 
   PRIVATE_KEY = this.get("PRIVATE_KEY");
 

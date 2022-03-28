@@ -290,6 +290,8 @@ export interface Item {
   description: string;
   imageUrls: ImageUrl[];
   merchandise: Merchandise[];
+  size: string[] | null;
+  color: string[] | null;
 
   /** @format date-time */
   createdAt: string;
@@ -678,10 +680,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags uri
-     * @name UriControllerGetDataErc1155Spaceship
+     * @name UriControllerGetDataErc1155Lootbox
      * @request GET:/api/sipher/loyalty/uri/erc1155-lootbox/{tokenId}
      */
-    uriControllerGetDataErc1155Spaceship: (tokenId: number, params: RequestParams = {}) =>
+    uriControllerGetDataErc1155Lootbox: (tokenId: number, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/uri/erc1155-lootbox/${tokenId}`,
         method: 'GET',

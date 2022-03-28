@@ -1,4 +1,4 @@
-import { Airdrop } from "@entity";
+import { Airdrop, ImageUrl } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
 // convert type of merch and other from merchandise to airdrop
@@ -29,4 +29,30 @@ export class ResTokenAirdrop {
 export class ResMerchAirdrop {
   @ApiProperty({ type: Airdrop, isArray: true })
   merch: Airdrop[];
+}
+
+export class ResAirdrop {
+  @ApiProperty({ type: Number })
+  id: number;
+
+  @ApiProperty({ type: String })
+  name: string;
+
+  @ApiProperty({ type: String })
+  description: string;
+
+  @ApiProperty({
+    type: () => ImageUrl,
+    isArray: true,
+  })
+  imageUrls?: ImageUrl[];
+
+  @ApiProperty({ type: String, isArray: true, default: [], nullable: true })
+  size?: string[];
+
+  @ApiProperty({ type: String, isArray: true, default: [], nullable: true })
+  color?: string[];
+
+  @ApiProperty({ type: String })
+  type: string;
 }

@@ -7,6 +7,8 @@ import { MerchService } from "@modules/merch/merch.service";
 
 import { Airdrop, AirdropType } from "../../entity/airdrop.entity";
 
+import { ResAirdrop } from "./airdrop.type";
+
 @Injectable()
 export class AirdropService {
   constructor(
@@ -14,15 +16,17 @@ export class AirdropService {
     private merchService: MerchService
   ) {}
 
-  private async getAllAirdrop(publicAddress: string) {
-    const token = await this.getTokenAirdrop(publicAddress);
-    const nft = await this.getNFTAirdrop(publicAddress);
-    const merchandise = await this.getMerchAirdrop(publicAddress);
-    const other = await this.getOtherAirdrop(publicAddress);
+  private async getAllAirdrops(publicAddress: string) {
+    const token = await this.getTokenAirdrops(publicAddress);
+    const nft = await this.getNFTAirdrops(publicAddress);
+    const merchandise = await this.getMerchAirdrops(publicAddress);
+    const other = await this.getOtherAirdrops(publicAddress);
     return { token, nft, merchandise, other };
   }
 
-  private async getTokenAirdrop(publicAddress: string) {
+  private async getTokenAirdrops(
+    publicAddress: string
+  ): Promise<Array<ResAirdrop>> {
     const data = await this.airdropRepos.find({
       where: [
         {
@@ -38,9 +42,9 @@ export class AirdropService {
     return data;
   }
 
-  private async getMerchAirdrop(
+  private async getMerchAirdrops(
     publicAddress: string
-  ): Promise<Array<Airdrop>> {
+  ): Promise<Array<ResAirdrop>> {
     const merchandises = await this.merchService.getAllMerchByPublicAddress(
       publicAddress
     );
@@ -53,7 +57,28 @@ export class AirdropService {
     }));
   }
 
-  private async getOtherAirdrop(publicAddress: string) {
+  private async getTokenNFTAirdrop(id: string): Promise<ResAirdrop> {
+    const data = await this.airdropRepos.findOne({
+      where: { id },
+      relations: ["imageUrls"],
+    });
+    return data;
+  }
+
+  private async getMerchAirdrop(id: string): Promise<ResAirdrop> {
+    const merch = await this.merchService.getOtherAndMerchById(id);
+    return {
+      id: merch.id,
+      name: merch.item.name,
+      description: merch.item.description,
+      imageUrls: merch.item.imageUrls,
+      type: merch.item.type,
+      size: merch.item.size,
+      color: merch.item.color,
+    };
+  }
+
+  private async getOtherAirdrops(publicAddress: string) {
     const others = await this.merchService.getOtherMerchByPublicAddress(
       publicAddress
     );
@@ -67,7 +92,7 @@ export class AirdropService {
     }));
   }
 
-  private async getNFTAirdrop(publicAddress: string) {
+  private async getNFTAirdrops(publicAddress: string) {
     const data = await this.airdropRepos.find({
       where: [
         {
@@ -83,22 +108,41 @@ export class AirdropService {
     return data;
   }
 
-  async getAirdropByType(publicAddress: string, type: AirdropType) {
+  async getAirdropsByType(publicAddress: string, type: AirdropType) {
     switch (type) {
       case AirdropType.TOKEN:
-        return this.getTokenAirdrop(publicAddress);
+        return this.getTokenAirdrops(publicAddress);
 
       case AirdropType.NFT:
-        return this.getNFTAirdrop(publicAddress);
+        return this.getNFTAirdrops(publicAddress);
 
       case AirdropType.MERCH:
-        return this.getMerchAirdrop(publicAddress);
+        return this.getMerchAirdrops(publicAddress);
 
       case AirdropType.OTHER:
-        return this.getOtherAirdrop(publicAddress);
+        return this.getOtherAirdrops(publicAddress);
 
       default:
-        return this.getAllAirdrop(publicAddress);
+        return this.getAllAirdrops(publicAddress);
+    }
+  }
+
+  async getAirdropByType(id: string, type: AirdropType) {
+    switch (type) {
+      case AirdropType.TOKEN:
+        return this.getTokenNFTAirdrop(id);
+
+      case AirdropType.NFT:
+        return this.getTokenNFTAirdrop(id);
+
+      case AirdropType.MERCH:
+        return this.getMerchAirdrop(id);
+
+      case AirdropType.OTHER:
+        return this.getMerchAirdrop(id);
+
+      default:
+        return null;
     }
   }
 }
