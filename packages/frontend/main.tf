@@ -11,7 +11,7 @@ terraform {
 # Main region where the resources should be created in
 # (Should be close to the location of your viewers)
 provider "aws" {
-  region = "us-west-2"
+  region = var.region
 }
 
 # Provider used for creating the Lambda@Edge function which must be deployed
@@ -25,7 +25,6 @@ provider "aws" {
 terraform {
   backend "s3" {
     key    = "terraform-loyalty-state-key"
-    region = "us-east-1"
   }
 }
 
