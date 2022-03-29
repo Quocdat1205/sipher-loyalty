@@ -17,7 +17,19 @@ interface DetailBoxProps {
 
 export const DetailBox = ({ id }: DetailBoxProps) => {
   const [boxWidth, setBoxWidth] = useState(0)
-  const { isFetched, details, slot, setSlot, mutateMint, isLoading, router } = useDetailBox(id)
+  const {
+    isFetched,
+    details,
+    slot,
+    setSlot,
+    mutateMint,
+    isLoading,
+    router,
+    status,
+    setStatus,
+    mintedData,
+    handleClick,
+  } = useDetailBox(id)
   const windowWidth = useWidth()
   // right UI info details
   const widthContainer = 800
@@ -75,10 +87,14 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
             </Box>
             <Box maxWidth={`${widthContainer}px`} flex={1}>
               <HeaderDetails details={details} isFetching={isFetched} />
-              <ContentDetails description={details?.propertyLootbox.description ?? ""} isFetching={isFetched} />
+              <ContentDetails isFetching={isFetched} />
             </Box>
           </Box>
           <ActionContainer
+            handleClick={handleClick}
+            mintedData={mintedData}
+            status={status}
+            setStatus={setStatus}
             isFetching={isFetched}
             details={details}
             slot={slot}
