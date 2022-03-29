@@ -82,8 +82,8 @@ export default class InsertSipherCollection implements Seeder {
           id: "0xD95006adFd42E582367Ea5Da3e0A875d68a97308".toLowerCase(),
           name: "Sipher Spaceship Lootbox",
           collectionType: CollectionType.ERC1155,
-          collectionSlug: "sipherspaceshiplootbox1337",
-          chainId: 1337,
+          collectionSlug: "sipherspaceshiplootbox137",
+          chainId: 137,
           description:
             "The ultimate Loot Box of your Spaceship themed NFTs. Now all the spacecraft components inside these Loot Boxes are available for minting and trading away on any NFT marketplaces to your preference.",
           category: CollectionCategory.LOOTBOX,
@@ -98,8 +98,8 @@ export default class InsertSipherCollection implements Seeder {
           id: "0x315Bc085A14E251f129A361afa37205E3313bF15".toLowerCase(),
           name: "Sipher Sculpture",
           collectionType: CollectionType.ERC1155,
-          collectionSlug: "siphersculpture1337",
-          chainId: 1337,
+          collectionSlug: "siphersculpture137",
+          chainId: 137,
           description:
             "For the first time ever, a Sipher Sculpture is brought to you as a token of appreciation for the real MVP who participated in the NEKO Dutch Auction. Imprinted with a dystopian futuristic setting, this Sipher Sculpture will be a totem of aesthetics that can make you a proud owner.",
           category: CollectionCategory.SCULPTURE,
