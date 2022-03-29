@@ -42,6 +42,18 @@ export class SystemConfigProvider {
 
   NODE_ENV = this.get("NODE_ENV");
 
+  POSTGRES_HOST = this.get("POSTGRES_HOST");
+
+  POSTGRES_PORT = this.get("POSTGRES_PORT");
+
+  POSTGRES_USER = this.get("POSTGRES_USER");
+
+  POSTGRES_PASSWORD = this.get("POSTGRES_PASSWORD");
+
+  POSTGRES_DATABASE = this.get("POSTGRES_DATABASE");
+
+  POSTGRES_SYNCHRONIZE = this.get("POSTGRES_SYNCHRONIZE");
+
   SESSION_PORT = this.get("SESSION_PORT");
 
   SESSION_PASS = this.get("SESSION_PASS");
@@ -49,8 +61,6 @@ export class SystemConfigProvider {
   SESSION_HOST = this.get("SESSION_HOST");
 
   SC_INFURA = this.get("SC_INFURA");
-
-  POLYGON_RPC_URL = this.get("POLYGON_RPC_URL");
 
   AWS_ACCESS_KEY_ID = this.get("AWS_ACCESS_KEY_ID");
 

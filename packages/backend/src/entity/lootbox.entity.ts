@@ -45,10 +45,10 @@ export class Lootbox {
   propertyLootbox?: ERC1155Lootbox;
 
   @ApiProperty()
-  @CreateDateColumn({ default: new Date() })
+  @CreateDateColumn({ type: "timestamptz", default: new Date() })
   createdAt: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz", default: new Date() })
   updatedAt?: Date;
 }

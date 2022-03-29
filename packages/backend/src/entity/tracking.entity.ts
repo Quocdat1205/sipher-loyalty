@@ -17,9 +17,9 @@ export class TrackedBlock {
   @Column({ default: 0 })
   tracked: number;
 
-  @CreateDateColumn({ default: new Date() })
+  @CreateDateColumn({ type: "timestamptz", default: new Date() })
   createdAt: Date;
 
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz", default: new Date() })
   updatedAt?: Date;
 }

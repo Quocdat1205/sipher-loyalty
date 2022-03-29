@@ -54,10 +54,10 @@ export class Merchandise {
   item?: Item;
 
   @ApiProperty()
-  @CreateDateColumn({ default: new Date() })
+  @CreateDateColumn({ type: "timestamptz", default: new Date() })
   createdAt?: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz", default: new Date() })
   updatedAt?: Date;
 }
