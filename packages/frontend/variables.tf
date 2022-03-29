@@ -5,3 +5,7 @@ variable "cloudfront_aliases" {
 variable "cloudfront_acm_certificate_arn" {
   type = string
 }
+
+variable "region" {
+  type = string
+}
