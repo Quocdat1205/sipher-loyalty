@@ -43,7 +43,7 @@ const NFTCard = ({ data, isFetched }: CardProps) => {
             height={480}
             width={425}
             quality={100}
-            objectFit="cover"
+            objectFit="contain"
           />
         )}
         {data.type === "ERC1155" && (

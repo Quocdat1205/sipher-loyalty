@@ -25,7 +25,7 @@ const General = ({ totalNFTs = 0, totalToken = 0, totalETHPrice = 0, totalUsdPri
         name={"Total Tokens"}
         icon={<Image src="/images/icons/coin.png" h="1.3rem" />}
         rightChildren={
-          <Text color="neutral.100">
+          <Text pb={0.5} lineHeight={1} color="neutral.100">
             {currency(totalETHPrice)} ETH (${currency(totalUsdPrice)})
           </Text>
         }
