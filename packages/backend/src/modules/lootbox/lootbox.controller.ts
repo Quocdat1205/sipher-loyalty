@@ -122,11 +122,14 @@ export class LootBoxController {
     return this.lootBoxService.claimLootbox(publicAddress);
   }
 
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({
     type: Any,
   })
   @Put("distribute")
-  async distributeLootbox(@Body() body: DistributeLootboxs) {
+  async distributeLootbox(@Body() body: DistributeLootboxs, @Req() req: any) {
+    await this.authService.verifyKey(body.key, req.userData);
     return this.lootBoxService.distributeLootbox(body.data);
   }
 }

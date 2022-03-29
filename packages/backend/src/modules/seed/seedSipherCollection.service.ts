@@ -30,8 +30,6 @@ export class SeedSipherCollectionService {
   private seedCollection = async (collection) => {
     try {
       collection.id = collection.id.toLowerCase();
-      console.log(collection);
-
       const _collection = this.sipherCollectionRepo.create(collection);
       await this.sipherCollectionRepo.save(_collection);
     } catch (err) {

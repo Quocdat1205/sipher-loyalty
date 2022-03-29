@@ -1,9 +1,8 @@
 import { IsEthereumAddress } from "class-validator";
-import { Lootbox, PendingMint } from "@entity";
+import { ClaimableLootbox, Lootbox, PendingMint } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
-import { TransformLowercase } from "@utils/transfomers";
 
-import { ClaimableLootbox } from "@entity";
+import { TransformLowercase } from "@utils/transfomers";
 
 export class MintBatchLootboxInputDto {
   @TransformLowercase()
@@ -81,6 +80,9 @@ export class DistributeLootbox {
 export class DistributeLootboxs {
   @ApiProperty({ type: DistributeLootbox, isArray: true })
   data: DistributeLootbox[];
+
+  @ApiProperty({ type: String })
+  key: string;
 }
 
 export interface MintLootboxInput {

@@ -7,11 +7,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { ImageUrl } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
 import { TransformLowercase } from "@utils/transfomers";
-
-import { ImageUrl } from "@entity";
 
 export enum AirdropType {
   NFT = "NFT",

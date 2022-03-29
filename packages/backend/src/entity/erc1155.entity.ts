@@ -6,11 +6,13 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import {
+  ClaimableLootbox,
+  ERC1155LootboxAttribute,
+  ERC1155SculptureAttribute,
+  Lootbox,
+} from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
-
-import { ClaimableLootbox } from "@entity";
-import { ERC1155LootboxAttribute, ERC1155SculptureAttribute } from "@entity";
-import { Lootbox } from "@entity";
 
 @Entity()
 export class ERC1155Lootbox {

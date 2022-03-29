@@ -6,9 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { ApiProperty } from "@nestjs/swagger";
-
 import { ERC1155Lootbox, ERC1155Sculpture } from "@entity";
+import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class ERC1155LootboxAttribute {

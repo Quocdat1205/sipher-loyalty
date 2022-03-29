@@ -156,6 +156,7 @@ export interface DistributeLootbox {
 
 export interface DistributeLootboxs {
   data: DistributeLootbox[];
+  key: string;
 }
 
 export type Any = object;
@@ -277,6 +278,14 @@ export enum ViewType {
   ThankYouCard = 'Thank You Card',
 }
 
+export enum AirdropType {
+  NFT = 'NFT',
+  TOKEN = 'TOKEN',
+  MERCH = 'MERCH',
+  ALL = 'ALL',
+  OTHER = 'OTHER',
+}
+
 export interface Merchandise {
   id: number;
   publicAddress: string;
@@ -299,7 +308,7 @@ export interface Item {
   id: number;
   merch_item: ItemType;
   name: ViewType;
-  type: string;
+  type: AirdropType;
   description: string;
   imageUrls: ImageUrl[];
   merchandise: Merchandise[];
@@ -331,14 +340,6 @@ export interface ImageUrl {
 
   /** @format date-time */
   updatedAt: string;
-}
-
-export enum AirdropType {
-  NFT = 'NFT',
-  TOKEN = 'TOKEN',
-  MERCH = 'MERCH',
-  ALL = 'ALL',
-  OTHER = 'OTHER',
 }
 
 export interface Airdrop {
@@ -713,12 +714,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags lootbox
      * @name LootBoxControllerDistributeLootbox
      * @request PUT:/api/sipher/loyalty/lootbox/distribute
+     * @secure
      */
     lootBoxControllerDistributeLootbox: (data: DistributeLootboxs, params: RequestParams = {}) =>
       this.request<Any, any>({
         path: `/api/sipher/loyalty/lootbox/distribute`,
         method: 'PUT',
         body: data,
+        secure: true,
         type: ContentType.Json,
         format: 'json',
         ...params,

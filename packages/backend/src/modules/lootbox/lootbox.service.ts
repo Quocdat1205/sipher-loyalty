@@ -658,7 +658,7 @@ export class LootBoxService {
       LoggerService.error(JSON.stringify(err));
       return err;
     }
-    LoggerService.log("Done add lootbox test");
+    LoggerService.log("Done distribute lootbox");
     return true;
   };
 }

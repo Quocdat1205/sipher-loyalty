@@ -32,7 +32,6 @@ class ConfigService {
     seeds: string[];
     factories: string[];
   } {
-    console.log(join(__dirname, "..", "**", "*.entity{.ts,.js}"));
     return {
       type: "postgres",
 
