@@ -39,21 +39,31 @@ class ConfigService {
       port: parseInt(constant.POSTGRES_PORT, 10),
       username: constant.POSTGRES_USER,
       password: constant.POSTGRES_PASSWORD,
-      database: !constant.isProduction ? "loyalty" : constant.POSTGRES_DATABASE,
+      database: constant.POSTGRES_DATABASE,
 
-      entities: [join(__dirname, "**", "*.entity{.ts,.js}")],
+      entities: ["src/entity/*{.ts,.js}"],
 
-      migrationsTableName: "migration",
+      migrationsTableName: "custom_migration_table",
 
-      seeds: [join(__dirname, "seed", "**", "*{.ts,.js}")],
+      seeds: ["src/seed/*{.ts,.js}"],
 
-      factories: [join(__dirname, "factory", "**", "*{.ts,.js}")],
+      factories: ["src/factory/*{.ts,.js}"],
 
-      migrations: [join(__dirname, "migration", "*{.ts,.js}")],
+      migrations: ["src/migration/*.{ts,js}"],
 
       cli: {
-        migrationsDir: join(__dirname, "migration"),
+        migrationsDir: "src/migration",
       },
+
+      // seeds: [join(__dirname, "seed", "**", "*{.ts,.js}")],
+
+      // factories: [join(__dirname, "factory", "**", "*{.ts,.js}")],
+
+      // migrations: [join(__dirname, "migration", "*{.ts,.js}")],
+
+      // cli: {
+      //   migrationsDir: join(__dirname, "migration"),
+      // },
 
       synchronize: constant.POSTGRES_SYNCHRONIZE === "true",
 

@@ -89,7 +89,7 @@ export class DistributeSculptureService {
     }
 
     const onlyNekoHolder = allHolder
-      .filter((el) => el.INU === "0")
+      .filter((el) => el.INU === "0" || el.INU === 0)
       .map((el) => ({
         address: toChecksumAddress(el.address),
         id: "1",
@@ -97,7 +97,7 @@ export class DistributeSculptureService {
       }));
 
     const onlyInuHolder = allHolder
-      .filter((el) => el.NEKO === "0")
+      .filter((el) => el.NEKO === "0" || el.NEKO === 0)
       .map((el) => ({
         address: toChecksumAddress(el.address),
         id: "0",
@@ -105,7 +105,10 @@ export class DistributeSculptureService {
       }));
 
     const BothHolder = allHolder
-      .filter((el) => el.NEKO !== "0" && el.INU !== "0")
+      .filter(
+        (el) =>
+          el.NEKO !== "0" && el.INU !== "0" && el.NEKO !== 0 && el.INU !== 0
+      )
       .map((el) => ({
         address: toChecksumAddress(el.address),
         ids: ["0", "1"],
