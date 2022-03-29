@@ -17,7 +17,12 @@ import {
   SipherCollection,
 } from "src/entity/sipher-collection.entity";
 
-import { CollectionStats, Portfolio, PortfolioQuery } from "./collection.dto";
+import {
+  CollectionStats,
+  Portfolio,
+  PortfolioQuery,
+  UserSocialInfo,
+} from "./collection.dto";
 import { TokenType } from "@modules/nft/nft.dto";
 import { Cron, CronExpression } from "@nestjs/schedule";
 
@@ -143,7 +148,7 @@ export class CollectionService {
     };
   }
 
-  async getItemById(itemId: string): Promise<any> {
+  async getItemById(itemId: string, socialToken?: string): Promise<any> {
     /* Getting the base item */
     // So the marketpalce detail sdk doesn't work with ERC1155, have to do it in this way
     let item: any;
@@ -182,7 +187,10 @@ export class CollectionService {
         );
         const quantity = this.getErc1155Quantity(totalMintedItems);
         item.quantity = quantity;
-        const allOwner = this.getAllOwnerOfErc1155(totalMintedItems);
+        const allOwner = await this.getAllOwnerOfErc1155(
+          totalMintedItems,
+          socialToken
+        );
         item.allOwner = allOwner;
       }
     }
@@ -244,14 +252,42 @@ export class CollectionService {
     return totalMintedforCollection;
   }
 
-  private getAllOwnerOfErc1155(items: any) {
-    const ownerArray = items.map((item) => ({
-      publicAddress: item.owner,
-      totalOwned: item.value,
-      profileImage: "",
-      username: "",
-    }));
+  private async getAllOwnerOfErc1155(items: any, socialToken?: string) {
+    const socialInfo = socialToken
+      ? await this.getAvatarByAddresses(
+          items.map((item) => item.owner),
+          socialToken
+        )
+      : [];
+    const ownerArray = items.map((item) => {
+      const userSocialInfo = socialInfo.find(
+        (info) => info.address === item.owner
+      );
+      return {
+        publicAddress: item.owner,
+        totalOwned: item.value,
+        profileImage: userSocialInfo ? userSocialInfo.avatarImage : "",
+        username: userSocialInfo ? userSocialInfo.name : "",
+      };
+    });
     return ownerArray;
+  }
+
+  private async getAvatarByAddresses(
+    addresses: string[],
+    socialToken: string
+  ): Promise<UserSocialInfo[]> {
+    const response = await lastValueFrom(
+      this.httpService.get(`${constant.ATHER_SOCIAL_URL}/user/by-address`, {
+        headers: {
+          Authorization: socialToken,
+        },
+        params: {
+          address: addresses.join(","),
+        },
+      })
+    );
+    return response.data;
   }
 
   private getErc1155Quantity(items: any) {
