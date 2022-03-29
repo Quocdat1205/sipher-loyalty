@@ -32,6 +32,7 @@ class ConfigService {
     seeds: string[];
     factories: string[];
   } {
+    console.log(join(__dirname, "..", "**", "*.entity{.ts,.js}"));
     return {
       type: "postgres",
 
@@ -40,7 +41,7 @@ class ConfigService {
       username: constant.POSTGRES_USER,
       password: constant.POSTGRES_PASSWORD,
       database: constant.POSTGRES_DATABASE,
-      entities: ["src/entity/*.entity{.ts,.js}"],
+      entities: [join(__dirname, "..", "**", "*.entity{.ts,.js}")],
 
       migrationsTableName: "migration",
 
@@ -48,7 +49,7 @@ class ConfigService {
 
       factories: ["src/factory/*{.ts,.js}"],
 
-      migrations: ["src/migration/*.{ts,js}"],
+      migrations: [join(__dirname, "..", "migration", "*{.ts,.js}")],
 
       cli: {
         migrationsDir: "src/migration",

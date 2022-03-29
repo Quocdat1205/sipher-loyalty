@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { TransformLowercase } from "../utils/transfomers";
+import { TransformLowercase } from "@utils/transfomers";
 
 import { ERC1155Lootbox } from "./erc1155.entity";
 
