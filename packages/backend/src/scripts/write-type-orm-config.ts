@@ -1,6 +1,6 @@
 import fs from "fs";
 
-import { configService } from "./setting/config.typeorm";
+import { configService } from "../setting/config.typeorm";
 
 fs.writeFileSync(
   "ormconfig.json",

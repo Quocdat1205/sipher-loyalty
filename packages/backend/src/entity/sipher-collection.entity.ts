@@ -121,11 +121,11 @@ export class SipherCollection {
   @ApiProperty({ type: Boolean })
   isVerified: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamptz", default: new Date() })
   @ApiProperty({ type: Date })
   createdAt: Date;
 
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz", default: new Date() })
   @ApiProperty({ type: Date })
   updatedAt?: Date;
 }

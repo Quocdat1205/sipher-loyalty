@@ -1,12 +1,17 @@
 {
-    "type": "postgres",
-    "host": "localhost",
-    "port": 5432,
-    "username": "postgres",
-    "password": "12345678",
-    "database": "loyalty_sipher",
-    "entities": [
-        "dist/**/*.entity{.ts,.js}"
-    ],
-    "synchronize": true
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "12345678",
+  "database": "loyalty_sipher",
+  "entities": ["src/**/*.entity{.ts,.js}"],
+  "migrationsTableName": "migration",
+  "seeds": ["src/seed/**/*{.ts,.js}"],
+  "factories": ["src/factory/**/*{.ts,.js}"],
+  "migrations": ["src/migration/*.{ts,js}"],
+  "cli": { "migrationsDir": "src/migration/*.{ts,js}" },
+  "synchronize": false,
+  "autoLoadEntities": true,
+  "ssl": false
 }
