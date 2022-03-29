@@ -89,10 +89,10 @@ export class Airdrop {
   numberOfVestingPoint?: string;
 
   @ApiProperty()
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamptz", default: new Date() })
   createdAt?: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz", default: new Date() })
   updatedAt?: Date;
 }

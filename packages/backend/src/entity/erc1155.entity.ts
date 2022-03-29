@@ -60,7 +60,7 @@ export class ERC1155Lootbox {
   claimableLootboxs?: ClaimableLootbox[];
 
   @ApiProperty()
-  @CreateDateColumn({ default: new Date() })
+  @CreateDateColumn({ type: "timestamptz", default: new Date() })
   createdAt: Date;
 }
 
@@ -98,10 +98,10 @@ export class ERC1155Sculpture {
   attributes: ERC1155SculptureAttribute[];
 
   @ApiProperty()
-  @CreateDateColumn({ default: new Date() })
+  @CreateDateColumn({ type: "timestamptz", default: new Date() })
   createdAt: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz", default: new Date() })
   updatedAt?: Date;
 }

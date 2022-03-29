@@ -19,14 +19,14 @@ const Logo = () => {
             <Image
               src={ATHER}
               alt="SIPHER ATHER LOGO"
-              height={22.65 * 1.6}
-              width={43.9 * 1.6}
+              height={23.87 * 1.55}
+              width={43.9 * 1.55}
               layout="fixed"
               priority
             />
           </Box>
           <Box color="neutral.400">
-            <BsFillCaretDownFill size="1.3rem" />
+            <BsFillCaretDownFill size="1rem" />
           </Box>
         </HStack>
       </Link>
@@ -40,7 +40,7 @@ const Logo = () => {
             layout="fixed"
             priority
           />
-          <Flex w="full" justify="space-between" px={0.5}>
+          <Flex mt={1} w="full" justify="space-between" px={0.5}>
             {"DASHBOARD".split("").map((letter, idx) => (
               <Text color="white" key={`${letter}-${idx}`} fontSize="xs">
                 {letter}

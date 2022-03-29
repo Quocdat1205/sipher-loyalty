@@ -41,11 +41,11 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
         bottom={0}
         pos="absolute"
         bgGradient={
-          "linear(to-r, rgba(255,255,255,0.2),rgba(255,255,255,0.2),rgba(255,255,255,0.15), rgba(255,255,255,0.1), rgba(255,255,255,0.05),rgba(255,255,255,0))"
+          "linear(to-r, rgba(255,255,255,0.2),rgba(255,255,255,0.15),rgba(255,255,255,0.1), rgba(255,255,255,0.05), rgba(255,255,255,0.025),rgba(255,255,255,0))"
         }
         h="1px"
       />
-      <Flex flex={1} justify="center" align="center">
+      <Flex h="full" flex={1} justify="center" align="center">
         <NavMenus menus={menus} />
       </Flex>
       <Flex justify={"flex-end"} px={8}>

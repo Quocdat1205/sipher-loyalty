@@ -31,7 +31,6 @@ import { AppService } from "./app.service";
       isGlobal: true,
     }),
     TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
-    // TypeOrmModule.forFeature([SculptureTransaction]),
     SearchModule,
     LoggerModule,
     NftItemModule,
@@ -47,13 +46,4 @@ import { AppService } from "./app.service";
   controllers: [AppController],
   providers: [AppService],
 })
-// export class AppModule implements NestModule {
-// configure(consumer: MiddlewareConsumer) {
-//   consumer
-//     .apply(AuthMiddleware)
-//     .forRoutes(
-//       { path: "user/sign", method: RequestMethod.POST },
-//       { path: "/users/get-info", method: RequestMethod.GET }
-//     );
-// }
 export class AppModule {}
