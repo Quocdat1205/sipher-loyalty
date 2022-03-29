@@ -22,7 +22,7 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
       w="full"
       justify="space-between"
       align="center"
-      backdropFilter="blur(10px)"
+      backdropFilter="blur(30px)"
       top={0}
       left={0}
       right={0}

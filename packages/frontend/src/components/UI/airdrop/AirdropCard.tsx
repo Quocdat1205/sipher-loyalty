@@ -17,7 +17,8 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
   return (
     <Flex
       flexDir="column"
-      _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
+      cursor="pointer"
+      _hover={{ filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))" }}
       bg="neutral.700"
       rounded="lg"
       overflow="hidden"

@@ -45,7 +45,12 @@ export function DetailsAirdrop() {
 
   useEffect(() => {
     if (detailAirdrop)
-      setImageState({ front: detailAirdrop?.imageUrls[0]?.default, back: detailAirdrop?.imageUrls[0]?.back })
+      setImageState({
+        front:
+          detailAirdrop?.imageUrls.find(item => item.color === "black")?.default ||
+          detailAirdrop?.imageUrls[0]?.default,
+        back: detailAirdrop?.imageUrls.find(item => item.color === "black")?.back || detailAirdrop?.imageUrls[0]?.back,
+      })
   }, [detailAirdrop])
 
   return (

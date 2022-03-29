@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { Box, Button, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
 
-const Slide1 = () => {
+export const Slide1 = () => {
   const router = useRouter()
 
   return (
@@ -36,4 +36,3 @@ const Slide1 = () => {
     </Flex>
   )
 }
-export default Slide1

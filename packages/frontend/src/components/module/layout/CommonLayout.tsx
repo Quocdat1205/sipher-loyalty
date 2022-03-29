@@ -15,10 +15,12 @@ export const CommonLayout = ({ children }: { children: ReactNode }) => {
       color="whiteAlpha.900"
       bg="neutral.900"
     >
-      <TopNavigationBar isSticky />
-      <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
-        {children}
-        <OnBoardModal />
+      <Flex flexDir="column" flex={1} w="full" overflow="auto">
+        <TopNavigationBar isSticky />
+        <Flex flexDir="column" zIndex={2} flex={1}>
+          {children}
+          <OnBoardModal />
+        </Flex>
       </Flex>
     </Flex>
   )

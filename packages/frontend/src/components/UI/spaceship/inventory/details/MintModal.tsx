@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import { Box, Button, chakra, Divider, Flex, HStack, Link, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
+import { SipherSpaceshipAddress } from "@constant"
 import { padZero } from "@utils"
 
 import { useDetailBox } from "./useDetailBox"
@@ -142,7 +143,7 @@ export const MintModal = ({
           ) : status === "SUCCESS" ? (
             <Fragment>
               <Button
-                onClick={() => window.open("https://opensea.io/assets", "_blank")}
+                onClick={() => router.push(`/portfolio/${SipherSpaceshipAddress}`)}
                 variant="secondary"
                 colorScheme="cyan"
                 fontSize="md"

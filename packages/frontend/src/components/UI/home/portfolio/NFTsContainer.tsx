@@ -1,23 +1,52 @@
-import React, { Fragment } from "react"
+import React from "react"
 import { Box } from "@sipher.dev/sipher-ui"
 
-import { Carousel } from "./Carousel"
+import CollectionCard from "@components/UI/portfolio/collection/CollectionCard"
+
+import CarouselCompo from "../CarouselCompo"
+
 import usePortFolioHome from "./usePortFolioHome"
 
 interface NFTsContainerProps {
   collectionData: ReturnType<typeof usePortFolioHome>["collectionData"]
 }
 
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3,
+    slidesToSlide: 3, // optional, default to 1.
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+    slidesToSlide: 2, // optional, default to 1.
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+}
+
 const NFTsContainer = ({ collectionData }: NFTsContainerProps) => {
   return (
-    <Fragment>
-      <Box display={["none", "none", "block"]}>
-        <Carousel slideData={collectionData} />
-      </Box>
-      <Box display={["block", "block", "none"]}>
-        <Carousel slideData={collectionData} pageSize={2} />
-      </Box>
-    </Fragment>
+    <Box
+      ml={-6}
+      sx={{
+        ".carousel-item-padding-40-px": { pl: 6 },
+        ".custom-dot-list-style": {
+          pos: "relative",
+          pt: 4,
+        },
+      }}
+    >
+      <CarouselCompo responsive={responsive}>
+        {collectionData.map(item => (
+          <CollectionCard key={item.id} data={item} isFetched={true} />
+        ))}
+      </CarouselCompo>
+    </Box>
   )
 }
 export default NFTsContainer
