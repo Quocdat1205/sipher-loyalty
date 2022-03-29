@@ -4,24 +4,34 @@ import { Box, Button, chakra, HStack, Skeleton } from "@sipher.dev/sipher-ui"
 
 import { Lootbox } from "@sdk"
 
+import { MintModal } from "./MintModal"
 import QuantitySelector from "./QuantitySelector"
+import { DetailsBox } from "./useDetailBox"
 
 interface ActionContainerProps {
   isFetching: boolean
+  mintedData: DetailsBox | undefined
   details: Lootbox | undefined
   slot: number
   setSlot: (v: number) => void
+  handleClick: () => void
   mutateMint: () => void
   isLoading: boolean
+  status: string
+  setStatus: (v: string) => void
 }
 
 export const ActionContainer = ({
   details,
   slot,
   setSlot,
+  handleClick,
   isLoading,
   mutateMint,
   isFetching,
+  mintedData,
+  status,
+  setStatus,
 }: ActionContainerProps) => {
   return (
     <Box
@@ -41,7 +51,7 @@ export const ActionContainer = ({
         <Skeleton isLoaded={isFetching} flex={1}>
           <Button
             isDisabled={slot === 0}
-            onClick={() => mutateMint()}
+            onClick={handleClick}
             isLoading={isLoading}
             py={5}
             colorScheme="accent"
@@ -56,6 +66,16 @@ export const ActionContainer = ({
           </Button>
         </Skeleton>
       </HStack>
+      <MintModal
+        details={details}
+        mintedData={mintedData}
+        isOpen={status !== ""}
+        status={status}
+        onClose={() => setStatus("")}
+        slot={slot}
+        handleMint={mutateMint}
+        isLoading={isLoading}
+      />
     </Box>
   )
 }
