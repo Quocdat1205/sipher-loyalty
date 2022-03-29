@@ -35,7 +35,7 @@ export class AtherGuard implements CanActivate {
       );
       if (!currentUserData) {
         const { data } = await axios.get(
-          `${constant.ATHER_ID_URL}/api/wallets/owned`,
+          `${constant.ATHER_ID_URL}/wallets/owned`,
           {
             headers: {
               Authorization: `Bearer ${req.headers.authorization}`,
