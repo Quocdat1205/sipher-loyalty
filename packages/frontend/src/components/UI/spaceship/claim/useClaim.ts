@@ -25,6 +25,8 @@ export const useClaim = () => {
     {
       onSuccess: () => {
         setIsStatusModal("SUCCESS")
+      },
+      onSettled: () => {
         query.invalidateQueries("claimableLootBox")
       },
       onError: () => {

@@ -23,7 +23,11 @@ const GeneralContainer = () => {
           value={`${currency(totalETHPrice)} ETH`}
           name={"Portfolio value"}
           icon={<EthereumIcon size="1.5rem" />}
-          rightChildren={<Text color="neutral.100">${currency(totalUsdPrice)}</Text>}
+          rightChildren={
+            <Text pb={0.5} lineHeight={1} color="neutral.100">
+              ${currency(totalUsdPrice)}
+            </Text>
+          }
         />
         <CardGeneral
           value={currency(sipher ?? 0)}

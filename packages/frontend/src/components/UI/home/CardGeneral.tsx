@@ -37,8 +37,8 @@ const CardGeneral = ({ value, name, icon, popoverProps, rightChildren }: CardGen
           {icon}
         </Flex>
       </Flex>
-      <Flex lineHeight={1.3} alignSelf="flex-end" align="flex-end" justify="space-between">
-        <Text fontSize="3xl" color="text.primary" fontWeight={600}>
+      <Flex lineHeight={1} alignSelf="flex-end" align="flex-end" justify="space-between">
+        <Text lineHeight={1} fontSize="3xl" color="text.primary" fontWeight={600}>
           {value}
         </Text>
         {rightChildren}
