@@ -63,6 +63,26 @@ export class resClaimableLootboxDto {
   data: ClaimableLootbox[];
 }
 
+export class DistributeLootbox {
+  @TransformLowercase()
+  @ApiProperty({ type: String })
+  @IsEthereumAddress()
+  publicAddress: string;
+
+  @ApiProperty({ type: Number })
+  tokenId: number;
+
+  @ApiProperty({ type: Number })
+  quantity: number;
+
+  @ApiProperty()
+  expiredDate: number;
+}
+export class DistributeLootboxs {
+  @ApiProperty({ type: DistributeLootbox, isArray: true })
+  data: DistributeLootbox[];
+}
+
 export interface MintLootboxInput {
   publicAddress: string;
   batchID: number;

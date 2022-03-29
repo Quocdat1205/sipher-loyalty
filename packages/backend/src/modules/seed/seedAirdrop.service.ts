@@ -49,7 +49,7 @@ export class SeedAirdropService {
     @InjectRepository(ImageUrl)
     private imageUrlRepo: Repository<ImageUrl>,
     @InjectRepository(Merchandise)
-    private merchListRepo: Repository<Merchandise>,
+    private merchRepo: Repository<Merchandise>,
     @InjectRepository(Item)
     private itemRepo: Repository<Item>
   ) {}
@@ -117,7 +117,7 @@ export class SeedAirdropService {
     try {
       const imageUrl = await this.seedImageUrls(item.imageUrls);
       item.imageUrls = imageUrl;
-      item.merchandise = await this.merchListRepo.find({
+      item.merchandise = await this.merchRepo.find({
         merch_item: item.merch_item,
       });
       const _item = this.itemRepo.create(item);
@@ -141,15 +141,15 @@ export class SeedAirdropService {
   private seedMerch = async (merch) => {
     try {
       merch.publicAddress = merch.publicAddress.toLowerCase();
-      const _merch = this.merchListRepo.create(merch);
-      await this.merchListRepo.save(_merch);
+      const _merch = this.merchRepo.create(merch);
+      await this.merchRepo.save(_merch);
     } catch (err) {
       LoggerService.error(JSON.stringify(err));
     }
   };
 
   seedMerchs = async () => {
-    await this.merchListRepo.query(`delete from merchandise`);
+    await this.merchRepo.query(`delete from merchandise`);
 
     const promises = [];
     for (let i = 0; i < this.airdropDataMerchandise.length; i++) {
