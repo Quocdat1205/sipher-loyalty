@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { ERC1155Lootbox, ERC1155Sculpture } from "./erc1155.entity";
+import { ERC1155Lootbox, ERC1155Sculpture } from "@entity";
 
 @Entity()
 export class ERC1155LootboxAttribute {
