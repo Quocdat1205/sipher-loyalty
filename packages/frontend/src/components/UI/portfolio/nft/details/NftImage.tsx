@@ -40,7 +40,7 @@ export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest
   return (
     <Box h="full">
       <Flex align="center" justify="center" h="full" {...rest}>
-        <Skeleton rounded="lg" overflow="hidden" isLoaded={isFetching} maxW="38rem" pos="relative">
+        <Skeleton rounded="lg" overflow="hidden" isLoaded={isFetching} maxW="45rem" pos="relative">
           {videos.includes(extension) ? (
             <video src={src} autoPlay loop muted datatype="video/mp4"></video>
           ) : (

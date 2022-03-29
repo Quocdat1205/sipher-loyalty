@@ -43,7 +43,7 @@ export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest
         <Skeleton
           sx={{ span: { rounded: "md" }, video: { rounded: "md" } }}
           isLoaded={isFetching}
-          maxW="38rem"
+          maxW="45rem"
           pos="relative"
         >
           {videos.includes(extension) ? (

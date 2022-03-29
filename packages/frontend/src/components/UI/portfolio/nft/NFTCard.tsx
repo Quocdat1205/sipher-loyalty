@@ -24,18 +24,14 @@ const NFTCard = ({ data, isFetched }: CardProps) => {
   return (
     <Box
       onClick={data.onView}
-      _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
+      _hover={{ filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))" }}
       overflow="hidden"
       rounded="lg"
       cursor="pointer"
       bg="neutral.700"
       pos="relative"
     >
-      <Skeleton
-        sx={{ img: { transform: "auto", scale: collectionName === "Sipher Lootbox" ? "1.25" : "1" } }}
-        isLoaded={isFetched}
-        pos="relative"
-      >
+      <Skeleton bg="black" isLoaded={isFetched} pos="relative">
         {videos.includes(extension) ? (
           <video src={data.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
         ) : (
@@ -47,7 +43,7 @@ const NFTCard = ({ data, isFetched }: CardProps) => {
             height={480}
             width={425}
             quality={100}
-            objectFit="contain"
+            objectFit="cover"
           />
         )}
         {data.type === "ERC1155" && (

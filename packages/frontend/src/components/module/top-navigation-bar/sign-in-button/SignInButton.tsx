@@ -39,7 +39,7 @@ const SignInButton = () => {
 
   return (
     <SignInProvider>
-      <Box minW="6rem" ref={popRef} pos="relative" zIndex={"modal"}>
+      <Box ref={popRef} h="full" minW="6rem" pos="relative" zIndex={"modal"}>
         <Flex
           bg={!(authenticated && wallet.isActive && flowState === null) ? "accent.500" : "transparent"}
           rounded="md"
@@ -98,7 +98,7 @@ const SignInButton = () => {
           }}
         />
       </Box>
-
+      {isPopupOpen && <Box top={0} left={0} h="100vh" w="full" pos="fixed" bg="blackAlpha.700" />}
       <AccountModal isOpen={modal === "SETTING"} onClose={() => setModal("")} />
       <BuySipherModal isOpen={modal === "BUY"} onClose={() => setModal("")} />
       <SignInForm />

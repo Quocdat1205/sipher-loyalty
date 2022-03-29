@@ -57,8 +57,8 @@ export const OnBoardModal = () => {
       }}
     >
       <Box opacity="0.5" pos="absolute" w="full" h="full" top="0" left="0" bg="url(/images/general/noise.png)" />
-      <Flex px={6} w="full" flexDir="column" align="center">
-        <Flex mb={10} align="center">
+      <Flex px={8} py={4} w="full" flexDir="column" align="center">
+        <Flex mb={4} align="center">
           <Heading mr={4} fontWeight={600} fontSize="3xl">
             WELCOME TO
           </Heading>
