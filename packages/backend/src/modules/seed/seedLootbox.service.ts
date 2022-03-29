@@ -37,7 +37,7 @@ export class SeedLootboxService {
       tokenId: lootbox.tokenId,
     });
 
-    this.lootboxService.addQuantityClaimedLootbox({
+    await this.lootboxService.addQuantityClaimedLootbox({
       publicAddress: lootbox.publicAddress,
       tokenId: lootbox.tokenId,
       quantity: lootbox.quantity,
@@ -54,6 +54,6 @@ export class SeedLootboxService {
       promises.push(this.createClaimableLootbox(this.lootboxData[i]));
     }
     await Promise.all(promises);
-    LoggerService.log("Done");
+    LoggerService.log("Done add lootbox test");
   };
 }

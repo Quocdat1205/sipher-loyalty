@@ -71,6 +71,6 @@ export class SeedERC1155LootboxService {
       promises.push(this.seedERC1155Lootbox(this.erc1155Data[i]));
     }
     await Promise.all(promises);
-    LoggerService.log("Done");
+    LoggerService.log("Done erc1155 lootbox");
   };
 }

@@ -2,9 +2,8 @@ import { IsEthereumAddress } from "class-validator";
 import { Lootbox, PendingMint } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
+import { TransformLowercase } from "@utils/transfomers";
 import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
-
-import { TransformLowercase } from "../utils/transfomers";
 
 export class MintBatchLootboxInputDto {
   @TransformLowercase()
