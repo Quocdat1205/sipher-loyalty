@@ -9,9 +9,9 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { TransformLowercase } from "../utils/transfomers";
+import { TransformLowercase } from "@utils/transfomers";
 
-import { ImageUrl } from "./imageUrl.entity";
+import { ImageUrl } from "@entity";
 
 export enum AirdropType {
   NFT = "NFT",

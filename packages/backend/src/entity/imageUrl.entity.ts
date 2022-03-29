@@ -9,8 +9,8 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { Airdrop } from "./airdrop.entity";
-import { Item } from "./item.entity";
+import { Airdrop } from "@entity";
+import { Item } from "@entity";
 
 @Entity()
 export class ImageUrl {

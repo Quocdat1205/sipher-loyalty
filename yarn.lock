@@ -3886,10 +3886,10 @@
     amazon-cognito-identity-js "^5.2.3"
     react-script-hook "^1.5.0"
 
-"@sipher.dev/sipher-ui@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@sipher.dev/sipher-ui/-/sipher-ui-0.0.4.tgz#0b67d0f1314097c4bbd67da9b2b820df26ee2f18"
-  integrity sha512-S8OjIcGVLTuqAKJ3jj0xDKBw6X1BdK6sU7OqSY5VK0AmXBEmL5QCx2z6N7jbA2bxrrvBb17JOHn+oSPuWc2L3Q==
+"@sipher.dev/sipher-ui@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@sipher.dev/sipher-ui/-/sipher-ui-0.0.5.tgz#61434ff1a8044e9d3dd4622867b199b20986ffb5"
+  integrity sha512-iju+uuVNb3XDoxbMrhhaCXQoVtd4Iu86uJX0YyP7PRhb/aGCuxpZTLXPHRSuK6vre8zM9ZZe0e+7vJwx9K820Q==
   dependencies:
     "@chakra-ui/cli" "1.7.0"
     "@chakra-ui/icons" "1.1.1"

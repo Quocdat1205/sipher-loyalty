@@ -8,9 +8,9 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { AirdropType } from "./airdrop.entity";
-import { ImageUrl } from "./imageUrl.entity";
-import { Merchandise } from "./merchandise.entity";
+import { AirdropType } from "@entity";
+import { ImageUrl } from "@entity";
+import { Merchandise } from "@entity";
 
 export enum ItemType {
   Bomber = "Bomber",

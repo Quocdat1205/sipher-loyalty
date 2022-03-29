@@ -48,7 +48,7 @@ export class CollectionService {
   async getAllCollection() {
     const collections = await this.sipherCollectionRepo.find();
     if (constant.isProduction) {
-      return collections.filter((col) => [1, 1337].indexOf(col.chainId) !== -1);
+      return collections.filter((col) => [1, 137].indexOf(col.chainId) !== -1);
     }
     return collections;
   }

@@ -281,7 +281,7 @@ export interface Merchandise {
   id: number;
   publicAddress: string;
   tier: string;
-  merch_item: string;
+  merch_item: ItemType;
   quantity: number;
   quantity_shipped: number;
   isShipped: boolean;

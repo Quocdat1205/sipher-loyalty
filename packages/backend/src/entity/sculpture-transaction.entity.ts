@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { TransformLowercase } from "../utils/transfomers";
+import { TransformLowercase } from "@utils/transfomers";
 
 @Entity()
 export class SculptureTransaction {
