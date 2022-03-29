@@ -82,6 +82,8 @@ export class SystemConfigProvider {
 
   MARKETPLACE_SDK_URL = this.get("MARKETPLACE_SDK_URL");
 
+  ATHER_SOCIAL_URL = this.get("ATHER_SOCIAL_URL");
+
   public get isDebugging() {
     return !!this.get("DEBUG");
   }

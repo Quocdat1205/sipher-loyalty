@@ -9,6 +9,7 @@ interface SlideshowProps {
   isAuto?: boolean
   deplay?: number
   slideData: Record<string, any>
+  pageSize?: number
 }
 
 const variants = {
@@ -37,9 +38,8 @@ const swipePower = (offset: number, velocity: number) => {
   return Math.abs(offset) * velocity
 }
 
-export const Carousel = ({ deplay = 10000, slideData, isAuto = false }: SlideshowProps) => {
+export const Carousel = ({ deplay = 10000, slideData, isAuto = false, pageSize = 3 }: SlideshowProps) => {
   const [[page, direction], setPage] = useState([0, 0])
-  const pageSize = 3
   const pageNumber =
     slideData.length > 0
       ? slideData.length % pageSize > 0

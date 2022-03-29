@@ -26,13 +26,20 @@ const Logo = () => {
             />
           </Box>
           <Box color="neutral.400">
-            <BsFillCaretDownFill size="1.6rem" />
+            <BsFillCaretDownFill size="1.3rem" />
           </Box>
         </HStack>
       </Link>
       <Link href="/" passHref>
         <Flex direction="column" cursor={"pointer"}>
-          <Image src={SIPHER} alt="SIPHER LOYALTY LOGO" height={23.87} width={123.07} layout="fixed" priority />
+          <Image
+            src={SIPHER}
+            alt="SIPHER LOYALTY LOGO"
+            height={23.87 * 0.9}
+            width={123.07 * 0.9}
+            layout="fixed"
+            priority
+          />
           <Flex w="full" justify="space-between" px={0.5}>
             {"DASHBOARD".split("").map((letter, idx) => (
               <Text color="white" key={`${letter}-${idx}`} fontSize="xs">

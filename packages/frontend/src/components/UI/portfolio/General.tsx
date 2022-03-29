@@ -14,7 +14,7 @@ interface GeneralProps {
 
 const General = ({ totalNFTs = 0, totalToken = 0, totalETHPrice = 0, totalUsdPrice = 0 }: GeneralProps) => {
   return (
-    <SimpleGrid mb={8} columns={[2, 4]} spacing={8}>
+    <SimpleGrid mb={8} columns={[2, 2, 4]} spacing={8}>
       <CardGeneral
         value={totalNFTs.toString()}
         name={"Total NFTs"}

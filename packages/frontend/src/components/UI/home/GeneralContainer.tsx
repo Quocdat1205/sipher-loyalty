@@ -18,7 +18,7 @@ const GeneralContainer = () => {
 
   return (
     <>
-      <SimpleGrid mb={8} columns={[2, 4]} spacing={8}>
+      <SimpleGrid mb={8} columns={[2, 2, 4]} spacing={8}>
         <CardGeneral
           value={`${currency(totalETHPrice)} ETH`}
           name={"Portfolio value"}
@@ -29,7 +29,7 @@ const GeneralContainer = () => {
           value={currency(sipher ?? 0)}
           name="sipher token"
           icon={<SipherIcon />}
-          popoverProps={{ label: "SIPHER TOKEN", content: "Description" }}
+          // popoverProps={{ label: "SIPHER TOKEN", content: "Description" }}
           rightChildren={
             <Button
               onClick={() => setModalStake(true)}
