@@ -29,7 +29,7 @@ export class ERC1155LootboxAttribute {
   erc1155: ERC1155Lootbox;
 
   @ApiProperty()
-  @CreateDateColumn({ type: "timestamptz", default: new Date() })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 }
 
@@ -52,10 +52,10 @@ export class ERC1155SculptureAttribute {
   erc1155: ERC1155Sculpture;
 
   @ApiProperty()
-  @CreateDateColumn({ type: "timestamptz", default: new Date() })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ type: "timestamptz", default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }

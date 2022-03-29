@@ -40,18 +40,18 @@ class ConfigService {
       username: constant.POSTGRES_USER,
       password: constant.POSTGRES_PASSWORD,
       database: constant.POSTGRES_DATABASE,
-      entities: [join(__dirname, "**", "*.entity{.ts,.js}")],
+      entities: ["src/entity/*.entity{.ts,.js}"],
 
       migrationsTableName: "migration",
 
-      seeds: ["src/seed/**/*{.ts,.js}"],
+      seeds: ["src/seed/*{.ts,.js}"],
 
-      factories: ["src/factory/**/*{.ts,.js}"],
+      factories: ["src/factory/*{.ts,.js}"],
 
       migrations: ["src/migration/*.{ts,js}"],
 
       cli: {
-        migrationsDir: "src/migration/*.{ts,js}",
+        migrationsDir: "src/migration",
       },
 
       synchronize: constant.POSTGRES_SYNCHRONIZE === "true",

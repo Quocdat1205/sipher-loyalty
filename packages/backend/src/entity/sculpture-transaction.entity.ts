@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { TransformLowercase } from "@utils/transfomers";
+import { TransformLowercase } from "../utils/transfomers";
 
 @Entity()
 export class SculptureTransaction {
@@ -43,10 +43,10 @@ export class SculptureTransaction {
   ownerAddress: string;
 
   @ApiProperty()
-  @CreateDateColumn({ type: "timestamptz", default: new Date() })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ type: "timestamptz", default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }
