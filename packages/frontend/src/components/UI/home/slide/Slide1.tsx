@@ -27,6 +27,7 @@ const Slide1 = () => {
             borderColor="white"
             size="lg"
             variant="secondary"
+            _hover={{ bg: "none" }}
           >
             EXPLORER
           </Button>

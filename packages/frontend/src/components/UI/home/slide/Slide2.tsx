@@ -21,6 +21,7 @@ const Slide2 = () => {
             borderColor="white"
             size="lg"
             variant="secondary"
+            _hover={{ bg: "none" }}
           >
             CHECK IT OUT
           </Button>
