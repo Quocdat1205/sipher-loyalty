@@ -32,7 +32,7 @@ const NFTCard = ({ data, isFetched }: CardProps) => {
       pos="relative"
     >
       <Skeleton
-        sx={{ img: { transform: "auto", scale: collectionName === "Sipher Spaceship" ? "1.25" : "1" } }}
+        sx={{ img: { transform: "auto", scale: collectionName === "Sipher Lootbox" ? "1.25" : "1" } }}
         isLoaded={isFetched}
         pos="relative"
       >
