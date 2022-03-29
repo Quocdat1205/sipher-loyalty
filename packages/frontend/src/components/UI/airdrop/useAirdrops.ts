@@ -103,7 +103,7 @@ export const useAirdrops = () => {
         ...airdropsData!.token?.map(item => ({
           ...item,
           isClaiming: claimId === item.id,
-          isDisabled: item.totalAmount > "0" ? chainId !== ETHEREUM_NETWORK && claimableAmount !== 0 : true,
+          isDisabled: item.totalAmount > "0" ? chainId !== ETHEREUM_NETWORK && claimableAmount === 0 : true,
           buttonText: "Claim",
           onView: () => {
             router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })

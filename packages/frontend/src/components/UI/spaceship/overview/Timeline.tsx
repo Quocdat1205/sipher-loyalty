@@ -9,7 +9,15 @@ interface TimelineProps {
 }
 export const Timeline = ({ mappedData }: TimelineProps) => {
   return (
-    <Box mb={16} pos="relative">
+    <Box
+      sx={{
+        svg: {
+          display: ["none", "none", "block"],
+        },
+      }}
+      mb={16}
+      pos="relative"
+    >
       <svg viewBox="300 300 1200 75" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="grad1">
@@ -31,7 +39,7 @@ export const Timeline = ({ mappedData }: TimelineProps) => {
       >
         {mappedData.map((item, idx) => (
           <Flex
-            transform={`translateY(${item.y})`}
+            transform={[`translateY(${item.y})`]}
             justify="center"
             align="center"
             rounded="full"
