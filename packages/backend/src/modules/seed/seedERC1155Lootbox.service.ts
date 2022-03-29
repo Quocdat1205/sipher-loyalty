@@ -65,6 +65,9 @@ export class SeedERC1155LootboxService {
     await this.erc1155LootboxRepo.query(
       `delete from erc1155_lootbox_attribute`
     );
+
+    await this.erc1155LootboxRepo.query(`delete from claimable_lootbox`);
+    await this.erc1155LootboxRepo.query(`delete from lootbox`);
     await this.erc1155LootboxRepo.query(`delete from erc1155_lootbox`);
     const promises = [];
     for (let i = 0; i < this.erc1155Data.length; i++) {

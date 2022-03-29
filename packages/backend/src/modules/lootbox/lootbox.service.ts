@@ -1,4 +1,5 @@
 import { toChecksumAddress } from "ethereumjs-util";
+import { logger } from "ethers";
 import { In, MoreThan, MoreThanOrEqual, Repository } from "typeorm";
 import {
   BurnType,
@@ -22,7 +23,11 @@ import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 import { LoggerService } from "../logger/logger.service";
 
-import { MintBatchLootboxInput, MintLootboxInput } from "./lootbox.type";
+import {
+  DistributeLootbox,
+  MintBatchLootboxInput,
+  MintLootboxInput,
+} from "./lootbox.type";
 
 @Injectable()
 export class LootBoxService {
@@ -30,6 +35,8 @@ export class LootBoxService {
     @InjectRepository(Lootbox) private lootboxRepo: Repository<Lootbox>,
     @InjectRepository(ClaimableLootbox)
     private claimableLootboxRepo: Repository<ClaimableLootbox>,
+    @InjectRepository(ERC1155Lootbox)
+    private erc1155LootboxRepo: Repository<ERC1155Lootbox>,
     private mintService: MintService,
     private burnService: BurnService,
     private cancelService: CancelService,
@@ -171,6 +178,20 @@ export class LootBoxService {
 
   private async setBlockingLootbox(lootbox: Lootbox, blocking: boolean) {
     this.cacheService.setBlockingLootbox(lootbox.id, blocking);
+  }
+
+  private async createClaimableLootbox(lootbox: any) {
+    const erclootbox = await this.erc1155LootboxRepo.findOne({
+      tokenId: lootbox.tokenId,
+    });
+
+    await this.addQuantityClaimedLootbox({
+      publicAddress: lootbox.publicAddress,
+      tokenId: lootbox.tokenId,
+      quantity: lootbox.quantity,
+      expiredDate: new Date(lootbox.expiredDate),
+      propertyLootbox: erclootbox,
+    });
   }
 
   getLootboxById = async (id: string): Promise<Lootbox> => {
@@ -624,4 +645,20 @@ export class LootBoxService {
       LoggerService.log(` ${err}`);
     }
   }
+
+  distributeLootbox = async (data: DistributeLootbox[]) => {
+    const promises = [];
+
+    for (let i = 0; i < data.length; i++) {
+      promises.push(this.createClaimableLootbox(data[i]));
+    }
+    try {
+      await Promise.all(promises);
+    } catch (err) {
+      LoggerService.error(JSON.stringify(err));
+      return err;
+    }
+    LoggerService.log("Done add lootbox test");
+    return true;
+  };
 }

@@ -1,4 +1,4 @@
-import { Lootbox } from "@entity";
+import { ERC1155Lootbox, Lootbox } from "@entity";
 import { Module } from "@nestjs/common";
 import { ScheduleModule } from "@nestjs/schedule";
 import { TypeOrmModule } from "@nestjs/typeorm";
@@ -16,7 +16,7 @@ import { LootBoxService } from "./lootbox.service";
 @Module({
   imports: [
     ScheduleModule.forRoot(),
-    TypeOrmModule.forFeature([Lootbox, ClaimableLootbox]),
+    TypeOrmModule.forFeature([Lootbox, ClaimableLootbox, ERC1155Lootbox]),
     MintModule,
     BurnModule,
     CancelModule,
