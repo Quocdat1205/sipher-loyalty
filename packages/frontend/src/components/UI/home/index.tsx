@@ -16,7 +16,7 @@ const slideCompo = [<Slide1 />, <Slide2 />]
 const ContentHome = () => {
   return (
     <Flex flexDir="column" align="center" flex={1}>
-      <SlideComponent slideData={slideCompo} />
+      <SlideComponent isAuto slideData={slideCompo} />
       <Box px={[4, 4, 4, 0, 0]} py={8} flex={1} w="full" maxW="1200px">
         <GeneralContainer />
         <PortfolioHome />
