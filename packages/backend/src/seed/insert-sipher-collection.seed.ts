@@ -59,9 +59,9 @@ export default class InsertSipherCollection implements Seeder {
           isVerified: false,
           siteUrl: "https://sipher.xyz",
           bannerImage:
-            "https://lh3.googleusercontent.com/I3bpxVjzPhD-Gs8z5DX__anyxgqPVVYBQjtKroEBV5H7j3iFRRsjXh7uyM-9lCxB8C_1sEUNh0wCR3-wKY5XQVoMO_he68X3sRoduQ=s2500",
+            "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/Sculpture-banner.png",
           logoImage:
-            "https://lh3.googleusercontent.com/-V0eEOrC5W9AcbS_tvv_Ew9zp-Gf5WLS0WNdBGhd2b9CKVjO2IMDUsbN5uEzwxRuLpR_AiUU_TDfANQuh9uO-auOxW5Cdu435MFcKg=s120",
+            "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/Sculpture-logo.gif",
         },
         {
           id: "0x3e445d426c8fde12f5f0c223019ca9158f7da93b".toLowerCase(),
@@ -74,9 +74,41 @@ export default class InsertSipherCollection implements Seeder {
           isVerified: false,
           siteUrl: "https://sipher.xyz",
           bannerImage:
-            "https://lh3.googleusercontent.com/I3bpxVjzPhD-Gs8z5DX__anyxgqPVVYBQjtKroEBV5H7j3iFRRsjXh7uyM-9lCxB8C_1sEUNh0wCR3-wKY5XQVoMO_he68X3sRoduQ=s2500",
+            "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/Lootbox-banner.jpg",
           logoImage:
-            "https://lh3.googleusercontent.com/-V0eEOrC5W9AcbS_tvv_Ew9zp-Gf5WLS0WNdBGhd2b9CKVjO2IMDUsbN5uEzwxRuLpR_AiUU_TDfANQuh9uO-auOxW5Cdu435MFcKg=s120",
+            "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/Lootbox-logo.gif",
+        },
+        {
+          id: "0xD95006adFd42E582367Ea5Da3e0A875d68a97308".toLowerCase(),
+          name: "Sipher Spaceship Lootbox",
+          collectionType: CollectionType.ERC1155,
+          collectionSlug: "sipherspaceshiplootbox1337",
+          chainId: 1337,
+          description:
+            "The ultimate Loot Box of your Spaceship themed NFTs. Now all the spacecraft components inside these Loot Boxes are available for minting and trading away on any NFT marketplaces to your preference.",
+          category: CollectionCategory.LOOTBOX,
+          isVerified: false,
+          siteUrl: "https://sipher.xyz",
+          bannerImage:
+            "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/Lootbox-banner.jpg",
+          logoImage:
+            "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/Lootbox-logo.gif",
+        },
+        {
+          id: "0x315Bc085A14E251f129A361afa37205E3313bF15".toLowerCase(),
+          name: "Sipher Sculpture",
+          collectionType: CollectionType.ERC1155,
+          collectionSlug: "siphersculpture1337",
+          chainId: 1337,
+          description:
+            "For the first time ever, a Sipher Sculpture is brought to you as a token of appreciation for the real MVP who participated in the NEKO Dutch Auction. Imprinted with a dystopian futuristic setting, this Sipher Sculpture will be a totem of aesthetics that can make you a proud owner.",
+          category: CollectionCategory.SCULPTURE,
+          isVerified: false,
+          siteUrl: "https://sipher.xyz",
+          bannerImage:
+            "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/Sculpture-banner.png",
+          logoImage:
+            "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/Sculpture-logo.gif",
         },
         {
           id: "0x4d91fa57abfead5fbc8445e45b906b85bbd9744c".toLowerCase(),
