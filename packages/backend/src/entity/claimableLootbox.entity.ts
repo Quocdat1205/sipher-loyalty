@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { TransformLowercase } from "@utils/transfomers";
+import { TransformLowercase } from "../utils/transfomers";
 
 import { ERC1155Lootbox } from "./erc1155.entity";
 
@@ -47,10 +47,10 @@ export class ClaimableLootbox {
   expiredDate: Date;
 
   @ApiProperty()
-  @CreateDateColumn({ type: "timestamptz", default: new Date() })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt?: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ type: "timestamptz", default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }

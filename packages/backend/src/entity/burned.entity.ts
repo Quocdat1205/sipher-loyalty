@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { TransformLowercase } from "@utils/transfomers";
+import { TransformLowercase } from "../utils/transfomers";
 
 export enum BurnType {
   Lootbox = "Lootbox",
@@ -57,10 +57,10 @@ export class Burned {
   type: BurnType;
 
   @ApiProperty()
-  @CreateDateColumn({ type: "timestamptz", default: new Date() })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt?: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ type: "timestamptz", default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }
