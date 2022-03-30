@@ -14,7 +14,6 @@ export enum Chain {
 }
 
 type BlockchainConfiguration = {
-  rpcUrls: { [k in Chain]: string };
   contracts: {
     erc1155LootBox: {
       [k in Chain]: { address: string };
@@ -90,7 +89,7 @@ export class SystemConfigProvider {
     };
   }
 
-  public get blockchain() {
+  public get blockchain(): BlockchainConfiguration {
     const erc1155LootBox = {
       [Chain.Mainnet]: {
         address: ZERO_ADDRESS,
@@ -148,7 +147,6 @@ export class SystemConfigProvider {
 
   private async get(key: string, defaultValue?: string): Promise<string> {
     const value = process.env[key];
-    console.log("1", value);
     if (value === undefined) return defaultValue;
     if (value.startsWith("ssm:")) {
       const ssm = new SSM();
@@ -158,10 +156,8 @@ export class SystemConfigProvider {
           WithDecryption: true,
         })
         .promise();
-      console.log("2", value);
       return param.Parameter?.Value ?? defaultValue;
     }
-    console.log("3", value);
 
     return value;
   }
