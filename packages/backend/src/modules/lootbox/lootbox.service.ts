@@ -611,7 +611,7 @@ export class LootBoxService {
   ): Promise<ClaimableLootbox> {
     try {
       let lootbox = await this.getClaimableLootboxFromWalletAndTokenIdExpired(
-        claimableLootbox.publicAddress,
+        claimableLootbox.publicAddress.toLowerCase(),
         claimableLootbox.tokenId,
         claimableLootbox.expiredDate
       );

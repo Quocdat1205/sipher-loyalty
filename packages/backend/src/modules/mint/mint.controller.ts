@@ -13,6 +13,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
 import { AtherGuard } from "@modules/auth/auth.guard";
 import { AuthService } from "@modules/auth/auth.service";
+import { ParseEthereumAddress } from "src/pipes/ethereum-address..pipe";
 
 import { MintService } from "./mint.service";
 import { BodyUpdatePendingMint, ResPendingMintDto } from "./mint.type";
@@ -30,7 +31,7 @@ export class MintController {
   @ApiOkResponse({ type: ResPendingMintDto, isArray: true })
   @Get("pending/lootbox/:publicAddress")
   async getPendingLootbox(
-    @Param("publicAddress") publicAddress: string,
+    @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Req() req: any
   ) {
     await this.authService.verifyAddress(publicAddress, req.userData);

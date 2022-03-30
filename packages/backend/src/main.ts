@@ -1,7 +1,7 @@
 // library
 import path from "path";
 
-import { urlencoded } from "express";
+import { json, urlencoded } from "express";
 import helmet from "helmet";
 import { generateApi } from "swagger-typescript-api";
 import { ValidationPipe } from "@nestjs/common";
@@ -67,8 +67,8 @@ async function bootstrap() {
   );
   app.use(helmet());
   app.enableCors(cors);
+  app.use(json({ limit: "50mb" }));
   app.use(urlencoded({ extended: true, limit: "10mb" }));
-
   await app.listen(configService.get("PORT"), () => {
     LoggerService.log(
       `Server running port ${configService.get("PORT")}`,

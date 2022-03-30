@@ -47,6 +47,7 @@ export class AirdropService {
     return merchandises.map((merch) => ({
       id: merch.id,
       name: merch.item.name,
+      shortDescription: merch.item.shortDescription,
       description: merch.item.description,
       imageUrls: merch.item.imageUrls,
       type: merch.item.type,

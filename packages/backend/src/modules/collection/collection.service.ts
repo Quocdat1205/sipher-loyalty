@@ -4,13 +4,15 @@ import { Repository } from "typeorm";
 import { HttpService } from "@nestjs/axios";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ElasticsearchService } from "@nestjs/elasticsearch";
+import { Cron, CronExpression } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
 
 import { LoggerService } from "@modules/logger/logger.service";
+import { TokenType } from "@modules/nft/nft.dto";
 import { NftItemService } from "@modules/nft/nftItem.service";
 import { URIService } from "@modules/uri/uri.service";
-import { isSculptureContract, isLooboxContract } from "@utils/utils";
+import { isLooboxContract, isSculptureContract } from "@utils/utils";
 import marketplaceClient from "src/api/marketplaceClient";
 import {
   CollectionType,
@@ -23,8 +25,6 @@ import {
   PortfolioQuery,
   UserSocialInfo,
 } from "./collection.dto";
-import { TokenType } from "@modules/nft/nft.dto";
-import { Cron, CronExpression } from "@nestjs/schedule";
 
 @Injectable()
 export class CollectionService {
@@ -38,6 +38,7 @@ export class CollectionService {
   ) {}
 
   private openseaApiBaseUrl = "https://api.opensea.io/api/v1";
+
   private openseaApiTestBaseUrl = "https://testnets-api.opensea.io/api/v1/";
 
   @Cron(CronExpression.EVERY_HOUR)
@@ -264,7 +265,7 @@ export class CollectionService {
         (info) => info.address === item.owner
       );
       return {
-        publicAddress: item.owner,
+        publicAddress: item.owner.toLowerCase(),
         totalOwned: item.value,
         profileImage: userSocialInfo ? userSocialInfo.avatarImage : "",
         username: userSocialInfo ? userSocialInfo.name : "",

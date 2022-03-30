@@ -265,6 +265,38 @@ export interface PortfolioByCollectionResponse {
   items: NftItem;
 }
 
+export enum AirdropType {
+  NFT = 'NFT',
+  TOKEN = 'TOKEN',
+  MERCH = 'MERCH',
+  ALL = 'ALL',
+  OTHER = 'OTHER',
+}
+
+export interface Airdrop {
+  id: number;
+  merkleRoot: string;
+  proof: string[];
+  leaf: string;
+  claimer: string;
+  addressContract: string;
+  imageUrls: ImageUrl[];
+  totalAmount: string;
+  type: AirdropType;
+  startTime: string;
+  vestingInterval: string;
+  name: string;
+  shortDescription: string;
+  description: string[];
+  numberOfVestingPoint: string;
+
+  /** @format date-time */
+  createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
+}
+
 export enum ItemType {
   Bomber = 'Bomber',
   Hoodie = 'Hoodie',
@@ -279,14 +311,6 @@ export enum ViewType {
   SIPHERExclusiveTShirt = 'SIPHER Exclusive T-shirt',
   SIPHERExclusiveHat = 'SIPHER Exclusive Hat',
   ThankYouCard = 'Thank You Card',
-}
-
-export enum AirdropType {
-  NFT = 'NFT',
-  TOKEN = 'TOKEN',
-  MERCH = 'MERCH',
-  ALL = 'ALL',
-  OTHER = 'OTHER',
 }
 
 export interface Merchandise {
@@ -346,37 +370,6 @@ export interface ImageUrl {
   updatedAt: string;
 }
 
-export interface Airdrop {
-  id: number;
-  merkleRoot: string;
-  proof: string[];
-  leaf: string;
-  claimer: string;
-  addressContract: string;
-  imageUrls: ImageUrl[];
-  totalAmount: string;
-  type: AirdropType;
-  startTime: string;
-  vestingInterval: string;
-  name: string;
-  shortDescription: string;
-  description: string[];
-  numberOfVestingPoint: string;
-
-  /** @format date-time */
-  createdAt: string;
-
-  /** @format date-time */
-  updatedAt: string;
-}
-
-export interface ResAllAirdrop {
-  token: Airdrop[];
-  nft: Airdrop[];
-  merchandise: Airdrop[];
-  other: Airdrop[];
-}
-
 export interface ResAirdrop {
   id: number;
   merkleRoot: string;
@@ -401,6 +394,13 @@ export interface ResAirdrop {
   updatedAt: string;
   size: string[] | null;
   color: string[] | null;
+}
+
+export interface ResAllAirdrop {
+  token: ResAirdrop[];
+  nft: ResAirdrop[];
+  merchandise: ResAirdrop[];
+  other: ResAirdrop[];
 }
 
 export interface PriceData {
