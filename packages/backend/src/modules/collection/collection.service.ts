@@ -151,9 +151,13 @@ export class CollectionService {
       query.size
     );
     inventory.forEach((item) => delete item._relation);
+    const total = await this.nftService.count({
+      owner: query.userAddress,
+      collections: [collection.id],
+    });
     return {
       collection,
-      total: inventory.length,
+      total,
       items: await this.addUriToItem(inventory),
     };
   }

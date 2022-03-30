@@ -92,6 +92,28 @@ export class NftItemService {
     }
   }
 
+  async count(options?: NftItemFilterDto) {
+    const { owner, collections, tokenId } = options;
+    const filter: any[] = [{ term: { _entity: NftItem.name } }];
+    if (owner) {
+      filter.push({ term: { owner } });
+    }
+    if (tokenId) {
+      filter.push({ term: { tokenId } });
+    }
+    if (Array.isArray(collections)) {
+      filter.push({ terms: { collectionId: collections } });
+    }
+    const query: Record<string, any> = {
+      bool: { filter },
+    };
+    const res = await this.searchSrv.count({
+      index: constant.ELASTICSEARCH_INDEX,
+      body: { query },
+    });
+    return res.body?.count;
+  }
+
   private buildAttributeSearchOptions = (
     attributes: NftItemAttributeFilterDto[]
   ) => {
