@@ -35,8 +35,8 @@
     "category": "CollectionCategory.SCULPTURE",
     "isVerified": false,
     "siteUrl": "https://sipher.xyz",
-    "bannerImage": "https://drive.google.com/file/d/1f553qetHYU9_OHIwC_bU4its0equ2XNO/view?usp=sharing",
-    "logoImage": "https://drive.google.com/file/d/1IY8GIQTENh6bgw19pstRt_tOAWPPPTlk/view?usp=sharing"
+    "bannerImage": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/store_front/banner.png",
+    "logoImage": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/store_front/logo.gif"
   },
   {
     "id": "0xD95006adFd42E582367Ea5Da3e0A875d68a97308",
@@ -48,7 +48,7 @@
     "category": "CollectionCategory.LOOTBOX",
     "isVerified": false,
     "siteUrl": "https://sipher.xyz",
-    "bannerImage": "https://drive.google.com/file/d/1x6yzqsGzijwz5A6ZRJv2tnzhn2S419QH/view?usp=sharing",
-    "logoImage": "https://drive.google.com/file/d/1WjaPcxEZZULrQHRFYr1vqmB0D0Qt73ol/view?usp=sharing"
+    "bannerImage": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/store_front/banner.png",
+    "logoImage": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/store_front/logo.gif"
   }
 ]

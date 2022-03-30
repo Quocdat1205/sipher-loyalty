@@ -32,7 +32,7 @@ export class MintController {
   @Get("pending/lootbox/:publicAddress")
   async getPendingLootbox(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
-    @Req() req: any
+    @Req() req: Request
   ) {
     await this.authService.verifyAddress(publicAddress, req.userData);
     return this.mintService.getPendingLootbox(publicAddress);

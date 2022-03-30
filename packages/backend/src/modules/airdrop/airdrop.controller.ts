@@ -1,5 +1,14 @@
 import { Request } from "express";
-import { Controller, Get, Param, Req, UseGuards } from "@nestjs/common";
+import { Any } from "typeorm";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Put,
+  Req,
+  UseGuards,
+} from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
 import { AtherGuard } from "@modules/auth/auth.guard";
@@ -9,6 +18,7 @@ import { ParseEthereumAddress } from "src/pipes/ethereum-address..pipe";
 
 import { AirdropService } from "./airdrop.service";
 import {
+  AirdropTokens,
   ResAirdrop,
   ResAllAirdrop,
   ResMerchAirdrop,
@@ -53,5 +63,16 @@ export class AirdropController {
   ) {
     await this.authService.verifyAddress(publicAddress, req.userData);
     return this.airdropService.getAirdropByType(id, airdropType);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @ApiOkResponse({
+    type: Any,
+  })
+  @Put("updateTokenList/:smartContract")
+  async updateAirdropTokens(@Body() body: AirdropTokens, @Req() req: Request) {
+    await this.authService.verifyKey(body.key, req.userData);
+    return this.airdropService.updateAirdropTokens(body.data);
   }
 }

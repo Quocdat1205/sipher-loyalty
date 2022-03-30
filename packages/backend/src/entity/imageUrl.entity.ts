@@ -7,10 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { Airdrop, Item } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
-
-import { Airdrop } from "@entity";
-import { Item } from "@entity";
 
 @Entity()
 export class ImageUrl {

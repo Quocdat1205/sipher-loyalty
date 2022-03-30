@@ -38,7 +38,7 @@ export class SeedLootboxService {
     });
 
     await this.lootboxService.addQuantityClaimedLootbox({
-      publicAddress: lootbox.publicAddress,
+      publicAddress: lootbox.publicAddress.toLowerCase(),
       tokenId: lootbox.tokenId,
       quantity: lootbox.quantity,
       expiredDate: new Date(lootbox.expiredDate),

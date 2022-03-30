@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { catchError } from "rxjs";
 import {
   Controller,
@@ -62,7 +63,7 @@ export class CollectionController {
   async getUserCollection(
     @Query() query: PortfolioQuery,
     @Param("userAddress") userAddress: string,
-    @Req() req: any
+    @Req() req: Request
   ) {
     await this.authService.verifyAddress(userAddress, req.userData);
     return this.collectionService.getPortfolio(
@@ -78,7 +79,7 @@ export class CollectionController {
   async getPortfolioByCollection(
     @Param("userAddress") userAddress: string,
     @Param("collectionId") collectionId: string,
-    @Req() req: any
+    @Req() req: Request
   ) {
     await this.authService.verifyAddress(userAddress, req.userData);
     return this.collectionService.getPortfolioByCollection(
@@ -96,7 +97,7 @@ export class CollectionController {
   async getItemById(
     @Param("userAddress") userAddress: string,
     @Param("itemId") itemId: string,
-    @Req() req: any
+    @Req() req: Request
   ) {
     await this.authService.verifyAddress(userAddress, req.userData);
     // Best Practice 🤡

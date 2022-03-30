@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { Any } from "typeorm";
 import { ClaimableLootbox, Lootbox, PendingMint } from "@entity";
 import {
@@ -37,7 +38,7 @@ export class LootBoxController {
   async getLootboxById(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Param("id") id: string,
-    @Req() req: any
+    @Req() req: Request
   ) {
     await this.authService.verifyAddress(publicAddress, req.userData);
     return this.lootBoxService.getLootboxById(id);
@@ -49,7 +50,7 @@ export class LootBoxController {
   @Get("get-by-walllet/:publicAddress")
   async getLootboxFromWallet(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
-    @Req() req: any
+    @Req() req: Request
   ) {
     const userData = await this.authService.verifyAddress(
       publicAddress,
@@ -66,7 +67,7 @@ export class LootBoxController {
   @Get("claimable/get-by-walllet/:publicAddress")
   async getClaimableLootboxFromWallet(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
-    @Req() req: any
+    @Req() req: Request
   ) {
     const userData = await this.authService.verifyAddress(
       publicAddress,
@@ -81,7 +82,7 @@ export class LootBoxController {
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: Lootbox, isArray: true })
   @Get("get-by-userId")
-  async getLootboxFromUserID(@Req() req: any) {
+  async getLootboxFromUserID(@Req() req: Request) {
     return this.lootBoxService.getLootboxFromUserID(req.userData);
   }
 
@@ -89,7 +90,7 @@ export class LootBoxController {
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: ClaimableLootbox, isArray: true })
   @Get("claimable/get-by-userId")
-  async getClaimableLootboxFromUserID(@Req() req: any) {
+  async getClaimableLootboxFromUserID(@Req() req: Request) {
     return this.lootBoxService.getClaimableLootboxFromUserID(req.userData);
   }
 
@@ -99,7 +100,7 @@ export class LootBoxController {
   @Put("mint-batch")
   async mintBatchLootbox(
     @Body() body: MintBatchLootboxInputDto,
-    @Req() req: any
+    @Req() req: Request
   ) {
     await this.authService.verifyAddress(body.publicAddress, req.userData);
     return this.lootBoxService.mintBatchLootbox(body);
@@ -109,7 +110,7 @@ export class LootBoxController {
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: PendingMint })
   @Put("mint")
-  async mintLootbox(@Body() body: MintLootboxInputDto, @Req() req: any) {
+  async mintLootbox(@Body() body: MintLootboxInputDto, @Req() req: Request) {
     await this.authService.verifyAddress(body.publicAddress, req.userData);
     return this.lootBoxService.mintLootbox(body);
   }
@@ -120,7 +121,7 @@ export class LootBoxController {
   @Put("claim-lootbox/:publicAddress")
   async claim(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
-    @Req() req: any
+    @Req() req: Request
   ) {
     await this.authService.verifyAddress(publicAddress, req.userData);
     return this.lootBoxService.claimLootbox(publicAddress);
@@ -132,7 +133,10 @@ export class LootBoxController {
     type: Any,
   })
   @Put("distribute")
-  async distributeLootbox(@Body() body: DistributeLootboxs, @Req() req: any) {
+  async distributeLootbox(
+    @Body() body: DistributeLootboxs,
+    @Req() req: Request
+  ) {
     await this.authService.verifyKey(body.key, req.userData);
     return this.lootBoxService.distributeLootbox(body.data);
   }

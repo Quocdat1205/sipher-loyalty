@@ -321,7 +321,7 @@ export interface Merchandise {
   quantity: number;
   quantity_shipped: number;
   isShipped: boolean;
-  isShip: boolean;
+  shippable: boolean;
   item: Item;
 
   /** @format date-time */
@@ -401,6 +401,32 @@ export interface ResAllAirdrop {
   nft: ResAirdrop[];
   merchandise: ResAirdrop[];
   other: ResAirdrop[];
+}
+
+export interface DataAirdropTokens {
+  proof: string[];
+  leaf: string;
+  index: number;
+  claimer: string;
+  totalAmount: string;
+}
+
+export interface AirdropToken {
+  merkleRoot: string;
+  addressContract: string;
+  startTime: number;
+  vestingInterval: number;
+  numberOfVestingPoint: number;
+  imageUrls: ImageUrl[];
+  name: string;
+  description: string[];
+  shortDescription: string;
+  data: DataAirdropTokens[];
+}
+
+export interface AirdropTokens {
+  data: AirdropToken;
+  key: string;
 }
 
 export interface PriceData {
@@ -755,7 +781,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UriControllerGetDataErc1155Lootbox
      * @request GET:/api/sipher/loyalty/uri/erc1155-lootbox/{tokenId}
      */
-    uriControllerGetDataErc1155Lootbox: (tokenId: number, params: RequestParams = {}) =>
+    uriControllerGetDataErc1155Lootbox: (tokenId: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/uri/erc1155-lootbox/${tokenId}`,
         method: 'GET',
@@ -769,7 +795,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UriControllerGetDataErc1155Sculpture
      * @request GET:/api/sipher/loyalty/uri/erc1155-sculpture/{tokenId}
      */
-    uriControllerGetDataErc1155Sculpture: (tokenId: number, params: RequestParams = {}) =>
+    uriControllerGetDataErc1155Sculpture: (tokenId: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/uri/erc1155-sculpture/${tokenId}`,
         method: 'GET',
@@ -886,6 +912,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}/${id}`,
         method: 'GET',
         secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags airdrop
+     * @name AirdropControllerUpdateAirdropTokens
+     * @request PUT:/api/sipher/loyalty/airdrop/updateTokenList/{smartContract}
+     * @secure
+     */
+    airdropControllerUpdateAirdropTokens: (smartContract: string, data: AirdropTokens, params: RequestParams = {}) =>
+      this.request<Any, any>({
+        path: `/api/sipher/loyalty/airdrop/updateTokenList/${smartContract}`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),

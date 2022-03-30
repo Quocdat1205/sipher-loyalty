@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import constant, { Chain } from "@setting/constant";
 
 const randomSalt = () =>
@@ -39,11 +39,28 @@ const isLooboxContract = (contractAddress: string) => {
   return isMumbaiSpaceship || isPolygonSpaceship;
 };
 
+const weiToEther = (wei: string | BigNumber) =>
+  parseFloat(ethers.utils.formatEther(wei));
+
+const currency = (
+  amount: number,
+  prefix = "",
+  options: {
+    maximumFractionDigits?: number;
+    minimumFractionDigits?: number;
+  } = {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+  }
+) => prefix + amount.toLocaleString(undefined, { ...options });
+
 export {
+  currency,
   getDeadline3Day,
   getNow,
   insertDetailStringToImage,
   isLooboxContract,
   isSculptureContract,
   randomSalt,
+  weiToEther,
 };
