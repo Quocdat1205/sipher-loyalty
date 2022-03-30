@@ -39,7 +39,7 @@ export class Item {
   @Column({
     type: String,
   })
-  merch_item: ItemType;
+  merchItem: ItemType;
 
   @ApiProperty({ type: String, enum: ViewType, enumName: "ViewType" })
   @Column({

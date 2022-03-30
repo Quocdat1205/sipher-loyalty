@@ -149,7 +149,7 @@ export class SeedAirdropService {
       const imageUrl = await this.seedImageUrls(item.imageUrls);
       item.imageUrls = imageUrl;
       item.merchandise = await this.merchRepo.find({
-        merch_item: item.merch_item,
+        merchItem: item.merchItem,
       });
       const _item = this.itemRepo.create(item);
       await this.itemRepo.save(_item);

@@ -317,11 +317,11 @@ export interface Merchandise {
   id: number;
   publicAddress: string;
   tier: string;
-  merch_item: ItemType;
+  merchItem: ItemType;
   quantity: number;
-  quantity_shipped: number;
+  quantityShipped: number;
   isShipped: boolean;
-  isShip: boolean;
+  shippable: boolean;
   item: Item;
 
   /** @format date-time */
@@ -333,7 +333,7 @@ export interface Merchandise {
 
 export interface Item {
   id: number;
-  merch_item: ItemType;
+  merchItem: ItemType;
   name: ViewType;
   type: AirdropType;
   shortDescription: string;
@@ -413,6 +413,17 @@ export interface PriceDatas {
   sipherPrice: PriceData;
   ethereumPrice: PriceData;
   maticPrice: PriceData;
+}
+
+export interface MerchUpdateDto {
+  publicAddress?: string;
+  tier?: string;
+  merchItem?: ItemType;
+  quantity?: number;
+  quantityShipped?: number;
+  isShipped?: boolean;
+  shippable?: boolean;
+  itemId: number;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
@@ -924,6 +935,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: 'GET',
         secure: true,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateMerchById
+     * @request PUT:/api/sipher/loyalty/admin/merch/{merchId}
+     */
+    adminControllerUpdateMerchById: (merchId: number, data: MerchUpdateDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/merch/${merchId}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };
