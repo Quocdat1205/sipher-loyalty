@@ -61,6 +61,7 @@ export class PortfolioByCollectionResponse {
 
   @ApiProperty({
     type: NftItem,
+    isArray: true,
   })
   items: NftItem[];
 }
