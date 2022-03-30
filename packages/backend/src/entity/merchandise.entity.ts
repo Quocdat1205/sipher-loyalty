@@ -1,4 +1,11 @@
 import {
+  IsBoolean,
+  IsEnum,
+  IsEthereumAddress,
+  IsNumber,
+  IsString,
+} from "class-validator";
+import {
   Column,
   CreateDateColumn,
   Entity,
@@ -11,13 +18,6 @@ import { ApiProperty } from "@nestjs/swagger";
 import { TransformLowercase } from "@utils/transfomers";
 
 import { Item, ItemType } from "./item.entity";
-import {
-  IsBoolean,
-  IsEnum,
-  IsEthereumAddress,
-  IsNumber,
-  IsString,
-} from "class-validator";
 
 @Entity()
 export class Merchandise {

@@ -1,3 +1,4 @@
+import { IsArray, IsEnum, IsNumber, IsString } from "class-validator";
 import {
   Column,
   CreateDateColumn,
@@ -8,7 +9,6 @@ import {
 } from "typeorm";
 import { AirdropType, ImageUrl, Merchandise } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsEnum, IsNumber, IsString } from "class-validator";
 
 export enum ItemType {
   Bomber = "Bomber",

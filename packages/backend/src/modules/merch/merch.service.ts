@@ -4,6 +4,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { LoggerService } from "../logger/logger.service";
+
 import { MerchUpdateDto } from "./merch.dto";
 
 @Injectable()

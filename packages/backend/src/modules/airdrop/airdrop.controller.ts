@@ -37,6 +37,17 @@ export class AirdropController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
+  @Put("updateTokenList/:smartContract")
+  async updateAirdropTokens(@Body() body: AirdropTokens, @Req() req: Request) {
+    await this.authService.verifyAdmin(
+      req.userData,
+      UserRole.LOYALTY_ADMIN_AIRDROP
+    );
+    return this.airdropService.updateAirdropTokens(body.data);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({
     type: ResAllAirdrop || ResNFTAirdrop || ResTokenAirdrop || ResMerchAirdrop,
   })
@@ -64,19 +75,5 @@ export class AirdropController {
   ) {
     await this.authService.verifyAddress(publicAddress, req.userData);
     return this.airdropService.getAirdropByType(id, airdropType);
-  }
-
-  @UseGuards(AtherGuard)
-  @ApiBearerAuth("JWT-auth")
-  @ApiOkResponse({
-    type: Any,
-  })
-  @Put("updateTokenList/:smartContract")
-  async updateAirdropTokens(@Body() body: AirdropTokens, @Req() req: Request) {
-    await this.authService.verifyAdmin(
-      req.userData,
-      UserRole.LOYALTY_ADMIN_AIRDROP
-    );
-    return this.airdropService.updateAirdropTokens(body.data);
   }
 }
