@@ -147,15 +147,24 @@ export class SystemConfigProvider {
 
   private async get(key: string, defaultValue?: string): Promise<string> {
     const value = process.env[key];
+    console.log(value);
     if (value === undefined) return defaultValue;
+    console.log(1);
+
     if (value.startsWith("ssm:")) {
+      console.log(2);
+
       const ssm = new SSM();
+      console.log(3, ssm);
+
       const param = await ssm
         .getParameter({
           Name: value.slice(4),
           WithDecryption: true,
         })
         .promise();
+      console.log(4, param);
+
       return param.Parameter?.Value ?? defaultValue;
     }
 
