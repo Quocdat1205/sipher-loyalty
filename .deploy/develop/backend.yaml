@@ -45,7 +45,7 @@ sipher-chart:
     POSTGRES_URL: ssm:/atherlabs/dashboard/dev/POSTGRES_URL
     POSTGRES_SYNCHRONIZE: true
     SESSION_URL: ssm:/atherlabs/dashboard/dev/SESSION_URL
-    KEY_NFURA: ssm:/atherlabs/dashboard/dev/KEY_NFURA
+    KEY_INFURA: ssm:/atherlabs/dashboard/dev/KEY_NFURA
     ELASTICSEARCH_ENDPOINT: https://search-dev-marketplace-j3etkzos2pedv2c2q6jl2wy5d4.us-west-2.es.amazonaws.com
     ELASTICSEARCH_INDEX: dev-marketplace
     PRIVATE_KEY_LOYALTY: ssm:/atherlabs/dashboard/dev/PRIVATE_KEY_LOYALTY

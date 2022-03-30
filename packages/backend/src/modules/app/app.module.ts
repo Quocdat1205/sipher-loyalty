@@ -1,5 +1,4 @@
 // import library
-import Joi from "joi";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";

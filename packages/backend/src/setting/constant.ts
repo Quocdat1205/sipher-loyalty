@@ -53,7 +53,7 @@ export class SystemConfigProvider {
   ATHER_SOCIAL_URL = this.getSync("ATHER_SOCIAL_URL");
 
   public async getPOSTGRES_URL() {
-    return this.getSync("POSTGRES_URL");
+    return this.get("POSTGRES_URL");
   }
 
   public async getSESSION_URL() {
@@ -162,16 +162,11 @@ export class SystemConfigProvider {
 
   private async get(key: string, defaultValue?: string): Promise<string> {
     const value = process.env[key];
-    console.log(value);
     if (value === undefined) return defaultValue;
-    console.log(1);
 
     if (value.startsWith("ssm:")) {
-      console.log(2);
-
       const credentials = await Promise.resolve(this.awsCredentials);
       const ssm = new SSM({ credentials });
-      console.log(3, ssm);
 
       const param = await ssm
         .getParameter({
@@ -179,7 +174,6 @@ export class SystemConfigProvider {
           WithDecryption: true,
         })
         .promise();
-      console.log(4, param);
 
       return param.Parameter?.Value ?? defaultValue;
     }

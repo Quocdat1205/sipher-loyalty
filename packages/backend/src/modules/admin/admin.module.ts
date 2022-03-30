@@ -15,6 +15,7 @@ import {
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { AirdropService } from "@modules/airdrop/airdrop.service";
 import { AuthModule } from "@modules/auth/auth.module";
 import { AuthService } from "@modules/auth/auth.service";
 import { BurnService } from "@modules/burn/burn.service";
@@ -23,7 +24,6 @@ import { CancelService } from "@modules/cancel/cancel.service";
 import { LootBoxModule } from "@modules/lootbox/lootbox.module";
 import { LootBoxService } from "@modules/lootbox/lootbox.service";
 import { MerchModule } from "@modules/merch/merch.module";
-import { MintModule } from "@modules/mint/mint.module";
 import { MintService } from "@modules/mint/mint.service";
 import { URIService } from "@modules/uri/uri.service";
 
@@ -59,6 +59,7 @@ import { AdminService } from "./admin.service";
     BurnService,
     CancelService,
     URIService,
+    AirdropService,
   ],
   exports: [AdminService],
   controllers: [AdminController],
