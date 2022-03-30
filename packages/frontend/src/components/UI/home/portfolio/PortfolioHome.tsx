@@ -3,9 +3,11 @@ import { BiChevronRight } from "react-icons/bi"
 import { useRouter } from "next/router"
 import { Box, Button, Flex, Text } from "@sipher.dev/sipher-ui"
 
+import { PortfolioHomeProps } from ".."
+
 import TabContainer from "./TabContainer"
 
-const PortfolioHome = () => {
+const PortfolioHome = ({ collectionData, tokensData, totalNFTs, totalToken }: PortfolioHomeProps) => {
   const router = useRouter()
 
   return (
@@ -21,7 +23,12 @@ const PortfolioHome = () => {
           </Box>
         </Button>
       </Flex>
-      <TabContainer />
+      <TabContainer
+        collectionData={collectionData}
+        tokensData={tokensData}
+        totalNFTs={totalNFTs}
+        totalToken={totalToken}
+      />
     </Box>
   )
 }

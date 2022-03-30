@@ -86,6 +86,8 @@ const VerifyNewPassword = ({ email }: VerifySignUpFormProps) => {
 
   return (
     <ChakraModal
+      closeOnOverlayClick={false}
+      hideCloseButton
       title={"CHANGE YOUR PASSWORD"}
       size="lg"
       isOpen={flowState?.type === AuthType.ForgotPassword && flowState.action === ForgotPasswordAction.Verify}

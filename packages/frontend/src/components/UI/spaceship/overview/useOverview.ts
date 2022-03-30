@@ -4,7 +4,7 @@ import { differenceInSeconds } from "date-fns"
 export interface SpaceshipDataProps {
   id: string
   week: number
-  y: string
+  y: number
   title: string
   image: string
   mainDescription: string
@@ -16,7 +16,7 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 1,
     id: "THE WANDERING ALICE",
-    y: "-0.5rem",
+    y: 330,
     title: "The Wandering Alice",
     image: "/images/spaceship/ship/4.png",
     mainDescription: "On every adventure, THE WANDERING ALICE grows more and more curious.",
@@ -26,7 +26,7 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 2,
     id: "THE FLIK FLAK",
-    y: "1.2rem",
+    y: 356,
     title: "The Flik Flak",
     image: "/images/spaceship/ship/1.png",
     mainDescription: "This acrobatic trickster feels right at home in the air.",
@@ -35,7 +35,7 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 3,
     id: "THE AKAGI",
-    y: "2rem",
+    y: 370,
     title: "The Akagi",
     image: "/images/spaceship/ship/3.png",
     mainDescription: "High risk, high reward - there’s no gamble too large for the AKAGI",
@@ -44,7 +44,7 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 4,
     id: "THE AHAB",
-    y: "2.25rem",
+    y: 374,
     title: "The Ahab",
     image: "/images/spaceship/ship/2.png",
     mainDescription: "This wicked whirlwind is a ceaseless pursuer.",
@@ -53,7 +53,7 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 5,
     id: "THE ZED LEP",
-    y: "2rem",
+    y: 371,
     title: "The Zed Lep",
     image: "/images/spaceship/ship/5.png",
     mainDescription: "This NEKO ship will send enemies up the stairway to heaven.",
@@ -62,7 +62,7 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 6,
     id: "THE BARKING BARON",
-    y: "1.2rem",
+    y: 358,
     title: "The Barking Baron - INU-only limited edition Loot box claim (INU only claim)",
     image: "/images/spaceship/ship/6.png",
     mainDescription: "This INU ship is named after the legendary dogfighter pilot - the Red Baron",
@@ -71,7 +71,7 @@ const initData: SpaceshipDataProps[] = [
   {
     week: 7,
     id: "MYSTERY BOX",
-    y: "-0.5rem",
+    y: 334,
     title: "The Barking Baron - INU-only limited edition Loot box claim (INU only claim)",
     image: "/images/spaceship/ship/6.png",
     mainDescription: "This INU ship is named after the legendary dogfighter pilot - the Red Baron",

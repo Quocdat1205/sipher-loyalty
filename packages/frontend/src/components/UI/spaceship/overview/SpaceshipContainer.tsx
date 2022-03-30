@@ -30,7 +30,7 @@ export const SpaceshipContainer = () => {
         <TabPage tabs={spaceshipTabs} />
       </Box>
       <Box py={[28, 28, 32, 32, 32]} maxW="1200px" w="full">
-        <Flex mb={[48, 48, 48, 48, 56]} justify="space-between" align="center">
+        <Flex mb={[24, 24, 24, 32, 32]} justify="space-between" align="center">
           <Box flex={2}>
             <Text fontSize="lg" color="whiteAlpha.700" fontWeight={600} mb={2}>
               Week {activeData.week}

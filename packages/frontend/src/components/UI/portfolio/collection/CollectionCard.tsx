@@ -62,9 +62,7 @@ const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
               </Text>
               <Flex align="center">
                 <EthereumIcon />
-                <Text color="neutral.50">
-                  {0} {""}M
-                </Text>
+                <Text color="neutral.50">{currency(parseFloat(data.totalVolume) || 0)}</Text>
               </Flex>
             </Skeleton>
             <Skeleton isLoaded={isFetched} ml={8}>

@@ -3,15 +3,15 @@ import { Box, chakra, Flex, HStack, Image, Text } from "@sipher.dev/sipher-ui"
 
 import TokensContainer from "@components/UI/portfolio/tokens"
 
+import { PortfolioHomeProps } from ".."
+
 import NFTsContainer from "./NFTsContainer"
-import usePortFolioHome from "./usePortFolioHome"
 
 const tabs = ["NFTs", "Tokens"] as const
 type Tab = typeof tabs[number]
 
-const TabContainer = () => {
+const TabContainer = ({ collectionData, tokensData, totalNFTs, totalToken }: PortfolioHomeProps) => {
   const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
-  const { collectionData, tokensData, totalNFTs, totalToken } = usePortFolioHome()
 
   const renderTabs = () => {
     if (currentTab === "NFTs") {

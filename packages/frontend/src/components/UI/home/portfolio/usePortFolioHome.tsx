@@ -58,7 +58,9 @@ const usePortFolioHome = () => {
 
   const totalNFTs = collectionData.reduce((acc, curr) => acc + curr.total, 0)
   const totalToken = tokensData.length
+  const arrayCollectionPrice = collectionData.map(item => item.total * parseFloat(item.floorPrice ?? 0))
+  const totalCollectionPrice = arrayCollectionPrice.reduce((acc, curr) => acc + curr, 0)
 
-  return { totalNFTs, totalToken, totalUsdPrice, tokensData, collectionData }
+  return { totalNFTs, totalToken, totalUsdPrice, tokensData, collectionData, totalCollectionPrice }
 }
 export default usePortFolioHome

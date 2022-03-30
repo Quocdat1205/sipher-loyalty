@@ -9,10 +9,11 @@ const ConnectingWallet = () => {
   const { flowState } = useSignUpContext()
   return (
     <ChakraModal
+      closeOnOverlayClick={false}
+      hideCloseButton
       title={"CONNECT YOUR WALLET"}
       size="lg"
       isOpen={flowState?.type === AuthType.SignUp && flowState.action === SignUpAction.ConnectingWallet}
-      hideCloseButton={true}
     >
       <Flex px={6} align="center">
         <Text>

@@ -131,6 +131,8 @@ const SignInForm = () => {
 
   return (
     <ChakraModal
+      closeOnOverlayClick={false}
+      hideCloseButton
       title={"SIGN IN"}
       size="lg"
       isOpen={flowState?.type === AuthType.SignIn && flowState.action === SignInAction.SignIn}

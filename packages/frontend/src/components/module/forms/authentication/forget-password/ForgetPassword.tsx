@@ -44,6 +44,8 @@ const ForgetPassword = () => {
     <Fragment>
       <VerifyNewPassword email={email} />
       <ChakraModal
+        closeOnOverlayClick={false}
+        hideCloseButton
         title={"FORGOT PASSWORD"}
         size="lg"
         isOpen={flowState?.type === AuthType.ForgotPassword && flowState.action === ForgotPasswordAction.FillEmail}

@@ -103,7 +103,8 @@ const VerifySignUpForm = () => {
       title={"VERIFY YOUR ACCOUNT"}
       size="lg"
       isOpen={flowState?.type === AuthType.SignUp && flowState.action === SignUpAction.VerifySignUp}
-      hideCloseButton={true}
+      closeOnOverlayClick={false}
+      hideCloseButton
     >
       <Form onSubmit={handleSubmit}>
         <Stack pos="relative" px={6} spacing={4} w="full">

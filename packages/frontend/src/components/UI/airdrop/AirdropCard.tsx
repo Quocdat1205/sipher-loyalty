@@ -13,7 +13,7 @@ interface AirdropProps {
 
 const AirdropCard = ({ data, isFetched }: AirdropProps) => {
   const extension = data.imageUrls[0]?.default.split(".")[5]
-
+  console.log(data)
   return (
     <Flex
       flexDir="column"
@@ -33,7 +33,8 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
           pos="relative"
           w="full"
           overflow="hidden"
-          h="12rem"
+          bg="white"
+          h="14rem"
           sx={{
             img: {
               pos: "absolute",
@@ -49,7 +50,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
                 ? data?.imageUrls?.find(item => item.color === "black")?.back || data.imageUrls[0].default
                 : ""
             }
-            objectFit="cover"
+            objectFit="contain"
             w="full"
             h="full"
           />
@@ -62,7 +63,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
                 ? data?.imageUrls?.find(item => item.color === "black")?.front || data.imageUrls[0].front
                 : ""
             }
-            objectFit="cover"
+            objectFit="contain"
             w="full"
             h="full"
           />
@@ -74,7 +75,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
           justifyContent="center"
           pos="relative"
           overflow="hidden"
-          h="12rem"
+          h="14rem"
           w="full"
           isLoaded={isFetched && data.imageUrls?.length > 0}
         >
@@ -98,7 +99,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
           </Skeleton>
           <Skeleton isLoaded={isFetched}>
             <Text mb={2} fontSize="xs" color="neutral.300">
-              {data.description}
+              {data.shortDescription}
             </Text>
           </Skeleton>
         </Box>

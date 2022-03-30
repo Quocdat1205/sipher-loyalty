@@ -53,6 +53,8 @@ const FillEmailForm = () => {
 
   return (
     <ChakraModal
+      closeOnOverlayClick={false}
+      hideCloseButton
       title={"YOU ARE ALMOST THERE"}
       size="lg"
       isOpen={flowState?.type === AuthType.SignUp && flowState.action == SignUpAction.FillEmail}

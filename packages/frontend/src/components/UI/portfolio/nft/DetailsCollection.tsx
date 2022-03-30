@@ -1,13 +1,14 @@
 import React from "react"
+import InfiniteScroll from "react-infinite-scroll-component"
 import Image from "next/image"
 import { Avatar, Box, chakra, Flex, Heading, SimpleGrid, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
-import { NotifyNetwork } from "@components/shared"
 import { SpVerified } from "@components/shared/icons"
 import { capitalize } from "@utils"
 
 import GridSelector from "../GridSelector"
 
+import LoadingCard from "./LoadingCard"
 import NFTCard from "./NFTCard"
 import useNFTs from "./useNFTs"
 
@@ -16,15 +17,22 @@ interface DetailsCollectionProps {
 }
 
 const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
-  const { collectionData, columns, total, nftsData, isFetched } = useNFTs(collectionId)
+  const { collectionData, columns, total, nftsData, isFetched, query } = useNFTs(collectionId)
+  const { data, hasNextPage, fetchNextPage, isLoading } = query
+
+  const renderLoadingCards = () => {
+    return Array.from(Array(1).keys()).map(i => <LoadingCard key={i} />)
+  }
 
   const renderNFTs = () => {
-    return nftsData?.map(i => <NFTCard key={i.id} data={i} isFetched={isFetched} />)
+    if (isLoading) {
+      return renderLoadingCards()
+    }
+    return nftsData?.map((i, idx) => <NFTCard key={idx} data={i} isFetched={isFetched} />)
   }
 
   return (
-    <Box pos="relative">
-      <NotifyNetwork chainId={collectionData?.chainId} />
+    <Flex flexDir="column" flex={1} w="full" pos="relative">
       <Skeleton isLoaded={isFetched} flexDir="column" w="full" justify="center" position="relative">
         <Image
           layout="responsive"
@@ -36,8 +44,8 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
           alt={"banner"}
         />
       </Skeleton>
-      <Flex flexDir="column" w="full" align="center">
-        <Box px={[4, 4, 4, 0, 0]} w="full" maxW="1200px">
+      <Flex flex={1} flexDir="column" w="full" align="center">
+        <Flex flexDir="column" px={[4, 4, 4, 0, 0]} w="full" maxW="1200px">
           <Stack mb={4} flexDir="column" align="center" pos="relative">
             <Skeleton pos="absolute" transform="translateY(-50%)" isLoaded={isFetched} rounded="full">
               <Avatar src={collectionData?.logoImage} size="xl" />
@@ -69,12 +77,30 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
             </Skeleton>
             <GridSelector />
           </Flex>
-          <SimpleGrid py={8} maxW="1200px" w="full" spacing={6} columns={columns}>
-            {renderNFTs()}
-          </SimpleGrid>
-        </Box>
+          <Box py={8} flex={1}>
+            <InfiniteScroll
+              dataLength={data ? data.pages[0].total : 0}
+              next={fetchNextPage}
+              hasMore={!!hasNextPage}
+              style={{
+                width: "100%",
+                overflow: "hidden",
+              }}
+              loader={
+                <SimpleGrid mt={6} spacing={6} columns={columns}>
+                  {renderLoadingCards()}
+                </SimpleGrid>
+              }
+              scrollableTarget="scrollContainer"
+            >
+              <SimpleGrid spacing={6} columns={columns}>
+                {renderNFTs()}
+              </SimpleGrid>
+            </InfiniteScroll>
+          </Box>
+        </Flex>
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 export default DetailsCollection

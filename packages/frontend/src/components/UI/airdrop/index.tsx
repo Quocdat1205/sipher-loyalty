@@ -1,4 +1,4 @@
-import { Box, Flex, SimpleGrid } from "@sipher.dev/sipher-ui"
+import { Box, Flex, Link, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
 import { Banner, NotifyNetwork } from "@components/shared"
@@ -33,7 +33,7 @@ const AirdropUI = () => {
         <Box py={4} flex={1}>
           {currentTab === "all" ? (
             allAirdrops.length > 0 ? (
-              <SimpleGrid spacing={4} columns={[1, 2, 3, 5, 5]}>
+              <SimpleGrid spacing={4} columns={[1, 3, 4, 5, 5]}>
                 {allAirdrops.map((item, index) => (
                   <AirdropCard key={index} data={item} isFetched={isFetched} />
                 ))}
@@ -42,7 +42,7 @@ const AirdropUI = () => {
               <NoItemUI />
             )
           ) : allAirdrops.filter(airdrop => airdrop.type === currentTab.toString().toUpperCase()).length > 0 ? (
-            <SimpleGrid spacing={4} columns={[1, 2, 3, 5, 5]}>
+            <SimpleGrid spacing={4} columns={[1, 3, 4, 5, 5]}>
               {allAirdrops
                 .filter(airdrop => airdrop.type === currentTab.toString().toUpperCase())
                 .map(item => (
@@ -51,6 +51,15 @@ const AirdropUI = () => {
             </SimpleGrid>
           ) : (
             <NoItemUI />
+          )}
+          {currentTab === "merch" && (
+            <Text pt={4} color="neutral.300">
+              * If you want to change to another item (equal or lesser than your current tier), please{" "}
+              <Link color="cyan.600" textDecor="underline">
+                contact us
+              </Link>{" "}
+              before 15th April.{" "}
+            </Text>
           )}
         </Box>
       </Flex>

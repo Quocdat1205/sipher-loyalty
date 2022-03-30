@@ -13,13 +13,13 @@ export const useClaim = () => {
   const { account } = useWalletContext()
 
   const { data } = useQuery(
-    "claimableLootBox",
+    ["claimableLootBox", account],
     () =>
       client.api
         .lootBoxControllerGetClaimableLootboxFromWallet(account!, setBearerToken(bearerToken))
         .then(res => res.data),
     {
-      enabled: !!bearerToken,
+      enabled: !!bearerToken && !!account,
       initialData: [],
     },
   )
