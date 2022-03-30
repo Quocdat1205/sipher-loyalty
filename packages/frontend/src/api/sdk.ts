@@ -426,6 +426,29 @@ export interface MerchUpdateDto {
   itemId: number;
 }
 
+export interface UpdateItemDto {
+  merchItem?: ItemType;
+  name?: ViewType;
+  type?: AirdropType;
+  shortDescription?: string;
+  description?: string[];
+  size?: string[] | null;
+  color?: string[] | null;
+}
+
+export interface UpdateImageUrlDto {
+  color?: string;
+  default?: string;
+  front?: string;
+  back?: string;
+  left?: string;
+  right?: string;
+  top?: string;
+  bot?: string;
+  itemId: number;
+  airdropId: number;
+}
+
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
 
 export type QueryParamsType = Record<string | number, any>;
@@ -948,6 +971,38 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     adminControllerUpdateMerchById: (merchId: number, data: MerchUpdateDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/admin/merch/${merchId}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateItemById
+     * @request PUT:/api/sipher/loyalty/admin/item/{itemId}
+     */
+    adminControllerUpdateItemById: (itemId: number, data: UpdateItemDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/item/${itemId}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateImageUrlById
+     * @request PUT:/api/sipher/loyalty/admin/imageUrl/{imageUrlId}
+     */
+    adminControllerUpdateImageUrlById: (imageUrlId: number, data: UpdateImageUrlDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/imageUrl/${imageUrlId}`,
         method: 'PUT',
         body: data,
         type: ContentType.Json,
