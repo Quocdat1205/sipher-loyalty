@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import "@env";
 
-import { SSM } from "aws-sdk";
+import AWS, { Credentials, SSM } from "aws-sdk";
 import { Injectable } from "@nestjs/common";
 
 import { ZERO_ADDRESS } from "@utils/constants";
@@ -145,6 +145,21 @@ export class SystemConfigProvider {
     return process.env[key] || defaultValue;
   }
 
+  public get awsCredentials(): Promise<Credentials> {
+    if (process.env.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI) {
+      const ecsCredentials = new AWS.ECSCredentials();
+      return ecsCredentials.getPromise().then(() => ecsCredentials);
+    }
+    if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+      const envCredentials = new AWS.EnvironmentCredentials("AWS");
+      return envCredentials.getPromise().then(() => envCredentials);
+    }
+    if (process.env.AWS_SDK_LOAD_CONFIG) {
+      const localCredentials = new AWS.SharedIniFileCredentials();
+      return localCredentials.getPromise().then(() => localCredentials);
+    }
+  }
+
   private async get(key: string, defaultValue?: string): Promise<string> {
     const value = process.env[key];
     console.log(value);
@@ -154,7 +169,8 @@ export class SystemConfigProvider {
     if (value.startsWith("ssm:")) {
       console.log(2);
 
-      const ssm = new SSM();
+      const credentials = await Promise.resolve(this.awsCredentials);
+      const ssm = new SSM({ credentials });
       console.log(3, ssm);
 
       const param = await ssm
