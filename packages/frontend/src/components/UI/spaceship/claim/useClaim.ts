@@ -14,7 +14,10 @@ export const useClaim = () => {
 
   const { data } = useQuery(
     "claimableLootBox",
-    () => client.api.lootBoxControllerGetClaimableLootboxFromUserId(setBearerToken(bearerToken)).then(res => res.data),
+    () =>
+      client.api
+        .lootBoxControllerGetClaimableLootboxFromWallet(account!, setBearerToken(bearerToken))
+        .then(res => res.data),
     {
       enabled: !!bearerToken,
       initialData: [],
