@@ -262,7 +262,7 @@ export interface NftItem {
 export interface PortfolioByCollectionResponse {
   collection: SipherCollection;
   total: number;
-  items: NftItem;
+  items: NftItem[];
 }
 
 export enum AirdropType {
