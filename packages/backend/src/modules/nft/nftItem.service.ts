@@ -16,7 +16,7 @@ import {
 export class NftItemService {
   constructor(private readonly searchSrv: ElasticsearchService) {}
 
-  async search(options?: NftItemFilterDto, limit = 20) {
+  async search(options?: NftItemFilterDto, from = 0, limit = 20) {
     const {
       owner,
       collections,
@@ -29,7 +29,6 @@ export class NftItemService {
       tokenId,
     } = options;
     const take = limit;
-    const from = 0;
 
     const filter: any[] = [{ term: { _entity: NftItem.name } }];
     const sort = [];

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { lastValueFrom, map, Observable } from "rxjs";
+import { from, lastValueFrom, map, Observable } from "rxjs";
 import { Repository } from "typeorm";
 import { HttpService } from "@nestjs/axios";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
@@ -22,6 +22,7 @@ import {
 import {
   CollectionStats,
   Portfolio,
+  PortfolioByCollectionQuery,
   PortfolioQuery,
   UserSocialInfo,
 } from "./collection.dto";
@@ -78,9 +79,13 @@ export class CollectionService {
 
   async getPortfolio(userAddress: string, query: PortfolioQuery) {
     /* Get user items */
-    const inventory = await this.nftService.search({
-      owner: userAddress,
-    });
+    const inventory = await this.nftService.search(
+      {
+        owner: userAddress,
+      },
+      0,
+      1000
+    );
 
     /* Aggregate collections */
     const groupedInventoryByCollectionId = _.groupBy(inventory, "collectionId");
@@ -124,10 +129,10 @@ export class CollectionService {
     );
   }
 
-  async getPortfolioByCollection(userAddress: string, collectionId: string) {
+  async getPortfolioByCollection(query: PortfolioByCollectionQuery) {
     const collection = await this.sipherCollectionRepo.findOne({
       where: {
-        id: collectionId,
+        id: query.collectionId,
       },
     });
     if (!collection) {
@@ -137,10 +142,14 @@ export class CollectionService {
         total: 0,
       };
     }
-    const inventory = await this.nftService.search({
-      owner: userAddress,
-      collections: [collection.id],
-    });
+    const inventory = await this.nftService.search(
+      {
+        owner: query.userAddress,
+        collections: [collection.id],
+      },
+      query.from,
+      query.size
+    );
     inventory.forEach((item) => delete item._relation);
     return {
       collection,

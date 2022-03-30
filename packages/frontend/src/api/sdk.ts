@@ -816,10 +816,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/sipher/loyalty/collection/{collectionId}/portfolio/{userAddress}
      * @secure
      */
-    collectionControllerGetPortfolioByCollection: (userAddress: string, collectionId: string, params: RequestParams = {}) =>
+    collectionControllerGetPortfolioByCollection: (
+      userAddress: string,
+      collectionId: string,
+      query?: { size?: number; from?: number },
+      params: RequestParams = {},
+    ) =>
       this.request<PortfolioByCollectionResponse, any>({
         path: `/api/sipher/loyalty/collection/${collectionId}/portfolio/${userAddress}`,
         method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
