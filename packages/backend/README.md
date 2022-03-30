@@ -14,6 +14,12 @@ https://github.com/nestjs/nest/tree/master/sample/11-swagger
 
 - Run `yarn dev`
 
-# ormconfig.json exampel to run seed
+# migrate & seed db
 
-`{ "type": "postgres", "host": "localhost", "port": 5432, "username": "postgres", "password": "12345678", "database": "loyalty_sipher", "entities": ["src/**/*.entity{.ts,.js}"], "migrationsTableName": "migration", "seeds": ["src/seed/**/*{.ts,.js}"], "factories": ["src/factory/**/*{.ts,.js}"], "migrations": ["src/migration/*.{ts,js}"], "cli": { "migrationsDir": "src/migration/*.{ts,js}" }, "synchronize": true, "autoLoadEntities": true, "ssl": false }`
+- Run `yarn migrate:config` to create `ormconfig.json`
+
+- Run `yarn migrate:generate` to generate code migrate db
+
+- Run `yarn migrate:up` to run migrate code
+
+- Run `yarn seed-data` to seed data default for project

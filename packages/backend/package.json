@@ -26,9 +26,7 @@
     "migrate:generate": "ts-node -r tsconfig-paths/register -P ./tsconfig.json ../../node_modules/typeorm/cli.js migration:generate -n",
     "migrate:up": "ts-node -r tsconfig-paths/register -P ./tsconfig.json ../../node_modules/typeorm/cli.js migration:run",
     "migrate:down": "ts-node -r tsconfig-paths/register -P ./tsconfig.json ../../node_modules/typeorm/cli.js migration:revert",
-    "seed:config": "ts-node -r tsconfig-paths/register -P ./tsconfig.json ../../node_modules/typeorm-seeding/dist/cli.js config",
-    "seed:run": "ts-node -r tsconfig-paths/register -P ./tsconfig.json ../../node_modules/typeorm-seeding/dist/cli.js seed",
-    "seed-lootbox": "ts-node -r tsconfig-paths/register src/scripts/seed-lootbox.ts",
+    "seed-lootbox-test": "ts-node -r tsconfig-paths/register src/scripts/seed-lootbox-test.ts",
     "seed-data": "ts-node -r tsconfig-paths/register src/scripts/seed-data.ts"
   },
   "dependencies": {

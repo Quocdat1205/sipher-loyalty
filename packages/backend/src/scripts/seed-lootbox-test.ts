@@ -27,6 +27,8 @@ export class AppModule implements OnApplicationBootstrap {
   }
 }
 async function bootstrap() {
-  await NestFactory.createApplicationContext(AppModule);
+  const app = await NestFactory.createApplicationContext(AppModule);
+  await app.close();
+  process.exit(0);
 }
 bootstrap();
