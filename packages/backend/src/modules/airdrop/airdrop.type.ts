@@ -31,28 +31,10 @@ export class ResMerchAirdrop {
   merch: Airdrop[];
 }
 
-export class ResAirdrop {
-  @ApiProperty({ type: Number })
-  id: number;
-
-  @ApiProperty({ type: String })
-  name: string;
-
-  @ApiProperty({ type: String })
-  description: string;
-
-  @ApiProperty({
-    type: () => ImageUrl,
-    isArray: true,
-  })
-  imageUrls?: ImageUrl[];
-
+export class ResAirdrop extends Airdrop {
   @ApiProperty({ type: String, isArray: true, default: [], nullable: true })
   size?: string[];
 
   @ApiProperty({ type: String, isArray: true, default: [], nullable: true })
   color?: string[];
-
-  @ApiProperty({ type: String })
-  type: string;
 }

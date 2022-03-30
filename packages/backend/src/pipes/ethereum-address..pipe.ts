@@ -20,10 +20,10 @@ export class ParseEthereumAddress implements PipeTransform {
           HttpStatus.BAD_REQUEST
         );
       }
-      return address;
+      return value.toLowerCase();
     } catch (err) {
       throw new HttpException(
-        "Invalid ethereum address !",
+        "Invalid ethereum address !!",
         HttpStatus.BAD_REQUEST
       );
     }

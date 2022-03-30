@@ -1,7 +1,6 @@
 // import library
 
-import { toChecksumAddress } from "ethereumjs-util";
-import { In, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { Burned, BurnType } from "@entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -21,7 +20,7 @@ export class BurnService {
     const burned = await this.burnedRepo.findOne({
       where: [
         {
-          to: In([order.to.toLowerCase(), toChecksumAddress(order.to)]),
+          to: order.to.toLowerCase(),
           type,
           salt: order.salt,
           batchID: order.batchID,
@@ -38,10 +37,7 @@ export class BurnService {
     const burneds = await this.burnedRepo.findOne({
       where: [
         {
-          to: In([
-            batchOrder.to.toLowerCase(),
-            toChecksumAddress(batchOrder.to),
-          ]),
+          to: batchOrder.to.toLowerCase(),
           type,
           salt: batchOrder.salt,
           batchIDs: batchOrder.batchID,

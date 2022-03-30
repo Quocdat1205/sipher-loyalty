@@ -3,7 +3,8 @@
     "id": 1,
     "merch_item": "Bomber",
     "name": "SIPHER Exclusive Bomber",
-    "description": "merchandise for investor nft support Sipher team early",
+    "shortDescription": "short ",
+    "description": ["merchandise for investor nft support Sipher team early"],
     "imageUrls": [
       {
         "color": "black",
@@ -26,7 +27,8 @@
     "id": 2,
     "merch_item": "Hoodie",
     "name": "SIPHER Exclusive Hoodie",
-    "description": "merchandise for investor nft support Sipher team early",
+    "shortDescription": "short ",
+    "description": ["merchandise for investor nft support Sipher team early"],
     "imageUrls": [
       {
         "color": "black",
@@ -49,7 +51,8 @@
     "id": 3,
     "merch_item": "Tshirt",
     "name": "SIPHER Exclusive T-shirt",
-    "description": "merchandise for investor nft support Sipher team early",
+    "shortDescription": "short ",
+    "description": ["merchandise for investor nft support Sipher team early"],
     "imageUrls": [
       {
         "color": "black",
@@ -72,7 +75,8 @@
     "id": 4,
     "merch_item": "Hat",
     "name": "SIPHER Exclusive Hat",
-    "description": "merchandise for investor nft support Sipher team early",
+    "shortDescription": "short ",
+    "description": ["merchandise for investor nft support Sipher team early"],
     "imageUrls": [
       {
         "color": "black",
@@ -93,7 +97,9 @@
     "id": 5,
     "merch_item": "Card",
     "name": "Thank You Card",
-    "description": "A personal note to thank our early backers from Sipher's team",
+    "description": [
+      "A personal note to thank our early backers from Sipher's team"
+    ],
     "imageUrls": [
       {
         "color": "black",

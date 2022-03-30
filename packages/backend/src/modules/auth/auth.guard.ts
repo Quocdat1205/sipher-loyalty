@@ -1,5 +1,4 @@
 import axios from "axios";
-import { toChecksumAddress } from "ethereumjs-util";
 import { Observable } from "rxjs";
 import {
   CanActivate,
@@ -44,7 +43,7 @@ export class AtherGuard implements CanActivate {
         );
         const userData = {
           userId: data[0].userId,
-          publicAddress: data.map((el: any) => toChecksumAddress(el.address)),
+          publicAddress: data.map((el: any) => el.address.toLowerCase()),
         };
         await this.cacheService.set(req.headers.authorization, userData);
         req.userData = userData;

@@ -1,4 +1,3 @@
-import { IsEthereumAddress } from "class-validator";
 import {
   Column,
   CreateDateColumn,
@@ -22,7 +21,6 @@ export class Lootbox {
   @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
-  @IsEthereumAddress()
   publicAddress: string;
 
   @ApiProperty({ type: Number })

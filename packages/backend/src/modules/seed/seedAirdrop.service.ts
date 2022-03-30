@@ -98,6 +98,7 @@ export class SeedAirdropService {
       vestingInterval: this.airdropDataHolder.vestingInterval,
       numberOfVestingPoint: this.airdropDataHolder.numberOfVestingPoint,
       name: this.airdropDataHolder.name,
+      shortDescription: this.airdropDataHolder.shortDescription,
       description: this.airdropDataHolder.description,
       type: "TOKEN",
     }));

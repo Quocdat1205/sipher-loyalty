@@ -6,11 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { AirdropType, ImageUrl, Merchandise } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
-
-import { AirdropType } from "@entity";
-import { ImageUrl } from "@entity";
-import { Merchandise } from "@entity";
 
 export enum ItemType {
   Bomber = "Bomber",
@@ -57,8 +54,12 @@ export class Item {
   type: AirdropType;
 
   @ApiProperty({ type: String })
-  @Column()
-  description: string;
+  @Column({ nullable: true })
+  shortDescription?: string;
+
+  @ApiProperty({ type: String, isArray: true })
+  @Column("character varying", { array: true, default: [] })
+  description?: string;
 
   @ApiProperty({
     type: () => ImageUrl,

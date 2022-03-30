@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class phase11648603413441 implements MigrationInterface {
-  name = "phase11648603413441";
+export class pahse11648609292219 implements MigrationInterface {
+  name = "pahse11648609292219";
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -29,7 +29,7 @@ export class phase11648603413441 implements MigrationInterface {
       `CREATE TABLE "image_url" ("id" SERIAL NOT NULL, "color" character varying DEFAULT '', "default" character varying DEFAULT '', "front" character varying DEFAULT '', "back" character varying DEFAULT '', "left" character varying DEFAULT '', "right" character varying DEFAULT '', "top" character varying DEFAULT '', "bot" character varying DEFAULT '', "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "airdropId" integer, "itemId" integer, CONSTRAINT "PK_8eefd361bbf7be8032aefa63a1e" PRIMARY KEY ("id"))`
     );
     await queryRunner.query(
-      `CREATE TABLE "item" ("id" SERIAL NOT NULL, "merch_item" character varying NOT NULL, "name" character varying NOT NULL, "type" character varying NOT NULL, "description" character varying NOT NULL, "size" character varying array DEFAULT '{}', "color" character varying array DEFAULT '{}', "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT "PK_d3c0c71f23e7adcf952a1d13423" PRIMARY KEY ("id"))`
+      `CREATE TABLE "item" ("id" SERIAL NOT NULL, "merch_item" character varying NOT NULL, "name" character varying NOT NULL, "type" character varying NOT NULL, "shortDescription" character varying, "description" character varying array NOT NULL DEFAULT '{}', "size" character varying array DEFAULT '{}', "color" character varying array DEFAULT '{}', "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT "PK_d3c0c71f23e7adcf952a1d13423" PRIMARY KEY ("id"))`
     );
     await queryRunner.query(
       `CREATE TABLE "lootbox" ("id" SERIAL NOT NULL, "publicAddress" character varying NOT NULL, "quantity" integer NOT NULL DEFAULT '1', "tokenId" integer NOT NULL, "mintable" integer NOT NULL DEFAULT '1', "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "propertyLootboxId" integer, CONSTRAINT "PK_df79fe4dd2a98fb2756dbddd493" PRIMARY KEY ("id"))`
@@ -44,13 +44,13 @@ export class phase11648603413441 implements MigrationInterface {
       `CREATE TABLE "sculpture_transaction" ("id" character varying NOT NULL, "event" character varying NOT NULL, "tokenId" character varying, "amount" integer NOT NULL, "ownerAddress" character varying, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT "PK_8b85cc6db005ce33422f2c1a960" PRIMARY KEY ("id"))`
     );
     await queryRunner.query(
-      `CREATE TABLE "airdrop" ("id" SERIAL NOT NULL, "merkleRoot" character varying NOT NULL, "proof" character varying array NOT NULL, "leaf" character varying NOT NULL, "claimer" character varying NOT NULL, "addressContract" character varying NOT NULL, "totalAmount" character varying NOT NULL, "type" character varying NOT NULL, "startTime" character varying NOT NULL, "vestingInterval" character varying NOT NULL, "name" character varying, "description" character varying, "numberOfVestingPoint" character varying NOT NULL, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT "PK_a6aea5b153cdf587fdbb38c5acc" PRIMARY KEY ("id"))`
-    );
-    await queryRunner.query(
-      `CREATE TABLE "sipher_collection" ("id" character varying NOT NULL, "name" character varying NOT NULL, "collectionSlug" character varying NOT NULL, "chainId" integer NOT NULL, "collectionType" character varying NOT NULL DEFAULT 'ERC721', "category" character varying NOT NULL DEFAULT 'character', "floorPrice" numeric, "totalVolume" numeric, "marketCap" numeric, "totalSupply" integer, "totalSales" integer, "description" text NOT NULL DEFAULT '', "logoImage" character varying NOT NULL, "bannerImage" character varying NOT NULL, "siteUrl" character varying NOT NULL, "isVerified" boolean NOT NULL, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT "PK_053a6246ddcbd4f2e9c638d38d9" PRIMARY KEY ("id"))`
+      `CREATE TABLE "airdrop" ("id" SERIAL NOT NULL, "merkleRoot" character varying NOT NULL, "proof" character varying array NOT NULL, "leaf" character varying NOT NULL, "claimer" character varying NOT NULL, "addressContract" character varying NOT NULL, "totalAmount" character varying NOT NULL, "type" character varying NOT NULL, "startTime" character varying NOT NULL, "vestingInterval" character varying NOT NULL, "name" character varying, "shortDescription" character varying, "description" character varying array NOT NULL, "numberOfVestingPoint" character varying NOT NULL, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT "PK_a6aea5b153cdf587fdbb38c5acc" PRIMARY KEY ("id"))`
     );
     await queryRunner.query(
       `CREATE TABLE "tracked_block" ("id" SERIAL NOT NULL, "type" character varying NOT NULL, "tracked" integer NOT NULL DEFAULT '0', "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT "PK_0c07fcad6b158011496bc4ddd78" PRIMARY KEY ("id"))`
+    );
+    await queryRunner.query(
+      `CREATE TABLE "sipher_collection" ("id" character varying NOT NULL, "name" character varying NOT NULL, "collectionSlug" character varying NOT NULL, "chainId" integer NOT NULL, "collectionType" character varying NOT NULL DEFAULT 'ERC721', "category" character varying NOT NULL DEFAULT 'character', "floorPrice" numeric, "totalVolume" numeric, "marketCap" numeric, "totalSupply" integer, "totalSales" integer, "description" text NOT NULL DEFAULT '', "logoImage" character varying NOT NULL, "bannerImage" character varying NOT NULL, "siteUrl" character varying NOT NULL, "isVerified" boolean NOT NULL, "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), CONSTRAINT "PK_053a6246ddcbd4f2e9c638d38d9" PRIMARY KEY ("id"))`
     );
     await queryRunner.query(
       `ALTER TABLE "claimable_lootbox" ADD CONSTRAINT "FK_d5c9b1744420732aa301310debf" FOREIGN KEY ("propertyLootboxId") REFERENCES "erc1155_lootbox"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
@@ -97,8 +97,8 @@ export class phase11648603413441 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "claimable_lootbox" DROP CONSTRAINT "FK_d5c9b1744420732aa301310debf"`
     );
-    await queryRunner.query(`DROP TABLE "tracked_block"`);
     await queryRunner.query(`DROP TABLE "sipher_collection"`);
+    await queryRunner.query(`DROP TABLE "tracked_block"`);
     await queryRunner.query(`DROP TABLE "airdrop"`);
     await queryRunner.query(`DROP TABLE "sculpture_transaction"`);
     await queryRunner.query(`DROP TABLE "pending_mint"`);

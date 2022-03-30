@@ -1,6 +1,4 @@
-import { toChecksumAddress } from "ethereumjs-util";
-import { logger } from "ethers";
-import { In, MoreThan, MoreThanOrEqual, Repository } from "typeorm";
+import { MoreThan, MoreThanOrEqual, Repository } from "typeorm";
 import {
   BurnType,
   CancelType,
@@ -25,8 +23,8 @@ import { LoggerService } from "../logger/logger.service";
 
 import {
   DistributeLootbox,
-  MintBatchLootboxInput,
-  MintLootboxInput,
+  MintBatchLootboxInputDto,
+  MintLootboxInputDto,
 } from "./lootbox.type";
 
 @Injectable()
@@ -48,15 +46,10 @@ export class LootBoxService {
     tokenId: number
   ) => {
     const lootboxs = await this.lootboxRepo.findOne({
-      where: [
-        {
-          publicAddress: In([
-            publicAddress.toLowerCase(),
-            toChecksumAddress(publicAddress),
-          ]),
-          tokenId,
-        },
-      ],
+      where: {
+        publicAddress: publicAddress.toLowerCase(),
+        tokenId,
+      },
       relations: ["propertyLootbox"],
     });
     return lootboxs;
@@ -68,16 +61,11 @@ export class LootBoxService {
     expiredDate: Date
   ) => {
     const lootboxs = await this.claimableLootboxRepo.findOne({
-      where: [
-        {
-          publicAddress: In([
-            publicAddress.toLowerCase(),
-            toChecksumAddress(publicAddress),
-          ]),
-          tokenId,
-          expiredDate,
-        },
-      ],
+      where: {
+        publicAddress: publicAddress.toLowerCase(),
+        tokenId,
+        expiredDate,
+      },
     });
     return lootboxs;
   };
@@ -119,12 +107,12 @@ export class LootBoxService {
   ) => {
     // create or update lootbox
     let lootbox = await this.getLootboxFromWalletAndTokenID(
-      publicAddress,
+      publicAddress.toLowerCase(),
       tokenId
     );
     if (!lootbox) {
       lootbox = this.lootboxRepo.create({
-        publicAddress,
+        publicAddress: publicAddress.toLowerCase(),
         tokenId,
         quantity,
         propertyLootbox,
@@ -215,10 +203,7 @@ export class LootBoxService {
     const lootboxs = await this.lootboxRepo.find({
       where: [
         {
-          publicAddress: In([
-            publicAddress.toLowerCase(),
-            toChecksumAddress(publicAddress),
-          ]),
+          publicAddress: publicAddress.toLowerCase(),
           mintable: MoreThan(0),
         },
       ],
@@ -247,10 +232,7 @@ export class LootBoxService {
     const lootboxs = await this.claimableLootboxRepo.find({
       where: [
         {
-          publicAddress: In([
-            publicAddress.toLowerCase(),
-            toChecksumAddress(publicAddress),
-          ]),
+          publicAddress: publicAddress.toLowerCase(),
           expiredDate: MoreThanOrEqual(new Date()),
           quantity: MoreThan(0),
         },
@@ -301,7 +283,9 @@ export class LootBoxService {
     return resultClaimableLootbox;
   };
 
-  mintBatchLootbox = async (mintBatchLootboxInput: MintBatchLootboxInput) => {
+  mintBatchLootbox = async (
+    mintBatchLootboxInput: MintBatchLootboxInputDto
+  ) => {
     const { publicAddress, batchID, amount } = mintBatchLootboxInput;
 
     // verify
@@ -352,7 +336,7 @@ export class LootBoxService {
     return pendingMint;
   };
 
-  mintLootbox = async (mintLootboxInput: MintLootboxInput) => {
+  mintLootbox = async (mintLootboxInput: MintLootboxInputDto) => {
     const { publicAddress, batchID, amount } = mintLootboxInput;
     // verify
     if (amount === 0)

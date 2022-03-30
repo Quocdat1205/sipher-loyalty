@@ -1,4 +1,3 @@
-import { toChecksumAddress } from "ethereumjs-util";
 import { In, Repository } from "typeorm";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -30,10 +29,7 @@ export class AirdropService {
     const data = await this.airdropRepos.find({
       where: [
         {
-          claimer: In([
-            publicAddress.toLowerCase(),
-            toChecksumAddress(publicAddress),
-          ]),
+          claimer: publicAddress.toLowerCase(),
           type: AirdropType.TOKEN,
         },
       ],
@@ -46,7 +42,7 @@ export class AirdropService {
     publicAddress: string
   ): Promise<Array<ResAirdrop>> {
     const merchandises = await this.merchService.getAllMerchByPublicAddress(
-      publicAddress
+      publicAddress.toLowerCase()
     );
     return merchandises.map((merch) => ({
       id: merch.id,
@@ -80,7 +76,7 @@ export class AirdropService {
 
   private async getOtherAirdrops(publicAddress: string) {
     const others = await this.merchService.getOtherMerchByPublicAddress(
-      publicAddress
+      publicAddress.toLowerCase()
     );
 
     return others.map((merch) => ({
@@ -96,10 +92,7 @@ export class AirdropService {
     const data = await this.airdropRepos.find({
       where: [
         {
-          claimer: In([
-            publicAddress.toLowerCase(),
-            toChecksumAddress(publicAddress),
-          ]),
+          claimer: publicAddress.toLowerCase(),
           type: AirdropType.NFT,
         },
       ],

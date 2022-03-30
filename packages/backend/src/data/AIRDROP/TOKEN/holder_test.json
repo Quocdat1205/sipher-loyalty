@@ -11,7 +11,9 @@
     }
   ],
   "name": "Holder Airdrop",
-  "description": "Airdrop for holder nft Inu / Neko",
+
+  "shortDescription": "1",
+  "description": ["Airdrop for holder nft Inu / Neko"],
   "data": [
     {
       "proof": [
