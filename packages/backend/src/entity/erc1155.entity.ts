@@ -30,6 +30,10 @@ export class ERC1155Lootbox {
 
   @ApiProperty({ type: String })
   @Column({ default: "" })
+  shortDescription?: string;
+
+  @ApiProperty({ type: String })
+  @Column({ default: "" })
   description: string;
 
   @ApiProperty({ type: String })
@@ -76,6 +80,10 @@ export class ERC1155Sculpture {
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   name: string;
+
+  @ApiProperty({ type: String })
+  @Column({ default: "" })
+  shortDescription?: string;
 
   @ApiProperty({ type: String })
   @Column({ default: "" })

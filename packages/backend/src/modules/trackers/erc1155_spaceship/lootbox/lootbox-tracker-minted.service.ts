@@ -92,7 +92,7 @@ export class LootboxTrackerMintedService {
       await promise;
       const { minter, batchID, amount, salt } = event.args;
       const batchOrder = {
-        to: minter,
+        to: minter.toLowerCase(),
         batchID: batchID.map((id: BigNumber) => Number(id)),
         amount: amount.map((num: BigNumber) => Number(num)),
         salt,
@@ -122,7 +122,7 @@ export class LootboxTrackerMintedService {
       await promise;
       const { minter, batchID, amount, salt } = event.args;
       const order = {
-        to: minter,
+        to: minter.toLowerCase(),
         batchID: Number(batchID),
         amount: Number(amount),
         salt,

@@ -63,7 +63,7 @@ export class LootBoxController {
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: ClaimableLootbox, isArray: true })
-  @Get("get-by-walllet/claimable/:publicAddress")
+  @Get("claimable/get-by-walllet/:publicAddress")
   async getClaimableLootboxFromWallet(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Req() req: any
@@ -88,7 +88,7 @@ export class LootBoxController {
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({ type: ClaimableLootbox, isArray: true })
-  @Get("get-by-userId/claimable")
+  @Get("claimable/get-by-userId")
   async getClaimableLootboxFromUserID(@Req() req: any) {
     return this.lootBoxService.getClaimableLootboxFromUserID(req.userData);
   }

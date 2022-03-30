@@ -124,6 +124,7 @@ export interface ERC1155Lootbox {
   id: number;
   tokenId: string;
   name: string;
+  shortDescription: string;
   description: string;
   external_url: string;
   image: string;
@@ -627,12 +628,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags lootbox
      * @name LootBoxControllerGetClaimableLootboxFromWallet
-     * @request GET:/api/sipher/loyalty/lootbox/get-by-walllet/claimable/{publicAddress}
+     * @request GET:/api/sipher/loyalty/lootbox/claimable/get-by-walllet/{publicAddress}
      * @secure
      */
     lootBoxControllerGetClaimableLootboxFromWallet: (publicAddress: string, params: RequestParams = {}) =>
       this.request<ClaimableLootbox[], any>({
-        path: `/api/sipher/loyalty/lootbox/get-by-walllet/claimable/${publicAddress}`,
+        path: `/api/sipher/loyalty/lootbox/claimable/get-by-walllet/${publicAddress}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -661,12 +662,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags lootbox
      * @name LootBoxControllerGetClaimableLootboxFromUserId
-     * @request GET:/api/sipher/loyalty/lootbox/get-by-userId/claimable
+     * @request GET:/api/sipher/loyalty/lootbox/claimable/get-by-userId
      * @secure
      */
     lootBoxControllerGetClaimableLootboxFromUserId: (params: RequestParams = {}) =>
       this.request<ClaimableLootbox[], any>({
-        path: `/api/sipher/loyalty/lootbox/get-by-userId/claimable`,
+        path: `/api/sipher/loyalty/lootbox/claimable/get-by-userId`,
         method: 'GET',
         secure: true,
         format: 'json',

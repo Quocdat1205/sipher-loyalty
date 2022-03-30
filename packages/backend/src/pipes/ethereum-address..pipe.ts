@@ -9,8 +9,6 @@ import {
 
 @Injectable()
 export class ParseEthereumAddress implements PipeTransform {
-  private ethereumRegex = /^0x[a-fA-F0-9]{40}$/;
-
   transform(value: any) {
     try {
       const address = toChecksumAddress(value);

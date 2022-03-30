@@ -2,6 +2,7 @@
 import fs from "fs";
 import path from "path";
 
+import { BigNumber, ethers } from "ethers";
 import { Repository } from "typeorm";
 import { Airdrop, ImageUrl, Item, Merchandise } from "@entity";
 import { Injectable } from "@nestjs/common";
@@ -85,6 +86,21 @@ export class SeedAirdropService {
     return Promise.all(promises);
   };
 
+  private weiToEther = (wei: string | BigNumber) =>
+    parseFloat(ethers.utils.formatEther(wei));
+
+  private currency = (
+    amount: number,
+    prefix = "",
+    options: {
+      maximumFractionDigits?: number;
+      minimumFractionDigits?: number;
+    } = {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    }
+  ) => prefix + amount.toLocaleString(undefined, { ...options });
+
   seedTokens = async () => {
     await this.imageUrlRepo.query(`delete from image_url`);
     await this.airdropRepo.query(`delete from airdrop`);
@@ -99,7 +115,21 @@ export class SeedAirdropService {
       numberOfVestingPoint: this.airdropDataHolder.numberOfVestingPoint,
       name: this.airdropDataHolder.name,
       shortDescription: this.airdropDataHolder.shortDescription,
-      description: this.airdropDataHolder.description,
+      description: [
+        `${this.currency(
+          this.weiToEther(el.totalAmount)
+        )} $SIPHER Token(s) Airdrop`,
+        `Over a ${
+          this.airdropDataHolder.numberOfVestingPoint
+        } month Vesting Period with each month getting ${this.currency(
+          this.weiToEther(el.totalAmount) /
+            this.airdropDataHolder.numberOfVestingPoint
+        )} $SIPHER starting on March 01 2022.`,
+        `Please come back for your first Vested Airdrop of ${this.currency(
+          this.weiToEther(el.totalAmount) /
+            this.airdropDataHolder.numberOfVestingPoint
+        )} $SIPHER on March 01 2022 `,
+      ],
       type: "TOKEN",
     }));
     await this.airdropRepo.query(
