@@ -356,32 +356,6 @@ export interface ImageUrl {
   updatedAt: string;
 }
 
-export interface DataAirdropTokens {
-  proof: string[];
-  leaf: string;
-  index: number;
-  claimer: string;
-  totalAmount: string;
-}
-
-export interface AirdropToken {
-  merkleRoot: string;
-  addressContract: string;
-  startTime: number;
-  vestingInterval: number;
-  numberOfVestingPoint: number;
-  imageUrls: ImageUrl[];
-  name: string;
-  description: string[];
-  shortDescription: string;
-  data: DataAirdropTokens[];
-}
-
-export interface AirdropTokens {
-  data: AirdropToken;
-  key: string;
-}
-
 export interface ResAirdrop {
   id: number;
   merkleRoot: string;
@@ -928,24 +902,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, any>({
         path: `/api/sipher/loyalty/collection/${collectionSlug}/stats`,
         method: 'GET',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags airdrop
-     * @name AirdropControllerUpdateAirdropTokens
-     * @request PUT:/api/sipher/loyalty/airdrop/updateTokenList/{smartContract}
-     * @secure
-     */
-    airdropControllerUpdateAirdropTokens: (smartContract: string, data: AirdropTokens, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/sipher/loyalty/airdrop/updateTokenList/${smartContract}`,
-        method: 'PUT',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         ...params,
       }),
 
