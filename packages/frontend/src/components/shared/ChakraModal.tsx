@@ -55,9 +55,9 @@ export const ChakraModal = ({
               <ModalCloseButton color="neutral.400" _focus={{ shadow: "none" }} position="static" size="sm" />
             )}
           </Flex>
-        ) : (
+        ) : !hideCloseButton ? (
           <ModalCloseButton color="neutral.400" _focus={{ shadow: "none" }} size="sm" />
-        )}
+        ) : null}
         <ModalBody px={0} pb={6}>
           {children}
         </ModalBody>

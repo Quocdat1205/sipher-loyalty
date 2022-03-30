@@ -1,6 +1,6 @@
 import React from "react"
 import Image from "next/image"
-import { Avatar, Box, Flex, Skeleton, Text } from "@sipher.dev/sipher-ui"
+import { Avatar, Box, BoxProps, Flex, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import { EthereumIcon } from "@components/shared"
 import { SpLayer, SpVerified } from "@components/shared/icons"
@@ -8,21 +8,22 @@ import { currency } from "@utils"
 
 import usePortfolio from "../usePortfolio"
 
-interface CardProps {
+interface CardProps extends BoxProps {
   data: ReturnType<typeof usePortfolio>["collectionData"]
   isFetched: boolean
 }
 
-const CollectionCard = ({ data, isFetched }: CardProps) => {
+const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
   return (
     <Box
       onClick={data.onView}
-      _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
+      _hover={{ filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))" }}
       overflow="hidden"
       rounded="lg"
       cursor="pointer"
       bg="neutral.700"
       pos="relative"
+      {...rest}
     >
       <Skeleton pos="relative" display="flex" isLoaded={isFetched}>
         <Image

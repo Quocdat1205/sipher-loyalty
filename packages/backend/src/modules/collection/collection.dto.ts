@@ -69,3 +69,9 @@ export class CollectionStats {
   @ApiProperty({ type: Number })
   totalSales: number;
 }
+
+export interface UserSocialInfo {
+  address: string;
+  name: string;
+  avatarImage: string;
+}

@@ -19,6 +19,8 @@ export class LootboxTrackerMintedService {
 
   private fromBlockMinted: number;
 
+  private chain = constant.isProduction ? Chain.Polygon : Chain.Mumbai;
+
   constructor(
     private lootBoxService: LootBoxService,
     @InjectRepository(TrackedBlock)
@@ -26,9 +28,7 @@ export class LootboxTrackerMintedService {
   ) {
     this.getStartMintedBlock();
 
-    this.provider = getProvider(
-      constant.isProduction ? Chain.Polygon : Chain.Mumbai
-    );
+    this.provider = getProvider(this.chain);
     this.contract = getContract(
       constant.config.erc1155LootBox.verifyingContract,
       erc1155Abi,

@@ -3886,10 +3886,10 @@
     amazon-cognito-identity-js "^5.2.3"
     react-script-hook "^1.5.0"
 
-"@sipher.dev/sipher-ui@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@sipher.dev/sipher-ui/-/sipher-ui-0.0.4.tgz#0b67d0f1314097c4bbd67da9b2b820df26ee2f18"
-  integrity sha512-S8OjIcGVLTuqAKJ3jj0xDKBw6X1BdK6sU7OqSY5VK0AmXBEmL5QCx2z6N7jbA2bxrrvBb17JOHn+oSPuWc2L3Q==
+"@sipher.dev/sipher-ui@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@sipher.dev/sipher-ui/-/sipher-ui-0.0.5.tgz#61434ff1a8044e9d3dd4622867b199b20986ffb5"
+  integrity sha512-iju+uuVNb3XDoxbMrhhaCXQoVtd4Iu86uJX0YyP7PRhb/aGCuxpZTLXPHRSuK6vre8zM9ZZe0e+7vJwx9K820Q==
   dependencies:
     "@chakra-ui/cli" "1.7.0"
     "@chakra-ui/icons" "1.1.1"
@@ -12811,6 +12811,11 @@ minimist@1.2.5, minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
 
+minimist@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
+  integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
+
 minipass-collect@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/minipass-collect/-/minipass-collect-1.0.2.tgz#22b813bf745dc6edba2576b940022ad6edc8c617"
@@ -14794,6 +14799,11 @@ react-merge-refs@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-1.1.0.tgz#73d88b892c6c68cbb7a66e0800faa374f4c38b06"
   integrity sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==
+
+react-multi-carousel@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/react-multi-carousel/-/react-multi-carousel-2.8.0.tgz#94a74245989b74211c9fcfa02c71009a3da3f487"
+  integrity sha512-xuxQVGGiH8yWDDWgt9Z9+C+zzoACuBT740cV+6To52DYCwLlQGJIntDFLOCqMsO85Ist1x+630HA8lazb/a/tA==
 
 react-native-get-random-values@^1.4.0:
   version "1.7.2"
@@ -16918,6 +16928,16 @@ tsconfig-paths@^3.11.0, tsconfig-paths@^3.12.0, tsconfig-paths@^3.9.0:
     "@types/json5" "^0.0.29"
     json5 "^1.0.1"
     minimist "^1.2.0"
+    strip-bom "^3.0.0"
+
+tsconfig-paths@^3.14.1:
+  version "3.14.1"
+  resolved "https://registry.yarnpkg.com/tsconfig-paths/-/tsconfig-paths-3.14.1.tgz#ba0734599e8ea36c862798e920bcf163277b137a"
+  integrity sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==
+  dependencies:
+    "@types/json5" "^0.0.29"
+    json5 "^1.0.1"
+    minimist "^1.2.6"
     strip-bom "^3.0.0"
 
 tslib@2.0.1:

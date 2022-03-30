@@ -49,7 +49,7 @@ export class SeedAirdropService {
     @InjectRepository(ImageUrl)
     private imageUrlRepo: Repository<ImageUrl>,
     @InjectRepository(Merchandise)
-    private merchListRepo: Repository<Merchandise>,
+    private merchRepo: Repository<Merchandise>,
     @InjectRepository(Item)
     private itemRepo: Repository<Item>
   ) {}
@@ -58,6 +58,7 @@ export class SeedAirdropService {
     try {
       const imageUrl = await this.seedImageUrls(token.imageUrls);
       token.imageUrls = imageUrl;
+      token.claimer = token.claimer.toLowerCase();
       const _token = this.airdropRepo.create(token);
       await this.airdropRepo.save(_token);
     } catch (err) {
@@ -92,7 +93,7 @@ export class SeedAirdropService {
       merkleRoot: this.airdropDataHolder.merkleRoot,
       imageUrls: this.airdropDataHolder.imageUrls,
       ...el,
-      addressContract: this.airdropDataHolder.addressContract,
+      addressContract: this.airdropDataHolder.addressContract.toLowerCase(),
       startTime: this.airdropDataHolder.startTime,
       vestingInterval: this.airdropDataHolder.vestingInterval,
       numberOfVestingPoint: this.airdropDataHolder.numberOfVestingPoint,
@@ -116,7 +117,7 @@ export class SeedAirdropService {
     try {
       const imageUrl = await this.seedImageUrls(item.imageUrls);
       item.imageUrls = imageUrl;
-      item.merchandise = await this.merchListRepo.find({
+      item.merchandise = await this.merchRepo.find({
         merch_item: item.merch_item,
       });
       const _item = this.itemRepo.create(item);
@@ -139,15 +140,16 @@ export class SeedAirdropService {
 
   private seedMerch = async (merch) => {
     try {
-      const _merch = this.merchListRepo.create(merch);
-      await this.merchListRepo.save(_merch);
+      merch.publicAddress = merch.publicAddress.toLowerCase();
+      const _merch = this.merchRepo.create(merch);
+      await this.merchRepo.save(_merch);
     } catch (err) {
       LoggerService.error(JSON.stringify(err));
     }
   };
 
   seedMerchs = async () => {
-    await this.itemRepo.query(`delete from merchandise`);
+    await this.merchRepo.query(`delete from merchandise`);
 
     const promises = [];
     for (let i = 0; i < this.airdropDataMerchandise.length; i++) {

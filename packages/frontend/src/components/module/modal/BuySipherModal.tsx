@@ -44,7 +44,7 @@ export const BuySipherModal = ({ isOpen, onClose }: BuySipherModalProps) => {
               "_blank",
             )
           }
-          text="Kyper Network"
+          text="Kyber Network"
           src="/images/icons/kyper.png"
           colorScheme={"whiteAlpha"}
           py={2}

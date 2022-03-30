@@ -7,11 +7,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { ImageUrl } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
 import { TransformLowercase } from "@utils/transfomers";
-
-import { ImageUrl } from "./imageUrl.entity";
 
 export enum AirdropType {
   NFT = "NFT",
@@ -89,10 +88,10 @@ export class Airdrop {
   numberOfVestingPoint?: string;
 
   @ApiProperty()
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt?: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }

@@ -18,18 +18,22 @@ const GeneralContainer = () => {
 
   return (
     <>
-      <SimpleGrid mb={8} columns={[2, 4]} spacing={8}>
+      <SimpleGrid mb={8} columns={[2, 2, 4]} spacing={8}>
         <CardGeneral
           value={`${currency(totalETHPrice)} ETH`}
           name={"Portfolio value"}
           icon={<EthereumIcon size="1.5rem" />}
-          rightChildren={<Text color="neutral.100">${currency(totalUsdPrice)}</Text>}
+          rightChildren={
+            <Text pb={0.5} lineHeight={1} color="neutral.100">
+              ${currency(totalUsdPrice)}
+            </Text>
+          }
         />
         <CardGeneral
           value={currency(sipher ?? 0)}
           name="sipher token"
           icon={<SipherIcon />}
-          popoverProps={{ label: "SIPHER TOKEN", content: "Description" }}
+          // popoverProps={{ label: "SIPHER TOKEN", content: "Description" }}
           rightChildren={
             <Button
               onClick={() => setModalStake(true)}

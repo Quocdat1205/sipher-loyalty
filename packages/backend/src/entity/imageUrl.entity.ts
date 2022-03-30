@@ -7,10 +7,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Item } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { Airdrop } from "./airdrop.entity";
+import { Airdrop } from "@entity";
+import { Item } from "@entity";
 
 @Entity()
 export class ImageUrl {
@@ -60,10 +60,10 @@ export class ImageUrl {
   item: Item;
 
   @ApiProperty()
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt?: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }

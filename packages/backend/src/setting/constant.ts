@@ -29,6 +29,10 @@ type ConfigMint = {
     chainId: number;
     verifyingContract: string;
   };
+  erc1155Sculpture: {
+    chainId: number;
+    verifyingContract: string;
+  };
 };
 @Injectable()
 export class SystemConfigProvider {
@@ -38,7 +42,17 @@ export class SystemConfigProvider {
 
   NODE_ENV = this.get("NODE_ENV");
 
-  JWT_EXPIRATION_TIME = this.get("JWT_EXPIRATION_TIME");
+  POSTGRES_HOST = this.get("POSTGRES_HOST");
+
+  POSTGRES_PORT = this.get("POSTGRES_PORT");
+
+  POSTGRES_USER = this.get("POSTGRES_USER");
+
+  POSTGRES_PASSWORD = this.get("POSTGRES_PASSWORD");
+
+  POSTGRES_DATABASE = this.get("POSTGRES_DATABASE");
+
+  POSTGRES_SYNCHRONIZE = this.get("POSTGRES_SYNCHRONIZE");
 
   SESSION_PORT = this.get("SESSION_PORT");
 
@@ -47,8 +61,6 @@ export class SystemConfigProvider {
   SESSION_HOST = this.get("SESSION_HOST");
 
   SC_INFURA = this.get("SC_INFURA");
-
-  POLYGON_RPC_URL = this.get("POLYGON_RPC_URL");
 
   AWS_ACCESS_KEY_ID = this.get("AWS_ACCESS_KEY_ID");
 
@@ -64,13 +76,13 @@ export class SystemConfigProvider {
 
   PRIVATE_KEY = this.get("PRIVATE_KEY");
 
-  CHAIN_ID = parseInt(this.get("CHAIN_ID"), 10);
-
   ATHER_ID_URL = this.get("ATHER_ID_URL");
 
   PENDING_TIME_LOOTBOX_MINT = 86400 * 3;
 
   MARKETPLACE_SDK_URL = this.get("MARKETPLACE_SDK_URL");
+
+  ATHER_SOCIAL_URL = this.get("ATHER_SOCIAL_URL");
 
   public get isDebugging() {
     return !!this.get("DEBUG");
@@ -88,8 +100,8 @@ export class SystemConfigProvider {
     const rpcUrls = {
       [Chain.Mainnet]: `https://mainnet.infura.io/v3/${this.SC_INFURA}`,
       [Chain.Rinkeby]: `https://rinkeby.infura.io/v3/${this.SC_INFURA}`,
-      [Chain.Mumbai]: `${this.POLYGON_RPC_URL}`,
-      [Chain.Polygon]: `${this.POLYGON_RPC_URL}`,
+      [Chain.Mumbai]: `https://polygon-mumbai.infura.io/v3/${this.SC_INFURA}`,
+      [Chain.Polygon]: `https://polygon-mainnet.infura.io/v3/${this.SC_INFURA}`,
     };
 
     const erc1155LootBox = {
@@ -116,11 +128,11 @@ export class SystemConfigProvider {
         address: ZERO_ADDRESS,
       },
       [Chain.Mumbai]: {
-        address: "0x3EdB954303D0A13ee347C6989189294B0422E7D6",
+        address: "0x8832B826C4194Ed54bA9f1423fdB82295c09f0c9",
       },
 
       [Chain.Polygon]: {
-        address: ZERO_ADDRESS,
+        address: "0x315Bc085A14E251f129A361afa37205E3313bF15",
       },
     };
 
@@ -128,13 +140,17 @@ export class SystemConfigProvider {
   }
 
   public get config(): ConfigMint {
+    const chainId = this.isProduction ? Chain.Polygon : Chain.Mumbai;
     return {
       erc1155LootBox: {
-        chainId: this.isProduction ? Chain.Polygon : Chain.Mumbai,
+        chainId,
         verifyingContract:
-          this.blockchain.contracts.erc1155LootBox[
-            this.isProduction ? Chain.Polygon : Chain.Mumbai
-          ].address,
+          this.blockchain.contracts.erc1155LootBox[chainId].address,
+      },
+      erc1155Sculpture: {
+        chainId,
+        verifyingContract:
+          this.blockchain.contracts.erc1155Sculpture[chainId].address,
       },
     };
   }

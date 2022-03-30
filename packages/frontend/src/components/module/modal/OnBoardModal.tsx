@@ -46,7 +46,6 @@ export const OnBoardModal = () => {
     <ChakraModal
       title={""}
       isOpen={isOnboard}
-      size="5xl"
       hideCloseButton
       styleProps={{
         bg: "rgba(97, 97, 97, 0.1)",
@@ -54,11 +53,12 @@ export const OnBoardModal = () => {
         borderColor: "whiteAlpha.200",
         rounded: "2xl",
         backdropFilter: "blur(20px)",
+        maxW: ["40rem", "40rem", "40rem", "60rem", "60rem"],
       }}
     >
       <Box opacity="0.5" pos="absolute" w="full" h="full" top="0" left="0" bg="url(/images/general/noise.png)" />
-      <Flex px={6} w="full" flexDir="column" align="center">
-        <Flex mb={10} align="center">
+      <Flex px={8} py={4} w="full" flexDir="column" align="center">
+        <Flex mb={4} align="center">
           <Heading mr={4} fontWeight={600} fontSize="3xl">
             WELCOME TO
           </Heading>
@@ -66,8 +66,8 @@ export const OnBoardModal = () => {
         </Flex>
         <HStack mb={8} w="full" justify="space-between" spacing={6}>
           {imageData.map(item => (
-            <Box sx={{ img: { rounded: "lg" } }} w="full" h="full" key={item.title1}>
-              <Image src={item.image} alt={item.title1} width={320} height={416} />
+            <Box flex={1} sx={{ img: { rounded: "lg" } }} w="full" h="full" key={item.title1}>
+              <Image layout="responsive" src={item.image} alt={item.title1} width={320} height={416} />
               <Text mt={4} textAlign="center" textTransform="uppercase" fontSize="sm" fontWeight={600}>
                 {item.title1}
               </Text>

@@ -1,0 +1,687 @@
+[
+  {
+    "address": "0x162a591a4b5900c69f0ef29b6f32087e06c70f24",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xdd2d6446bee70e4c4813b7d24f0742dd0f5c7942",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x2e41f3825dee478482d7c6eb9b21ee431c340854",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x832668b0fc7d007f5c40375457ce147d6235ca9d",
+    "INU": 5,
+    "NEKO": 5
+  },
+  {
+    "address": "0x7cad37aef75a1c2a78ee92e3c2c53b83a1892577",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xb0799d85fafc89c81c6c84f1c049769166d60627",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x92b80b084fec98990c9ae79d564caf0e1ece2fc7",
+    "INU": 5,
+    "NEKO": 5
+  },
+  {
+    "address": "0x9458061c2775b0927243db6300f33292f6690e6e",
+    "INU": 3,
+    "NEKO": 3
+  },
+  {
+    "address": "0x31264a62ddd15e9b39e984b770cb88841b120939",
+    "INU": 2,
+    "NEKO": 2
+  },
+  {
+    "address": "0xa772d808ed77d9ce0e225f05335e287035525078",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xe3e13d7092417b7cfcb3d245088f7864068d6828",
+    "INU": 5,
+    "NEKO": 5
+  },
+  {
+    "address": "0xf7b839d1317bd06866484940dcfced81ce921b7b",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x8bd590bd0989ef1376b295915cadc4335b8a9896",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xd66b20351bf14852f44be5eff8d80768ddff2fab",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x875271a7812ba58400901f293da641a8c43e9542",
+    "INU": 2,
+    "NEKO": 2
+  },
+  {
+    "address": "0x2115180d4b3416679baf296def4f300faab2b5dd",
+    "INU": 2,
+    "NEKO": 1
+  },
+  {
+    "address": "0x553aacf16e6496f2778d810ae37352c6342bd854",
+    "INU": 5,
+    "NEKO": 5
+  },
+  {
+    "address": "0x12b8aab66cc95382c945a411257e13e5c0ef0ca9",
+    "INU": 2,
+    "NEKO": 2
+  },
+  {
+    "address": "0xdbd576069502f634d2f1011199245cd7a66618bd",
+    "INU": 2,
+    "NEKO": 2
+  },
+  {
+    "address": "0xb4cb9a1cd5dc64f88e87c26c54993f49b965796c",
+    "INU": 2,
+    "NEKO": 1
+  },
+  {
+    "address": "0x40875262bd52c7ba3bc05f3dda1b05dbdf1e4c5d",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x12735b6bb60d15803ee626f2d11229040fa04d24",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x70f778adcf3ede64099515934dedb278d48e1b62",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xc6f678cac5444fb4b346dece54e882db99251282",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x2b644d58b1f102215489062ed8812f64c373028c",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xd4bba35d622d6a64954d0b619f780877b78ec6fe",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x3cf5e2fcd5eda2d63919fcd309323ed44fd72993",
+    "INU": 5,
+    "NEKO": 5
+  },
+  {
+    "address": "0xa01255f709599cf00676e874ae598d00d9e0694a",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xef389e6c8af8ed83de54984c63ed330016fbe961",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x2978b6f1f6bf836069a8d350a2e750995d25858f",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xddd47127f9685cf3c73a0d438b8c6e7c1e302159",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x8afa96aa822f97ba3d6a0f7bf4efb46b76d08dac",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xd77c8a4a7fc01df65edc9df94177db0354252ebd",
+    "INU": 3,
+    "NEKO": 3
+  },
+  {
+    "address": "0xb72b0a3e30bcf013310214f2b839162f7f066397",
+    "INU": 2,
+    "NEKO": 2
+  },
+  {
+    "address": "0x5c858b8144bfbad439871e0035df1dc0fa607aa6",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x53a0f1514571bb53eb5043250e3e9efee415285f",
+    "INU": 5,
+    "NEKO": 5
+  },
+  {
+    "address": "0x222b4384bdb3655c8021d76f33fb84d6b3a7da86",
+    "INU": 5,
+    "NEKO": 5
+  },
+  {
+    "address": "0x35ef3ca335db4bc4376ca6b155aae2fb897a5a03",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x3b64b2844c8a43445e38536f87ab2f43b87f5490",
+    "INU": 5,
+    "NEKO": 5
+  },
+  {
+    "address": "0xcae963ff178dc2d9f055a64763743e68ae2788e4",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x7e2af9ffda441fb0d9aad75eb4b322bef53df050",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x9d3a43aae42a8be8c3003f3c24d0213cbaca9102",
+    "INU": 2,
+    "NEKO": 2
+  },
+  {
+    "address": "0x9207f31b369e6cae02e90f7162c5bea0a60e2307",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x7e9607e65b6402992524e2a1ff8fac63f406e4f0",
+    "INU": 2,
+    "NEKO": 2
+  },
+  {
+    "address": "0x4994e79d77897fd5eee8bb2a524a050bf2c6f3e4",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x0bfedb9bf778f6d161b9d75f8922ab6bb5f3bdf9",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xc023b4c45cbe38f9f2b90a3f2bb94330c0909d7b",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x4e56624f3ebe0625350607546bee8e3af0b3a100",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x8f388d0592cb95b2bb499bc47b46f192cb5f4086",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xf461b7e6cc342d2942379cab5332671d4b9eefee",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x4b20ccfa9416da26f70106c9314bff8a5d12f99f",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xff407dee8568e8717b98ae69cf0927a197268020",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xf8cfb6523a41d130ea18b3562a10610356d60fd5",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xc29657285e42f99265ff26c8ece2716cf2b34e6d",
+    "INU": 2,
+    "NEKO": 2
+  },
+  {
+    "address": "0x41edf48fed7eb3edede69ddd7a81c6a02cbc6b51",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x27c2ebe8e15ef02913c9e894e99a20411ce194b5",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xa05d18a9e93fccd75c11daea87f942ddad2001e9",
+    "INU": 5,
+    "NEKO": 5
+  },
+  {
+    "address": "0xc7895f67aa564984f6dff65ef6efcb0592c28002",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x9d44f6a5bd74a7330b05058bdaa4056bae19d339",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xfeebb7251827a89143049d400573f71f54676adf",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x6078eaa05c9a253a22c4b0d24e895617616ea9d8",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x776d03f1ebaf5e9910ece12875e2c7d609dba9c5",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x763bbc90268ce180dba29b8c18d34c90e777a109",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xdce8ad7015106f15c70b94b98a76fea2fc63022b",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xc03817b46795bf3c417a91e3eac4ce382317b884",
+    "INU": 1,
+    "NEKO": 2
+  },
+  {
+    "address": "0x88041cab565c36e7bac3ac0b5e02129a9da1dce8",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xa993a14b415220b857bd650a34f739e65f45f96b",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x345296488dde0b0f3e91342b747bbabfe837f78a",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xf23403f97d06de736473cd4a446959e1cdb41300",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xd7ea8366eb70462f2df5ab00f4deac64dd54b59d",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x8e0caebfcd63701b808b49b97aa4386a3c54a7fa",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x5702e688a3ce10b61b6b5cf22c7fc06a0583e7eb",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x77b95ac2de1d21e0c8a9a7a071b0ed17ef675755",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x88a0ea71abe4977b334c597ad245faf7e1ac7068",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x2beae52e3336ea3bc7a05200ba1fd9066e25a1b7",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xa50fbf0b07f08d13e5a6a0913d7a15062af399e1",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x1b3ed697132d1592d9a2e8b4c20982af8bddb7ab",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x1976a41c1af3b87350de40abe1c5c56340d708a8",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x80d208ea51d8691b16aea613044ed6a5054c647d",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x62fe34221738d55ad237d7256abdfbe2b175ad3f",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xe1c49beca9cf0489426f53e914f1d98987866ee1",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xeacae941d2564577e620f43b2ef357ff908e4a7d",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x9816dde56f5b405a4ccbbf4a943b049c0b6cde7b",
+    "INU": 5,
+    "NEKO": 5
+  },
+  {
+    "address": "0x7c117f8fe151485542f07b8df356e90ab1088a44",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xfa229dda59fb7391c5b94b95ac92f1b1ea5b6560",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x852379a07647cfaeeab83e64488220b81896e560",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xfdfe98eb9494af454f6611d7c919c5dec3996bfc",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x0cecb3d188c5984cb3c1b5c5812b0fd84c2b44df",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x8c4d0718e786ad79b2ba11fe6749fb602fb0a820",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xd23def0a4d62600d49478f1a92595361708d4952",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x8c11573acc7a1a0f2d9e631e3f567948cea5b2c2",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x1da75fb0da32653fdab9ddecdb42f2ed61f8a28b",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x13d50d3b47d4ec989bb5ca4b3c3728a52edf04bd",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xd96c16bab484c5f4f405bc9202d9eddd6b1f249a",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x9a1e8645dedec6d45e2058d031b1ca97f815bd2e",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x7ee48c90c60b0093a7bb478cdce40c33fdb3807c",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x7661da94ae378f84fc9238f0485f3c26927423f5",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x0846931641992a70d393771b5d9a1ab8ad5b2f28",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x8c5810938679770fbe8352eb543a2471f0255ce7",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xc3db09cd17f9c442afdd164c11608650362b21c4",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x23df489e56303fd67e0d15b979fa4a3d5f7359d3",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x39ce199b0699891409f5edb0dcffd2174e7e791d",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xb212c49ac1d6591f0277dc09f0658e1f2bde0e2c",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xf1b08d8208a07bed063048b3da8254138d01d190",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x4ce39bd7b90194e43a379a35cd6d4ac0a4b965c5",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x17ae27ae67de68aa08094f37a94dbefd8790ad63",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x7bee2740f07c92c61f8d03b7d3f2e8cfb95cef74",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x837c68f834170eaed28547b0a46ecbb923987127",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x709753c8026a4b2c33e9be76fdd46625eb4e81d5",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x200183255bcec9e818deceefebc0eabdbb4b5f03",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x345ba3aa3d0f67eae88397c419879f403642df25",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0x06c9018ad287bd949e231bb5dbc196fe22d97675",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xf74611a7d51e3d5eb477456f0fec6c24d00a85f2",
+    "INU": 0,
+    "NEKO": 1
+  },
+  {
+    "address": "0xd012e49d4b1c239c47c953f3e86a2ff492379f4f",
+    "INU": 0,
+    "NEKO": 3
+  },
+  {
+    "address": "0x3910bbfcc057271e71c76e6c7e9510f06c3e4d13",
+    "INU": 0,
+    "NEKO": 2
+  },
+  {
+    "address": "0x07736e2bed90ba41c4f5d81ce3b0139746ff983f",
+    "INU": 0,
+    "NEKO": 1
+  },
+  {
+    "address": "0x41f6fa5d7cf7e96061e38bc1821c388132011421",
+    "INU": 0,
+    "NEKO": 1
+  },
+  {
+    "address": "0xf5b410cd0966f7f92cb83fdf462155b28f7de996",
+    "INU": 0,
+    "NEKO": 2
+  },
+  {
+    "address": "0x313af654216321d633d3a8ca460e640ca1976828",
+    "INU": 0,
+    "NEKO": 1
+  },
+  {
+    "address": "0x6324beb3293872fe37a7326752656b4612754674",
+    "INU": 0,
+    "NEKO": 5
+  },
+  {
+    "address": "0x754a7e4fab82992b6d182bedfd21e31281d46c88",
+    "INU": 0,
+    "NEKO": 1
+  },
+  {
+    "address": "0x40d6a7ea09e956982b3bcd7f90091102a231870b",
+    "INU": 0,
+    "NEKO": 1
+  },
+  {
+    "address": "0x129cca387eacfe191d8edde1d8d9723b6b891a8b",
+    "INU": 1,
+    "NEKO": 1
+  },
+  {
+    "address": "0xfd75d70a385dd971ac2500795c34c70ea775c7ff",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xf2722335446bccd8a0c00a6c89d3888e53e2229d",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x2ecf9b5f8ad7cfc88bb215caf2694a75cfcdd953",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x0a1a2f4e58a20bd6b434f4dec00ba3c12427b600",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xce97afc97c0670d8fa07692a17212007b39459c0",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xaa9f8fcfa5995a459d65895e4b7a6fdf1a6b131c",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x4669416015a1a79280765f3d1366b1e5fec524ba",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x90ce26b4a461071273799a2368ce0226ff70920e",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xd9f77817d630e1209faabc0b15ac0f2d02ac5d93",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x3afee4d44ff4c005ae6f448af578f63cfbde6cd2",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x4f8382f3d38108128e98b621f7370179dd99e1b6",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xff3e3567f91b7afc291e696986acefe93fc147af",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xf77d6bd2d46b9bf4d1fdddd16da8bfb575e5a0ed",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x1f5a3dde3f9359057de10a157820c607e2ee6aa6",
+    "INU": 1,
+    "NEKO": 0
+  }
+]

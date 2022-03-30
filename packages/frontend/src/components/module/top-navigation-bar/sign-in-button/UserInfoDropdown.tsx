@@ -176,7 +176,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
               <Flex align="center" justify="space-between">
                 <Flex align="center">
                   <Box textAlign="center" w="1.5rem">
-                    <SipherIcon />
+                    <SipherIcon pl={0.5} />
                   </Box>
                   <Text ml={2}>SIPHER</Text>
                 </Flex>

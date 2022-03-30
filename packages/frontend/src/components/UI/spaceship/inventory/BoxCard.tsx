@@ -19,7 +19,7 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
   return (
     <Box
       onClick={() => !isDisabled && onSelect(!isChecked)}
-      _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
+      _hover={{ filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))" }}
       role="group"
       overflow="hidden"
       rounded="lg"
@@ -67,7 +67,7 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
           </Box>
         </Flex>
       </Button>
-      <Skeleton bg="black" sx={{ img: { transform: "auto", scale: "1.4" } }} pos="relative" isLoaded={isFetched}>
+      <Skeleton bg="black" pos="relative" isLoaded={isFetched}>
         <Image
           quality={100}
           width={500}
@@ -89,7 +89,9 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
           <Text fontWeight={600}>{propertyLootbox.name}</Text>
         </Skeleton>
         <Skeleton isLoaded={isFetched}>
-          <Text color="neutral.400">{propertyLootbox.description.slice(0, 60)}...</Text>
+          <Text color="neutral.400" title={propertyLootbox.description}>
+            {propertyLootbox.description.slice(0, 45)}...
+          </Text>
         </Skeleton>
       </Stack>
     </Box>

@@ -35,35 +35,30 @@ class ConfigService {
     return {
       type: "postgres",
 
-      host: this.getValue("POSTGRES_HOST"),
-      port: parseInt(this.getValue("POSTGRES_PORT"), 10),
-      username: this.getValue("POSTGRES_USER"),
-      password: this.getValue("POSTGRES_PASSWORD"),
-      database: !constant.isProduction
-        ? "loyalty"
-        : this.getValue("POSTGRES_DATABASE"),
-      // Need to use src/* instead of dist/* if you generate ormconfig.json and need to run typeorm-seeding
-      entities: [join(__dirname, "**", "*.entity{.ts,.js}")],
+      host: constant.POSTGRES_HOST,
+      port: parseInt(constant.POSTGRES_PORT, 10),
+      username: constant.POSTGRES_USER,
+      password: constant.POSTGRES_PASSWORD,
+      database: constant.POSTGRES_DATABASE,
+      entities: [join(__dirname, "..", "**", "*.entity{.ts,.js}")],
 
       migrationsTableName: "migration",
 
-      seeds: ["src/seed/**/*{.ts,.js}"],
+      seeds: ["src/seed/*{.ts,.js}"],
 
-      factories: ["src/factory/**/*{.ts,.js}"],
+      factories: ["src/factory/*{.ts,.js}"],
 
-      migrations: ["src/migration/*.{ts,js}"],
+      migrations: [join(__dirname, "..", "migration", "*{.ts,.js}")],
 
       cli: {
-        migrationsDir: "src/migration/*.{ts,js}",
+        migrationsDir: "src/migration",
       },
 
-      synchronize: !constant.isProduction,
+      synchronize: constant.POSTGRES_SYNCHRONIZE === "true",
 
       // logging: ["query", "error"],
 
       autoLoadEntities: true,
-
-      ssl: constant.isProduction,
     };
   }
 }

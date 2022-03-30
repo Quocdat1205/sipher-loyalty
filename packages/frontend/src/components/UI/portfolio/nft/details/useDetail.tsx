@@ -64,7 +64,12 @@ const useDetail = () => {
     },
   )
 
+  const handleLinkOpenSea = () => {
+    window.open(`https://opensea.io/assets/${tokenDetails?.collectionId}/${tokenDetails?.tokenId}`, "_blank")
+  }
+
   return {
+    handleLinkOpenSea,
     isLoadingTranfer,
     addressTo,
     setAddressTo,

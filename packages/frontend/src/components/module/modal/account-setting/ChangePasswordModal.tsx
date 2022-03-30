@@ -115,8 +115,8 @@ const ChangePasswordModal = ({ isOpen, onClose, onBack }: ChangePasswordModal) =
               border="1px"
               borderColor="neutral.600"
               size="md"
-              color="neutral.50"
-              bg="transparent"
+              colorScheme="neutral"
+              variant="secondary"
               onClick={onClose}
               py={6}
               fontSize="md"

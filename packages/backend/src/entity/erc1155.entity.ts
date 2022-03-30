@@ -6,14 +6,13 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { ApiProperty } from "@nestjs/swagger";
-
-import { ClaimableLootbox } from "./claimableLootbox.entity";
 import {
+  ClaimableLootbox,
   ERC1155LootboxAttribute,
   ERC1155SculptureAttribute,
-} from "./erc1155Attributes.entity";
-import { Lootbox } from "./lootbox.entity";
+  Lootbox,
+} from "@entity";
+import { ApiProperty } from "@nestjs/swagger";
 
 @Entity()
 export class ERC1155Lootbox {
@@ -60,7 +59,7 @@ export class ERC1155Lootbox {
   claimableLootboxs?: ClaimableLootbox[];
 
   @ApiProperty()
-  @CreateDateColumn({ default: new Date() })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 }
 
@@ -98,10 +97,10 @@ export class ERC1155Sculpture {
   attributes: ERC1155SculptureAttribute[];
 
   @ApiProperty()
-  @CreateDateColumn({ default: new Date() })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }

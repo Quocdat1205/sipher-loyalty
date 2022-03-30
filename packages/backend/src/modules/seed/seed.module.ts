@@ -14,11 +14,13 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { LootBoxModule } from "@modules/lootbox/lootbox.module";
 import { Airdrop } from "src/entity/airdrop.entity";
+import { SipherCollection } from "src/entity/sipher-collection.entity";
 
 import { SeedAirdropService } from "./seedAirdrop.service";
 import { SeedERC1155LootboxService } from "./seedERC1155Lootbox.service";
-import { SeedERC1155SculptureService } from "./seedERC1155Sculpture.service copy";
+import { SeedERC1155SculptureService } from "./seedERC1155Sculpture.service";
 import { SeedLootboxService } from "./seedLootbox.service";
+import { SeedSipherCollectionService } from "./seedSipherCollection.service";
 
 @Module({
   imports: [
@@ -34,6 +36,7 @@ import { SeedLootboxService } from "./seedLootbox.service";
       Item,
       ImageUrl,
       Merchandise,
+      SipherCollection,
     ]),
   ],
   providers: [
@@ -41,12 +44,14 @@ import { SeedLootboxService } from "./seedLootbox.service";
     SeedERC1155LootboxService,
     SeedERC1155SculptureService,
     SeedLootboxService,
+    SeedSipherCollectionService,
   ],
   exports: [
     SeedAirdropService,
     SeedERC1155LootboxService,
     SeedERC1155SculptureService,
     SeedLootboxService,
+    SeedSipherCollectionService,
   ],
 })
 export class SeedModule {}

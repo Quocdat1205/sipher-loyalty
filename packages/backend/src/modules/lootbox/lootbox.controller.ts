@@ -1,3 +1,4 @@
+import { Any } from "typeorm";
 import { ClaimableLootbox, Lootbox, PendingMint } from "@entity";
 import {
   Body,
@@ -14,7 +15,11 @@ import { AtherGuard } from "@modules/auth/auth.guard";
 import { AuthService } from "@modules/auth/auth.service";
 
 import { LootBoxService } from "./lootbox.service";
-import { MintBatchLootboxInputDto, MintLootboxInputDto } from "./lootbox.type";
+import {
+  DistributeLootboxs,
+  MintBatchLootboxInputDto,
+  MintLootboxInputDto,
+} from "./lootbox.type";
 
 @ApiTags("lootbox")
 @Controller("lootbox")
@@ -115,5 +120,16 @@ export class LootBoxController {
   async claim(@Param("publicAddress") publicAddress: string, @Req() req: any) {
     await this.authService.verifyAddress(publicAddress, req.userData);
     return this.lootBoxService.claimLootbox(publicAddress);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @ApiOkResponse({
+    type: Any,
+  })
+  @Put("distribute")
+  async distributeLootbox(@Body() body: DistributeLootboxs, @Req() req: any) {
+    await this.authService.verifyKey(body.key, req.userData);
+    return this.lootBoxService.distributeLootbox(body.data);
   }
 }

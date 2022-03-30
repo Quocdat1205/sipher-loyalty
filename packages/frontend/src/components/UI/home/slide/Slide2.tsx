@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useRouter } from "next/router"
 import { Box, Button, Flex, Heading } from "@sipher.dev/sipher-ui"
 
-const Slide2 = () => {
+export const Slide2 = () => {
   const router = useRouter()
 
   return (
@@ -21,6 +21,7 @@ const Slide2 = () => {
             borderColor="white"
             size="lg"
             variant="secondary"
+            _hover={{ bg: "none" }}
           >
             CHECK IT OUT
           </Button>
@@ -29,4 +30,3 @@ const Slide2 = () => {
     </Flex>
   )
 }
-export default Slide2
