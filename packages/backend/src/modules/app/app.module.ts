@@ -23,6 +23,7 @@ import { MintModule } from "../mint/mint.module";
 // import module
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { AdminModule } from "@modules/admin/admin.module";
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { AppService } from "./app.service";
     SculptureModule,
     MerchModule,
     PriceModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

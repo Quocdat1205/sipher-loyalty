@@ -11,43 +11,58 @@ import { ApiProperty } from "@nestjs/swagger";
 import { TransformLowercase } from "@utils/transfomers";
 
 import { Item, ItemType } from "./item.entity";
+import {
+  IsBoolean,
+  IsEnum,
+  IsEthereumAddress,
+  IsNumber,
+  IsString,
+} from "class-validator";
 
 @Entity()
 export class Merchandise {
   @ApiProperty({ type: Number })
+  @IsNumber()
   @PrimaryGeneratedColumn("increment")
-  id?: number;
+  id: number;
 
   @TransformLowercase()
   @ApiProperty({ type: String })
+  @IsEthereumAddress()
   @Column()
   publicAddress: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column()
   tier?: string;
 
   @ApiProperty({ type: String, enum: ItemType, enumName: "ItemType" })
+  @IsEnum(ItemType)
   @Column({
     type: String,
   })
-  merch_item: ItemType;
+  merchItem: ItemType;
 
   @ApiProperty({ type: Number })
+  @IsNumber()
   @Column()
   quantity: number;
 
   @ApiProperty({ type: Number })
+  @IsNumber()
   @Column()
-  quantity_shipped: number;
+  quantityShipped: number;
 
   @ApiProperty({ type: Boolean })
+  @IsBoolean()
   @Column({ default: false })
   isShipped?: boolean;
 
   @ApiProperty({ type: Boolean })
+  @IsBoolean()
   @Column({ default: false })
-  isShip?: boolean;
+  shippable?: boolean;
 
   @ApiProperty({ type: () => Item })
   @ManyToOne(() => Item, (item) => item.merchandise)

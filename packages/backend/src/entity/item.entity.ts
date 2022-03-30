@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { AirdropType, ImageUrl, Merchandise } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
+import { IsArray, IsEnum, IsNumber, IsString } from "class-validator";
 
 export enum ItemType {
   Bomber = "Bomber",
@@ -28,6 +29,7 @@ export enum ViewType {
 @Entity()
 export class Item {
   @ApiProperty({ type: Number })
+  @IsNumber()
   @PrimaryGeneratedColumn("increment")
   id: number;
 
@@ -36,12 +38,14 @@ export class Item {
     enum: ItemType,
     enumName: "ItemType",
   })
+  @IsEnum(ItemType)
   @Column({
     type: String,
   })
-  merch_item: ItemType;
+  merchItem: ItemType;
 
   @ApiProperty({ type: String, enum: ViewType, enumName: "ViewType" })
+  @IsEnum(ViewType)
   @Column({
     type: String,
   })
@@ -51,13 +55,19 @@ export class Item {
   @Column({
     type: String,
   })
+  @IsEnum(AirdropType)
   type: AirdropType;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true })
   shortDescription?: string;
 
   @ApiProperty({ type: String, isArray: true })
+  @IsArray()
+  @IsString({
+    each: true,
+  })
   @Column("character varying", { array: true, default: [] })
   description?: string;
 
@@ -76,10 +86,18 @@ export class Item {
   merchandise?: Merchandise[];
 
   @ApiProperty({ type: String, isArray: true, default: [], nullable: true })
+  @IsArray()
+  @IsString({
+    each: true,
+  })
   @Column("character varying", { array: true, default: [], nullable: true })
   size?: string[];
 
   @ApiProperty({ type: String, isArray: true, default: [], nullable: true })
+  @IsArray()
+  @IsString({
+    each: true,
+  })
   @Column("character varying", { array: true, default: [], nullable: true })
   color?: string[];
 
