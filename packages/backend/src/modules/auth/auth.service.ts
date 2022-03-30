@@ -1,10 +1,8 @@
-import { ethers } from "ethers";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import constant from "@setting/constant";
 
 import { LoggerService } from "@modules/logger/logger.service";
 
-import { UserData } from "./auth.types";
+import { UserData, UserRole } from "./auth.types";
 
 @Injectable()
 export class AuthService {
@@ -19,21 +17,12 @@ export class AuthService {
     return userData;
   };
 
-  verifyKey = async (key: string, userData: UserData) => {
-    const wallet = new ethers.Wallet(constant.PRIVATE_KEY);
-    if (key.toLowerCase() !== wallet.address.toLowerCase()) {
-      LoggerService.warn(`key wrong of user data ${JSON.stringify(userData)}`);
-      throw new HttpException("key wrong", HttpStatus.BAD_REQUEST);
-    }
-    if (
-      userData.publicAddress.findIndex(
-        (wAddress) => wAddress === key.toLowerCase()
-      ) === -1
-    ) {
+  verifyAdmin = async (userData: UserData, userRole: UserRole) => {
+    if (userData.roles.findIndex((role) => role === userRole) === -1) {
       LoggerService.warn(
-        `user not owned key of user data ${JSON.stringify(userData)}`
+        `not permisson, user data ${JSON.stringify(userData)}`
       );
-      throw new HttpException("user not owned key", HttpStatus.BAD_REQUEST);
+      throw new HttpException("ACCESS DENIED !", HttpStatus.BAD_REQUEST);
     }
   };
 }

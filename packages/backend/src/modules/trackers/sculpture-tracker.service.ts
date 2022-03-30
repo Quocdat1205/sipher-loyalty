@@ -24,7 +24,11 @@ export class ScupltureTrackerService {
     @InjectRepository(TrackedBlock)
     private trackBlockRepo: Repository<TrackedBlock>
   ) {
-    this.provider = getProvider(this.chain);
+    this.start();
+  }
+
+  private async start() {
+    this.provider = await getProvider(this.chain);
     this.sculptureContract = getContract(
       constant.blockchain.contracts.erc1155Sculpture[this.chain].address,
       sculptureAbi,

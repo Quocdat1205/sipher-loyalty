@@ -26,27 +26,16 @@ export class LootboxTrackerMintedService {
     @InjectRepository(TrackedBlock)
     private trackedBlockRepo: Repository<TrackedBlock>
   ) {
-    this.getStartMintedBlock();
+    this.start();
+  }
 
-    this.provider = getProvider(this.chain);
+  private start = async () => {
+    this.provider = await getProvider(this.chain);
     this.contract = getContract(
       constant.config.erc1155LootBox.verifyingContract,
       erc1155Abi,
       this.provider
     );
-  }
-
-  @Interval("tracking lootbox minted", 15000)
-  async TrackingMintedInterval() {
-    this.fromBlockMinted = await this.trackingMinted(this.fromBlockMinted);
-    const trackedBlock = await this.trackedBlockRepo.findOne({
-      where: { type: "mint" },
-    });
-    trackedBlock.tracked = this.fromBlockMinted;
-    this.trackedBlockRepo.save(trackedBlock);
-  }
-
-  private getStartMintedBlock = async () => {
     try {
       const trackedBlock = await this.trackedBlockRepo.findOne({
         where: { type: "mint" },
@@ -61,6 +50,16 @@ export class LootboxTrackerMintedService {
       this.fromBlockMinted = 0;
     }
   };
+
+  @Interval("tracking lootbox minted", 15000)
+  async TrackingMintedInterval() {
+    this.fromBlockMinted = await this.trackingMinted(this.fromBlockMinted);
+    const trackedBlock = await this.trackedBlockRepo.findOne({
+      where: { type: "mint" },
+    });
+    trackedBlock.tracked = this.fromBlockMinted;
+    this.trackedBlockRepo.save(trackedBlock);
+  }
 
   private currentBlock = async () => {
     try {

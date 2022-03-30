@@ -14,7 +14,9 @@ import { SeedLootboxService } from "@modules/seed/seedLootbox.service";
     SeedModule,
     LootBoxModule,
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
+    TypeOrmModule.forRootAsync({
+      useFactory: async () => configService.getTypeOrmConfig(),
+    }),
     TypeOrmModule.forFeature([Lootbox, ClaimableLootbox, ERC1155Lootbox]),
   ],
   providers: [SeedLootboxService],

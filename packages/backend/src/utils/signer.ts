@@ -19,8 +19,6 @@ const createEIP712_LOOTBOX_Domain = (
   chainId,
 });
 
-const signer = new ethers.Wallet(constant.PRIVATE_KEY);
-
 const signOrder = async (
   config: { chainId: number; verifyingContract: string },
   order: Order
@@ -29,7 +27,7 @@ const signOrder = async (
     config.chainId,
     config.verifyingContract
   );
-
+  const signer = new ethers.Wallet(await constant.getPRIVATE_KEY_LOYALTY());
   const types = EIP712_LOOTBOX_ORDER_TYPES;
   const signature = await signer._signTypedData(domain, types, order);
 
@@ -55,6 +53,7 @@ const signBatchOrder = async (
 
   const types = EIP712_LOOTBOX_BATCH_ORDER_TYPES;
 
+  const signer = new ethers.Wallet(await constant.getPRIVATE_KEY_LOYALTY());
   const signature = await signer._signTypedData(
     domain,
     types,
@@ -68,6 +67,5 @@ export {
   createEIP712_LOOTBOX_Domain,
   encodeBatchOrder,
   signBatchOrder,
-  signer,
   signOrder,
 };

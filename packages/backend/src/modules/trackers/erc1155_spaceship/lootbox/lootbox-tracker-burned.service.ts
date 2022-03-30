@@ -27,27 +27,16 @@ export class LootboxTrackerBurnedService {
     @InjectRepository(TrackedBlock)
     private trackedBlockRepo: Repository<TrackedBlock>
   ) {
-    this.getStartBurnedBlock();
+    this.start();
+  }
 
-    this.provider = getProvider(this.chain);
+  private start = async () => {
+    this.provider = await getProvider(this.chain);
     this.contract = getContract(
       constant.config.erc1155LootBox.verifyingContract,
       erc1155Abi,
       this.provider
     );
-  }
-
-  @Interval("tracking lootbox burned", 15000)
-  async TrackingBurnedInterval() {
-    this.fromBlockBurned = await this.trackingBurned(this.fromBlockBurned);
-    const trackedBlock = await this.trackedBlockRepo.findOne({
-      where: { type: "burn" },
-    });
-    trackedBlock.tracked = this.fromBlockBurned;
-    this.trackedBlockRepo.save(trackedBlock);
-  }
-
-  private getStartBurnedBlock = async () => {
     try {
       const trackedBlock = await this.trackedBlockRepo.findOne({
         where: { type: "burn" },
@@ -62,6 +51,16 @@ export class LootboxTrackerBurnedService {
       this.fromBlockBurned = 0;
     }
   };
+
+  @Interval("tracking lootbox burned", 15000)
+  async TrackingBurnedInterval() {
+    this.fromBlockBurned = await this.trackingBurned(this.fromBlockBurned);
+    const trackedBlock = await this.trackedBlockRepo.findOne({
+      where: { type: "burn" },
+    });
+    trackedBlock.tracked = this.fromBlockBurned;
+    this.trackedBlockRepo.save(trackedBlock);
+  }
 
   private currentBlock = async () => {
     try {

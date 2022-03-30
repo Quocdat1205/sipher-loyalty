@@ -7,20 +7,20 @@ sipher-chart:
       kubernetes.io/ingress.class: alb
       service.beta.kubernetes.io/aws-load-balancer-internal: "true"
     rules:
-    - host:  api-loyalty.sipher.gg
-      paths:
-      - path: /
-        serviceName: loyalty-backend-api
-        servicePort: 5500
-        pathType: ImplementationSpecific
+      - host: api-loyalty.sipher.gg
+        paths:
+          - path: /
+            serviceName: loyalty-backend-api
+            servicePort: 5500
+            pathType: ImplementationSpecific
   deploys:
     - name: backend
       replicasCount: 1
       resources: {}
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
       args:
-        - '-c'
-        - 'node ./dist/main.js'
+        - "-c"
+        - "node ./dist/main.js"
       services:
         - name: api
           containerPort:
@@ -28,15 +28,26 @@ sipher-chart:
     - name: lootbox-tracker
       replicasCount: 1
       resources: {}
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
       args:
-        - '-c'
-        - 'node ./dist/scripts/lootbox-tracker.js'
+        - "-c"
+        - "node ./dist/scripts/lootbox-tracker.js"
     - name: sculpture-tracker
       replicasCount: 1
       resources: {}
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
       args:
-        - '-c'
-        - 'node ./dist/scripts/sculpture-tracker.js'
-  env: {}
+        - "-c"
+        - "node ./dist/scripts/sculpture-tracker.js"
+  env:
+    PORT: 5500
+    NODE_ENV: develop
+    POSTGRES_URL: ssm:/marketplace/dev/LOYALTY_POSTGRES_URL
+    POSTGRES_SYNCHRONIZE: true
+    SESSION_URL: ssm:/marketplace/dev/LOYALTY_SESSION_URL
+    KEY_NFURA: ssm:/marketplace/dev/LOYALTY_INFURA
+    ELASTICSEARCH_ENDPOINT: https://search-dev-marketplace-j3etkzos2pedv2c2q6jl2wy5d4.us-west-2.es.amazonaws.com
+    ELASTICSEARCH_INDEX: dev-marketplace
+    PRIVATE_KEY_LOYALTY: ssm:/marketplace/dev/LOYALTY_PRIVATE_KEY
+    ATHER_ID_URL: https://api-atherid.sipher.gg/api
+    ATHER_SOCIAL_URL: https://api-ather-social.sipher.gg/api

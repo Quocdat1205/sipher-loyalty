@@ -31,8 +31,15 @@ export class DistributeSculptureService {
   private chain = constant.isProduction ? Chain.Polygon : Chain.Mumbai;
 
   constructor() {
-    this.provider = getProvider(this.chain);
-    this.wallet = new ethers.Wallet(constant.PRIVATE_KEY, this.provider);
+    this.start();
+  }
+
+  private async start() {
+    this.provider = await getProvider(this.chain);
+    this.wallet = new ethers.Wallet(
+      await constant.getPRIVATE_KEY_LOYALTY(),
+      this.provider
+    );
     this.contract = getContract(
       constant.config.erc1155Sculpture.verifyingContract,
       erc1155Abi,

@@ -164,6 +164,36 @@ export interface DistributeLootboxs {
 
 export type Any = object;
 
+export interface ERC1155Sculpture {
+  id: number;
+  tokenId: string;
+  name: string;
+  shortDescription: string;
+  description: string;
+  external_url: string;
+  image: string;
+  attributes: ERC1155SculptureAttribute[];
+
+  /** @format date-time */
+  createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
+}
+
+export interface ERC1155SculptureAttribute {
+  id: number;
+  trait_type: string;
+  value: string;
+  erc1155: ERC1155Sculpture;
+
+  /** @format date-time */
+  createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
+}
+
 export enum CollectionCategory {
   Character = 'character',
   Sculpture = 'sculpture',
@@ -321,7 +351,7 @@ export interface Merchandise {
   quantity: number;
   quantity_shipped: number;
   isShipped: boolean;
-  shippable: boolean;
+  isShip: boolean;
   item: Item;
 
   /** @format date-time */
@@ -799,6 +829,42 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, any>({
         path: `/api/sipher/loyalty/uri/erc1155-sculpture/${tokenId}`,
         method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags uri
+     * @name UriControllerUpdateErc1155Sculpture
+     * @request PUT:/api/sipher/loyalty/uri/erc1155-sculpture
+     * @secure
+     */
+    uriControllerUpdateErc1155Sculpture: (data: ERC1155Sculpture, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/uri/erc1155-sculpture`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags uri
+     * @name UriControllerUpdateErc1155Lootbox
+     * @request PUT:/api/sipher/loyalty/uri/erc1155-lootbox
+     * @secure
+     */
+    uriControllerUpdateErc1155Lootbox: (data: ERC1155Lootbox, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/uri/erc1155-lootbox`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
 

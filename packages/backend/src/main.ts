@@ -9,7 +9,6 @@ import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import constant from "@setting/constant";
-import cors from "@setting/cors";
 
 import { AppModule } from "./modules/app/app.module";
 import { LoggerService } from "./modules/logger/logger.service";
@@ -66,8 +65,8 @@ async function bootstrap() {
     })
   );
   app.use(helmet());
-  app.enableCors(cors);
-  app.use(json({ limit: "50mb" }));
+  app.enableCors({ credentials: true, origin: true });
+  app.use(json({ limit: "10mb" }));
   app.use(urlencoded({ extended: true, limit: "10mb" }));
   await app.listen(configService.get("PORT"), () => {
     LoggerService.log(

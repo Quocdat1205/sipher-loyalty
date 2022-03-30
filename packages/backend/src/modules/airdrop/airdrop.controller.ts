@@ -13,6 +13,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
 import { AtherGuard } from "@modules/auth/auth.guard";
 import { AuthService } from "@modules/auth/auth.service";
+import { UserRole } from "@modules/auth/auth.types";
 import { AirdropType } from "src/entity/airdrop.entity";
 import { ParseEthereumAddress } from "src/pipes/ethereum-address..pipe";
 
@@ -72,7 +73,10 @@ export class AirdropController {
   })
   @Put("updateTokenList/:smartContract")
   async updateAirdropTokens(@Body() body: AirdropTokens, @Req() req: Request) {
-    await this.authService.verifyKey(body.key, req.userData);
+    await this.authService.verifyAdmin(
+      req.userData,
+      UserRole.LOYALTY_ADMIN_AIRDROP
+    );
     return this.airdropService.updateAirdropTokens(body.data);
   }
 }

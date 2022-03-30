@@ -47,7 +47,7 @@ export class Merchandise {
 
   @ApiProperty({ type: Boolean })
   @Column({ default: false })
-  shippable?: boolean;
+  isShip?: boolean;
 
   @ApiProperty({ type: () => Item })
   @ManyToOne(() => Item, (item) => item.merchandise)

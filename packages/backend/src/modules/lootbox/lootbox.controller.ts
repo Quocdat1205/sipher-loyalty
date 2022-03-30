@@ -14,6 +14,7 @@ import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 
 import { AtherGuard } from "@modules/auth/auth.guard";
 import { AuthService } from "@modules/auth/auth.service";
+import { UserRole } from "@modules/auth/auth.types";
 import { ParseEthereumAddress } from "src/pipes/ethereum-address..pipe";
 
 import { LootBoxService } from "./lootbox.service";
@@ -137,7 +138,10 @@ export class LootBoxController {
     @Body() body: DistributeLootboxs,
     @Req() req: Request
   ) {
-    await this.authService.verifyKey(body.key, req.userData);
+    await this.authService.verifyAdmin(
+      req.userData,
+      UserRole.LOYALTY_ADMIN_LOOTBOX_SPACESHIP
+    );
     return this.lootBoxService.distributeLootbox(body.data);
   }
 }

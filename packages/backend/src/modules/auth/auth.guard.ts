@@ -1,3 +1,4 @@
+import { CognitoJwtVerifier } from "aws-jwt-verify";
 import axios from "axios";
 import { Observable } from "rxjs";
 import {
@@ -25,14 +26,34 @@ declare global {
 
 @Injectable()
 export class AtherGuard implements CanActivate {
-  constructor(private cacheService: CacheService) {}
+  private verifier;
+
+  private configAtherID;
+
+  constructor(private cacheService: CacheService) {
+    this.loadConfig();
+  }
+
+  private async loadConfig() {
+    const { data } = await axios.get(`${constant.ATHER_ID_URL}/config/client`);
+    this.configAtherID = data;
+    this.verifier = CognitoJwtVerifier.create({
+      userPoolId: this.configAtherID.userPoolId,
+      clientId: this.configAtherID.clientId,
+      tokenUse: null,
+    });
+  }
 
   private async validateRequest(req: any) {
     try {
       const currentUserData = await this.cacheService.get(
         req.headers.authorization
       );
+
       if (!currentUserData) {
+        const token = req.headers.authorization.trim().split(" ").pop();
+        const dataAWSUser = await this.verifier.verify(token);
+        const roles = dataAWSUser["cognito:groups"];
         const { data } = await axios.get(
           `${constant.ATHER_ID_URL}/wallets/owned`,
           {
@@ -44,6 +65,7 @@ export class AtherGuard implements CanActivate {
         const userData = {
           userId: data[0].userId,
           publicAddress: data.map((el: any) => el.address.toLowerCase()),
+          roles,
         };
         await this.cacheService.set(req.headers.authorization, userData);
         req.userData = userData;

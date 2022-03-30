@@ -8,38 +8,39 @@ import constant from "./constant";
 dotenv.config();
 
 class ConfigService {
-  constructor(private env: { [k: string]: string | undefined }) {}
+  private async getInfoPG() {
+    const [_UserAndPass, _HostPortDB] = (
+      await constant.getPOSTGRES_URL()
+    ).split("@");
+    const [, _User, password] = _UserAndPass.split(":");
+    const [, , username] = _User.split("/");
+    const [host, _PortDB] = _HostPortDB.split(":");
+    const [port, database] = _PortDB.split("/");
+    return {
+      username,
+      password,
+      host,
+      port: parseInt(port, 10),
+      database,
+    };
+    return { username: "", password: "", host: "", port: 0, database: "" };
+  }
 
-  private getValue(key: string, throwOnMissing = true): string {
-    const value = this.env[key];
-    if (!value && throwOnMissing) {
-      throw new Error(`config error - missing env.${key}`);
+  public async getTypeOrmConfig(): Promise<
+    TypeOrmModuleOptions & {
+      seeds: string[];
+      factories: string[];
     }
+  > {
+    const { username, password, host, port, database } = await this.getInfoPG();
 
-    return value;
-  }
-
-  public ensureValues(keys: string[]) {
-    keys.forEach((k) => this.getValue(k, true));
-    return this;
-  }
-
-  public getPort() {
-    return this.getValue("PORT", true);
-  }
-
-  public getTypeOrmConfig(): TypeOrmModuleOptions & {
-    seeds: string[];
-    factories: string[];
-  } {
     return {
       type: "postgres",
-
-      host: constant.POSTGRES_HOST,
-      port: parseInt(constant.POSTGRES_PORT, 10),
-      username: constant.POSTGRES_USER,
-      password: constant.POSTGRES_PASSWORD,
-      database: constant.POSTGRES_DATABASE,
+      host,
+      port,
+      username,
+      password,
+      database,
       entities: [join(__dirname, "..", "**", "*.entity{.ts,.js}")],
 
       migrationsTableName: "migration",
@@ -63,12 +64,6 @@ class ConfigService {
   }
 }
 
-const configService = new ConfigService(process.env).ensureValues([
-  "POSTGRES_HOST",
-  "POSTGRES_PORT",
-  "POSTGRES_USER",
-  "POSTGRES_PASSWORD",
-  "POSTGRES_DATABASE",
-]);
+const configService = new ConfigService();
 
 export { configService };

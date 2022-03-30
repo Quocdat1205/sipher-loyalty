@@ -1,11 +1,9 @@
 // import library
 import Joi from "joi";
-import { SculptureTransaction } from "@entity";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { configService } from "@setting/config.typeorm";
-import validation from "@setting/validationSchema";
 
 import { AirdropModule } from "@modules/airdrop/airdrop.module";
 import { CollectionModule } from "@modules/collection/collection.module";
@@ -26,11 +24,10 @@ import { AppService } from "./app.service";
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      validationSchema: Joi.object(validation),
-      isGlobal: true,
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRootAsync({
+      useFactory: async () => configService.getTypeOrmConfig(),
     }),
-    TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
     SearchModule,
     LoggerModule,
     NftItemModule,

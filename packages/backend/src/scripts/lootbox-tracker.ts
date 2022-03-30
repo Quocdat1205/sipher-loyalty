@@ -15,7 +15,9 @@ import { TrackedBlock } from "src/entity/tracking.entity";
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
+    TypeOrmModule.forRootAsync({
+      useFactory: async () => configService.getTypeOrmConfig(),
+    }),
     TypeOrmModule.forFeature([Lootbox, PendingMint, TrackedBlock]),
     LoggerModule,
     LootboxTrackerModule,

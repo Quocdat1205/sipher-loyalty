@@ -15,7 +15,9 @@ import { SeedSipherCollectionService } from "@modules/seed/seedSipherCollection.
   imports: [
     SeedModule,
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
+    TypeOrmModule.forRootAsync({
+      useFactory: async () => configService.getTypeOrmConfig(),
+    }),
     TypeOrmModule.forFeature([ERC1155Lootbox, ERC1155LootboxAttribute]),
   ],
   providers: [SeedERC1155LootboxService],
