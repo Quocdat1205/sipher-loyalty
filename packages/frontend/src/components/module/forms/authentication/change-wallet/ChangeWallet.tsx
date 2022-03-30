@@ -44,6 +44,8 @@ const ChangeWallet = () => {
   return (
     <ChakraModal
       title={"CHANGE WALLET"}
+      closeOnOverlayClick={false}
+      hideCloseButton
       size="lg"
       isOpen={flowState?.type === AuthType.ChangeWallet && flowState.action === ChangeWalletAction.Change}
       onClose={() => {

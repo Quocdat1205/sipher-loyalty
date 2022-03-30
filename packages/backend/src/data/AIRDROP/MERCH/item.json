@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "merch_item": "Bomber",
+    "merchItem": "Bomber",
     "name": "SIPHER Exclusive Bomber",
     "shortDescription": "This Airdrop is limited and applied for Diamond tier ",
     "description": [
@@ -27,7 +27,7 @@
   },
   {
     "id": 2,
-    "merch_item": "Hoodie",
+    "merchItem": "Hoodie",
     "name": "SIPHER Exclusive Hoodie",
     "shortDescription": "This Airdrop is limited and applied for Platinum tier ",
     "description": [
@@ -53,7 +53,7 @@
   },
   {
     "id": 3,
-    "merch_item": "Tshirt",
+    "merchItem": "Tshirt",
     "name": "SIPHER Exclusive T-shirt",
     "shortDescription": "This Airdrop is limited and applied for Gold tier ",
     "description": [
@@ -79,7 +79,7 @@
   },
   {
     "id": 4,
-    "merch_item": "Hat",
+    "merchItem": "Hat",
     "name": "SIPHER Exclusive Hat",
     "shortDescription": "This Airdrop is limited and applied for Silver tier ",
     "description": [
@@ -103,7 +103,7 @@
   },
   {
     "id": 5,
-    "merch_item": "Card",
+    "merchItem": "Card",
     "name": "Thank You Card",
     "shortDescription": "A personal note to thank our early backers from Sipher's team",
     "description": [

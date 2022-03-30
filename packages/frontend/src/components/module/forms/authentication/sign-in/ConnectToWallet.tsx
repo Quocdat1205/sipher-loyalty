@@ -63,6 +63,8 @@ const ConnectToWallet = () => {
 
   return (
     <ChakraModal
+      closeOnOverlayClick={false}
+      hideCloseButton
       title={"CONNECT TO A WALLET"}
       size="lg"
       isOpen={flowState?.type === AuthType.SignIn && flowState.action === SignInAction.ConnectWallet}
@@ -91,7 +93,7 @@ const ConnectToWallet = () => {
         </HStack>
         <Divider />
         <Text color="neutral.400" textAlign="center">
-          Don't have a Wallet?{" "}
+          Don't have a Wallet?
           <chakra.span textDecor="underline" cursor="pointer" color="cyan.600">
             Learn More
           </chakra.span>

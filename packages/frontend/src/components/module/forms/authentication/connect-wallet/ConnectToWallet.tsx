@@ -59,6 +59,8 @@ const ConnectToWallet = () => {
 
   return (
     <ChakraModal
+      closeOnOverlayClick={false}
+      hideCloseButton
       title={"CONNECT TO A WALLET"}
       size="lg"
       isOpen={flowState?.type === AuthType.ConnectWallet && flowState.action === ConnectWalletAction.Connect}

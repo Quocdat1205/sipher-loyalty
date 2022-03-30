@@ -1,9 +1,11 @@
 import {
   IsDecimal,
   IsEnum,
+  IsEthereumAddress,
   IsNumber,
   IsNumberString,
   IsOptional,
+  IsString,
 } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
@@ -28,6 +30,26 @@ export class PortfolioQuery {
   chainId: string;
 }
 
+export class PortfolioByCollectionQuery {
+  @ApiProperty()
+  @IsEthereumAddress()
+  userAddress: string;
+
+  @ApiProperty()
+  @IsString()
+  collectionId: string;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  from?: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  size?: number;
+}
+
 export class PortfolioByCollectionResponse {
   @ApiProperty({ type: SipherCollection })
   collection: SipherCollection;
@@ -39,6 +61,7 @@ export class PortfolioByCollectionResponse {
 
   @ApiProperty({
     type: NftItem,
+    isArray: true,
   })
   items: NftItem[];
 }

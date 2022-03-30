@@ -14,7 +14,7 @@ interface CardGeneralProps {
 
 const CardGeneral = ({ value, name, icon, popoverProps, rightChildren }: CardGeneralProps) => {
   return (
-    <Box bg="blackAlpha.800" rounded="lg" w="full" p={4}>
+    <Flex flexDir="column" justify="space-between" bg="blackAlpha.800" rounded="lg" w="full" p={6}>
       <Flex mb={4} align="center" justify="space-between">
         <Flex align="center">
           <Text color="neutral.300" textTransform="capitalize">
@@ -37,13 +37,13 @@ const CardGeneral = ({ value, name, icon, popoverProps, rightChildren }: CardGen
           {icon}
         </Flex>
       </Flex>
-      <Flex lineHeight={1} alignSelf="flex-end" align="flex-end" justify="space-between">
+      <Flex w="full" lineHeight={1} alignSelf="flex-end" align="flex-end" justify="space-between">
         <Text lineHeight={1} fontSize="3xl" color="text.primary" fontWeight={600}>
           {value}
         </Text>
         {rightChildren}
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 

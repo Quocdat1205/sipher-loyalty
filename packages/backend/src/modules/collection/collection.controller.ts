@@ -75,17 +75,31 @@ export class CollectionController {
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @Get(":collectionId/portfolio/:userAddress")
+  @ApiQuery({
+    name: "from",
+    type: Number,
+    required: false,
+  })
+  @ApiQuery({
+    name: "size",
+    type: Number,
+    required: false,
+  })
   @ApiOkResponse({ type: PortfolioByCollectionResponse })
   async getPortfolioByCollection(
     @Param("userAddress") userAddress: string,
     @Param("collectionId") collectionId: string,
-    @Req() req: Request
+    @Req() req: any,
+    @Query("from") from = 0,
+    @Query("size") size = 20
   ) {
     await this.authService.verifyAddress(userAddress, req.userData);
-    return this.collectionService.getPortfolioByCollection(
-      userAddress.toLowerCase(),
-      collectionId.toLowerCase()
-    );
+    return this.collectionService.getPortfolioByCollection({
+      userAddress: userAddress.toLowerCase(),
+      collectionId: collectionId.toLowerCase(),
+      from,
+      size,
+    });
   }
 
   @UseGuards(AtherGuard)

@@ -292,7 +292,7 @@ export interface NftItem {
 export interface PortfolioByCollectionResponse {
   collection: SipherCollection;
   total: number;
-  items: NftItem;
+  items: NftItem[];
 }
 
 export enum AirdropType {
@@ -347,11 +347,11 @@ export interface Merchandise {
   id: number;
   publicAddress: string;
   tier: string;
-  merch_item: ItemType;
+  merchItem: ItemType;
   quantity: number;
-  quantity_shipped: number;
+  quantityShipped: number;
   isShipped: boolean;
-  isShip: boolean;
+  shippable: boolean;
   item: Item;
 
   /** @format date-time */
@@ -363,7 +363,7 @@ export interface Merchandise {
 
 export interface Item {
   id: number;
-  merch_item: ItemType;
+  merchItem: ItemType;
   name: ViewType;
   type: AirdropType;
   shortDescription: string;
@@ -469,6 +469,40 @@ export interface PriceDatas {
   sipherPrice: PriceData;
   ethereumPrice: PriceData;
   maticPrice: PriceData;
+}
+
+export interface MerchUpdateDto {
+  publicAddress?: string;
+  tier?: string;
+  merchItem?: ItemType;
+  quantity?: number;
+  quantityShipped?: number;
+  isShipped?: boolean;
+  shippable?: boolean;
+  itemId: number;
+}
+
+export interface UpdateItemDto {
+  merchItem?: ItemType;
+  name?: ViewType;
+  type?: AirdropType;
+  shortDescription?: string;
+  description?: string[];
+  size?: string[] | null;
+  color?: string[] | null;
+}
+
+export interface UpdateImageUrlDto {
+  color?: string;
+  default?: string;
+  front?: string;
+  back?: string;
+  left?: string;
+  right?: string;
+  top?: string;
+  bot?: string;
+  itemId: number;
+  airdropId: number;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
@@ -908,10 +942,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/sipher/loyalty/collection/{collectionId}/portfolio/{userAddress}
      * @secure
      */
-    collectionControllerGetPortfolioByCollection: (userAddress: string, collectionId: string, params: RequestParams = {}) =>
+    collectionControllerGetPortfolioByCollection: (
+      userAddress: string,
+      collectionId: string,
+      query?: { size?: number; from?: number },
+      params: RequestParams = {},
+    ) =>
       this.request<PortfolioByCollectionResponse, any>({
         path: `/api/sipher/loyalty/collection/${collectionId}/portfolio/${userAddress}`,
         method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -1029,6 +1069,54 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: 'GET',
         secure: true,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateMerchById
+     * @request PUT:/api/sipher/loyalty/admin/merch/{merchId}
+     */
+    adminControllerUpdateMerchById: (merchId: number, data: MerchUpdateDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/merch/${merchId}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateItemById
+     * @request PUT:/api/sipher/loyalty/admin/item/{itemId}
+     */
+    adminControllerUpdateItemById: (itemId: number, data: UpdateItemDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/item/${itemId}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateImageUrlById
+     * @request PUT:/api/sipher/loyalty/admin/imageUrl/{imageUrlId}
+     */
+    adminControllerUpdateImageUrlById: (imageUrlId: number, data: UpdateImageUrlDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/imageUrl/${imageUrlId}`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

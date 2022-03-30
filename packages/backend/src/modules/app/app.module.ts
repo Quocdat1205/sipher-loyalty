@@ -5,6 +5,7 @@ import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { configService } from "@setting/config.typeorm";
 
+import { AdminModule } from "@modules/admin/admin.module";
 import { AirdropModule } from "@modules/airdrop/airdrop.module";
 import { CollectionModule } from "@modules/collection/collection.module";
 import { LoggerModule } from "@modules/logger/logger.module";
@@ -39,6 +40,7 @@ import { AppService } from "./app.service";
     SculptureModule,
     MerchModule,
     PriceModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -9,6 +9,7 @@ import { Web3ReactProvider } from "@web3-react/core"
 
 import { BalanceProvider } from "@hooks"
 import { AuthProvider } from "src/providers/auth"
+import theme from "src/theme"
 
 import "../style.css"
 
@@ -34,7 +35,7 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
   )
 
   return (
-    <SipherProvider>
+    <SipherProvider theme={theme}>
       <QueryClientProvider client={qcRef.current}>
         <Hydrate state={pageProps.dehydratedState}>
           <Web3ReactProvider getLibrary={e => e}>

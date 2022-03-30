@@ -93,6 +93,8 @@ const SignUpForm = () => {
 
   return (
     <ChakraModal
+      closeOnOverlayClick={false}
+      hideCloseButton
       title={"SIGN IN OR CREATE ACCOUNT"}
       size="lg"
       isOpen={flowState?.type === AuthType.SignUp && flowState?.action === SignUpAction.SignUp}

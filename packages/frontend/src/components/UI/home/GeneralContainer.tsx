@@ -8,24 +8,27 @@ import { currency } from "@utils"
 import CardGeneral from "./CardGeneral"
 import { StakeModal } from "./modal"
 
-const GeneralContainer = () => {
+interface GeneralContainerProps {
+  totalCollectionPrice: number
+}
+
+const GeneralContainer = ({ totalCollectionPrice }: GeneralContainerProps) => {
   const [modalStake, setModalStake] = useState(false)
   const {
+    dataPrice,
     balance: { sipher },
-    totalETHPrice,
-    totalUsdPrice,
   } = useBalanceContext()
 
   return (
     <>
-      <SimpleGrid mb={8} columns={[2, 2, 4]} spacing={8}>
+      <SimpleGrid mb={8} columns={[2, 2, 3]} spacing={6}>
         <CardGeneral
-          value={`${currency(totalETHPrice)} ETH`}
+          value={`${currency(totalCollectionPrice)} ETH`}
           name={"Portfolio value"}
           icon={<EthereumIcon size="1.5rem" />}
           rightChildren={
             <Text pb={0.5} lineHeight={1} color="neutral.100">
-              ${currency(totalUsdPrice)}
+              ${currency(totalCollectionPrice * (dataPrice?.ethereumPrice?.usd || 0))}
             </Text>
           }
         />

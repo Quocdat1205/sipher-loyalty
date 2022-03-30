@@ -1,4 +1,4 @@
-import { IsString } from "class-validator";
+import { IsNumber, IsString } from "class-validator";
 import {
   Column,
   CreateDateColumn,
@@ -13,39 +13,47 @@ import { ApiProperty } from "@nestjs/swagger";
 @Entity()
 export class ImageUrl {
   @ApiProperty({ type: Number })
+  @IsNumber()
   @PrimaryGeneratedColumn("increment")
-  @IsString()
   id: number;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   color: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   default?: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   front?: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   back?: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   left?: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   right?: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   top?: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   bot?: string;
 

@@ -60,7 +60,8 @@ const VerifySignInForm = () => {
       title={"VERIFY YOUR ACCOUNT"}
       size="lg"
       isOpen={flowState?.type === AuthType.SignIn && flowState.action === SignInAction.Verify}
-      hideCloseButton={true}
+      closeOnOverlayClick={false}
+      hideCloseButton
     >
       <Form onSubmit={handleSubmit}>
         <Stack pos="relative" px={6} spacing={4} w="full">

@@ -15,10 +15,10 @@ const header = [
 ] as const
 
 interface TokensContainerProps {
-  tokensData: ReturnType<typeof usePortfolio>["tokensData"]
+  tokensData: ReturnType<typeof usePortfolio>["tokensData"][number][]
 }
 
-const TokensContainer = ({ tokensData = [] }: TokensContainerProps) => {
+const TokensContainer = ({ tokensData }: TokensContainerProps) => {
   const { items, requestSort, sortConfig } = useSortableData(tokensData)
   return (
     <Box bg="neutral.700" p={4} rounded="lg" overflowX="auto" whiteSpace="nowrap">
