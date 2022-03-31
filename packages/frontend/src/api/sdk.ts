@@ -395,7 +395,6 @@ export interface ResAirdrop {
   updatedAt: string;
   size: string[] | null;
   color: string[] | null;
-  quantity: number;
 }
 
 export interface ResAllAirdrop {
