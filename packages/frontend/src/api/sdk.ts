@@ -109,9 +109,7 @@ export interface ClaimableLootbox {
   quantity: number;
   tokenId: number;
   propertyLootbox: ERC1155Lootbox;
-
-  /** @format date-time */
-  expiredDate: string;
+  expiredDate: number;
 
   /** @format date-time */
   createdAt: string;
@@ -825,7 +823,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UriControllerGetDataErc1155Lootbox
      * @request GET:/api/sipher/loyalty/uri/erc1155-lootbox/{tokenId}
      */
-    uriControllerGetDataErc1155Lootbox: (tokenId: string, params: RequestParams = {}) =>
+    uriControllerGetDataErc1155Lootbox: (tokenId: number, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/uri/erc1155-lootbox/${tokenId}`,
         method: 'GET',
@@ -839,7 +837,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UriControllerGetDataErc1155Sculpture
      * @request GET:/api/sipher/loyalty/uri/erc1155-sculpture/{tokenId}
      */
-    uriControllerGetDataErc1155Sculpture: (tokenId: string, params: RequestParams = {}) =>
+    uriControllerGetDataErc1155Sculpture: (tokenId: number, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/uri/erc1155-sculpture/${tokenId}`,
         method: 'GET',

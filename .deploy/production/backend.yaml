@@ -54,10 +54,12 @@ sipher-chart:
     POSTGRES_URL: ssm:/atherlabs/dashboard/prod/POSTGRES_URL
     POSTGRES_SYNCHRONIZE: false
     SESSION_URL: ssm:/atherlabs/dashboard/prod/SESSION_URL
-    KEY_INFURA: ssm:/atherlabs/dashboard/prod/KEY_INFURA
+    RPC_URL_ETHEREUM: ssm:/atherlabs/dashboard/dev/RPC_URL_ETHEREUM
+    RPC_URL_RINKERBY: https://eth-rinkeby.alchemyapi.io/v2/-295c0M3micMRJvOU0MWMOx5Mo4WYj0X
+    RPC_URL_POLYGON_MUMBAI: https://polygon-mumbai.g.alchemy.com/v2/1dyROd_yNg9c4hYmKx4et4hotTV-wCgb
+    RPC_URL_POLYGON_MAINNET: ssm:/atherlabs/dashboard/dev/RPC_URL_ETHEREUM
     ELASTICSEARCH_ENDPOINT: https://search-dev-marketplace-j3etkzos2pedv2c2q6jl2wy5d4.us-west-2.es.amazonaws.com
     ELASTICSEARCH_INDEX: dev-marketplace
     PRIVATE_KEY_LOYALTY: ssm:/atherlabs/dashboard/prod/PRIVATE_KEY_LOYALTY
     ATHER_ID_URL: https://api-atherid.sipher.gg/api
     ATHER_SOCIAL_URL: https://api-ather-social.sipher.gg/api
-    MARKETPLACE_SDK_URL: https://dev-api-marketplace.sipher.gg
