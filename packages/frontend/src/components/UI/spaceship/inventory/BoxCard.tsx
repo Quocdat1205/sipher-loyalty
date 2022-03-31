@@ -79,7 +79,7 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
         />
         <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white" pos="absolute" bottom="1rem" left="0.5rem">
           <SpLayer />
-          <Text fontSize="xs" color="neutral.900" fontWeight={600}>
+          <Text ml={1} fontSize="xs" color="neutral.900" fontWeight={600}>
             {mintable}
           </Text>
         </Flex>

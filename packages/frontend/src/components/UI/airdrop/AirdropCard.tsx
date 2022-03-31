@@ -2,6 +2,8 @@ import React from "react"
 import Image from "next/image"
 import { Box, Button, Flex, Img, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
+import { SpLayer } from "@components/shared/icons"
+
 import { videos } from "../portfolio/nft/NFTCard"
 
 import { useAirdrops } from "./useAirdrops"
@@ -66,6 +68,22 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
             w="full"
             h="full"
           />
+          <Flex
+            boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+            align="center"
+            py={0.5}
+            px={1.5}
+            rounded="full"
+            bg="white"
+            pos="absolute"
+            bottom="1rem"
+            left="0.5rem"
+          >
+            <SpLayer />
+            <Text ml={1} fontSize="xs" color="neutral.900" fontWeight={600}>
+              {data?.quantity}
+            </Text>
+          </Flex>
         </Skeleton>
       ) : (
         <Skeleton
@@ -82,7 +100,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
             <video src={data.imageUrls[0]?.default} autoPlay loop muted datatype="video/mp4"></video>
           ) : (
             <Image
-              src={(data.imageUrls?.length > 0 && data.imageUrls[0].default) || "/image/nft/sipher1.png"}
+              src={(data.imageUrls?.length > 0 && data.imageUrls[0].default) || "/images/airdrops/sipher.png"}
               objectFit="contain"
               quality={100}
               width={212 * 1.5}

@@ -19,7 +19,7 @@ export const useDetailAirdrop = () => {
   const isOpen = !!type && !!queryId && !!account && !!bearerToken
 
   const { data: detailAirdrop, isFetched } = useQuery(
-    ["airdrops", queryId, account],
+    ["detailsAirdrops", queryId, account],
     () =>
       client.api
         .airdropControllerGetAirdropByType(account!, queryId as string, type as string, setBearerToken(bearerToken))

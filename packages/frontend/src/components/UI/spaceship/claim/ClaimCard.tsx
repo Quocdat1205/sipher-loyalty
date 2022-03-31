@@ -73,7 +73,7 @@ const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
             <Box mr={2}>
               <BsClockFill size="0.8rem" />
             </Box>
-            <CountDown deadline={expiredDate} />
+            <CountDown deadline={expiredDate * 1000} />
           </Flex>
         </Flex>
         <Flex>

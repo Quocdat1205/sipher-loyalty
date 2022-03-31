@@ -26,7 +26,7 @@ export const useAirdrops = () => {
   const toast = useChakraToast()
 
   const { data: airdropsData, isFetched } = useQuery(
-    ["airdrops", account],
+    ["airdrops", account, currentTab],
     () =>
       client.api
         .airdropControllerGetAirdropsByType(account!, AirdropType.ALL, setBearerToken(bearerToken))

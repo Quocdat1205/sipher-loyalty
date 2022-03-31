@@ -3,6 +3,7 @@ import Image from "next/image"
 import { Box, Button, Flex, HStack, Img, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
+import { SpLayer } from "@components/shared/icons"
 
 import { videos } from "../portfolio/nft/NFTCard"
 
@@ -77,15 +78,18 @@ export function DetailsAirdrop() {
               <video src={detailAirdrop?.imageUrls[0]?.default} autoPlay loop muted datatype="video/mp4"></video>
             ) : detailAirdrop && detailAirdrop.type === "MERCH" ? (
               <>
-                <Img
-                  pos="absolute"
-                  left={0}
-                  transition="opacity 0.7s ease-in-out"
-                  src={imageState.back}
-                  objectFit="contain"
-                  w="full"
-                  h="full"
-                />
+                {imageState.back && (
+                  <Img
+                    pos="absolute"
+                    left={0}
+                    transition="opacity 0.7s ease-in-out"
+                    src={imageState.back}
+                    objectFit="contain"
+                    alt=""
+                    w="full"
+                    h="full"
+                  />
+                )}
                 <Img
                   pos="absolute"
                   left={0}
@@ -95,9 +99,26 @@ export function DetailsAirdrop() {
                   }}
                   src={imageState.front}
                   objectFit="contain"
+                  alt=""
                   w="full"
                   h="full"
                 />
+                <Flex
+                  boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+                  align="center"
+                  py={0.5}
+                  px={1.5}
+                  rounded="full"
+                  bg="white"
+                  pos="absolute"
+                  bottom="1rem"
+                  left="0.5rem"
+                >
+                  <SpLayer />
+                  <Text ml={1} fontSize="xs" color="neutral.900" fontWeight={600}>
+                    {detailAirdrop?.quantity}
+                  </Text>
+                </Flex>
               </>
             ) : (
               <Image quality={100} src={imageState.front} alt="airdrop" width={300} height={300} objectFit="contain" />
