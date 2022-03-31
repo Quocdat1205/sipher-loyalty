@@ -1020,13 +1020,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags admin
      * @name AdminControllerUpdateMerchById
-     * @request PUT:/api/sipher/loyalty/admin/merch/{merchId}
+     * @request PATCH:/api/sipher/loyalty/admin/merch/{merchId}
      * @secure
      */
     adminControllerUpdateMerchById: (merchId: number, data: MerchUpdateDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/admin/merch/${merchId}`,
-        method: 'PUT',
+        method: 'PATCH',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -1038,13 +1038,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags admin
      * @name AdminControllerUpdateItemById
-     * @request PUT:/api/sipher/loyalty/admin/item/{itemId}
+     * @request PATCH:/api/sipher/loyalty/admin/item/{itemId}
      * @secure
      */
     adminControllerUpdateItemById: (itemId: number, data: UpdateItemDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/admin/item/${itemId}`,
-        method: 'PUT',
+        method: 'PATCH',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -1056,13 +1056,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags admin
      * @name AdminControllerUpdateImageUrlById
-     * @request PUT:/api/sipher/loyalty/admin/imageUrl/{imageUrlId}
+     * @request PATCH:/api/sipher/loyalty/admin/imageUrl/{imageUrlId}
      * @secure
      */
     adminControllerUpdateImageUrlById: (imageUrlId: number, data: UpdateImageUrlDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/admin/imageUrl/${imageUrlId}`,
-        method: 'PUT',
+        method: 'PATCH',
         body: data,
         secure: true,
         type: ContentType.Json,

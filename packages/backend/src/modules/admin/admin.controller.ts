@@ -1,6 +1,14 @@
 import { Request } from "express";
 import { ERC1155Lootbox, ERC1155Sculpture } from "@entity";
-import { Body, Controller, Param, Put, Req, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Param,
+  Patch,
+  Put,
+  Req,
+  UseGuards,
+} from "@nestjs/common";
 import { ApiBearerAuth, ApiParam, ApiTags } from "@nestjs/swagger";
 
 import { AirdropService } from "@modules/airdrop/airdrop.service";
@@ -47,7 +55,7 @@ export class AdminController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @Put("merch/:merchId")
+  @Patch("merch/:merchId")
   async updateMerchById(
     @Param("merchId") merchId: number,
     @Body() merchUpdateDto: MerchUpdateDto,
@@ -69,7 +77,7 @@ export class AdminController {
     name: "itemId",
     type: Number,
   })
-  @Put("item/:itemId")
+  @Patch("item/:itemId")
   async updateItemById(
     @Param() params: ItemIdParam,
     @Body() updateItemDto: UpdateItemDto,
@@ -91,7 +99,7 @@ export class AdminController {
     name: "imageUrlId",
     type: Number,
   })
-  @Put("imageUrl/:imageUrlId")
+  @Patch("imageUrl/:imageUrlId")
   async updateImageUrlById(
     @Param() params: ImageUrlIdParam,
     @Body() updateImageUrlDto: UpdateImageUrlDto,
