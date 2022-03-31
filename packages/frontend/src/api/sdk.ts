@@ -485,7 +485,6 @@ export interface DistributeLootbox {
 
 export interface DistributeLootboxs {
   data: DistributeLootbox[];
-  key: string;
 }
 
 export interface ERC1155Sculpture {

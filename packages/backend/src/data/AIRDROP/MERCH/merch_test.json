@@ -6,7 +6,7 @@
     "merchItem": "Bomber",
     "quantity": "1",
     "quantityShipped": "0",
-    "shippableped": false,
+    "isShipped": false,
     "name": "SIPHER Exclusive Bomber",
     "description": "merchandise for investor nft support Sipher team early",
     "shippable": true
@@ -18,7 +18,7 @@
     "merchItem": "Hoodie",
     "quantity": "2",
     "quantityShipped": "0",
-    "shippableped": false,
+    "isShipped": false,
     "name": "SIPHER Exclusive Hoodie",
     "description": "merchandise for investor nft support Sipher team early",
     "shippable": true
@@ -30,7 +30,7 @@
     "merchItem": "Tshirt",
     "quantity": "3",
     "quantityShipped": "0",
-    "shippableped": false,
+    "isShipped": false,
     "name": "SIPHER Exclusive T-shirt",
     "description": "merchandise for investor nft support Sipher team early",
     "shippable": true
@@ -42,7 +42,7 @@
     "merchItem": "Hat",
     "quantity": "4",
     "quantityShipped": "0",
-    "shippableped": false,
+    "isShipped": false,
     "name": "SIPHER Exclusive Hat",
     "description": "merchandise for investor nft support Sipher team early",
     "shippable": true
@@ -54,7 +54,7 @@
     "merchItem": "Hoodie",
     "quantity": "2",
     "quantityShipped": "0",
-    "shippableped": false,
+    "isShipped": false,
     "name": "SIPHER Exclusive Hoodie",
     "description": "merchandise for investor nft support Sipher team early",
     "shippable": true
@@ -66,7 +66,7 @@
     "merchItem": "Tshirt",
     "quantity": "3",
     "quantityShipped": "0",
-    "shippableped": false,
+    "isShipped": false,
     "name": "SIPHER Exclusive T-shirt",
     "description": "merchandise for investor nft support Sipher team early",
     "shippable": true
@@ -78,7 +78,7 @@
     "merchItem": "Hat",
     "quantity": "4",
     "quantityShipped": "0",
-    "shippableped": false,
+    "isShipped": false,
     "name": "SIPHER Exclusive Hat",
     "description": "merchandise for investor nft support Sipher team early",
     "shippable": true
@@ -91,7 +91,7 @@
     "merchItem": "Bomber",
     "quantity": "1",
     "quantityShipped": "0",
-    "shippableped": false,
+    "isShipped": false,
     "name": "SIPHER Exclusive Bomber",
     "description": "merchandise for investor nft support Sipher team early",
     "shippable": true

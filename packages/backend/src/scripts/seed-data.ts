@@ -33,10 +33,10 @@ export class AppModule implements OnApplicationBootstrap {
   async onApplicationBootstrap(): Promise<void> {
     await this.seedERC1155LootboxService.seedERC1155Lootboxs();
     await this.seedERC1155SculptureService.seedERC1155Sculptures();
-    await this.seedAirdropService.seedTokens();
     await this.seedAirdropService.seedMerchs();
     await this.seedAirdropService.seedItems();
     await this.seedSipherCollectionService.seedCollections();
+    await this.seedAirdropService.seedTokens();
   }
 }
 async function bootstrap() {
