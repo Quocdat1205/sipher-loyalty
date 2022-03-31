@@ -54,7 +54,7 @@ export class MintService {
     if (this.infoPendings.length < 1) this.genInfoPendings();
     const data = [];
     pendings.forEach((element) => {
-      if (element.batchID) {
+      if (element.batchIDs.length === 0) {
         const pending = {
           ...element,
           info: [
