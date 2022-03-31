@@ -29,7 +29,14 @@ const ClaimContainer = () => {
       />
       <Flex flexDir="column" justify="space-between" zIndex={2} maxW="1200px" flex={1} w="full" pb={8}>
         <Flex mb={4} justify="center">
-          <Box py={4} px={6} textAlign="center" bg="blackAlpha.500" borderRadius="0px 0px 16px 16px">
+          <Box
+            w="full"
+            py={4}
+            px={6}
+            textAlign="center"
+            bgGradient="linear(270deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0) 100%)"
+            borderRadius="0px 0px 16px 16px"
+          >
             <Text color="neutral.400">
               You have{" "}
               <chakra.span color="white" fontWeight={600}>

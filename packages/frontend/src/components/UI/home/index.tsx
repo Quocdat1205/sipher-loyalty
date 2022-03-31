@@ -7,12 +7,13 @@ import GeneralContainer from "@components/UI/home/GeneralContainer"
 import usePortFolioHome from "./portfolio/usePortFolioHome"
 import { Slide1 } from "./slide/Slide1"
 import { Slide2 } from "./slide/Slide2"
+import { Slide3 } from "./slide/Slide3"
 import PortfolioHome from "./portfolio"
 import SlideComponent from "./slide"
 
 import "react-multi-carousel/lib/styles.css"
 
-const slideCompo = [<Slide1 />, <Slide2 />]
+const slideCompo = [<Slide1 />, <Slide2 />, <Slide3 />]
 
 export interface PortfolioHomeProps {
   collectionData: ReturnType<typeof usePortFolioHome>["collectionData"][number]

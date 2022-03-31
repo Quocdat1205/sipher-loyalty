@@ -9,27 +9,27 @@ const tutorialData = [
     id: "OPEN LOOTBOX",
     description: "Wonders waiting for you to unravel inside this Lootbox.",
     flex: 2,
-    image: "/images/spaceship/tutorial3.png",
+    image: "/images/spaceship/tutorial1.png",
   },
   {
     id: "GATHER SHIP PARTS",
     description: "Build your own spaceship with rarity-based components, from the basics to a full anatomy.",
     flex: 3,
-    image: "/images/spaceship/full-line.png",
+    image: "/images/spaceship/tutorial2.png",
   },
   {
     id: "UP TO FLY",
     description: "Launch your tailored spaceship to embark on an epic ride across Sipheria.",
     flex: 2,
-    image: "/images/spaceship/tutorial1.png",
+    image: "/images/spaceship/tutorial3.png",
   },
 ]
 
 export const TutorialSpaceship = () => {
   return (
-    <Flex pt={24} pos="relative" flexDir="column" align="center" w="full">
+    <Flex py={8} pos="relative" flexDir="column" align="center" w="full">
       <Flex flexDir="column" justify="center" maxW="1200px" w="full">
-        <Flex mb={8} flexDir="column" align="flex-start">
+        <Flex mb={12} flexDir="column" align="flex-start">
           <Heading mb={4} fontWeight={600} fontSize="3xl">
             SPACESHIP TUTORIAL
           </Heading>

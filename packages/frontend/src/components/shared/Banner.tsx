@@ -11,7 +11,7 @@ interface BannerProps {
 export const Banner = ({ srcBg = "/images/portfolio/banner.png", title, description }: BannerProps) => {
   return (
     <Flex flexDir="column" w="full" justify="center" position="relative">
-      <Image layout="responsive" objectFit="cover" quality={100} width={2880} height={424} src={srcBg} alt={title} />
+      <Image layout="responsive" quality={100} width={2880} height={424} src={srcBg} alt={title} />
       <Box
         px={[4, 4, 4, 0, 0]}
         pos="absolute"

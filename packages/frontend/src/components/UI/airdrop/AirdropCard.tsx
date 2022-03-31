@@ -82,7 +82,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
             <video src={data.imageUrls[0]?.default} autoPlay loop muted datatype="video/mp4"></video>
           ) : (
             <Image
-              src={(data.imageUrls?.length > 0 && data.imageUrls[0].default) || "/image/airdrops/sipher1.png"}
+              src={(data.imageUrls?.length > 0 && data.imageUrls[0].default) || "/image/nft/sipher1.png"}
               objectFit="contain"
               quality={100}
               width={212 * 1.5}
