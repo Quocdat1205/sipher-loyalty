@@ -181,6 +181,9 @@ export class NftItem {
   @ApiProperty({ type: Number })
   quantity?: number;
 
+  @ApiProperty({ type: String })
+  type?: string;
+
   @ApiProperty({
     type: Erc1155Owner,
     isArray: true,

@@ -80,6 +80,10 @@ export class SystemConfigProvider {
     return this.getSync("NODE_ENV", "development") === "test";
   }
 
+  public get enableSwagger() {
+    return !this.isTest && (!this.isProduction || this.isDebugging);
+  }
+
   public async getRpcUrls() {
     return {
       [Chain.Mainnet]: `https://mainnet.infura.io/v3/${await this.getKEY_INFURA()}`,

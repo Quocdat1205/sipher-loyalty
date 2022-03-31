@@ -241,6 +241,7 @@ export interface NftItem {
   rarityScore: number;
   value: number;
   quantity: number;
+  type: string;
   allOwner: Erc1155Owner[];
   collection: SipherCollection;
 }

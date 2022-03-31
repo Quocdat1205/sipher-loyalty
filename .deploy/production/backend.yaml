@@ -7,12 +7,12 @@ sipher-chart:
       kubernetes.io/ingress.class: alb
       service.beta.kubernetes.io/aws-load-balancer-internal: "true"
     rules:
-    - host:  api-dashboard.atherlabs.xyz
-      paths:
-      - path: /
-        serviceName: loyalty-backend-api
-        servicePort: 5500
-        pathType: ImplementationSpecific
+      - host: api-dashboard.atherlabs.xyz
+        paths:
+          - path: /
+            serviceName: loyalty-backend-api
+            servicePort: 5500
+            pathType: ImplementationSpecific
   deploys:
     - name: backend
       replicasCount: 2
@@ -26,10 +26,10 @@ sipher-chart:
         limits:
           memory: 512Mi
           cpu: 512m
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
       args:
-        - '-c'
-        - 'node ./dist/main.js'
+        - "-c"
+        - "node ./dist/main.js"
       services:
         - name: api
           containerPort:
@@ -37,15 +37,26 @@ sipher-chart:
     - name: lootbox-tracker
       replicasCount: 1
       resources: {}
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
       args:
-        - '-c'
-        - 'node ./dist/scripts/lootbox-tracker.js'
+        - "-c"
+        - "node ./dist/scripts/lootbox-tracker.js"
     - name: sculpture-tracker
       replicasCount: 1
       resources: {}
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
       args:
-        - '-c'
-        - 'node ./dist/scripts/sculpture-tracker.js'
-  env: {}
+        - "-c"
+        - "node ./dist/scripts/sculpture-tracker.js"
+  env:
+    PORT: 5500
+    NODE_ENV: production
+    POSTGRES_URL: ssm:/atherlabs/dashboard/prod/POSTGRES_URL
+    POSTGRES_SYNCHRONIZE: false
+    SESSION_URL: ssm:/atherlabs/dashboard/prod/SESSION_URL
+    KEY_INFURA: ssm:/atherlabs/dashboard/prod/KEY_INFURA
+    ELASTICSEARCH_ENDPOINT: https://search-dev-marketplace-j3etkzos2pedv2c2q6jl2wy5d4.us-west-2.es.amazonaws.com
+    ELASTICSEARCH_INDEX: dev-marketplace
+    PRIVATE_KEY_LOYALTY: ssm:/atherlabs/dashboard/prod/PRIVATE_KEY_LOYALTY
+    ATHER_ID_URL: https://api-atherid.sipher.gg/api
+    ATHER_SOCIAL_URL: https://api-ather-social.sipher.gg/api
