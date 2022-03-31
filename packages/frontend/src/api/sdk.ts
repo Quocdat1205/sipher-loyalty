@@ -140,14 +140,14 @@ export interface MintBatchLootboxInputDto {
   publicAddress: string;
   batchID: number[];
   amount: number[];
-  deadline: number;
+  deadline?: number;
 }
 
 export interface MintLootboxInputDto {
   publicAddress: string;
   batchID: number;
   amount: number;
-  deadline: number;
+  deadline?: number;
 }
 
 export enum CollectionCategory {

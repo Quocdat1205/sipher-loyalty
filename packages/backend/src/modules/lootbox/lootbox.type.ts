@@ -1,5 +1,6 @@
+import { IsOptional } from "class-validator";
 import { ClaimableLootbox, Lootbox, PendingMint } from "@entity";
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 import { TransformLowercase } from "@utils/transfomers";
 
@@ -14,7 +15,7 @@ export class MintBatchLootboxInputDto {
   @ApiProperty({ type: Number, isArray: true })
   amount: number[];
 
-  @ApiProperty({ type: Number })
+  @ApiPropertyOptional({ type: Number })
   deadline?: number;
 }
 
@@ -29,7 +30,7 @@ export class MintLootboxInputDto {
   @ApiProperty({ type: Number })
   amount: number;
 
-  @ApiProperty({ type: Number })
+  @ApiPropertyOptional({ type: Number })
   deadline?: number;
 }
 
