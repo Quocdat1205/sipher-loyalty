@@ -24,12 +24,12 @@ export class URIController {
   constructor(private uriService: URIService) {}
 
   @Get("erc1155-lootbox/:tokenId")
-  async getDataERC1155Lootbox(@Param("tokenId") tokenId: string) {
+  async getDataERC1155Lootbox(@Param("tokenId") tokenId: number) {
     return this.uriService.getDataERC1155Lootbox(tokenId);
   }
 
   @Get("erc1155-sculpture/:tokenId")
-  async getDataERC1155Sculpture(@Param("tokenId") tokenId: string) {
+  async getDataERC1155Sculpture(@Param("tokenId") tokenId: number) {
     return this.uriService.getDataERC1155Sculpture(tokenId);
   }
 }

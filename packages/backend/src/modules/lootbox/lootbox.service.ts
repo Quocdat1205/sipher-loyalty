@@ -58,7 +58,7 @@ export class LootBoxService {
   private getClaimableLootboxFromWalletAndTokenIdExpired = async (
     publicAddress: string,
     tokenId: number,
-    expiredDate: Date
+    expiredDate: number
   ) => {
     const lootboxs = await this.claimableLootboxRepo.findOne({
       where: {
@@ -99,11 +99,25 @@ export class LootBoxService {
     return flattern_lootbox;
   };
 
-  private increaseLootbox = async (
+  private async createClaimableLootbox(lootbox: any) {
+    const erclootbox = await this.erc1155LootboxRepo.findOne({
+      tokenId: lootbox.tokenId,
+    });
+
+    await this.addQuantityClaimedLootbox({
+      publicAddress: lootbox.publicAddress,
+      tokenId: lootbox.tokenId,
+      quantity: lootbox.quantity,
+      expiredDate: lootbox.expiredDate,
+      propertyLootbox: erclootbox,
+    });
+  }
+
+  private increaseOrCreateLootbox = async (
     publicAddress: string,
     tokenId: number,
     quantity: number,
-    propertyLootbox: ERC1155Lootbox
+    propertyLootbox?: ERC1155Lootbox
   ) => {
     // create or update lootbox
     let lootbox = await this.getLootboxFromWalletAndTokenID(
@@ -111,6 +125,11 @@ export class LootBoxService {
       tokenId
     );
     if (!lootbox) {
+      if (propertyLootbox) {
+        propertyLootbox = await this.erc1155LootboxRepo.findOne({
+          tokenId: lootbox.tokenId,
+        });
+      }
       lootbox = this.lootboxRepo.create({
         publicAddress: publicAddress.toLowerCase(),
         tokenId,
@@ -168,18 +187,22 @@ export class LootBoxService {
     this.cacheService.setBlockingLootbox(lootbox.id, blocking);
   }
 
-  private async createClaimableLootbox(lootbox: any) {
+  private async createLootbox(
+    publicAddress: string,
+    tokenId: number,
+    quantity: number
+  ) {
     const erclootbox = await this.erc1155LootboxRepo.findOne({
-      tokenId: lootbox.tokenId,
+      tokenId,
     });
-
-    await this.addQuantityClaimedLootbox({
-      publicAddress: lootbox.publicAddress.toLowerCase(),
-      tokenId: lootbox.tokenId,
-      quantity: lootbox.quantity,
-      expiredDate: new Date(lootbox.expiredDate),
+    const _lootbox = this.lootboxRepo.create({
+      publicAddress,
+      quantity,
+      tokenId,
+      mintable: quantity,
       propertyLootbox: erclootbox,
     });
+    return this.lootboxRepo.save(_lootbox);
   }
 
   getLootboxById = async (id: string): Promise<Lootbox> => {
@@ -274,7 +297,12 @@ export class LootBoxService {
         this.claimableLootboxRepo.save(claimableLootbox)
       );
       promisesLootbox.push(
-        this.increaseLootbox(publicAddress, tokenId, quantity, propertyLootbox)
+        this.increaseOrCreateLootbox(
+          publicAddress,
+          tokenId,
+          quantity,
+          propertyLootbox
+        )
       );
     }
 
@@ -457,21 +485,17 @@ export class LootBoxService {
     );
     if (!burned) {
       LoggerService.log(`recover burned batch: ${JSON.stringify(batchOrder)}`);
-      const lootboxs = await this.getLootboxFromWalletAndTokenIDs(
-        batchOrder.to,
-        batchOrder.batchID
-      );
-
-      // verify blocked lootbox
-      await this.verifyBlockingLootboxs(lootboxs);
-      await this.setBlockingLootboxs(lootboxs, true);
 
       const promises = [];
       for (let i = 0; i < batchOrder.batchID.length; i++) {
-        lootboxs[i].quantity += batchOrder.amount[i];
-        lootboxs[i].mintable += batchOrder.amount[i];
+        promises.push(
+          this.increaseOrCreateLootbox(
+            batchOrder.to,
+            batchOrder.batchID[i],
+            batchOrder.amount[i]
+          )
+        );
       }
-      // update batch lootbox
       const _burned = {
         to: batchOrder.to,
         salt: batchOrder.salt,
@@ -480,13 +504,8 @@ export class LootBoxService {
         type: BurnType.Lootbox,
       };
       promises.push(this.burnService.createBurned(_burned));
-      for (let i = 0; i < lootboxs.length; i++) {
-        promises.push(this.lootboxRepo.save(lootboxs[i]));
-      }
+
       const result = await Promise.all(promises);
-
-      this.setBlockingLootboxs(lootboxs, false);
-
       LoggerService.log(
         `update lootbox from tracker burned batch done :${JSON.stringify(
           result
@@ -504,43 +523,27 @@ export class LootBoxService {
     );
     if (!burned) {
       LoggerService.log(`recover burned: ${JSON.stringify(order)}`);
-      const lootbox = await this.getLootboxFromWalletAndTokenID(
-        order.to,
-        order.batchID
+
+      const promises = [];
+      // update burned lootbox
+      const _burned = {
+        to: order.to,
+        batchID: order.batchID,
+        amount: order.amount,
+        salt: order.salt,
+        batchIDs: [],
+        amounts: [],
+        type: BurnType.Lootbox,
+      };
+      promises.push(this.burnService.createBurned(_burned));
+      promises.push(
+        this.increaseOrCreateLootbox(order.to, order.batchID, order.amount)
       );
+      const result = await Promise.all(promises);
 
-      if (lootbox) {
-        // verify blocked lootbox
-        await this.verifyBlockingLootbox(lootbox);
-        await this.setBlockingLootbox(lootbox, true);
-
-        lootbox.quantity += order.amount;
-        lootbox.mintable += order.amount;
-
-        const promises = [];
-        // update burned lootbox
-        const _burned = {
-          to: order.to,
-          batchID: order.batchID,
-          amount: order.amount,
-          salt: order.salt,
-          batchIDs: [],
-          amounts: [],
-          type: BurnType.Lootbox,
-        };
-        promises.push(this.burnService.createBurned(_burned));
-        promises.push(this.lootboxRepo.save(lootbox));
-        const result = await Promise.all(promises);
-
-        this.setBlockingLootbox(lootbox, true);
-
-        LoggerService.log(
-          `update lootbox from tracker burned done :${JSON.stringify(result)}`
-        );
-      } else
-        LoggerService.log(
-          `can't find lootbox with burned info ${JSON.stringify(burned)} `
-        );
+      LoggerService.log(
+        `update lootbox from tracker burned done :${JSON.stringify(result)}`
+      );
     } else LoggerService.log("event resoved or in burned database");
   };
 
@@ -553,7 +556,7 @@ export class LootBoxService {
     );
     if (!canceled) {
       LoggerService.log(
-        `recover canceled with signature: ${JSON.stringify(canceled)}`
+        `recover canceled of signature: ${JSON.stringify(signature)}`
       );
       const pendingMint = await this.mintService.getPendingLootboxBySignature(
         signature

@@ -37,7 +37,7 @@ export class MintService {
 
   private genInfoPendings = async () => {
     this.infoPendings = (await this.erc1155LootboxRepo.find())
-      .sort((a, b) => parseInt(a.tokenId, 10) - parseInt(b.tokenId, 10))
+      .sort((a, b) => a.tokenId - b.tokenId)
       .map((el) => ({ name: el.name, image: el.image }));
   };
 

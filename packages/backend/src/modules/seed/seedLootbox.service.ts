@@ -41,7 +41,7 @@ export class SeedLootboxService {
       publicAddress: lootbox.publicAddress.toLowerCase(),
       tokenId: lootbox.tokenId,
       quantity: lootbox.quantity,
-      expiredDate: new Date(lootbox.expiredDate),
+      expiredDate: lootbox.expiredDate,
       propertyLootbox: erclootbox,
     });
   }

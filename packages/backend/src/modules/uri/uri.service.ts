@@ -23,14 +23,14 @@ export class URIService {
     private erc1155SculptureAttributeRepo: Repository<ERC1155SculptureAttribute>
   ) {}
 
-  async getDataERC1155Lootbox(tokenId: string) {
+  async getDataERC1155Lootbox(tokenId: number) {
     return this.erc1155LootboxRepo.findOne({
       where: [{ tokenId }],
       relations: ["attributes"],
     });
   }
 
-  async getDataERC1155Sculpture(tokenId: string) {
+  async getDataERC1155Sculpture(tokenId: number) {
     return this.erc1155SculptureRepo.findOne({
       where: [{ tokenId }],
       relations: ["attributes"],

@@ -86,10 +86,10 @@ export class SystemConfigProvider {
 
   public async getRpcUrls() {
     return {
-      [Chain.Mainnet]: `https://mainnet.infura.io/v3/${await this.getKEY_INFURA()}`,
-      [Chain.Rinkeby]: `https://rinkeby.infura.io/v3/${await this.getKEY_INFURA()}`,
-      [Chain.Mumbai]: `https://polygon-mumbai.infura.io/v3/${await this.getKEY_INFURA()}`,
-      [Chain.Polygon]: `https://polygon-mainnet.infura.io/v3/${await this.getKEY_INFURA()}`,
+      [Chain.Mainnet]: await this.get("RPC_URL_ETHEREUM"),
+      [Chain.Rinkeby]: this.getSync("RPC_URL_RINKERBY"),
+      [Chain.Mumbai]: this.getSync("RPC_URL_POLYGON_MUMBAI"),
+      [Chain.Polygon]: await this.get("RPC_URL_POLYGON_MAINNET"),
     };
   }
 

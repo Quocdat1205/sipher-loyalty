@@ -22,7 +22,7 @@ export class ERC1155Lootbox {
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
-  tokenId: string;
+  tokenId: number;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
@@ -75,7 +75,7 @@ export class ERC1155Sculpture {
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
-  tokenId: string;
+  tokenId: number;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
