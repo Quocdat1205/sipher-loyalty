@@ -22,13 +22,13 @@ export interface PortfolioHomeProps {
 }
 
 const ContentHome = () => {
-  const { collectionData, tokensData, totalNFTs, totalToken, totalCollectionPrice } = usePortFolioHome()
+  const { collectionData, tokensData, totalNFTs, totalToken, totalPortfolioPrice } = usePortFolioHome()
 
   return (
     <Flex flexDir="column" align="center" flex={1}>
       <SlideComponent isAuto slideData={slideCompo} />
       <Box px={[4, 4, 4, 0, 0]} py={8} flex={1} w="full" maxW="1200px">
-        <GeneralContainer totalCollectionPrice={totalCollectionPrice} />
+        <GeneralContainer totalPortfolioPrice={totalPortfolioPrice} />
         <PortfolioHome
           collectionData={collectionData}
           tokensData={tokensData}

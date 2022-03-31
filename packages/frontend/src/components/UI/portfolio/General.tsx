@@ -6,19 +6,31 @@ import { currency } from "@utils"
 import CardGeneral from "../home/CardGeneral"
 
 interface GeneralProps {
+  totalCollectionPrice: number
   totalNFTs: number
   totalToken: number
   totalETHPrice: number
   totalUsdPrice: number
 }
 
-const General = ({ totalNFTs = 0, totalToken = 0, totalETHPrice = 0, totalUsdPrice = 0 }: GeneralProps) => {
+const General = ({
+  totalCollectionPrice = 0,
+  totalNFTs = 0,
+  totalToken = 0,
+  totalETHPrice = 0,
+  totalUsdPrice = 0,
+}: GeneralProps) => {
   return (
     <SimpleGrid mb={8} columns={[2, 2, 4]} spacing={8}>
       <CardGeneral
         value={totalNFTs.toString()}
         name={"Total NFTs"}
         icon={<Image src="/images/icons/coin1.png" h="1.3rem" />}
+        bottomChildren={
+          <Text color="neutral.100">
+            {currency(totalCollectionPrice)} ETH (${currency(totalUsdPrice)})
+          </Text>
+        }
       />
       <CardGeneral
         value={totalToken.toString()}

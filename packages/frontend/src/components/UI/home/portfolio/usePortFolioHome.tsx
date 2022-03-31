@@ -13,7 +13,7 @@ const usePortFolioHome = () => {
   const router = useRouter()
   const { bearerToken } = useAuth()
   const { account, chainId } = useWalletContext()
-  const { dataPrice, balance, totalUsdPrice } = useBalanceContext()
+  const { dataPrice, balance, totalETHPrice, totalUsdPrice } = useBalanceContext()
 
   const { data: dataInit } = useQuery<any>(
     ["collection", account],
@@ -60,7 +60,8 @@ const usePortFolioHome = () => {
   const totalToken = tokensData.length
   const arrayCollectionPrice = collectionData.map(item => item.total * parseFloat(item.floorPrice ?? 0))
   const totalCollectionPrice = arrayCollectionPrice.reduce((acc, curr) => acc + curr, 0)
+  const totalPortfolioPrice = totalCollectionPrice + totalETHPrice
 
-  return { totalNFTs, totalToken, totalUsdPrice, tokensData, collectionData, totalCollectionPrice }
+  return { totalNFTs, totalToken, totalUsdPrice, tokensData, collectionData, totalPortfolioPrice }
 }
 export default usePortFolioHome

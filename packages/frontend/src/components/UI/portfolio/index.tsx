@@ -18,6 +18,7 @@ const ContentPortfolio = () => {
   const {
     totalUsdPrice,
     totalETHPrice,
+    totalCollectionPrice,
     tokensData,
     totalToken,
     totalNFTs,
@@ -55,6 +56,7 @@ const ContentPortfolio = () => {
       />
       <Box px={[4, 4, 4, 0, 0]} py={12} flex={1} w="full" maxW="1200px">
         <General
+          totalCollectionPrice={totalCollectionPrice}
           totalNFTs={totalNFTs}
           totalToken={totalToken}
           totalETHPrice={totalETHPrice}

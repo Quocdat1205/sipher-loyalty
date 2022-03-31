@@ -82,9 +82,10 @@ const initData: SpaceshipDataProps[] = [
 const useOverview = () => {
   const [data] = useState(initData)
   const ONE_DAY = 60 * 60 * 24
-  const startTime = 1647953250000
+  const startTime = 1649030400000
   const weekNum = Math.floor(differenceInSeconds(new Date(), new Date(startTime)) / (ONE_DAY * 7)) % 7
-  const mappedData = data.map((item, index) => ({ ...item, isActive: index === weekNum }))
+
+  const mappedData = data.map((item, index) => ({ ...item, isActive: index === (weekNum === -1 ? 0 : weekNum) }))
 
   const activeData = mappedData.find(item => item.isActive)!
 

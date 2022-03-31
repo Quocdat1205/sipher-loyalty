@@ -15,7 +15,7 @@ const tutorialData = [
     id: "GATHER SHIP PARTS",
     description: "Build your own spaceship with rarity-based components, from the basics to a full anatomy.",
     flex: 3,
-    image: "/images/spaceship/tutorial1.png",
+    image: "/images/spaceship/full-line.png",
   },
   {
     id: "UP TO FLY",

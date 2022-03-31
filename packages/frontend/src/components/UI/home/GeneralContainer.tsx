@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Button, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
+import { Button, Flex, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
 import { EthereumIcon, SipherIcon } from "@components/shared"
 import { useBalanceContext } from "@hooks"
@@ -9,10 +9,10 @@ import CardGeneral from "./CardGeneral"
 import { StakeModal } from "./modal"
 
 interface GeneralContainerProps {
-  totalCollectionPrice: number
+  totalPortfolioPrice: number
 }
 
-const GeneralContainer = ({ totalCollectionPrice }: GeneralContainerProps) => {
+const GeneralContainer = ({ totalPortfolioPrice }: GeneralContainerProps) => {
   const [modalStake, setModalStake] = useState(false)
   const {
     dataPrice,
@@ -23,11 +23,11 @@ const GeneralContainer = ({ totalCollectionPrice }: GeneralContainerProps) => {
     <>
       <SimpleGrid mb={8} columns={[2, 2, 4]} spacing={6}>
         <CardGeneral
-          value={`${currency(totalCollectionPrice)} ETH`}
+          value={`${currency(totalPortfolioPrice)} ETH`}
           name={"Portfolio value"}
           icon={<EthereumIcon size="1.5rem" />}
           bottomChildren={
-            <Text color="neutral.100">${currency(totalCollectionPrice * (dataPrice?.ethereumPrice?.usd || 0))}</Text>
+            <Text color="neutral.100">${currency(totalPortfolioPrice * (dataPrice?.ethereumPrice?.usd || 0))}</Text>
           }
         />
         <CardGeneral
@@ -36,14 +36,16 @@ const GeneralContainer = ({ totalCollectionPrice }: GeneralContainerProps) => {
           icon={<SipherIcon />}
           // popoverProps={{ label: "SIPHER TOKEN", content: "Description" }}
           bottomChildren={
-            <Button
-              onClick={() => setModalStake(true)}
-              _hover={{ bg: "accent.500", color: "neutral.900" }}
-              bg="whiteAlpha.100"
-              color="accent.500"
-            >
-              STAKE NOW
-            </Button>
+            <Flex justify="flex-end">
+              <Button
+                onClick={() => setModalStake(true)}
+                _hover={{ bg: "accent.500", color: "neutral.900" }}
+                bg="whiteAlpha.100"
+                color="accent.500"
+              >
+                STAKE NOW
+              </Button>
+            </Flex>
           }
         />
       </SimpleGrid>
