@@ -195,7 +195,6 @@ export class CollectionService {
     if (itemCollection) {
       item.collection = itemCollection;
       if (item.collection.collectionType === "ERC1155") {
-        console.log(item.collectionId, item.tokenId);
         const totalMintedItems = await this.getTotalErc1155Minted(
           item.collectionId,
           item.tokenId
