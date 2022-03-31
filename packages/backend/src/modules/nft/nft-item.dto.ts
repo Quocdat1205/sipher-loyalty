@@ -1,6 +1,6 @@
 import { Transform } from "class-transformer";
 import { IsEnum, IsNumber, IsOptional, IsString, Min } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, OmitType } from "@nestjs/swagger";
 
 import { SipherCollection } from "src/entity/sipher-collection.entity";
 
@@ -111,14 +111,18 @@ export class Erc1155Owner {
   publicAddress: string;
 
   @ApiProperty({ type: Number })
-  totalOwned: number;
+  totalOwned?: number;
 
   @ApiProperty({ type: String })
-  profileImage: string;
+  profileImage?: string;
 
   @ApiProperty({ type: String })
-  username: string;
+  username?: string;
 }
+
+export class Erc721Owner extends OmitType(Erc1155Owner, ["totalOwned"]) {}
+
+export class CreatorInfo extends Erc721Owner {}
 export class NftItem {
   @IsString()
   @ApiProperty({ type: String })
@@ -195,6 +199,18 @@ export class NftItem {
     isArray: true,
   })
   allOwner?: Erc1155Owner[];
+
+  /* ERC721 */
+  @ApiProperty({
+    type: Erc721Owner,
+  })
+  ownerInfo?: Erc721Owner;
+
+  /* Creator Info */
+  @ApiProperty({
+    type: CreatorInfo,
+  })
+  creatorInfo?: CreatorInfo;
 
   /* Collection Info */
   @ApiProperty({
