@@ -77,7 +77,7 @@ export class AirdropService {
       type: merch.item.type,
       size: merch.item.size,
       color: merch.item.color,
-      quantity,
+      quantity: merch.quantity,
     };
   }
 
