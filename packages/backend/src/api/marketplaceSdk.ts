@@ -71,13 +71,13 @@ export interface Role {
 }
 
 export enum AuctionStatus {
-  Pending = 'Pending',
-  Open = 'Open',
-  Ended = 'Ended',
-  Finalized = 'Finalized',
-  Canceled = 'Canceled',
-  Expired = 'Expired',
-  Invalidated = 'Invalidated',
+  Pending = "Pending",
+  Open = "Open",
+  Ended = "Ended",
+  Finalized = "Finalized",
+  Canceled = "Canceled",
+  Expired = "Expired",
+  Invalidated = "Invalidated",
 }
 
 export interface Auction {
@@ -119,7 +119,7 @@ export interface Auction {
 }
 
 export enum OrderDataType {
-  DATAV2TYPE = 'DATA_V2_TYPE',
+  DATAV2TYPE = "DATA_V2_TYPE",
 }
 
 export interface FeeReceiver {
@@ -161,21 +161,21 @@ export interface OrderAsset {
 }
 
 export enum OrderStatus {
-  Open = 'Open',
-  Completed = 'Completed',
-  Canceled = 'Canceled',
-  Invalidated = 'Invalidated',
-  Expired = 'Expired',
+  Open = "Open",
+  Completed = "Completed",
+  Canceled = "Canceled",
+  Invalidated = "Invalidated",
+  Expired = "Expired",
 }
 
 export enum OrderType {
-  SIPHERV2 = 'SIPHER_V2',
+  SIPHERV2 = "SIPHER_V2",
 }
 
 export enum OrderSide {
-  Bid = 'Bid',
-  Ask = 'Ask',
-  Offer = 'Offer',
+  Bid = "Bid",
+  Ask = "Ask",
+  Offer = "Offer",
 }
 
 export interface Order {
@@ -276,8 +276,8 @@ export interface OrderHistoryFilterDto {
 
   /** @format date-time */
   endAfter?: string;
-  sort?: 'start' | 'end' | 'sold';
-  order?: 'asc' | 'desc';
+  sort?: "start" | "end" | "sold";
+  order?: "asc" | "desc";
 }
 
 export interface OrderHistory {
@@ -345,10 +345,10 @@ export interface GetNftAttributesRespDto {
 }
 
 export enum Chain {
-  Mainnet = 'Mainnet',
-  Rinkeby = 'Rinkeby',
-  Polygon = 'Polygon',
-  Mumbai = 'Mumbai',
+  Mainnet = "Mainnet",
+  Rinkeby = "Rinkeby",
+  Polygon = "Polygon",
+  Mumbai = "Mumbai",
 }
 
 export interface Collection {
@@ -390,8 +390,8 @@ export interface GetCollectionRespDto {
 }
 
 export enum NftType {
-  ERC721 = 'ERC721',
-  ERC1155 = 'ERC1155',
+  ERC721 = "ERC721",
+  ERC1155 = "ERC1155",
 }
 
 export interface OrderPrice {
@@ -451,10 +451,10 @@ export interface NftItem {
 }
 
 export enum NftItemListingType {
-  BuyNow = 'BuyNow',
-  OnAuction = 'OnAuction',
-  HasOffer = 'HasOffer',
-  HasBid = 'HasBid',
+  BuyNow = "BuyNow",
+  OnAuction = "OnAuction",
+  HasOffer = "HasOffer",
+  HasBid = "HasBid",
 }
 
 export interface NftItemAttributeFilterDto {
@@ -463,14 +463,14 @@ export interface NftItemAttributeFilterDto {
 }
 
 export enum NftItemFilterOrder {
-  MostViewed = 'MostViewed',
-  MostFavorited = 'MostFavorited',
-  PriceAsc = 'PriceAsc',
-  PriceDesc = 'PriceDesc',
-  RarityAsc = 'RarityAsc',
-  RarityDesc = 'RarityDesc',
-  RecentlyListed = 'RecentlyListed',
-  EndingSoon = 'EndingSoon',
+  MostViewed = "MostViewed",
+  MostFavorited = "MostFavorited",
+  PriceAsc = "PriceAsc",
+  PriceDesc = "PriceDesc",
+  RarityAsc = "RarityAsc",
+  RarityDesc = "RarityDesc",
+  RecentlyListed = "RecentlyListed",
+  EndingSoon = "EndingSoon",
 }
 
 export interface NftItemFilterDto {
@@ -548,13 +548,13 @@ export interface NftItemDetailsRespDto {
 }
 
 export enum Activity {
-  Mint = 'Mint',
-  Transfer = 'Transfer',
-  ListForSale = 'ListForSale',
-  CancelSale = 'CancelSale',
-  ListForAuction = 'ListForAuction',
-  CancelAuction = 'CancelAuction',
-  Sale = 'Sale',
+  Mint = "Mint",
+  Transfer = "Transfer",
+  ListForSale = "ListForSale",
+  CancelSale = "CancelSale",
+  ListForAuction = "ListForAuction",
+  CancelAuction = "CancelAuction",
+  Sale = "Sale",
 }
 
 export interface ActivityLogFilterDto {
@@ -585,12 +585,17 @@ export interface ActivityLogFilterResDto {
   total: number;
 }
 
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  ResponseType,
+} from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
 
 export interface FullRequestParams
-  extends Omit<AxiosRequestConfig, 'data' | 'params' | 'url' | 'responseType'> {
+  extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
   /** set parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
   /** request path */
@@ -605,27 +610,30 @@ export interface FullRequestParams
   body?: unknown;
 }
 
-export type RequestParams = Omit<FullRequestParams, 'body' | 'method' | 'query' | 'path'>;
+export type RequestParams = Omit<
+  FullRequestParams,
+  "body" | "method" | "query" | "path"
+>;
 
 export interface ApiConfig<SecurityDataType = unknown>
-  extends Omit<AxiosRequestConfig, 'data' | 'cancelToken'> {
+  extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
   securityWorker?: (
-    securityData: SecurityDataType | null,
+    securityData: SecurityDataType | null
   ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
   secure?: boolean;
   format?: ResponseType;
 }
 
 export enum ContentType {
-  Json = 'application/json',
-  FormData = 'multipart/form-data',
-  UrlEncoded = 'application/x-www-form-urlencoded',
+  Json = "application/json",
+  FormData = "multipart/form-data",
+  UrlEncoded = "application/x-www-form-urlencoded",
 }
 
 export class HttpClient<SecurityDataType = unknown> {
   public instance: AxiosInstance;
   private securityData: SecurityDataType | null = null;
-  private securityWorker?: ApiConfig<SecurityDataType>['securityWorker'];
+  private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
   private secure?: boolean;
   private format?: ResponseType;
 
@@ -635,12 +643,15 @@ export class HttpClient<SecurityDataType = unknown> {
     format,
     ...axiosConfig
   }: ApiConfig<SecurityDataType> = {}) {
-    this.instance = axios.create({ ...axiosConfig, baseURL: axiosConfig.baseURL || '' });
+    this.instance = axios.create({
+      ...axiosConfig,
+      baseURL: axiosConfig.baseURL || "",
+    });
     this.secure = secure;
     this.format = format;
     this.securityWorker = securityWorker;
 
-    this.instance.defaults.headers.common = { Accept: '*/*' };
+    this.instance.defaults.headers.common = { Accept: "*/*" };
     this.instance.defaults.headers.post = {};
     this.instance.defaults.headers.put = {};
   }
@@ -651,9 +662,9 @@ export class HttpClient<SecurityDataType = unknown> {
 
   private mergeRequestParams(
     params1: AxiosRequestConfig,
-    params2?: AxiosRequestConfig,
+    params2?: AxiosRequestConfig
   ): AxiosRequestConfig {
-    const method = (params1.method || params2?.method || 'get').toLowerCase();
+    const method = (params1.method || params2?.method || "get").toLowerCase();
     return {
       ...this.instance.defaults,
       ...params1,
@@ -674,9 +685,9 @@ export class HttpClient<SecurityDataType = unknown> {
         key,
         property instanceof Blob
           ? property
-          : typeof property === 'object' && property !== null
+          : typeof property === "object" && property !== null
           ? JSON.stringify(property)
-          : `${property}`,
+          : `${property}`
       );
       return formData;
     }, new FormData());
@@ -692,21 +703,28 @@ export class HttpClient<SecurityDataType = unknown> {
     ...params
   }: FullRequestParams): Promise<AxiosResponse<T>> => {
     const secureParams =
-      ((typeof secure === 'boolean' ? secure : this.secure) &&
+      ((typeof secure === "boolean" ? secure : this.secure) &&
         this.securityWorker &&
         (await this.securityWorker(this.securityData))) ||
       {};
     const requestParams = this.mergeRequestParams(params, secureParams);
     const responseFormat = (format && this.format) || void 0;
 
-    if (type === ContentType.FormData && body && body !== null && typeof body === 'object') {
+    if (
+      type === ContentType.FormData &&
+      body &&
+      body !== null &&
+      typeof body === "object"
+    ) {
       body = this.createFormData(body as Record<string, unknown>);
     }
 
     return this.instance.request({
       ...requestParams,
       headers: {
-        ...(type && type !== ContentType.FormData ? { 'Content-Type': type } : {}),
+        ...(type && type !== ContentType.FormData
+          ? { "Content-Type": type }
+          : {}),
         ...(requestParams.headers || {}),
       },
       params: query,
@@ -724,7 +742,9 @@ export class HttpClient<SecurityDataType = unknown> {
  *
  * Powered by Sipher
  */
-export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+export class Api<
+  SecurityDataType extends unknown
+> extends HttpClient<SecurityDataType> {
   api = {
     /**
      * No description
@@ -744,8 +764,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         }
       >({
         path: `/api/health`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -759,8 +779,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     userControllerGetById: (id: string, params: RequestParams = {}) =>
       this.request<User, any>({
         path: `/api/user/${id}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -775,9 +795,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     userControllerGetProfile: (params: RequestParams = {}) =>
       this.request<ProfileDto, any>({
         path: `/api/user/profile`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -789,12 +809,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/user/profile/{userId}
      * @secure
      */
-    userControllerGetProfileById: (userId: string, params: RequestParams = {}) =>
+    userControllerGetProfileById: (
+      userId: string,
+      params: RequestParams = {}
+    ) =>
       this.request<ProfileDto, any>({
         path: `/api/user/profile/${userId}`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -806,14 +829,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/api/user
      * @secure
      */
-    userControllerUpdate: (data: UpdateUserReqDto, params: RequestParams = {}) =>
+    userControllerUpdate: (
+      data: UpdateUserReqDto,
+      params: RequestParams = {}
+    ) =>
       this.request<User, any>({
         path: `/api/user`,
-        method: 'PUT',
+        method: "PUT",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -825,14 +851,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/user/upload/banner
      * @secure
      */
-    userControllerUploadBanner: (data: FileUploadDto, params: RequestParams = {}) =>
+    userControllerUploadBanner: (
+      data: FileUploadDto,
+      params: RequestParams = {}
+    ) =>
       this.request<User, any>({
         path: `/api/user/upload/banner`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.FormData,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -843,12 +872,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name AuthControllerGetLoginMessage
      * @request GET:/api/auth/message
      */
-    authControllerGetLoginMessage: (query: { wallet: string }, params: RequestParams = {}) =>
+    authControllerGetLoginMessage: (
+      query: { wallet: string },
+      params: RequestParams = {}
+    ) =>
       this.request<LoginMessageResponseDto, any>({
         path: `/api/auth/message`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -862,10 +894,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     authControllerLogin: (data: LoginRequestDto, params: RequestParams = {}) =>
       this.request<LoginResponseDto, any>({
         path: `/api/auth/login`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -879,8 +911,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     authControllerLogout: (params: RequestParams = {}) =>
       this.request<string, any>({
         path: `/api/auth/logout`,
-        method: 'POST',
-        format: 'json',
+        method: "POST",
+        format: "json",
         ...params,
       }),
 
@@ -895,9 +927,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     authControllerMe: (params: RequestParams = {}) =>
       this.request<User, any>({
         path: `/api/auth/me`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -912,9 +944,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     authControllerAllRoles: (params: RequestParams = {}) =>
       this.request<Role[], any>({
         path: `/api/auth/roles`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -925,11 +957,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name AuctionControllerGetCurrentAuction
      * @request GET:/api/auction/item/{itemId}
      */
-    auctionControllerGetCurrentAuction: (itemId: string, params: RequestParams = {}) =>
+    auctionControllerGetCurrentAuction: (
+      itemId: string,
+      params: RequestParams = {}
+    ) =>
       this.request<Auction, any>({
         path: `/api/auction/item/${itemId}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -940,11 +975,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name AuctionControllerGetBidsByAuctionId
      * @request GET:/api/auction/{auctionId}/bids
      */
-    auctionControllerGetBidsByAuctionId: (auctionId: string, params: RequestParams = {}) =>
+    auctionControllerGetBidsByAuctionId: (
+      auctionId: string,
+      params: RequestParams = {}
+    ) =>
       this.request<Order[], any>({
         path: `/api/auction/${auctionId}/bids`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -955,11 +993,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name AuctionControllerGetTopBidByAuctionId
      * @request GET:/api/auction/{auctionId}/bids/top
      */
-    auctionControllerGetTopBidByAuctionId: (auctionId: string, params: RequestParams = {}) =>
+    auctionControllerGetTopBidByAuctionId: (
+      auctionId: string,
+      params: RequestParams = {}
+    ) =>
       this.request<Order, any>({
         path: `/api/auction/${auctionId}/bids/top`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -970,13 +1011,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name AuctionControllerGetMessageToSign
      * @request POST:/api/auction/message
      */
-    auctionControllerGetMessageToSign: (data: UpsertAuctionDto, params: RequestParams = {}) =>
+    auctionControllerGetMessageToSign: (
+      data: UpsertAuctionDto,
+      params: RequestParams = {}
+    ) =>
       this.request<string, any>({
         path: `/api/auction/message`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -987,13 +1031,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name AuctionControllerListing
      * @request POST:/api/auction/list
      */
-    auctionControllerListing: (data: UpsertAuctionDto, params: RequestParams = {}) =>
+    auctionControllerListing: (
+      data: UpsertAuctionDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Auction, any>({
         path: `/api/auction/list`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1007,8 +1054,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     orderControllerGetById: (hash: string, params: RequestParams = {}) =>
       this.request<Order, any>({
         path: `/api/order/${hash}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1019,11 +1066,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name OrderControllerGetCurrentSellOrderByItemId
      * @request GET:/api/order/ask/{itemId}
      */
-    orderControllerGetCurrentSellOrderByItemId: (itemId: string, params: RequestParams = {}) =>
+    orderControllerGetCurrentSellOrderByItemId: (
+      itemId: string,
+      params: RequestParams = {}
+    ) =>
       this.request<Order, any>({
         path: `/api/order/ask/${itemId}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1034,11 +1084,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name OrderControllerGetOffersByItemId
      * @request GET:/api/order/offers/{itemId}
      */
-    orderControllerGetOffersByItemId: (itemId: string, params: RequestParams = {}) =>
+    orderControllerGetOffersByItemId: (
+      itemId: string,
+      params: RequestParams = {}
+    ) =>
       this.request<Order[], any>({
         path: `/api/order/offers/${itemId}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1049,11 +1102,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name OrderControllerGetOffersMadeByUser
      * @request GET:/api/order/offers/made/{userId}
      */
-    orderControllerGetOffersMadeByUser: (userId: string, params: RequestParams = {}) =>
+    orderControllerGetOffersMadeByUser: (
+      userId: string,
+      params: RequestParams = {}
+    ) =>
       this.request<OrderFilterResDto, any>({
         path: `/api/order/offers/made/${userId}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1067,8 +1123,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     orderControllerGetOffersMadeWithNftInfo: (params: RequestParams = {}) =>
       this.request<OrderWithNftInfoFilterResDto, any>({
         path: `/api/order/offers/made/details`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1079,11 +1135,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name OrderControllerGetOffersReceivedByUser
      * @request GET:/api/order/offers/received/{userId}
      */
-    orderControllerGetOffersReceivedByUser: (userId: string, params: RequestParams = {}) =>
+    orderControllerGetOffersReceivedByUser: (
+      userId: string,
+      params: RequestParams = {}
+    ) =>
       this.request<OrderFilterResDto, any>({
         path: `/api/order/offers/received/${userId}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1097,8 +1156,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     orderControllerGetOffersReceivedWithNftInfo: (params: RequestParams = {}) =>
       this.request<OrderWithNftInfoFilterResDto, any>({
         path: `/api/order/offers/received/details`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1109,11 +1168,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name OrderControllerGetBidsByItemId
      * @request GET:/api/order/bids/{itemId}
      */
-    orderControllerGetBidsByItemId: (itemId: string, params: RequestParams = {}) =>
+    orderControllerGetBidsByItemId: (
+      itemId: string,
+      params: RequestParams = {}
+    ) =>
       this.request<Order[], any>({
         path: `/api/order/bids/${itemId}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1124,13 +1186,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name OrderControllerToSignDataCreate
      * @request POST:/api/order/to-sign
      */
-    orderControllerToSignDataCreate: (data: UpsertOrderDto, params: RequestParams = {}) =>
+    orderControllerToSignDataCreate: (
+      data: UpsertOrderDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Order, any>({
         path: `/api/order/to-sign`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1141,13 +1206,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name OrderControllerListing
      * @request POST:/api/order/list
      */
-    orderControllerListing: (data: UpsertOrderDto, params: RequestParams = {}) =>
+    orderControllerListing: (
+      data: UpsertOrderDto,
+      params: RequestParams = {}
+    ) =>
       this.request<Order, any>({
         path: `/api/order/list`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1161,10 +1229,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     orderControllerOffer: (data: UpsertOrderDto, params: RequestParams = {}) =>
       this.request<Order, any>({
         path: `/api/order/offer`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1178,10 +1246,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     orderControllerBid: (data: UpsertOrderDto, params: RequestParams = {}) =>
       this.request<Order, any>({
         path: `/api/order/bid`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1192,11 +1260,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name OrderHistoryControllerGetByHash
      * @request GET:/api/orders/history/{hash}
      */
-    orderHistoryControllerGetByHash: (hash: string, params: RequestParams = {}) =>
+    orderHistoryControllerGetByHash: (
+      hash: string,
+      params: RequestParams = {}
+    ) =>
       this.request<Order, any>({
         path: `/api/orders/history/${hash}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1207,13 +1278,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name OrderHistoryControllerSearch
      * @request POST:/api/orders/history/search
      */
-    orderHistoryControllerSearch: (data: OrderHistoryFilterDto, params: RequestParams = {}) =>
+    orderHistoryControllerSearch: (
+      data: OrderHistoryFilterDto,
+      params: RequestParams = {}
+    ) =>
       this.request<OrderHistoryFilterResDto, any>({
         path: `/api/orders/history/search`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1224,11 +1298,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name OrderHistoryControllerGetPricerHistoryByItemId
      * @request GET:/api/orders/history/price/{itemId}
      */
-    orderHistoryControllerGetPricerHistoryByItemId: (itemId: string, params: RequestParams = {}) =>
+    orderHistoryControllerGetPricerHistoryByItemId: (
+      itemId: string,
+      params: RequestParams = {}
+    ) =>
       this.request<OrderPriceHistory[], any>({
         path: `/api/orders/history/price/${itemId}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1242,14 +1319,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     collectionAttributeControllerGetAll: (
       query?: { collectionId?: string; trait_type?: string },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<GetNftAttributesRespDto, any>({
         path: `/api/collections/attributes`,
-        method: 'GET',
+        method: "GET",
         query: query,
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1263,11 +1340,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     collectionAttributeControllerSyncAttributesByCollectionId: (
       collectionId: string,
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<void, any>({
         path: `/api/collections/attributes/sync/${collectionId}`,
-        method: 'GET',
+        method: "GET",
         secure: true,
         ...params,
       }),
@@ -1283,16 +1360,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       query?: {
         take?: number;
         from?: string;
-        type?: 'ERC721' | 'ERC1155';
-        category?: 'Character' | 'Weapon';
+        type?: "ERC721" | "ERC1155";
+        category?: "Character" | "Weapon";
       },
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<GetCollectionRespDto, any>({
         path: `/api/collections`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1306,8 +1383,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     collectionControllerGetById: (id: string, params: RequestParams = {}) =>
       this.request<Collection, any>({
         path: `/api/collections/${id}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1321,8 +1398,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     nftItemControllerGetById: (itemId: string, params: RequestParams = {}) =>
       this.request<NftItem, any>({
         path: `/api/nftitems/${itemId}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1333,13 +1410,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name NftItemControllerSearch
      * @request POST:/api/nftitems/search
      */
-    nftItemControllerSearch: (data: NftItemFilterDto, params: RequestParams = {}) =>
+    nftItemControllerSearch: (
+      data: NftItemFilterDto,
+      params: RequestParams = {}
+    ) =>
       this.request<SearchNftItemRespDto, any>({
         path: `/api/nftitems/search`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1351,14 +1431,17 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/api/nftitems/search/owned-image
      * @secure
      */
-    nftItemControllerGetOwnedNftImages: (data: PagingEsDto, params: RequestParams = {}) =>
+    nftItemControllerGetOwnedNftImages: (
+      data: PagingEsDto,
+      params: RequestParams = {}
+    ) =>
       this.request<SearchNftItemImageRespDto, any>({
         path: `/api/nftitems/search/owned-image`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1371,14 +1454,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     nftItemControllerGetNftImagesByAddress: (
       data: GetNftImageByAddressReqDto,
-      params: RequestParams = {},
+      params: RequestParams = {}
     ) =>
       this.request<GetNftImageByAddressRespDto, any>({
         path: `/api/nftitems/search/image`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1389,11 +1472,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name NftItemControllerGetDetailsById
      * @request GET:/api/nftitems/{itemId}/details
      */
-    nftItemControllerGetDetailsById: (itemId: string, params: RequestParams = {}) =>
+    nftItemControllerGetDetailsById: (
+      itemId: string,
+      params: RequestParams = {}
+    ) =>
       this.request<NftItemDetailsRespDto, any>({
         path: `/api/nftitems/${itemId}/details`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1404,11 +1490,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name NftItemControllerIncreaseView
      * @request POST:/api/nftitems/{itemId}/view
      */
-    nftItemControllerIncreaseView: (itemId: string, params: RequestParams = {}) =>
+    nftItemControllerIncreaseView: (
+      itemId: string,
+      params: RequestParams = {}
+    ) =>
       this.request<number, any>({
         path: `/api/nftitems/${itemId}/view`,
-        method: 'POST',
-        format: 'json',
+        method: "POST",
+        format: "json",
         ...params,
       }),
 
@@ -1423,9 +1512,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     nftItemControllerLike: (itemId: string, params: RequestParams = {}) =>
       this.request<NftItem, any>({
         path: `/api/nftitems/${itemId}/like`,
-        method: 'POST',
+        method: "POST",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1440,9 +1529,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     nftItemControllerUnlike: (itemId: string, params: RequestParams = {}) =>
       this.request<NftItem, any>({
         path: `/api/nftitems/${itemId}/unlike`,
-        method: 'POST',
+        method: "POST",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1453,13 +1542,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name ActivityLogControllerSearch
      * @request POST:/api/activities/search
      */
-    activityLogControllerSearch: (data: ActivityLogFilterDto, params: RequestParams = {}) =>
+    activityLogControllerSearch: (
+      data: ActivityLogFilterDto,
+      params: RequestParams = {}
+    ) =>
       this.request<ActivityLogFilterDto, any>({
         path: `/api/activities/search`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
   };

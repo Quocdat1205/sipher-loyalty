@@ -112,6 +112,12 @@ export class Erc1155Owner {
 
   @ApiProperty({ type: Number })
   totalOwned: number;
+
+  @ApiProperty({ type: String })
+  profileImage: string;
+
+  @ApiProperty({ type: String })
+  username: string;
 }
 export class NftItem {
   @IsString()

@@ -261,7 +261,8 @@ export class CollectionService {
         collections: [collectionId],
         tokenId,
       },
-      100
+      0,
+      1000
     );
     return totalMintedforCollection;
   }
@@ -291,6 +292,9 @@ export class CollectionService {
     addresses: string[],
     socialToken: string
   ): Promise<UserSocialInfo[]> {
+    if (!addresses) {
+      return [];
+    }
     const response = await lastValueFrom(
       this.httpService.get(`${constant.ATHER_SOCIAL_URL}/user/by-address`, {
         headers: {
