@@ -17,7 +17,6 @@ export const SpaceshipContainer = () => {
 
   return (
     <Flex
-      px={[4, 4, 4, 0, 0]}
       flexDir="column"
       w="full"
       // backgroundImage="url(/images/spaceship/bg-galaxy.png), linear-gradient(180deg, rgba(41, 42, 64, 0.6) 5%, rgba(0, 0, 0, 0.215) 59.01%, rgba(0, 0, 0, 0.5) 100%)"
@@ -25,9 +24,15 @@ export const SpaceshipContainer = () => {
       // bgPos={["65% 100%", "45% 100%", "35% 100%", "20% 100%", "0% 100%"]}
       // bgSize="cover"
     >
-      <Flex flexDir="column" align="center" bgGradient="linear(150.21deg, #8A31E2 -125.9%, #0F041A 45%)" w="full">
+      <Flex
+        px={[4, 4, 4, 0, 0]}
+        flexDir="column"
+        align="center"
+        bgGradient="linear(150.21deg, #8A31E2 -125.9%, #0F041A 45%)"
+        w="full"
+      >
         <Box maxW="1200px" w="full">
-          <Box px={[4, 0]} pt={12} w="full" maxW="1200px">
+          <Box pt={12} w="full" maxW="1200px">
             <TabPage tabs={spaceshipTabs} />
           </Box>
           <Flex py={28} justify="space-between" align="center">
@@ -54,7 +59,7 @@ export const SpaceshipContainer = () => {
           </Flex>
         </Box>
       </Flex>
-      <Flex flexDir="column" align="center" w="full" pos="relative">
+      <Flex px={[4, 4, 4, 0, 0]} flexDir="column" align="center" w="full" pos="relative">
         <Box
           pos="absolute"
           top={0}
