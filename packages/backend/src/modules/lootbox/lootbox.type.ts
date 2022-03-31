@@ -1,4 +1,3 @@
-import { IsOptional } from "class-validator";
 import { ClaimableLootbox, Lootbox, PendingMint } from "@entity";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
