@@ -94,7 +94,4 @@ export class AirdropToken {
 export class AirdropTokens {
   @ApiProperty({ type: AirdropToken })
   data: AirdropToken;
-
-  @ApiProperty({ type: String })
-  key: string;
 }

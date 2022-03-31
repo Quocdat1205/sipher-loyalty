@@ -152,7 +152,7 @@ export class AirdropService {
       token.imageUrls = imageUrls;
       token.claimer = token.claimer.toLowerCase();
       const _token = this.airdropRepo.create(token);
-      await this.airdropRepo.save(_token);
+      return this.airdropRepo.save(_token);
     } catch (err) {
       LoggerService.error(err);
     }
