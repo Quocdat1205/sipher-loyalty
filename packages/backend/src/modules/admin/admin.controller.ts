@@ -1,6 +1,14 @@
 import { Request } from "express";
 import { ERC1155Lootbox, ERC1155Sculpture } from "@entity";
-import { Body, Controller, Param, Put, Req, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Param,
+  Post,
+  Put,
+  Req,
+  UseGuards,
+} from "@nestjs/common";
 import { ApiBearerAuth, ApiParam, ApiTags } from "@nestjs/swagger";
 
 import { AirdropService } from "@modules/airdrop/airdrop.service";
@@ -168,7 +176,7 @@ export class AdminController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @Put("erc1155-lootbox")
+  @Post("erc1155-lootbox")
   async addERC1155Lootbox(@Body() body: ERC1155Lootbox, @Req() req: Request) {
     await this.authService.verifyAdmin(
       req.userData,

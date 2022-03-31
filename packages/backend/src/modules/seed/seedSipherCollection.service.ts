@@ -16,11 +16,15 @@ import { LoggerService } from "../logger/logger.service";
 export class SeedSipherCollectionService {
   private src = path.resolve(__dirname, "../../../src/data");
 
-  private dataCollection = constant.isProduction
-    ? JSON.parse(fs.readFileSync(`${this.src}/COLLECTION/data.json`).toString())
-    : JSON.parse(
-        fs.readFileSync(`${this.src}/COLLECTION/data_test.json`).toString()
-      );
+  private dataCollection = JSON.parse(
+    fs
+      .readFileSync(
+        `${this.src}/COLLECTION/data${
+          constant.isProduction ? "" : "_test.json"
+        }`
+      )
+      .toString()
+  );
 
   constructor(
     @InjectRepository(SipherCollection)
