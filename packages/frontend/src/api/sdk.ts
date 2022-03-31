@@ -1109,14 +1109,32 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags admin
-     * @name AdminControllerAddErc1155Lootbox
+     * @name AdminControllerUpdateErc1155Lootbox
      * @request PUT:/api/sipher/loyalty/admin/erc1155-lootbox
+     * @secure
+     */
+    adminControllerUpdateErc1155Lootbox: (data: ERC1155Lootbox, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/erc1155-lootbox`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerAddErc1155Lootbox
+     * @request POST:/api/sipher/loyalty/admin/erc1155-lootbox
      * @secure
      */
     adminControllerAddErc1155Lootbox: (data: ERC1155Lootbox, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/admin/erc1155-lootbox`,
-        method: 'PUT',
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
