@@ -206,8 +206,15 @@ export class CollectionService {
           socialToken
         );
         item.allOwner = allOwner;
+      } else {
+        const ownerInfo = await this.getInfoFromAddress(
+          item.owner,
+          socialToken
+        );
+        item.ownerInfo = ownerInfo;
       }
     }
+    item.creatorInfo = await this.getInfoFromAddress(item.creator, socialToken);
     const itemWithUri = (await this.addUriToItem([item]))[0];
 
     return itemWithUri;
@@ -267,6 +274,19 @@ export class CollectionService {
     return totalMintedforCollection;
   }
 
+  private async getInfoFromAddress(address: string, socialToken: string) {
+    const socialInfoArr = await this.getAvatarByAddresses(
+      [address],
+      socialToken
+    );
+    const socialInfo = socialInfoArr[0];
+    return {
+      publicAddress: address ? address.toLowerCase() : "",
+      profileImage: socialInfo ? socialInfo.avatarImage : "",
+      username: socialInfo ? socialInfo.name : "",
+    };
+  }
+
   private async getAllOwnerOfErc1155(items: any, socialToken?: string) {
     const socialInfo = socialToken
       ? await this.getAvatarByAddresses(
@@ -292,20 +312,26 @@ export class CollectionService {
     addresses: string[],
     socialToken: string
   ): Promise<UserSocialInfo[]> {
-    if (!addresses) {
+    const addressQuery = addresses.join(",");
+    try {
+      const response = await lastValueFrom(
+        this.httpService.get(`${constant.ATHER_SOCIAL_URL}/user/by-address`, {
+          headers: {
+            Authorization: socialToken,
+          },
+          params: {
+            address: addressQuery,
+          },
+        })
+      );
+      return response.data;
+    } catch (err) {
+      LoggerService.error(
+        err,
+        `Failed to get ${addressQuery} info from social`
+      );
       return [];
     }
-    const response = await lastValueFrom(
-      this.httpService.get(`${constant.ATHER_SOCIAL_URL}/user/by-address`, {
-        headers: {
-          Authorization: socialToken,
-        },
-        params: {
-          address: addresses.join(","),
-        },
-      })
-    );
-    return response.data;
   }
 
   private getErc1155Quantity(items: any) {

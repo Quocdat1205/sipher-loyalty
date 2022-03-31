@@ -33,7 +33,7 @@ const AirdropUI = () => {
         <Box py={4} flex={1}>
           {currentTab === "all" ? (
             allAirdrops.length > 0 ? (
-              <SimpleGrid spacing={4} columns={[1, 3, 4, 5, 5]}>
+              <SimpleGrid spacing={4} columns={[1, 2, 4, 5, 5]}>
                 {allAirdrops.map((item, index) => (
                   <AirdropCard key={index} data={item} isFetched={isFetched} />
                 ))}
@@ -42,7 +42,7 @@ const AirdropUI = () => {
               <NoItemUI />
             )
           ) : allAirdrops.filter(airdrop => airdrop.type === currentTab.toString().toUpperCase()).length > 0 ? (
-            <SimpleGrid spacing={4} columns={[1, 3, 4, 5, 5]}>
+            <SimpleGrid spacing={4} columns={[1, 2, 4, 5, 5]}>
               {allAirdrops
                 .filter(airdrop => airdrop.type === currentTab.toString().toUpperCase())
                 .map(item => (

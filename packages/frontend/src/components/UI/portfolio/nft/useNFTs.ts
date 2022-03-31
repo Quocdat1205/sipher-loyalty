@@ -49,6 +49,7 @@ const useNFTs = collectionId => {
   const collectionData = !query.data ? undefined : query.data?.pages[0]?.collection
 
   return {
+    router,
     collectionData: collectionData,
     columns,
     total: nftCount,

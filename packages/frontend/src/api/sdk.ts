@@ -224,6 +224,18 @@ export interface Erc1155Owner {
   username: string;
 }
 
+export interface Erc721Owner {
+  publicAddress: string;
+  profileImage: string;
+  username: string;
+}
+
+export interface CreatorInfo {
+  publicAddress: string;
+  profileImage: string;
+  username: string;
+}
+
 export interface NftItem {
   id: string;
   collectionId: string;
@@ -243,6 +255,8 @@ export interface NftItem {
   quantity: number;
   type: string;
   allOwner: Erc1155Owner[];
+  ownerInfo: Erc721Owner;
+  creatorInfo: CreatorInfo;
   collection: SipherCollection;
 }
 

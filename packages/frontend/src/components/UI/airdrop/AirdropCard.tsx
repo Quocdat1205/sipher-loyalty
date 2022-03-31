@@ -13,7 +13,6 @@ interface AirdropProps {
 
 const AirdropCard = ({ data, isFetched }: AirdropProps) => {
   const extension = data.imageUrls[0]?.default.split(".")[5]
-  console.log(data)
   return (
     <Flex
       flexDir="column"

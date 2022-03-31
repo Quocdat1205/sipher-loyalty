@@ -1,7 +1,8 @@
 import React from "react"
+import { BiChevronLeft } from "react-icons/bi"
 import InfiniteScroll from "react-infinite-scroll-component"
 import Image from "next/image"
-import { Avatar, Box, chakra, Flex, Heading, SimpleGrid, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Avatar, Box, Button, chakra, Flex, Heading, SimpleGrid, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { SpVerified } from "@components/shared/icons"
 import { capitalize } from "@utils"
@@ -17,13 +18,12 @@ interface DetailsCollectionProps {
 }
 
 const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
-  const { collectionData, columns, total, nftsData, isFetched, query } = useNFTs(collectionId)
+  const { collectionData, columns, total, nftsData, isFetched, query, router } = useNFTs(collectionId)
   const { data, hasNextPage, fetchNextPage, isLoading } = query
 
   const renderLoadingCards = () => {
     return Array.from(Array(columns).keys()).map(i => <LoadingCard key={i} />)
   }
-  console.log(total)
   const renderNFTs = () => {
     if (isLoading) {
       return renderLoadingCards()
@@ -33,6 +33,16 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
 
   return (
     <Flex flexDir="column" flex={1} w="full" pos="relative">
+      <Flex pos="fixed" top="4rem" left={0} zIndex={1} flexDir="column">
+        <Box pt={8} px={8} w="full">
+          <Button onClick={() => router.back()} pl={2} bg="white" rounded="full" alignItems="center">
+            <Box color="neutral.500">
+              <BiChevronLeft size="1.4rem" />
+            </Box>
+            <Text color="neutral.500">Back</Text>
+          </Button>
+        </Box>
+      </Flex>
       <Skeleton isLoaded={isFetched} flexDir="column" w="full" justify="center" position="relative">
         <Image
           layout="responsive"
