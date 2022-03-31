@@ -55,7 +55,7 @@ export function DetailsAirdrop() {
 
   return (
     <ChakraModal scrollBehavior="inside" title={""} isOpen={isOpen} onClose={onClose} size="4xl">
-      <Flex p={6} maxH="28rem" h="full" align="flex-start">
+      <Flex p={6} minH="28rem" h="full" align="flex-start">
         <Skeleton flex={2} isLoaded={isFetched || (detailAirdrop && detailAirdrop?.imageUrls?.length > 0)}>
           <Flex
             sx={{
@@ -121,12 +121,12 @@ export function DetailsAirdrop() {
             <Skeleton isLoaded={isFetched}>
               {detailAirdrop?.type === "TOKEN"
                 ? detailAirdrop?.description?.slice(1, detailAirdrop?.description?.length).map(item => (
-                    <Text key={item} color="neutral.400">
+                    <Text mb={2} key={item} color="neutral.400">
                       {item}
                     </Text>
                   ))
                 : detailAirdrop?.description?.map(item => (
-                    <Text key={item} color="neutral.400">
+                    <Text mb={2} key={item} color="neutral.400">
                       {item}
                     </Text>
                   ))}
