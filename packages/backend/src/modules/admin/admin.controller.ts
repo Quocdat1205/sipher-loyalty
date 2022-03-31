@@ -176,7 +176,7 @@ export class AdminController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @Post("erc1155-lootbox")
+  @Put("erc1155-lootbox")
   async addERC1155Lootbox(@Body() body: ERC1155Lootbox, @Req() req: Request) {
     await this.authService.verifyAdmin(
       req.userData,
