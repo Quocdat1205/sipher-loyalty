@@ -20,7 +20,7 @@ export class ERC1155Lootbox {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: Number })
   @Column({ nullable: false })
   tokenId: number;
 
@@ -73,7 +73,7 @@ export class ERC1155Sculpture {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: Number })
   @Column({ nullable: false })
   tokenId: number;
 

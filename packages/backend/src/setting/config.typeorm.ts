@@ -16,7 +16,7 @@ class ConfigService {
   > {
     return {
       type: "postgres",
-      url: "postgres://postgres:pqThHxg204@postgres-loyalty.sipher.gg:5432/loyalty",
+      url: await constant.getPOSTGRES_URL(),
       entities: [join(__dirname, "..", "**", "*.entity{.ts,.js}")],
 
       migrationsTableName: "migration",

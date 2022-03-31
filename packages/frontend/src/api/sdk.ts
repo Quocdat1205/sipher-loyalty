@@ -120,7 +120,7 @@ export interface ClaimableLootbox {
 
 export interface ERC1155Lootbox {
   id: number;
-  tokenId: string;
+  tokenId: number;
   name: string;
   shortDescription: string;
   description: string;
@@ -476,7 +476,7 @@ export interface DistributeLootboxs {
 
 export interface ERC1155Sculpture {
   id: number;
-  tokenId: string;
+  tokenId: number;
   name: string;
   shortDescription: string;
   description: string;
