@@ -11,6 +11,9 @@ export class ResAirdrop extends Airdrop {
 
   @ApiProperty({ type: String, isArray: true, default: [], nullable: true })
   color?: string[];
+
+  @ApiProperty({ type: Number })
+  quantity?: number;
 }
 export class ResAllAirdrop {
   @ApiProperty({ type: ResAirdrop, isArray: true })

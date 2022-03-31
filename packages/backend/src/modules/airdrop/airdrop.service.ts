@@ -54,6 +54,7 @@ export class AirdropService {
       shortDescription: merch.item.shortDescription,
       description: merch.item.description,
       imageUrls: merch.item.imageUrls,
+      quantity: merch.quantity,
       type: merch.item.type,
     }));
   }
@@ -76,6 +77,7 @@ export class AirdropService {
       type: merch.item.type,
       size: merch.item.size,
       color: merch.item.color,
+      quantity,
     };
   }
 
@@ -90,6 +92,7 @@ export class AirdropService {
       description: merch.item.description,
       imageUrls: merch.item.imageUrls,
       type: merch.item.type,
+      quantity: merch.quantity,
     }));
   }
 

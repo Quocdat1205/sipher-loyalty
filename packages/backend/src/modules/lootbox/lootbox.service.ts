@@ -99,18 +99,23 @@ export class LootBoxService {
     return flattern_lootbox;
   };
 
-  private async createClaimableLootbox(lootbox: any) {
-    const erclootbox = await this.erc1155LootboxRepo.findOne({
-      tokenId: lootbox.tokenId,
-    });
+  private async createClaimableLootbox(lootbox: DistributeLootbox) {
+    try {
+      const erclootbox = await this.erc1155LootboxRepo.findOne({
+        tokenId: lootbox.tokenId,
+      });
 
-    await this.addQuantityClaimedLootbox({
-      publicAddress: lootbox.publicAddress,
-      tokenId: lootbox.tokenId,
-      quantity: lootbox.quantity,
-      expiredDate: lootbox.expiredDate,
-      propertyLootbox: erclootbox,
-    });
+      return this.addQuantityClaimedLootbox({
+        publicAddress: lootbox.publicAddress.toLowerCase(),
+        tokenId: lootbox.tokenId,
+        quantity: lootbox.quantity,
+        expiredDate: lootbox.expiredDate,
+        propertyLootbox: erclootbox,
+      });
+    } catch (err) {
+      LoggerService.error(JSON.stringify(err));
+      return err;
+    }
   }
 
   private increaseOrCreateLootbox = async (
@@ -127,7 +132,7 @@ export class LootBoxService {
     if (!lootbox) {
       if (propertyLootbox) {
         propertyLootbox = await this.erc1155LootboxRepo.findOne({
-          tokenId: lootbox.tokenId,
+          tokenId,
         });
       }
       lootbox = this.lootboxRepo.create({
@@ -262,6 +267,7 @@ export class LootBoxService {
       ],
       relations: ["propertyLootbox"],
     });
+    console.log(getNow());
 
     return lootboxs;
   };
@@ -623,7 +629,7 @@ export class LootBoxService {
       if (!lootbox) {
         lootbox = this.claimableLootboxRepo.create(claimableLootbox);
       } else {
-        lootbox.quantity++;
+        lootbox.quantity += claimableLootbox.quantity;
       }
       LoggerService.log(
         `save claimable lootbox to  ${claimableLootbox.publicAddress}`
@@ -641,12 +647,9 @@ export class LootBoxService {
       promises.push(this.createClaimableLootbox(data[i]));
     }
     try {
-      await Promise.all(promises);
+      return Promise.all(promises);
     } catch (err) {
-      LoggerService.error(JSON.stringify(err));
       return err;
     }
-    LoggerService.log("Done distribute lootbox");
-    return true;
   };
 }
