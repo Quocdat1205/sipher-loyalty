@@ -222,6 +222,8 @@ export interface NftItemAttribute {
 export interface Erc1155Owner {
   publicAddress: string;
   totalOwned: number;
+  profileImage: string;
+  username: string;
 }
 
 export interface NftItem {
