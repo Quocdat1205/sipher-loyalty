@@ -16,7 +16,7 @@ import { CacheService } from "@modules/cache/cache.service";
 import { CancelService } from "@modules/cancel/cancel.service";
 import { MintService } from "@modules/mint/mint.service";
 import { BatchOrder, Order } from "@utils/type";
-import { insertDetailStringToImage } from "@utils/utils";
+import { getNow, insertDetailStringToImage } from "@utils/utils";
 import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 import { LoggerService } from "../logger/logger.service";
@@ -256,12 +256,13 @@ export class LootBoxService {
       where: [
         {
           publicAddress: publicAddress.toLowerCase(),
-          expiredDate: MoreThanOrEqual(new Date()),
+          expiredDate: MoreThanOrEqual(getNow()),
           quantity: MoreThan(0),
         },
       ],
       relations: ["propertyLootbox"],
     });
+
     return lootboxs;
   };
 

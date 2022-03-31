@@ -3,8 +3,10 @@ import { ERC1155Lootbox, ERC1155Sculpture } from "@entity";
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
+  Post,
   Put,
   Req,
   UseGuards,
@@ -21,6 +23,7 @@ import { DistributeLootboxs } from "@modules/lootbox/lootbox.type";
 import { MerchUpdateDto } from "@modules/merch/merch.dto";
 import { MerchService } from "@modules/merch/merch.service";
 import { URIService } from "@modules/uri/uri.service";
+import { ParseEthereumAddress } from "src/pipes/ethereum-address..pipe";
 
 import {
   ImageUrlIdParam,
@@ -51,6 +54,20 @@ export class AdminController {
       UserRole.LOYALTY_ADMIN_AIRDROP
     );
     return this.airdropService.updateAirdropTokens(body.data);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @Get("merch/:publicAddress")
+  async getMerchById(
+    @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
+    @Req() req: Request
+  ) {
+    await this.authService.verifyAdmin(
+      req.userData,
+      UserRole.LOYALTY_ADMIN_AIRDROP
+    );
+    return this.merchService.getAllMerchByPublicAddress(publicAddress);
   }
 
   @UseGuards(AtherGuard)
@@ -162,7 +179,7 @@ export class AdminController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @Put("erc1155-sculpture")
+  @Post("erc1155-sculpture")
   async addERC1155Sculpture(
     @Body() body: ERC1155Sculpture,
     @Req() req: Request
@@ -176,7 +193,7 @@ export class AdminController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @Put("erc1155-lootbox")
+  @Post("erc1155-lootbox")
   async addERC1155Lootbox(@Body() body: ERC1155Lootbox, @Req() req: Request) {
     await this.authService.verifyAdmin(
       req.userData,

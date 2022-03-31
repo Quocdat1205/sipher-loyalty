@@ -6,7 +6,8 @@
     "merchItem": "Card",
     "quantity": 1,
     "quantityShipped": "0",
-    "shippable": false
+    "shippable": false,
+    "isShipped": false
   },
   {
     "id": 2,
@@ -15,6 +16,7 @@
     "merchItem": "Card",
     "quantity": 1,
     "quantityShipped": "0",
-    "shippable": false
+    "shippable": false,
+    "isShipped": false
   }
 ]

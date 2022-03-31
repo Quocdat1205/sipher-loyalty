@@ -439,7 +439,6 @@ export interface AirdropToken {
 
 export interface AirdropTokens {
   data: AirdropToken;
-  key: string;
 }
 
 export interface MerchUpdateDto {
@@ -1032,6 +1031,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags admin
+     * @name AdminControllerGetMerchById
+     * @request GET:/api/sipher/loyalty/admin/merch/{publicAddress}
+     * @secure
+     */
+    adminControllerGetMerchById: (publicAddress: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/merch/${publicAddress}`,
+        method: 'GET',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
      * @name AdminControllerUpdateMerchById
      * @request PATCH:/api/sipher/loyalty/admin/merch/{merchId}
      * @secure
@@ -1104,11 +1119,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags admin
-     * @name AdminControllerAddErc1155Sculpture
+     * @name AdminControllerUpdateErc1155Sculpture
      * @request PUT:/api/sipher/loyalty/admin/erc1155-sculpture
      * @secure
      */
-    adminControllerAddErc1155Sculpture: (data: ERC1155Sculpture, params: RequestParams = {}) =>
+    adminControllerUpdateErc1155Sculpture: (data: ERC1155Sculpture, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/admin/erc1155-sculpture`,
         method: 'PUT',
@@ -1122,14 +1137,50 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags admin
-     * @name AdminControllerAddErc1155Lootbox
+     * @name AdminControllerAddErc1155Sculpture
+     * @request POST:/api/sipher/loyalty/admin/erc1155-sculpture
+     * @secure
+     */
+    adminControllerAddErc1155Sculpture: (data: ERC1155Sculpture, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/erc1155-sculpture`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateErc1155Lootbox
      * @request PUT:/api/sipher/loyalty/admin/erc1155-lootbox
+     * @secure
+     */
+    adminControllerUpdateErc1155Lootbox: (data: ERC1155Lootbox, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/erc1155-lootbox`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerAddErc1155Lootbox
+     * @request POST:/api/sipher/loyalty/admin/erc1155-lootbox
      * @secure
      */
     adminControllerAddErc1155Lootbox: (data: ERC1155Lootbox, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/admin/erc1155-lootbox`,
-        method: 'PUT',
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,

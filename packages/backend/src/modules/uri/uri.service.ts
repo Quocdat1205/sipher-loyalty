@@ -5,7 +5,7 @@ import {
   ERC1155Sculpture,
   ERC1155SculptureAttribute,
 } from "@entity";
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { LoggerService } from "@modules/logger/logger.service";
@@ -39,13 +39,26 @@ export class URIService {
 
   addERC1155Lootbox = async (erc1155: ERC1155Lootbox) => {
     try {
+      const _erc1155 = await this.erc1155LootboxRepo.findOne({
+        tokenId: erc1155.tokenId,
+      });
+      if (_erc1155)
+        throw new HttpException(
+          `tokenId ${erc1155.tokenId} exist`,
+          HttpStatus.BAD_REQUEST
+        );
+
       const attributes = await this.addERC1155LootboxAttributes(
         erc1155.attributes
       );
       erc1155.attributes = attributes;
-      await this.erc1155LootboxRepo.save(erc1155);
+      return this.erc1155LootboxRepo.save(erc1155);
     } catch (err) {
       LoggerService.error(err);
+      throw new HttpException(
+        `tokenId ${erc1155.tokenId} exist`,
+        HttpStatus.BAD_REQUEST
+      );
     }
   };
 
@@ -61,7 +74,7 @@ export class URIService {
         erc1155.attributes
       );
       erc1155.attributes = attributes;
-      await this.erc1155LootboxRepo.save(erc1155);
+      return this.erc1155LootboxRepo.save(erc1155);
     } catch (err) {
       LoggerService.error(err);
     }
@@ -93,16 +106,29 @@ export class URIService {
     return Promise.all(promises);
   };
 
-  addERC1155Sculpture = async (erc1155) => {
+  addERC1155Sculpture = async (erc1155: ERC1155Sculpture) => {
     try {
+      const _erc1155 = await this.erc1155SculptureRepo.findOne({
+        tokenId: erc1155.tokenId,
+      });
+      if (_erc1155)
+        throw new HttpException(
+          `tokenId ${erc1155.tokenId} exist`,
+          HttpStatus.BAD_REQUEST
+        );
+
       const attributes = await this.addERC1155SculptureAttributes(
         erc1155.attributes
       );
       erc1155.attributes = attributes;
       const erc1155Sculpture = this.erc1155SculptureRepo.create(erc1155);
-      await this.erc1155SculptureRepo.save(erc1155Sculpture);
+      return this.erc1155SculptureRepo.save(erc1155Sculpture);
     } catch (err) {
       LoggerService.error(err);
+      throw new HttpException(
+        `tokenId ${erc1155.tokenId} exist`,
+        HttpStatus.BAD_REQUEST
+      );
     }
   };
 

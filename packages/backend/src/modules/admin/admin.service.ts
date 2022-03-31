@@ -16,7 +16,7 @@ export class AdminService {
   async updateItemById(itemId: number, updateItemDto: UpdateItemDto) {
     const item = await this.itemRepo.findOne(itemId);
     if (!item) {
-      throw new HttpException("Item not found", HttpStatus.NOT_FOUND);
+      throw new HttpException("Item not found", HttpStatus.BAD_REQUEST);
     }
     item.color = updateItemDto.color;
     item.description = updateItemDto.description;

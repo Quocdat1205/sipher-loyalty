@@ -51,8 +51,8 @@ export class Merchandise {
 
   @ApiProperty({ type: Number })
   @IsNumber()
-  @Column()
-  quantityShipped: number;
+  @Column({ default: 0 })
+  quantityShipped?: number;
 
   @ApiProperty({ type: Boolean })
   @IsBoolean()
