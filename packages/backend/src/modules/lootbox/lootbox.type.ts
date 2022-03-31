@@ -82,7 +82,4 @@ export class DistributeLootbox {
 export class DistributeLootboxs {
   @ApiProperty({ type: DistributeLootbox, isArray: true })
   data: DistributeLootbox[];
-
-  @ApiProperty({ type: String })
-  key: string;
 }

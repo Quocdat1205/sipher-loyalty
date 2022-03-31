@@ -20,8 +20,8 @@ export class SeedSipherCollectionService {
     fs
       .readFileSync(
         `${this.src}/COLLECTION/data${
-          constant.isProduction ? "" : "_test.json"
-        }`
+          constant.isProduction ? "" : "_test"
+        }.json`
       )
       .toString()
   );

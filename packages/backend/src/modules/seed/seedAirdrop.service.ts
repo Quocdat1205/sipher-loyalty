@@ -57,11 +57,10 @@ export class SeedAirdropService {
 
   private seedToken = async (token: Airdrop) => {
     try {
-      const imageUrl = await this.seedImageUrls(token.imageUrls);
-      token.imageUrls = imageUrl;
       token.claimer = token.claimer.toLowerCase();
       const _token = this.airdropRepo.create(token);
       await this.airdropRepo.save(_token);
+      LoggerService.log(`add token for ${token.claimer} success`);
     } catch (err) {
       LoggerService.error(err);
     }
@@ -135,12 +134,21 @@ export class SeedAirdropService {
     await this.airdropRepo.query(
       `delete from airdrop where "addressContract"='${this.airdropDataHolder.addressContract}';`
     );
+    const imageUrl = await this.seedImageUrls(tokenData[0].imageUrls);
+
+    // await tokenData.reduce(async (promise, token) => {
+    //   await promise;
+    //   token.imageUrls = imageUrl;
+    //   await this.seedToken(token);
+    // }, Promise.resolve());
 
     const promises = [];
     for (let i = 0; i < tokenData.length; i++) {
+      tokenData[i].imageUrls = imageUrl;
       promises.push(this.seedToken(tokenData[i]));
     }
     await Promise.all(promises);
+
     LoggerService.log("Done token");
   };
 

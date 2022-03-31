@@ -118,7 +118,7 @@ export class URIService {
         erc1155.attributes
       );
       erc1155.attributes = attributes;
-      await this.erc1155SculptureRepo.save(erc1155);
+      return this.erc1155SculptureRepo.save(erc1155);
     } catch (err) {
       LoggerService.error(err);
     }
