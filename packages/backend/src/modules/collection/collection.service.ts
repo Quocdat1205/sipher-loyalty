@@ -195,6 +195,7 @@ export class CollectionService {
     if (itemCollection) {
       item.collection = itemCollection;
       if (item.collection.collectionType === "ERC1155") {
+        console.log(item.collectionId, item.tokenId);
         const totalMintedItems = await this.getTotalErc1155Minted(
           item.collectionId,
           item.tokenId
@@ -261,7 +262,8 @@ export class CollectionService {
         collections: [collectionId],
         tokenId,
       },
-      100
+      0,
+      1000
     );
     return totalMintedforCollection;
   }
@@ -291,6 +293,9 @@ export class CollectionService {
     addresses: string[],
     socialToken: string
   ): Promise<UserSocialInfo[]> {
+    if (!addresses) {
+      return [];
+    }
     const response = await lastValueFrom(
       this.httpService.get(`${constant.ATHER_SOCIAL_URL}/user/by-address`, {
         headers: {
