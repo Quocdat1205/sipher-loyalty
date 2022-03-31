@@ -21,15 +21,13 @@ const GeneralContainer = ({ totalCollectionPrice }: GeneralContainerProps) => {
 
   return (
     <>
-      <SimpleGrid mb={8} columns={[2, 2, 3]} spacing={6}>
+      <SimpleGrid mb={8} columns={[2, 2, 4]} spacing={6}>
         <CardGeneral
           value={`${currency(totalCollectionPrice)} ETH`}
           name={"Portfolio value"}
           icon={<EthereumIcon size="1.5rem" />}
-          rightChildren={
-            <Text pb={0.5} lineHeight={1} color="neutral.100">
-              ${currency(totalCollectionPrice * (dataPrice?.ethereumPrice?.usd || 0))}
-            </Text>
+          bottomChildren={
+            <Text color="neutral.100">${currency(totalCollectionPrice * (dataPrice?.ethereumPrice?.usd || 0))}</Text>
           }
         />
         <CardGeneral
@@ -37,7 +35,7 @@ const GeneralContainer = ({ totalCollectionPrice }: GeneralContainerProps) => {
           name="sipher token"
           icon={<SipherIcon />}
           // popoverProps={{ label: "SIPHER TOKEN", content: "Description" }}
-          rightChildren={
+          bottomChildren={
             <Button
               onClick={() => setModalStake(true)}
               _hover={{ bg: "accent.500", color: "neutral.900" }}

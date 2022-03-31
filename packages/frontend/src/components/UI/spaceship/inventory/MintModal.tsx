@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { Box, Button, chakra, Divider, Flex, HStack, Link, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
-import { SipherSpaceshipAddress } from "@constant"
+import { SipherLootBoxAddress } from "@constant"
 import { padZero } from "@utils"
 
 import QuantitySelector from "./details/QuantitySelector"
@@ -147,7 +147,7 @@ export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handl
           ) : status === "SUCCESS" ? (
             <Fragment>
               <Button
-                onClick={() => router.push(`/portfolio/${SipherSpaceshipAddress}`)}
+                onClick={() => router.push(`/portfolio/${SipherLootBoxAddress}`)}
                 variant="secondary"
                 colorScheme="cyan"
                 fontSize="md"

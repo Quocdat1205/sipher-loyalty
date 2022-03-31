@@ -21,9 +21,9 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
   const { data, hasNextPage, fetchNextPage, isLoading } = query
 
   const renderLoadingCards = () => {
-    return Array.from(Array(1).keys()).map(i => <LoadingCard key={i} />)
+    return Array.from(Array(columns).keys()).map(i => <LoadingCard key={i} />)
   }
-
+  console.log(total)
   const renderNFTs = () => {
     if (isLoading) {
       return renderLoadingCards()
@@ -79,7 +79,7 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
           </Flex>
           <Box py={8} flex={1}>
             <InfiniteScroll
-              dataLength={data ? data.pages[0].total : 0}
+              dataLength={data ? total : 0}
               next={fetchNextPage}
               hasMore={!!hasNextPage}
               style={{

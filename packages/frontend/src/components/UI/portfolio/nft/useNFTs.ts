@@ -10,14 +10,13 @@ import { useAuth } from "src/providers/auth"
 
 const useNFTs = collectionId => {
   const router = useRouter()
-  const take = 2
+  const take = 30
   const { bearerToken } = useAuth()
   const { account } = useWalletContext()
   const gridSize = useStore(state => state.gridSize)
-  const columns = gridSize === "small" ? 2 : 2
+  const columns = gridSize === "small" ? [2, 3, 4, 5, 5] : [1, 2, 3, 4, 4]
 
   const getNFTWithRange = async ({ pageParam = 0 }) => {
-    console.log(pageParam)
     const { data } = await client.api.collectionControllerGetPortfolioByCollection(
       account!,
       collectionId,

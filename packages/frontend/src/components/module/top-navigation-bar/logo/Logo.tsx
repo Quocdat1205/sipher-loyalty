@@ -1,4 +1,3 @@
-import { BsFillCaretDownFill } from "react-icons/bs"
 import Image from "next/image"
 import Link from "next/link"
 import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
@@ -24,9 +23,6 @@ const Logo = () => {
               layout="fixed"
               priority
             />
-          </Box>
-          <Box color="neutral.400">
-            <BsFillCaretDownFill size="1rem" />
           </Box>
         </HStack>
       </Link>
