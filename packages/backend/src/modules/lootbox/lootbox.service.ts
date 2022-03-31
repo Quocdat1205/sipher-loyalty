@@ -154,6 +154,14 @@ export class LootBoxService {
     return result;
   };
 
+  private async updateQuantityFromCanceledOrder(
+    lootbox: Lootbox,
+    amount: number
+  ) {
+    lootbox.mintable += amount;
+    return this.lootboxRepo.save(lootbox);
+  }
+
   private async verifyBlockingLootboxs(lootboxs: Lootbox[]) {
     const promisesVerify = [];
     for (let i = 0; i < lootboxs.length; i++) {
@@ -267,7 +275,6 @@ export class LootBoxService {
       ],
       relations: ["propertyLootbox"],
     });
-    console.log(getNow());
 
     return lootboxs;
   };
@@ -571,18 +578,20 @@ export class LootBoxService {
 
       if (
         pendingMint &&
-        pendingMint.status !== MintStatus.Canceled &&
+        // pendingMint.status !== MintStatus.Canceled &&
         pendingMint.status !== MintStatus.Expired &&
         pendingMint.status !== MintStatus.Minted
       ) {
         pendingMint.status = MintStatus.Canceled;
         await this.mintService.updatePendingMint(pendingMint);
-        const tokenIds = pendingMint.batchID
-          ? [pendingMint.batchID]
-          : pendingMint.batchIDs;
-        const amounts = pendingMint.batchID
-          ? [pendingMint.amount]
-          : pendingMint.amounts;
+        const tokenIds =
+          pendingMint.batchIDs.length > 0
+            ? pendingMint.batchIDs
+            : [pendingMint.batchID];
+        const amounts =
+          pendingMint.batchIDs.length > 0
+            ? pendingMint.amounts
+            : [pendingMint.amount];
         const lootboxs = await this.getLootboxFromWalletAndTokenIDs(
           pendingMint.to,
           tokenIds
@@ -598,12 +607,12 @@ export class LootBoxService {
           signature,
           type: CancelType.Lootbox,
         };
+
         promises.push(this.cancelService.createCanceled(_canceled));
         for (let i = 0; i < tokenIds.length; i++) {
-          lootboxs[i].quantity += amounts[i];
-          lootboxs[i].mintable += amounts[i];
-
-          promises.push(this.lootboxRepo.save(lootboxs[i]));
+          promises.push(
+            this.updateQuantityFromCanceledOrder(lootboxs[i], amounts[i])
+          );
         }
         const result = await Promise.all(promises);
 
