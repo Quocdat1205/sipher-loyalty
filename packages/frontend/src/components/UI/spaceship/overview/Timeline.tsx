@@ -36,7 +36,7 @@ function defaultPointElement(center: [number, number], i: number, title: string,
 
 export const Timeline = ({ mappedData }: TimelineProps) => {
   return (
-    <Flex align="center" justify="center" mb={16} pos="relative">
+    <Flex align="center" justify="center" pos="relative" mb={16}>
       <chakra.svg height="200" viewBox="300 300 1200 100" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="grad1">
