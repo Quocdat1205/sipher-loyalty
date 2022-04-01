@@ -63,3 +63,4 @@ sipher-chart:
     PRIVATE_KEY_LOYALTY: ssm:/atherlabs/dashboard/prod/PRIVATE_KEY_LOYALTY
     ATHER_ID_URL: "backend-ather-id-api.ather-id:3001"
     ATHER_SOCIAL_URL: "ather-social-backend-api.ather-social:3001"
+    MARKETPLACE_SDK_URL: "marketplace-backend-api.marketplace:3001"
