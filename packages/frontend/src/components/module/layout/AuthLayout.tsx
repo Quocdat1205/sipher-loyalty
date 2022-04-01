@@ -1,6 +1,6 @@
 import { FC } from "react"
 import Image from "next/image"
-import { Box, Divider, Flex, Img, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Flex, Img, Stack, Text } from "@sipher.dev/sipher-ui"
 
 const content = [
   {

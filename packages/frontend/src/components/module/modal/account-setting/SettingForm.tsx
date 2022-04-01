@@ -1,10 +1,10 @@
 import React, { useEffect } from "react"
 import { BiChevronRight } from "react-icons/bi"
 import { useMutation, useQuery, useQueryClient } from "react-query"
-import { Avatar, Box, Button, Divider, Flex, FormControl, FormLabel, HStack, Image, Text } from "@sipher.dev/sipher-ui"
+import { Avatar, Box, Button, Divider, Flex, HStack, Image, Text } from "@sipher.dev/sipher-ui"
 
 import { getProfile, updateProfile } from "@api"
-import { ChakraModal, CustomInput, CustomTextarea, FormField, StyledInput, StyledTextArea } from "@components/shared"
+import { ChakraModal, StyledInput, StyledTextArea } from "@components/shared"
 import { useChakraToast, useFormCoreWithError } from "@hooks"
 import { useAuth } from "src/providers/auth"
 

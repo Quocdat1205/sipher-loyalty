@@ -3,7 +3,7 @@ import { IoIosWarning } from "react-icons/io"
 import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { ConnectWalletResponse } from "@sipher.dev/ather-id/lib/esm/api/sdk"
-import { Box, chakra, Flex, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, chakra, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 import { useAuthFlowStore } from "@store"
 import { useWalletContext } from "@web3"
 

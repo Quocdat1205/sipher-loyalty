@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { IoIosWarning } from "react-icons/io"
 import { useMutation, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { ConnectWalletResponse } from "@sipher.dev/ather-id/lib/esm/api/sdk"
-import { Box, chakra, Flex, Heading, HStack, Link, Text } from "@sipher.dev/sipher-ui"
+import { Box, chakra, Flex, Heading, HStack, Text } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
 import { WalletCard } from "@components/shared"
@@ -18,7 +18,7 @@ interface WalletInUseUIProps {
 const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
   const toast = useChakraToast()
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
-  const { connect, scCaller, reset, isActive, account } = useWalletContext()
+  const { connect, scCaller, reset, account } = useWalletContext()
   const qc = useQueryClient()
   const router = useRouter()
   const [connectingWallet, setConnectingWallet] = useState("")

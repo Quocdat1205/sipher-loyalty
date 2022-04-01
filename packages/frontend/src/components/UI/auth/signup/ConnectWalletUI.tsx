@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useMutation, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import AtherIdAuth from "@sipher.dev/ather-id"
@@ -20,7 +20,7 @@ interface ConnectWalletUIProps {
 const ConnectWalletUI = ({ setStep, setCurrentAddress }: ConnectWalletUIProps) => {
   const toast = useChakraToast()
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
-  const { connect, scCaller, reset, isActive, account } = useWalletContext()
+  const { connect, scCaller, reset, account } = useWalletContext()
   const { refetchOwnedWallets } = useAuth()
   const qc = useQueryClient()
   const router = useRouter()
