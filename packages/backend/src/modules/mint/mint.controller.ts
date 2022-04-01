@@ -34,7 +34,7 @@ export class MintController {
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Req() req: Request
   ) {
-    await this.authService.verifyAddress(publicAddress, req.userData);
+    await this.authService.verifyAddress(publicAddress, req);
     return this.mintService.getPendingLootbox(publicAddress);
   }
 
@@ -46,7 +46,7 @@ export class MintController {
     @Body() body: BodyUpdatePendingMint,
     @Req() req: Request
   ) {
-    await this.authService.verifyAddress(body.publicAddress, req.userData);
+    await this.authService.verifyAddress(body.publicAddress, req);
     return this.mintService.updateStatusPendingLootbox(body);
   }
 }

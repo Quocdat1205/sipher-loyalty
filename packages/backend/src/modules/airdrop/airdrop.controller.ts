@@ -35,7 +35,7 @@ export class AirdropController {
     @Param("airdropType") airdropType: AirdropType,
     @Req() req: Request
   ) {
-    await this.authService.verifyAddress(publicAddress, req.userData);
+    await this.authService.verifyAddress(publicAddress, req);
     return this.airdropService.getAirdropsByType(publicAddress, airdropType);
   }
 
@@ -51,7 +51,7 @@ export class AirdropController {
     @Param("airdropType") airdropType: AirdropType,
     @Req() req: Request
   ) {
-    await this.authService.verifyAddress(publicAddress, req.userData);
+    await this.authService.verifyAddress(publicAddress, req);
     return this.airdropService.getAirdropByType(id, airdropType);
   }
 }
