@@ -13,11 +13,8 @@ import { TokenType } from "@modules/nft/nft.dto";
 import { NftItemService } from "@modules/nft/nftItem.service";
 import { URIService } from "@modules/uri/uri.service";
 import { isLooboxContract, isSculptureContract } from "@utils/utils";
-import marketplaceClient from "src/api/marketplaceClient";
-import {
-  CollectionType,
-  SipherCollection,
-} from "src/entity/sipher-collection.entity";
+import marketplaceClient from "../../api/marketplaceClient";
+import { CollectionType, SipherCollection } from "@entity";
 
 import {
   CollectionStats,

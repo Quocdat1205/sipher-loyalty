@@ -10,10 +10,7 @@ import {
 import { ApiProperty } from "@nestjs/swagger";
 
 import { NftItem } from "@modules/nft/nft-item.dto";
-import {
-  CollectionCategory,
-  SipherCollection,
-} from "src/entity/sipher-collection.entity";
+import { CollectionCategory, SipherCollection } from "@entity";
 
 export class PortfolioQuery {
   @ApiProperty({
