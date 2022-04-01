@@ -15,8 +15,8 @@ import { getProfile } from "@api"
 const configPromise = configure({
   environment: (process.env.NEXT_PUBLIC_ATHER_ID_URL as any) ?? AtherIdEnviromment.Dev,
   oauth: {
-    redirectSignIn: process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "http://localhost:3000",
-    redirectSignOut: process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "http://localhost:3000",
+    redirectSignIn: `${process.env.NEXT_PUBLIC_DASHBOARD_URL}signin` ?? "http://localhost:3000",
+    redirectSignOut: `${process.env.NEXT_PUBLIC_DASHBOARD_URL}signin` ?? "http://localhost:3000",
   },
 })
 
