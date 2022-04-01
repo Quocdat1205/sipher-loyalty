@@ -44,7 +44,6 @@ const usePortfolio = () => {
       initialData: [],
     },
   )
-  console.log(filter)
 
   const tokensData = account
     ? [
