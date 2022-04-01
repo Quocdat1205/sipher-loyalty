@@ -11,11 +11,11 @@ export class CacheService {
   get = async (token: string) => this.cacheManager.get<UserData>(token);
 
   set = async (token: string, userData: UserData) => {
-    LoggerService.debug(token, userData);
+    console.log(token, userData);
     try {
       await this.cacheManager.set<UserData>(token, userData, { ttl: 3600 });
     } catch (error) {
-      LoggerService.debug(error);
+      console.log(error);
     }
   };
 
