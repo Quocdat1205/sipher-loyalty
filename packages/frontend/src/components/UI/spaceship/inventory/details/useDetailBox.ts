@@ -7,7 +7,7 @@ import { useWalletContext } from "@web3"
 import { POLYGON_NETWORK } from "@constant"
 import { useChakraToast } from "@hooks"
 import { Lootbox, MintStatus } from "@sdk"
-import { setBearerToken } from "@utils"
+import { setBearerToken, shortenAddress } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 export interface DetailsBox extends Lootbox {
@@ -105,8 +105,8 @@ export const useDetailBox = id => {
     if (details?.publicAddress.toUpperCase() !== account?.toUpperCase()) {
       toast({
         status: "warning",
-        title: `Owned by ${details?.publicAddress}`,
-        message: `Please switch to ${details?.publicAddress} to mint`,
+        title: `Owned by ${shortenAddress(details?.publicAddress ?? "")}`,
+        message: `Please switch to ${shortenAddress(details?.publicAddress ?? "")} to mint`,
       })
       return
     }

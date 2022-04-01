@@ -1,47 +1,46 @@
 import React, { Fragment } from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { Box, Button, chakra, Divider, Flex, HStack, Link, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Divider, Flex, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
-import { SipherLootBoxAddress } from "@constant"
+import QuantitySelector from "@components/UI/spaceship/inventory/details/QuantitySelector"
 import { padZero } from "@utils"
 
-import QuantitySelector from "./details/QuantitySelector"
-import { InventoryProps, useInventory } from "./useInventory"
+import useNFTs, { NFTItemProp } from "../nft/useNFTs"
 
-interface MintModalProps {
+interface BringModalProps {
   isLoading: boolean
   status: string
   handleMint: () => void
-  dataMinted: InventoryProps[]
-  dataMint: ReturnType<typeof useInventory>["inventoryDataCheck"]
+  dataMinted: NFTItemProp[]
+  dataMint: ReturnType<typeof useNFTs>["nftsDataCheck"]
   isOpen: boolean
   onClose: () => void
 }
 
-export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handleMint, isLoading }: MintModalProps) => {
+export const BringModal = ({
+  dataMinted,
+  dataMint,
+  isOpen,
+  onClose,
+  status,
+  handleMint,
+  isLoading,
+}: BringModalProps) => {
   const router = useRouter()
 
   return (
     <ChakraModal
       scrollBehavior="inside"
       isCentered
-      title={
-        status === "MINT"
-          ? "CONFIRMATION"
-          : status === "SUCCESS"
-          ? "MINT SUCCESSFUL!"
-          : status === "PENDING"
-          ? "REJECT MINTING NFT !"
-          : "MINT ERROR"
-      }
+      title={status === "CONFIRM" ? "CONFIRMATION" : status === "SUCCESS" ? "BURN SUCCESSFUL!" : "BURN ERROR"}
       isOpen={isOpen}
       onClose={onClose}
-      size="xl"
+      size="2xl"
     >
       <Box px={6}>
-        {status === "MINT" ? (
+        {status === "CONFIRM" ? (
           <Fragment>
             <chakra.table w="full">
               <chakra.thead>
@@ -59,22 +58,12 @@ export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handl
                   <chakra.tr borderTop="1px" borderColor="whiteAlpha.100" key={item.id}>
                     <chakra.td py={2}>
                       <Flex align="center">
-                        <Image
-                          src={item.propertyLootbox.image ?? ""}
-                          alt={item.propertyLootbox.name}
-                          width={50}
-                          height={30}
-                        />
-                        <Text ml={4}>{item.propertyLootbox.name}</Text>
+                        <Image src={item.imageUrl ?? ""} alt={item.name} width={50} height={30} />
+                        <Text ml={4}>{item.name}</Text>
                       </Flex>
                     </chakra.td>
-                    <chakra.td w="40%" py={2}>
-                      <QuantitySelector
-                        onChange={item.onChange}
-                        minValue={1}
-                        maxValue={item.mintable}
-                        value={item.slot}
-                      />
+                    <chakra.td py={2} w="40%">
+                      <QuantitySelector onChange={item.onChange} minValue={1} maxValue={item.value} value={item.slot} />
                     </chakra.td>
                   </chakra.tr>
                 ))}
@@ -84,49 +73,50 @@ export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handl
             <Flex mb={6} align="center" justify="flex-end">
               <Text fontWeight={600}>TOTAL QUANTITY: {dataMint.reduce((acc, val) => acc + val.slot, 0)}</Text>
             </Flex>
-            <Text mb={4} color="neutral.400">
-              Minting Lootbox(es) to NFT(s) will be processed on Polygon and require you to change Blockchain network.
-              For more information, please check{" "}
-              <Link textDecor="underline" isExternal color="cyan.600">
-                here.
-              </Link>
-            </Text>
-            <Text color="neutral.400">
-              After "Confirm", your items will be moved to the "Pending" section. It will require an on-chain
-              transaction to cancel pending items, otherwise, you have to wait 3 days for the pending order to be
-              automatically canceled.
-            </Text>
+            <Stack spacing={2}>
+              <Text color="neutral.400">
+                Step required to burn Sipher box for the corresponding offchain Lootbox to open and get the digital ship
+                parts for building a whole spaceship to be used in game:
+              </Text>
+              <Text color="neutral.400">
+                1. Pay the gas fees to execute the burning transaction (Low fees! We are using Polygon network)
+              </Text>
+              <Text color="neutral.400">2. Approve the transaction that official burn this NFT</Text>
+              <Text color="neutral.400">
+                3. You can check the offchain Lootbox{" "}
+                <chakra.span onClick={() => router.push("/spaceship?tab=inventory")} cursor="pointer" color="cyan.600">
+                  at the inventory tab under Spaceship page
+                </chakra.span>
+              </Text>
+            </Stack>
           </Fragment>
         ) : status === "SUCCESS" ? (
           <Fragment>
             <Text textAlign="center" color="neutral.400">
-              You have successfully minted to NFT(s).
+              You have successfully burn to Lootbox(s).
             </Text>
             {dataMinted.map(item => (
               <Text textAlign="center" color="white" fontWeight={600} key={item.id}>
-                {padZero(item.slot, 2)} {item.propertyLootbox.name}
+                {padZero(item.slot, 2)} {item.name}
               </Text>
             ))}
             <Text color="neutral.400" textAlign="center" mt={4}>
-              Now you can list your NFT(s) on{" "}
-              <Link href="https://opensea.io/assets" textDecor="underline" isExternal color="cyan.600">
-                Marketplace{" "}
-              </Link>
-              for trading.
+              Now you can list your Lootbox on{" "}
+              <chakra.span
+                onClick={() => router.push("/spaceship?tab=inventory")}
+                textDecor="underline"
+                color="cyan.600"
+              >
+                at the inventory tab under Spaceship page
+              </chakra.span>
             </Text>
           </Fragment>
-        ) : status === "PENDING" ? (
-          <Text color="neutral.400">
-            You have rejected minting NFT and this request will take 3 days to process. You can check it at the
-            "Pending" section and cancel request by clicking STOP button and it will require an on-chain transaction to
-            execute.
-          </Text>
         ) : (
           <Text color="neutral.400">Something went wrong. Please try again!</Text>
         )}
         <Divider pt={4} borderColor="whiteAlpha.100" mb={6} />
         <HStack justify="center">
-          {status === "MINT" ? (
+          {status === "CONFIRM" ? (
             <>
               <Button isLoading={isLoading} onClick={handleMint} fontSize="md" size="md" py={5}>
                 CONFIRM
@@ -147,33 +137,17 @@ export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handl
           ) : status === "SUCCESS" ? (
             <Fragment>
               <Button
-                onClick={() => router.push(`/portfolio/${SipherLootBoxAddress}`)}
+                onClick={() => router.push("/spaceship?tab=inventory")}
                 variant="secondary"
                 colorScheme="cyan"
                 fontSize="md"
                 size="md"
                 py={5}
               >
-                VIEW YOUR NFT
+                VIEW YOUR LOOTBOX
               </Button>
               <Button onClick={onClose} py={5} fontSize="md" size="md">
-                MINT ANOTHER NFT
-              </Button>
-            </Fragment>
-          ) : status === "PENDING" ? (
-            <Fragment>
-              <Button
-                variant="secondary"
-                colorScheme="cyan"
-                onClick={() => router.push({ query: { tab: "pending" } })}
-                fontSize="md"
-                size="md"
-                py={5}
-              >
-                VIEW PENDING LIST
-              </Button>
-              <Button onClick={onClose} py={5} fontSize="md" size="md">
-                MINT ANOTHER NFT
+                BRING ANOTHER LOOTBOX
               </Button>
             </Fragment>
           ) : (

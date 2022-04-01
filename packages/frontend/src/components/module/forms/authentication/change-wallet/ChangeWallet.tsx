@@ -11,7 +11,7 @@ import { useAuth } from "src/providers/auth"
 const ChangeWallet = () => {
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
   const { account, scCaller, reset } = useWalletContext()
-  const { ownedWallets } = useAuth()
+  const { ownedWallets, user } = useAuth()
   const toast = useChakraToast()
   const qc = useQueryClient()
 
@@ -54,13 +54,26 @@ const ChangeWallet = () => {
   }
 
   return (
-    <ChakraModal title={"CHANGE WALLET"} size="lg" isOpen={flowState === "changeWallet"} onClose={handleClose}>
+    <ChakraModal
+      title={"WALLET IS NOT CONNECTED"}
+      size="lg"
+      isOpen={flowState === "changeWallet"}
+      onClose={handleClose}
+    >
       <Box px={6}>
-        <Text mb={2}>We detect change in your wallet, please connect this wallet to your account.</Text>
-        <Text mb={4}>
-          New wallet address: <chakra.span color="cyan.600">{account}</chakra.span>
+        <Text mb={6} color="neutral.300">
+          This wallet is not connected with your Ather Account. It will request for a sign on wallet extension to
+          confirm linking your wallet address to your Ather account.
         </Text>
-        <Divider mb={4} />
+        <Box bg="neutral.600" rounded="md" p={2} px={3}>
+          <Text color="neutral.400" mb={2}>
+            Email: {user?.email}
+          </Text>
+          <Text color="neutral.400" w="full" isTruncated>
+            Wallet: {account}
+          </Text>
+        </Box>
+        <Divider my={6} />
         <Button
           py={6}
           fontWeight={600}

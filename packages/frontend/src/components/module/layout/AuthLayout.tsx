@@ -1,5 +1,6 @@
 import { FC } from "react"
-import { Box, Divider, Flex, Img, Stack, Text } from "@sipher.dev/sipher-ui"
+import Image from "next/image"
+import { Box, Flex, Img, Stack, Text } from "@sipher.dev/sipher-ui"
 
 const content = [
   {
@@ -30,8 +31,8 @@ const content = [
 
 export const AuthLayout: FC = ({ children }) => {
   return (
-    <Flex w="full" h="100vh">
-      <Box bg="neutral.700" py={16} px={8} w="30rem">
+    <Flex w="full" h="100vh" pos="relative">
+      <Box bg="neutral.700" py={16} px={8} w="30rem" zIndex={2}>
         <Flex align="center" justify="center" w="full" mb={16}>
           <Img src="/images/auth/SIPHER.svg" alt="Sipher" h="2rem" />
           <Box h="2.5rem" w="1px" bg="neutral.600" mx={8} />
@@ -39,27 +40,32 @@ export const AuthLayout: FC = ({ children }) => {
         </Flex>
         {children}
       </Box>
-      <Flex flex={1} py={16} px={8} justify="center">
-        <Box w="full" maxW="800px">
-          <Text fontSize={"2xl"} fontWeight={600}>
-            Get your Ather Account and start earning rewards
-          </Text>
-          <Divider my={6} />
-          <Stack spacing={4}>
-            {content.map(item => (
-              <Box key={item.title}>
-                <Flex align="center">
-                  <Flex justify="center" w="2rem">
+      <Image layout="fill" src="/images/auth/background.png" alt="background" />
+      <Flex flex={1} py={24} px={[8, 16, 24]} pos="relative" justify="center">
+        <Box pos="absolute" bottom={0} right={0} w="44rem" h="50rem">
+          <Image src="/images/auth/neko_figure.svg" alt="neko" layout="fill" />
+        </Box>
+        <Box w="full" maxW="960px">
+          <Box w="full" maxW="440px" zIndex={2}>
+            <Text fontSize={"3xl"} mb={6} fontWeight={600}>
+              {`Get your Ather Account & Start earning rewards`}
+            </Text>
+            <Stack spacing={4}>
+              {content.map(item => (
+                <Flex key={item.title} mb={1.5}>
+                  <Flex justify="center" w="2rem" color="rgba(255, 255, 255, 0.7)" pt={1}>
                     <Img src={item.iconPath} mr={4} h={item.h} />
                   </Flex>
-                  <Text fontSize={"lg"} fontWeight={600}>
-                    {item.title}
-                  </Text>
+                  <Box>
+                    <Text fontSize={"lg"} fontWeight={600}>
+                      {item.title}
+                    </Text>
+                    <Text color="rgba(255, 255, 255, 0.7)">{item.description}</Text>
+                  </Box>
                 </Flex>
-                <Text>{item.description}</Text>
-              </Box>
-            ))}
-          </Stack>
+              ))}
+            </Stack>
+          </Box>
         </Box>
       </Flex>
     </Flex>

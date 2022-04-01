@@ -1,10 +1,10 @@
 import React, { useEffect } from "react"
 import { BiChevronRight } from "react-icons/bi"
 import { useMutation, useQuery, useQueryClient } from "react-query"
-import { Avatar, Box, Button, Divider, Flex, FormControl, FormLabel, HStack, Image, Text } from "@sipher.dev/sipher-ui"
+import { Avatar, Box, Button, Divider, Flex, HStack, Image, Text } from "@sipher.dev/sipher-ui"
 
 import { getProfile, updateProfile } from "@api"
-import { ChakraModal, CustomInput, CustomTextarea, FormField } from "@components/shared"
+import { ChakraModal, StyledInput, StyledTextArea } from "@components/shared"
 import { useChakraToast, useFormCoreWithError } from "@hooks"
 import { useAuth } from "src/providers/auth"
 
@@ -66,41 +66,33 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
           </Box>
           <Box ml={8}>
             <Text mb={4}>Change your Profile picture</Text>
-            <Button
-              role="group"
-              size="md"
-              color="neutral.50"
-              border="none"
-              bg="neutral.600"
-              _hover={{ bg: "neutral.500" }}
-              onClick={onSetAvatar}
-              px={2}
-            >
-              <Image src="/images/nft/sipher5.png" h="1.3rem" />
-              <Text ml={2}>Choose NFT</Text>
+            <Button size="md" border="none" onClick={onSetAvatar} px={4} colorScheme="neutral" color="neutral.50">
+              Choose Avatar
             </Button>
           </Box>
         </Flex>
-        <FormControl mb={4}>
-          <FormLabel mb={1} fontSize="sm" color="neutral.400">
-            Email
-          </FormLabel>
-          <Text>{user?.email}</Text>
-        </FormControl>
-        <FormControl mb={4}>
-          <FormLabel mb={1} fontSize="sm" color="neutral.400">
-            Name
-          </FormLabel>
-          <FormField error={errors.name}>
-            <CustomInput maxLength={20} value={values.name} onChange={e => setValue("name", e.target.value)} />
-          </FormField>
-        </FormControl>
-        <FormControl>
-          <FormLabel mb={1} fontSize="sm" color="neutral.400">
-            Bio
-          </FormLabel>
-          <CustomTextarea maxLength={255} h="6rem" value={values.bio} onChange={e => setValue("bio", e.target.value)} />
-        </FormControl>
+        <HStack spacing={4} align="flex-start" mb={4}>
+          <Box flex={1}>
+            <StyledInput label="Email" value={user?.email} isReadOnly={true} flex={1} />
+          </Box>
+          <Box flex={1}>
+            <StyledInput
+              label="Name"
+              value={values.name}
+              onChange={e => setValue("name", e.target.value)}
+              error={errors.name}
+              flex={1}
+            />
+          </Box>
+        </HStack>
+        <StyledTextArea
+          label="Bio"
+          maxLength={255}
+          h="6rem"
+          value={values.bio}
+          resize="none"
+          onChange={e => setValue("bio", e.target.value)}
+        />
 
         <Divider mt={4} orientation="horizontal" />
         <Flex py={4} role="group" cursor="pointer" justify="space-between" align="center" onClick={onChangePassword}>

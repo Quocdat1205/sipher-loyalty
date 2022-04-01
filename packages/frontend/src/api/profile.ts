@@ -47,7 +47,7 @@ export const getProfile = async (token: string): Promise<{ user: ProfileOutput; 
   return data
 }
 
-interface Avatar {
+export interface Avatar {
   id: string
   imageUrl: string
   imageThumbnailUrl: string

@@ -130,7 +130,7 @@ export class LootBoxService {
       tokenId
     );
     if (!lootbox) {
-      if (propertyLootbox) {
+      if (!propertyLootbox) {
         propertyLootbox = await this.erc1155LootboxRepo.findOne({
           tokenId,
         });
