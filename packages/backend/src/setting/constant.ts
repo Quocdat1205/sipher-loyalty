@@ -83,7 +83,7 @@ export class SystemConfigProvider {
   }
 
   public get enableSwagger() {
-    return true; //! this.isTest && (!this.isProduction || this.isDebugging);
+    return !this.isTest && (!this.isProduction || this.isDebugging);
   }
 
   public async getRpcUrls() {
