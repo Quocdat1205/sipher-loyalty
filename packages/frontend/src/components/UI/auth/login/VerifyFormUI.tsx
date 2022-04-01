@@ -1,29 +1,36 @@
 import { FormEvent, useEffect, useState } from "react"
 import { useMutation } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Box, Button, chakra, Divider, FormControl, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
-import { AuthType, SignInAction } from "@store"
+import { Box, Button, chakra, Divider, FormControl, Heading, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
 
-import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
+import { CustomInput, Form, FormField, StyledInput } from "@components/shared"
 import { useChakraToast } from "@hooks"
 
-import { useSignInContext } from "./useSignIn"
+interface VerifyFormUIProps {
+  email: string
+  password: string
+}
 
-const VerifySignInForm = () => {
+const VerifyFormUI = ({ email, password }: VerifyFormUIProps) => {
   const toast = useChakraToast()
   const [code, setCode] = useState("")
 
-  const { email, flowState, setFlowState, wallet } = useSignInContext()
-
-  const { mutate, isLoading } = useMutation(() => AtherIdAuth.confirmSignUp(email, code), {
-    onSuccess: () => {
-      if (!wallet.isActive) setFlowState({ type: AuthType.SignIn, action: SignInAction.ConnectWallet })
-      else
+  const { mutate: mutateSignIn } = useMutation<unknown, unknown, { emailOrWallet: string; password?: string }>(
+    input => AtherIdAuth.signIn(input.emailOrWallet, input.password),
+    {
+      onError: (e: any) => {
         toast({
-          status: "success",
-          title: "Sign Up Successfully",
-          message: "You can now login to your account",
+          status: "error",
+          title: "Something went wrong!",
+          message: e.message || "Please try again later.",
         })
+      },
+    },
+  )
+
+  const { mutate: mutateConfirmSignUp, isLoading } = useMutation(() => AtherIdAuth.confirmSignUp(email, code), {
+    onSuccess: () => {
+      mutateSignIn({ emailOrWallet: email, password })
     },
     onError: (e: any) => {
       toast({
@@ -45,24 +52,20 @@ const VerifySignInForm = () => {
   })
 
   useEffect(() => {
-    if (flowState?.type === AuthType.SignIn && flowState.action === SignInAction.Verify) {
-      AtherIdAuth.resendSignUp(email)
-    }
-  }, [flowState])
+    AtherIdAuth.resendSignUp(email)
+  }, [])
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    mutate()
+    mutateConfirmSignUp()
   }
 
   return (
-    <ChakraModal
-      title={"VERIFY YOUR ACCOUNT"}
-      size="lg"
-      isOpen={flowState?.type === AuthType.SignIn && flowState.action === SignInAction.Verify}
-      hideCloseButton={true}
-    >
+    <Box>
       <Form onSubmit={handleSubmit}>
+        <Heading fontSize={"lg"} fontWeight={600} mb={4} color="white">
+          SIGN IN
+        </Heading>
         <Stack pos="relative" px={6} spacing={4} w="full">
           <Box>
             <Text color="red.500">Your account is not confirmed.</Text>
@@ -70,11 +73,7 @@ const VerifySignInForm = () => {
               Please enter passcode sent to <chakra.span fontWeight={600}>{email}</chakra.span>
             </Text>
           </Box>
-          <FormControl as="fieldset">
-            <FormField>
-              <CustomInput placeholder="Passcode" value={code} onChange={e => setCode(e.target.value)} />
-            </FormField>
-          </FormControl>
+          <StyledInput label="Passcode" value={code} onChange={e => setCode(e.target.value)} />
           <Text color="neutral.400" textAlign="center">
             Haven't received code?{" "}
             <chakra.span textDecor="underline" cursor="pointer" color="cyan.600" onClick={() => mutateResendCode()}>
@@ -88,8 +87,8 @@ const VerifySignInForm = () => {
           </Button>
         </Stack>
       </Form>
-    </ChakraModal>
+    </Box>
   )
 }
 
-export default VerifySignInForm
+export default VerifyFormUI

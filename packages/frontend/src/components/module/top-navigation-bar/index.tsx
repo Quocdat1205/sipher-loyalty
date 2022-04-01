@@ -29,12 +29,12 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
       pos={isSticky ? "sticky" : "relative"}
       zIndex="sticky"
     >
-      <Flex flex={1} pos="relative" overflow={"hidden"}>
+      <Flex pos="relative" overflow={"hidden"} flex={1}>
         {/* <GradientBox /> */}
         <Box p={2} pt={4} px={[4, 4, 8]} pos="relative">
           <Logo />
           <Box
-            w="200%"
+            w="100%"
             left={0}
             bottom={0}
             pos="absolute"
@@ -46,7 +46,7 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
       <Flex justify="center" align="center">
         <NavMenus menus={menus} />
       </Flex>
-      <Flex justify={"flex-end"} px={8} flex={1}>
+      <Flex justify="flex-end" flex={1} px={4} minW="10rem">
         <SignInButton />
       </Flex>
     </Flex>

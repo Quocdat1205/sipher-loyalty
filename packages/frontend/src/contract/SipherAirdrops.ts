@@ -30,7 +30,6 @@ export class SipherAirdrops {
   async getClaimableAmountAtTimestamp(totalAmount: string, proof: string[]) {
     const signer = this.provider.getSigner()
     const publicAddress = await signer.getAddress()
-    console.log(Math.floor(new Date().getTime() / 1000).toString())
 
     return weiToEther(
       await this.contract.getClaimableAmountAtTimestamp(

@@ -8,6 +8,7 @@ interface SocialAccountSignInProps extends BoxProps {
   onDiscordSignIn?: () => void
   onTwitterSignIn?: () => void
   connectingMethod?: string
+  displayLabel?: boolean
 }
 
 export const SocialAccountSignIn = ({
@@ -16,38 +17,49 @@ export const SocialAccountSignIn = ({
   onDiscordSignIn,
   onTwitterSignIn,
   connectingMethod,
+  displayLabel = false,
   ...rest
 }: SocialAccountSignInProps) => {
   return (
     <Box {...rest}>
-      <Text mb={2} color="neutral.400" fontSize="sm">
-        Social Account
-      </Text>
+      {displayLabel && (
+        <Text mb={2} color="neutral.400" fontSize="sm">
+          Social Account
+        </Text>
+      )}
       <HStack spacing={4}>
-        <WalletCard
-          colorScheme={"messenger"}
-          src="/images/icons/facebook.svg"
-          onClick={onFacebookSignIn}
-          isLoading={connectingMethod === "facebook"}
-        />
-        <WalletCard
-          colorScheme={"red"}
-          src="/images/icons/google.svg"
-          onClick={onGoogleSignIn}
-          isLoading={connectingMethod === "google"}
-        />
-        <WalletCard
-          colorScheme={"blue"}
-          src="/images/icons/discord.svg"
-          onClick={onDiscordSignIn}
-          isLoading={connectingMethod === "discord"}
-        />
-        <WalletCard
-          colorScheme={"twitter"}
-          src="/images/icons/twitter.svg"
-          onClick={onTwitterSignIn}
-          isLoading={connectingMethod === "twitter"}
-        />
+        {onFacebookSignIn && (
+          <WalletCard
+            colorScheme={"messenger"}
+            src="/images/icons/facebook.svg"
+            onClick={onFacebookSignIn}
+            isLoading={connectingMethod === "facebook"}
+          />
+        )}
+        {onGoogleSignIn && (
+          <WalletCard
+            colorScheme={"red"}
+            src="/images/icons/google.svg"
+            onClick={onGoogleSignIn}
+            isLoading={connectingMethod === "google"}
+          />
+        )}
+        {onDiscordSignIn && (
+          <WalletCard
+            colorScheme={"blue"}
+            src="/images/icons/discord.svg"
+            onClick={onDiscordSignIn}
+            isLoading={connectingMethod === "discord"}
+          />
+        )}
+        {onTwitterSignIn && (
+          <WalletCard
+            colorScheme={"twitter"}
+            src="/images/icons/twitter.svg"
+            onClick={onTwitterSignIn}
+            isLoading={connectingMethod === "twitter"}
+          />
+        )}
       </HStack>
     </Box>
   )
