@@ -1,8 +1,5 @@
-import { CognitoJwtVerifier } from "aws-jwt-verify";
-import axios from "axios";
 import { Observable } from "rxjs";
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
-import constant from "@setting/constant";
 
 import { AuthService } from "./auth.service";
 import { UserData } from "./auth.types";
