@@ -14,7 +14,6 @@ COPY /packages/backend .
 COPY tsconfig.json /.
 RUN yarn install
 RUN yarn build
-RUN yarn migrate:config
 
 # DIST
 FROM mhart/alpine-node:14 AS app
