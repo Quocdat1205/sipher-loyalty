@@ -21,7 +21,7 @@ WORKDIR /app
 COPY --from=packages /packages/node_modules ./node_modules
 COPY --from=src /packages/backend/dist ./dist
 COPY --from=src /packages/backend/src/data ./src/data
-COPY --from=src /packages/backend/package.json ./packages.json
+COPY --from=src /packages/backend/package.json ./package.json
 ENTRYPOINT ["node"]
 
 FROM app as backend-loyalty
