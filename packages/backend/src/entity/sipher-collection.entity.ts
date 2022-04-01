@@ -60,21 +60,21 @@ export class SipherCollection {
     nullable: true,
   })
   @ApiProperty({ type: Number })
-  floorPrice?: number;
+  floorPrice?: string;
 
   @Column({
     type: "decimal",
     nullable: true,
   })
   @ApiProperty({ type: Number })
-  totalVolume?: number;
+  totalVolume?: string;
 
   @Column({
     type: "decimal",
     nullable: true,
   })
   @ApiProperty({ type: Number })
-  marketCap?: number;
+  marketCap?: string;
 
   @Column({
     type: "integer",

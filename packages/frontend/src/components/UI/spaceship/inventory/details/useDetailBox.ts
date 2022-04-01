@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
@@ -6,7 +6,7 @@ import { useWalletContext } from "@web3"
 
 import { POLYGON_NETWORK } from "@constant"
 import { useChakraToast } from "@hooks"
-import { Lootbox } from "@sdk"
+import { Lootbox, MintStatus } from "@sdk"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
@@ -26,6 +26,7 @@ export const useDetailBox = id => {
   const [status, setStatus] = useState("")
   const [mintedData, setMintedData] = useState<DetailsBox>()
   const [isFetch, setIsFetch] = useState(false)
+  const idError = useRef<number | null>()
 
   const { data: details, isFetched } = useQuery(
     ["detailsLootBox", account, id],
@@ -35,6 +36,23 @@ export const useDetailBox = id => {
       onSuccess: data => {
         setIsFetch(true)
         setSlot(data.mintable)
+      },
+    },
+  )
+
+  const { mutate: mutateStatus } = useMutation<unknown, unknown, { id: number; status: MintStatus }>(
+    ({ id, status }) =>
+      client.api.mintControllerUpdateStatusPendingLootbox(
+        {
+          publicAddress: account!,
+          id: id,
+          status: status,
+        },
+        setBearerToken(bearerToken),
+      ),
+    {
+      onSettled: () => {
+        idError.current = null
       },
     },
   )
@@ -54,6 +72,7 @@ export const useDetailBox = id => {
             setBearerToken(bearerToken),
           )
           .then(res => res.data)
+        idError.current = data.id
         await scCaller.current!.SipherSpaceshipLootBox.mint(data)
       }
     },
@@ -62,12 +81,6 @@ export const useDetailBox = id => {
         setMintedData({ ...details!, slot: slot })
       },
       onSuccess: () => {
-        toast({
-          status: "success",
-          title: "Minted successfully!",
-          message: "Please review your wallet notifications.",
-          duration: 5000,
-        })
         setStatus("SUCCESS")
       },
       onSettled: () => {
@@ -75,17 +88,14 @@ export const useDetailBox = id => {
         query.invalidateQueries(["detailsLootBox", account, id])
       },
       onError: (err: any) => {
+        toast({ status: "error", title: "Error", message: err?.message })
+
         if (err.code === 4001) {
           setStatus("PENDING")
-          toast({
-            status: "error",
-            title: "Transaction rejected!",
-            message: "Please check the pending tab if you want to mint again",
-            duration: 5000,
-          })
+          mutateStatus({ id: idError!.current!, status: "Rejected" as MintStatus })
         } else {
           setStatus("ERROR")
-          toast({ status: "error", title: "Error", message: err?.message })
+          mutateStatus({ id: idError!.current!, status: "Error" as MintStatus })
         }
       },
     },

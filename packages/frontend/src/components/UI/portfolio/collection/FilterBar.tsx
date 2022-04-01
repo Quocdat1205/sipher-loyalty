@@ -5,11 +5,10 @@ import FilterSelector from "../FilterSelector"
 import { categoriesSort } from "../usePortfolio"
 
 interface FilterBarProps {
-  filter: { categories: string }
-  setFilter: (v: any) => void
+  setFilter: (filter: string) => void
 }
 
-const FilterBar = ({ filter, setFilter }: FilterBarProps) => {
+const FilterBar = ({ setFilter }: FilterBarProps) => {
   return (
     <Box pt={[4, 0]}>
       <HStack display={["none", "flex"]} w="full" align="center" justify="flex-end">
@@ -18,11 +17,7 @@ const FilterBar = ({ filter, setFilter }: FilterBarProps) => {
           text="Collection"
           data={collectionSort}
         /> */}
-        <FilterSelector
-          onSelectChange={v => setFilter({ ...filter, categories: v })}
-          text="Categories"
-          data={categoriesSort}
-        />
+        <FilterSelector onSelectChange={v => setFilter(v)} text="Categories" data={categoriesSort} />
       </HStack>
       {/* <Stack spacing={[2, 4]} display={["flex", "none"]}>
         <HStack w="full" align="center" justify={["flex-start", "flex-end"]}>

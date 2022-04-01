@@ -8,10 +8,21 @@ interface BannerProps {
   srcBg?: string
 }
 
-export const Banner = ({ srcBg = "/images/portfolio/banner.png", title, description }: BannerProps) => {
+export const Banner = ({ srcBg, title, description }: BannerProps) => {
   return (
     <Flex flexDir="column" w="full" justify="center" position="relative">
-      <Image layout="responsive" quality={100} width={2880} height={424} src={srcBg} alt={title} />
+      <Image
+        blurDataURL="https://via.placeholder.com/728x90.png?text=Visit+WhoIsHostingThis.com+Buyers+Guide%20C/O%20https://placeholder.com/"
+        layout="responsive"
+        quality={100}
+        width={2880}
+        height={424}
+        src={
+          srcBg ||
+          "https://via.placeholder.com/728x90.png?text=Visit+WhoIsHostingThis.com+Buyers+Guide%20C/O%20https://placeholder.com/"
+        }
+        alt={title}
+      />
       <Box
         px={[4, 4, 4, 0, 0]}
         pos="absolute"

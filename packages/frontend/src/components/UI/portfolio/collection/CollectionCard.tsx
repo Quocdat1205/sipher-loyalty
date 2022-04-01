@@ -9,7 +9,7 @@ import { currency } from "@utils"
 import usePortfolio from "../usePortfolio"
 
 interface CardProps extends BoxProps {
-  data: ReturnType<typeof usePortfolio>["collectionData"]
+  data: ReturnType<typeof usePortfolio>["collectionData"][number]
   isFetched: boolean
 }
 
@@ -27,7 +27,8 @@ const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
     >
       <Skeleton pos="relative" display="flex" isLoaded={isFetched}>
         <Image
-          src={data.bannerImage || ""}
+          blurDataURL="https://via.placeholder.com/150"
+          src={data.bannerImage ?? "https://via.placeholder.com/150"}
           alt={data.name}
           loading="lazy"
           height={200}
@@ -62,7 +63,7 @@ const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
               </Text>
               <Flex align="center">
                 <EthereumIcon />
-                <Text color="neutral.50">{currency(parseFloat(data.totalVolume) || 0)}</Text>
+                <Text color="neutral.50">{currency(parseFloat(data.totalVolume ?? "0"))}</Text>
               </Flex>
             </Skeleton>
             <Skeleton isLoaded={isFetched} ml={8}>
@@ -71,7 +72,7 @@ const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
               </Text>
               <Flex align="center">
                 <EthereumIcon />
-                <Text color="neutral.50">{currency(data.floorPrice ? data.floorPrice : 0)} </Text>
+                <Text color="neutral.50">{currency(data.floorPrice ?? 0)} </Text>
               </Flex>
             </Skeleton>
           </Flex>
