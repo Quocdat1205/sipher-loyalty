@@ -61,6 +61,6 @@ sipher-chart:
     ELASTICSEARCH_ENDPOINT: "https://search-marketplace-prod-n7642lrgd7575r6mz62jiexa44.ap-southeast-1.es.amazonaws.com"
     ELASTICSEARCH_INDEX: "marketplace"
     PRIVATE_KEY_LOYALTY: ssm:/atherlabs/dashboard/prod/PRIVATE_KEY_LOYALTY
-    ATHER_ID_URL: "backend-ather-id-api.ather-id:3001"
-    ATHER_SOCIAL_URL: "ather-social-backend-api.ather-social:3001"
-    MARKETPLACE_SDK_URL: "marketplace-backend-api.marketplace:3001"
+    ATHER_ID_URL: "http://backend-ather-id-api.ather-id:3001"
+    ATHER_SOCIAL_URL: "http://ather-social-backend-api.ather-social:3001"
+    MARKETPLACE_SDK_URL: "http://marketplace-backend-api.marketplace:3001"

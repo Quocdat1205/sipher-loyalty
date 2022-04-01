@@ -16,34 +16,36 @@ export const SpaceshipContainer = () => {
   const router = useRouter()
 
   return (
-    <Flex
-      flexDir="column"
-      w="full"
-      // backgroundImage="url(/images/spaceship/bg-galaxy.png), linear-gradient(180deg, rgba(41, 42, 64, 0.6) 5%, rgba(0, 0, 0, 0.215) 59.01%, rgba(0, 0, 0, 0.5) 100%)"
-      // bgRepeat="no-repeat"
-      // bgPos={["65% 100%", "45% 100%", "35% 100%", "20% 100%", "0% 100%"]}
-      // bgSize="cover"
-    >
+    <Flex flexDir="column" w="full">
       <Flex
         px={[4, 4, 4, 0, 0]}
+        bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 35%)"
         flexDir="column"
         align="center"
-        bgGradient="linear(150.21deg, #8A31E2 -125.9%, #0F041A 45%)"
         w="full"
       >
+        <Box pt={12} w="full" maxW="1200px">
+          <TabPage tabs={spaceshipTabs} />
+        </Box>
         <Box maxW="1200px" w="full">
-          <Box pt={12} w="full" maxW="1200px">
-            <TabPage tabs={spaceshipTabs} />
-          </Box>
           <Flex py={28} justify="space-between" align="center">
             <Box flex={2}>
-              <Text fontSize="lg" color="whiteAlpha.700" fontWeight={600} mb={2}>
-                Week {activeData.week}
-              </Text>
+              <Flex>
+                <Text
+                  borderBottom="4px"
+                  borderColor="accent.500"
+                  fontSize="lg"
+                  color="whiteAlpha.900"
+                  fontWeight={600}
+                  mb={2}
+                >
+                  WEEK {activeData.week}
+                </Text>
+              </Flex>
               <Heading fontWeight={600} mb={4} fontSize="4xl" textTransform={"uppercase"}>
                 {activeData.title}
               </Heading>
-              <Text fontWeight={600} color="neutral.100" mb={4} fontSize="lg">
+              <Text color="neutral.100" mb={4} fontSize="lg">
                 {activeData.mainDescription}
               </Text>
               <Text color="neutral.100" mb={16} fontSize="lg">
@@ -66,10 +68,10 @@ export const SpaceshipContainer = () => {
           left={0}
           w="full"
           h="full"
-          bgGradient="linear(150.21deg, #8A31E2 -125.9%, #0F041A 45%)"
+          bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 35%)"
           transform="matrix(1, 0, 0, -1, 0, 0)"
         />
-        <Box maxW="1200px" w="full">
+        <Box zIndex={2} maxW="1200px" w="full">
           <Timeline mappedData={mappedData} />
           <TutorialSpaceship />
         </Box>
