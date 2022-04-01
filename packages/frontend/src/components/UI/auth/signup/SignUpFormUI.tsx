@@ -2,7 +2,7 @@ import { FieldValues, useForm } from "react-hook-form"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
-import AtherIdAuth from "@sipher.dev/ather-id"
+import AtherIdAuth, { signInWithSocial, SocialProvider } from "@sipher.dev/ather-id"
 import { Box, Button, Flex, Heading, Link, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { Form, SocialAccountSignIn, StyledInput } from "@components/shared"
@@ -87,7 +87,10 @@ const SignUpFormUI = ({ setStep, onChangeEmail, onChangePassword }: SignUpFormUI
           </Text>
           <Box flex={1} h="1px" bg="neutral.500" />
         </Flex>
-        <SocialAccountSignIn onGoogleSignIn={() => {}} onDiscordSignIn={() => {}} />
+        <SocialAccountSignIn
+          onGoogleSignIn={() => signInWithSocial(SocialProvider.Google)}
+          onDiscordSignIn={() => signInWithSocial(SocialProvider.Discord)}
+        />
         <Text color="neutral.400" textAlign="center" mt={6}>
           Already have an account?{" "}
           <Link href="/signup" fontWeight={600} color="cyan.600">

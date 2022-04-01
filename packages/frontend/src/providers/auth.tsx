@@ -1,6 +1,5 @@
 import { createContext, FC, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { useQuery } from "react-query"
-import { useRouter } from "next/router"
 import AtherIdAuth, {
   AtherIdEnviromment,
   CognitoUser,
@@ -24,6 +23,7 @@ const useAuthState = () => {
   const userRef = useRef<CognitoUser>()
   const [cognitoUser, _setUser] = useState<CognitoUser>()
   const authenticated = useMemo(() => !!cognitoUser, [cognitoUser])
+
   const sessionRef = useRef<CognitoUserSession>()
   const [session, _setSession] = useState<CognitoUserSession>()
   const sessionRefreshRef = useRef<NodeJS.Timeout>()
@@ -81,6 +81,7 @@ const useAuthState = () => {
     "owned-wallets",
     () => AtherIdAuth.ownedWallets(),
     {
+      initialData: [],
       enabled: authenticated,
     },
   )
@@ -89,6 +90,7 @@ const useAuthState = () => {
     const client = getClient()
     client.instance.interceptors.request.use(async config => {
       const session = await getSession()
+      // console.log('session', session, session?.getIdToken()?.getJwtToken());
       const authorization = `Bearer ${session?.getIdToken()?.getJwtToken()}`
       config.headers = {
         ...config.headers,
@@ -109,6 +111,7 @@ const useAuthState = () => {
           break
         case "signIn_failure":
         case "cognitoHostedUI_failure":
+          console.log("Sign in failure", data)
           break
       }
     })
@@ -138,7 +141,7 @@ const useAuthState = () => {
     signOut,
     setUser,
     userProfile,
-    ownedWallets: ownedWallets ? ownedWallets!.map(w => w.address) : [],
+    ownedWallets: ownedWallets!.map(w => w.address),
     bearerToken,
     refetchOwnedWallets,
   }
@@ -150,26 +153,6 @@ const { Provider } = authContext
 
 export const AuthProvider: FC = ({ children }) => {
   const auth = useAuthState()
-
-  const router = useRouter()
-
-  const { authenticated } = auth
-
-  useEffect(() => {
-    const isAuthRoute = ["/signin", "/signup", "/forgot-password"].includes(router.pathname)
-
-    // move user inside after authenticated
-    if (authenticated && ["/signin", "/forgot-password"].includes(router.pathname)) {
-      const next = decodeURIComponent((router.query["next"] as string) || "/")
-      const [pathname, search] = next.split("?")
-      router.push({ pathname, search })
-    }
-
-    if (!authenticated && !isAuthRoute) {
-      const next = encodeURIComponent(router.route)
-      router.push(`${"/signin"}?next=${next}`)
-    }
-  }, [authenticated, router.pathname])
 
   return <Provider value={auth}>{children}</Provider>
 }

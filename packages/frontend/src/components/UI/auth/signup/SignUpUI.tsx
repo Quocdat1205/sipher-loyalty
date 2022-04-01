@@ -25,7 +25,9 @@ const SignUpUI = () => {
       )}
       {step === SignUpStep.Verify && <VerifyForm email={email} password={password} setStep={setStep} />}
       {step === SignUpStep.ConnectWallet && <ConnectWalletUI setStep={setStep} setCurrentAddress={setCurrentAddress} />}
-      {step === SignUpStep.WalletInUse && <WalletInUseUI address={currentAddress} />}
+      {step === SignUpStep.WalletInUse && (
+        <WalletInUseUI address={currentAddress} setCurrentAddress={setCurrentAddress} />
+      )}
     </Fragment>
   )
 }

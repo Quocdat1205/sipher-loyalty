@@ -135,11 +135,13 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword }: LoginFormUIPr
             label="Email"
             autoComplete="off"
             {...register("email", { onChange: e => onChangeEmail(e.target.value) })}
+            error={errors?.email?.message}
           />
           <StyledInput
             label="Password"
             type="password"
             {...register("password", { onChange: e => onChangePassword(e.target.value) })}
+            error={errors?.password?.message}
           />
 
           <Link fontWeight={600} color="cyan.600" href="/forgot-password">
