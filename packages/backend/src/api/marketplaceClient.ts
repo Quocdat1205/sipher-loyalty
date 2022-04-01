@@ -6,7 +6,7 @@ const marketplaceClient = new Api({
   format: "json",
   // baseURL: "https://dev-api-marketplace.sipher.gg",
   baseURL: constant.isProduction
-    ? "https://api-marketplace.sipher.xyz"
+    ? "https://dev-api-marketplace.sipher.gg"
     : "marketplace-backend-api.marketplace:3001",
 });
 
