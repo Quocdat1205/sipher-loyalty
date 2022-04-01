@@ -36,8 +36,10 @@ module "tf_next" {
     aws.global_region = aws.global_region
   }
 
-  cloudfront_aliases             = var.cloudfront_aliases
-  cloudfront_acm_certificate_arn = var.cloudfront_acm_certificate_arn
+  cloudfront_aliases                    = var.cloudfront_aliases
+  cloudfront_acm_certificate_arn        = var.cloudfront_acm_certificate_arn
+  cloudfront_price_class                = "PriceClass_All"
+  cloudfront_minimum_protocol_version   = "TLSv1.2_2021"
 }
 
 
