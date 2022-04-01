@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
-import { ETHEREUM_NETWORK, NftContracts } from "@constant"
+import { ETHEREUM_NETWORK, NftContracts, POLYGON_NETWORK } from "@constant"
 import { useChakraToast } from "@hooks"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
@@ -17,6 +17,9 @@ const useDetail = () => {
   const { collectionId, id } = router.query
   const toast = useChakraToast()
   const [addressTo, setAddressTo] = useState("")
+  const [modal, setModal] = useState("")
+  const [slot, setSlot] = useState(0)
+  const [isFetch, setIsFetch] = useState(false)
 
   const {
     data: tokenDetails,
@@ -30,8 +33,12 @@ const useDetail = () => {
         .collectionControllerGetItemById(wallet.account!, id as string, setBearerToken(bearerToken))
         .then(res => res.data),
     {
-      enabled: router.isReady && !!bearerToken,
+      enabled: !isFetch && router.isReady && !!bearerToken,
       retry: false,
+      onSuccess: data => {
+        setIsFetch(true)
+        setSlot(data.value)
+      },
     },
   )
 
@@ -40,15 +47,20 @@ const useDetail = () => {
   const isOwner = wallet.account === tokenDetails?.owner
 
   const revalidate = () => {
+    setIsFetch(false)
     qc.invalidateQueries(["detailNFT", wallet.account, id])
   }
 
   const { mutate: mutateTransfer, isLoading: isLoadingTranfer } = useMutation(
     async () => {
       if (wallet.chainId !== ETHEREUM_NETWORK) {
-        wallet.switchNetwork(ETHEREUM_NETWORK)
+        await wallet.switchNetwork(ETHEREUM_NETWORK)
       } else {
-        wallet.scCaller.current!.DynamicERC721.transfer(tokenDetails!.collectionId, addressTo, tokenDetails!.tokenId)
+        await wallet.scCaller.current!.DynamicERC721.transfer(
+          tokenDetails!.collectionId,
+          addressTo,
+          tokenDetails!.tokenId,
+        )
       }
     },
     {
@@ -64,32 +76,49 @@ const useDetail = () => {
     },
   )
 
-  // const { mutate: mutameBurn, isLoading: isLoadingBurn } = useMutation(
-  //   async () => {
-  //     if (wallet.chainId !== ETHEREUM_NETWORK) {
-  //       wallet.switchNetwork(ETHEREUM_NETWORK)
-  //     } else {
-  //       wallet.scCaller.current!.SipherSpaceshipLootBox.burn(tokenDetails!., tokenDetails!.tokenId)
-  //     }
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       toast({
-  //         status: "success",
-  //         title: "Transaction pending",
-  //         message: "Please review your wallet notifications.",
-  //         duration: 10000,
-  //       })
-  //       revalidate()
-  //     },
-  //   },
-  // )
+  const { mutate: mutameBurn, isLoading: isLoadingBurn } = useMutation(
+    async () => {
+      if (wallet.chainId !== POLYGON_NETWORK) {
+        await wallet.switchNetwork(POLYGON_NETWORK)
+      } else {
+        await wallet.scCaller.current!.SipherSpaceshipLootBox.burn({
+          batchID: parseInt(tokenDetails!.tokenId),
+          amount: slot,
+        })
+      }
+    },
+    {
+      onSuccess: () => {
+        toast({
+          status: "success",
+          title: "Transaction pending",
+          message: "Please review your wallet notifications.",
+          duration: 10000,
+        })
+        revalidate()
+      },
+    },
+  )
+
+  const handleClick = () => {
+    setModal("BRING")
+  }
+  const handleMint = () => {
+    mutameBurn()
+  }
 
   const handleLinkOpenSea = () => {
     window.open(`https://opensea.io/assets/${tokenDetails?.collectionId}/${tokenDetails?.tokenId}`, "_blank")
   }
 
   return {
+    slot,
+    setSlot,
+    modal,
+    setModal,
+    isLoadingBurn,
+    handleMint,
+    handleClick,
     handleLinkOpenSea,
     isLoadingTranfer,
     addressTo,

@@ -30,53 +30,50 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
       pos="relative"
     >
       {!isDisabled && (
-        <Box
+        <Flex
+          justify="space-between"
+          align="center"
           _groupHover={{ opacity: 1 }}
+          pointerEvents={!isDisabled ? "unset" : "none"}
           transition=".35s opacity"
           pos="absolute"
-          left={3}
+          right={0}
+          left={0}
+          px={4}
           top={3}
           zIndex={1}
           opacity={isChecked ? 1 : 0}
         >
           <CustomCheckbox onChange={e => onSelect(!e.target.checked)} isChecked={isChecked} />
-        </Box>
-      )}
-
-      <Button
-        transition=".35s opacity"
-        pointerEvents={!isDisabled ? "unset" : "none"}
-        onClick={e => {
-          e.stopPropagation()
-          !isDisabled && onView()
-        }}
-        _groupHover={{ opacity: 1 }}
-        size="sm"
-        pl={1.5}
-        pr={1}
-        rounded="full"
-        bg="white"
-        pos="absolute"
-        right={3}
-        top={3}
-        zIndex={1}
-        opacity={0}
-      >
-        <Flex align="center">
-          <Text fontSize="sm">{"View"}</Text>
-          <Box>
-            <BiChevronRight size="1.2rem" />
-          </Box>
+          <Button
+            transition=".35s opacity"
+            onClick={e => {
+              e.stopPropagation()
+              !isDisabled && onView()
+            }}
+            _groupHover={{ opacity: 1 }}
+            size="sm"
+            rounded="full"
+            bg="white"
+          >
+            <Flex align="center">
+              <Text fontSize="sm">{"View"}</Text>
+              <Box>
+                <BiChevronRight size="1.2rem" />
+              </Box>
+            </Flex>
+          </Button>
         </Flex>
-      </Button>
+      )}
       <Skeleton bg="black" pos="relative" isLoaded={imageLoad && isFetched}>
         <Image
+          blurDataURL="https://via.placeholder.com/150"
           quality={100}
           width={500}
           height={400}
           objectFit="contain"
-          src={propertyLootbox.image}
-          alt={propertyLootbox.name}
+          src={propertyLootbox?.image ?? "https://via.placeholder.com/150"}
+          alt={propertyLootbox?.name}
           loading="lazy"
           onLoad={() => setImageLoad(true)}
         />
@@ -89,11 +86,11 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
       </Skeleton>
       <Stack spacing={2} px={4} pt={2} pb={4}>
         <Skeleton isLoaded={isFetched}>
-          <Text fontWeight={600}>{propertyLootbox.name}</Text>
+          <Text fontWeight={600}>{propertyLootbox?.name}</Text>
         </Skeleton>
         <Skeleton isLoaded={isFetched}>
-          <Text color="neutral.400" title={propertyLootbox.description}>
-            {propertyLootbox.description.slice(0, 45)}...
+          <Text color="neutral.400" title={propertyLootbox?.description}>
+            {propertyLootbox?.description.slice(0, 45)}...
           </Text>
         </Skeleton>
       </Stack>

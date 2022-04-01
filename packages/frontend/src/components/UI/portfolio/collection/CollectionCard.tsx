@@ -74,7 +74,7 @@ const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
               </Text>
               <Flex align="center">
                 <EthereumIcon />
-                <Text color="neutral.50">{currency(parseFloat(data.floorPrice) ?? "0")} </Text>
+                <Text color="neutral.50">{currency(parseFloat(data.floorPrice ?? "0"))} </Text>
               </Flex>
             </Skeleton>
           </Flex>

@@ -3,6 +3,7 @@ import { MdInfo } from "react-icons/md"
 import { Box, Flex, HStack, Link, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ClipboardCopy, CustomPopover } from "@components/shared"
+import { capitalize } from "@utils"
 
 import HeartAndView from "./HeartAndView"
 import InfoNFT from "./InfoNFT"
@@ -19,7 +20,7 @@ const HeaderDetails = ({ tokenDetails, isFetched }: HeaderDetailsProps) => {
       <Flex pr={2} w="full" align="center" justify={"space-between"} mb={2}>
         <Skeleton isLoaded={isFetched}>
           <Text fontWeight={600} letterSpacing="1px" fontSize={"4xl"}>
-            {tokenDetails?.name}
+            {capitalize(tokenDetails?.name.toLowerCase() ?? "")}
           </Text>
         </Skeleton>
         <Skeleton display={["none", "block"]} isLoaded={isFetched}>

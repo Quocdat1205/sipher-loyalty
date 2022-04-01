@@ -7,7 +7,7 @@ import { useWalletContext } from "@web3"
 import { POLYGON_NETWORK } from "@constant"
 import { useChakraToast } from "@hooks"
 import { Lootbox, MintStatus } from "@sdk"
-import { setBearerToken } from "@utils"
+import { setBearerToken, shortenAddress } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 export interface InventoryProps extends Lootbox {
@@ -48,8 +48,8 @@ export const useInventory = () => {
           if (item.publicAddress.toUpperCase() !== account?.toUpperCase()) {
             toast({
               status: "warning",
-              title: `Owned by ${item.publicAddress}`,
-              message: `Please switch to ${item.publicAddress} to mint`,
+              title: `Owned by ${shortenAddress(item.publicAddress)}`,
+              message: `Please switch to ${shortenAddress(item.publicAddress)} to mint`,
             })
             return
           }
