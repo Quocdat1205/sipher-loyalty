@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const baseURL = "https://api-ather-social.sipher.gg/api"
+const baseURL = process.env.NEXT_PUBLIC_ATHER_SOCIAL_URL ?? "https://api-ather-social.sipher.gg/api"
 
 export interface ProfileInput {
   name: string
