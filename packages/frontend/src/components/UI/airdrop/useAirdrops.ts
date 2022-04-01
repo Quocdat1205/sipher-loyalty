@@ -89,7 +89,7 @@ export const useAirdrops = () => {
     ? [
         ...airdropsData!.nft?.map(item => ({
           ...item,
-          buttonText: "Claim",
+          buttonText: "Coming soon",
           isClaiming: claimId === item.id,
           isDisabled: true,
           onView: () => {
@@ -116,7 +116,7 @@ export const useAirdrops = () => {
           ...item,
           isClaiming: claimId === item.id,
           isDisabled: true,
-          buttonText: "Redeem",
+          buttonText: "Coming soon",
           onView: () => {
             router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
           },
@@ -126,7 +126,7 @@ export const useAirdrops = () => {
         })),
         ...airdropsData!.other?.map(item => ({
           ...item,
-          buttonText: "Redeem",
+          buttonText: "Coming soon",
           isClaiming: claimId === item.id,
           isDisabled: true,
           onView: () => {
