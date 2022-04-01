@@ -45,6 +45,14 @@ export const useInventory = () => {
         ...item,
         isDisabled: item.publicAddress.toUpperCase() !== account?.toUpperCase(),
         onSelect: (isChecked = false) => {
+          if (item.publicAddress.toUpperCase() !== account?.toUpperCase()) {
+            toast({
+              status: "warning",
+              title: `Owned by ${item.publicAddress}`,
+              message: `Please switch to ${item.publicAddress} to mint`,
+            })
+            return
+          }
           const oldState = data
           oldState.find(i => i.id === item.id)!.isChecked = isChecked
           setData([...oldState])
