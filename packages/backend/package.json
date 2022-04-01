@@ -21,7 +21,6 @@
     "dev:tracker:sculpture": "ts-node -r tsconfig-paths/register src/scripts/sculpture-tracker.ts",
     "start:tracker:lootbox": "node dist/scripts/lootbox-tracker.js",
     "start:tracker:sculpture": "node dist/scripts/sculpture-tracker.js",
-    "dev:distribute:sculpture": "ts-node -r tsconfig-paths/register src/scripts/distribute-sculpture.ts",
     "migrate:config": "(rm ormconfig.json || :) && ts-node -r tsconfig-paths/register src/scripts/write-type-orm-config.ts",
     "migrate:generate": "ts-node -r tsconfig-paths/register -P ./tsconfig.json ../../node_modules/typeorm/cli.js migration:generate -n",
     "migrate:up": "ts-node -r tsconfig-paths/register -P ./tsconfig.json ../../node_modules/typeorm/cli.js migration:run",

@@ -35,7 +35,9 @@ export class AtherGuard implements CanActivate {
   }
 
   private async loadConfig() {
-    const { data } = await axios.get(`${constant.ATHER_ID_URL}/config/client`);
+    const { data } = await axios.get(
+      `${constant.ATHER_ID_URL}/api/config/client`
+    );
     this.configAtherID = data;
     this.verifier = CognitoJwtVerifier.create({
       userPoolId: this.configAtherID.userPoolId,
@@ -55,7 +57,7 @@ export class AtherGuard implements CanActivate {
         const dataAWSUser = await this.verifier.verify(token);
         const roles = dataAWSUser["cognito:groups"];
         const { data } = await axios.get(
-          `${constant.ATHER_ID_URL}/wallets/owned`,
+          `${constant.ATHER_ID_URL}/api/wallets/owned`,
           {
             headers: {
               Authorization: `Bearer ${req.headers.authorization}`,

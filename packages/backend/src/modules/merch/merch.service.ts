@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { AirdropType, Item, Merchandise, SculptureTransaction } from "@entity";
+import { AirdropType, Item, Merchandise } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 

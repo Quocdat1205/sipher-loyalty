@@ -315,14 +315,17 @@ export class CollectionService {
     const addressQuery = addresses.join(",");
     try {
       const response = await lastValueFrom(
-        this.httpService.get(`${constant.ATHER_SOCIAL_URL}/user/by-address`, {
-          headers: {
-            Authorization: socialToken,
-          },
-          params: {
-            address: addressQuery,
-          },
-        })
+        this.httpService.get(
+          `${constant.ATHER_SOCIAL_URL}/api/user/by-address`,
+          {
+            headers: {
+              Authorization: socialToken,
+            },
+            params: {
+              address: addressQuery,
+            },
+          }
+        )
       );
       return response.data;
     } catch (err) {

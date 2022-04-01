@@ -118,7 +118,7 @@ export class SystemConfigProvider {
         address: ZERO_ADDRESS,
       },
       [Chain.Mumbai]: {
-        address: "0x8832B826C4194Ed54bA9f1423fdB82295c09f0c9",
+        address: "0x3EdB954303D0A13ee347C6989189294B0422E7D6",
       },
 
       [Chain.Polygon]: {
