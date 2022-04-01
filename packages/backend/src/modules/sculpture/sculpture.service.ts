@@ -18,9 +18,6 @@ export class SculptureService {
         ownerAddress: address,
       },
     });
-    if (!transactions) {
-      return [];
-    }
     return transactions;
   }
 

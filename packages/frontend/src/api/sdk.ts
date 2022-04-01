@@ -167,9 +167,9 @@ export interface Portfolio {
   chainId: number;
   collectionType: CollectionType;
   category: CollectionCategory;
-  floorPrice: number;
-  totalVolume: number;
-  marketCap: number;
+  floorPrice: string;
+  totalVolume: string;
+  marketCap: string;
   totalSupply: number;
   totalSales: number;
   description: string;
@@ -193,9 +193,9 @@ export interface SipherCollection {
   chainId: number;
   collectionType: CollectionType;
   category: CollectionCategory;
-  floorPrice: number;
-  totalVolume: number;
-  marketCap: number;
+  floorPrice: string;
+  totalVolume: string;
+  marketCap: string;
   totalSupply: number;
   totalSales: number;
   description: string;
