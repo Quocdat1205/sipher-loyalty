@@ -11,9 +11,10 @@ import { useDetailAirdrop } from "./useDetailAirdrop"
 
 export function DetailsAirdrop() {
   const { isOpen, onClose, isFetched, detailAirdrop } = useDetailAirdrop()
+  const defaultImage = "/images/airdrops/sipher.png"
   const [imageState, setImageState] = useState({
-    front: "/images/airdrops/sipher.png",
-    back: "/images/airdrops/sipher.png",
+    front: defaultImage,
+    back: defaultImage,
   })
   const extension = detailAirdrop ? detailAirdrop.imageUrls[0]?.default.split(".")[5] : ""
   const [selectedSize, setSelectedSize] = useState("S")
@@ -28,14 +29,14 @@ export function DetailsAirdrop() {
     if (id === "black" && detailAirdrop) {
       setSelectedColor(id)
       setImageState({
-        front: detailAirdrop?.imageUrls.find(item => item.color === id)!.default,
-        back: detailAirdrop?.imageUrls.find(item => item.color === id)!.back,
+        front: detailAirdrop?.imageUrls.find(item => item.color === id)!.default ?? defaultImage,
+        back: detailAirdrop?.imageUrls.find(item => item.color === id)!.back ?? defaultImage,
       })
     } else if (id === "white" && detailAirdrop) {
       setSelectedColor(id)
       setImageState({
-        front: detailAirdrop?.imageUrls.find(item => item.color === id)!.default,
-        back: detailAirdrop?.imageUrls.find(item => item.color === id)!.back,
+        front: detailAirdrop?.imageUrls.find(item => item.color === id)!.default ?? defaultImage,
+        back: detailAirdrop?.imageUrls.find(item => item.color === id)!.back ?? defaultImage,
       })
     }
   }
@@ -57,7 +58,7 @@ export function DetailsAirdrop() {
 
   return (
     <ChakraModal scrollBehavior="inside" title={""} isOpen={isOpen} onClose={onClose} size="4xl">
-      <Flex p={6} minH="28rem" h="full" align="flex-start">
+      <Flex pt={6} px={8} minH="28rem" h="full" align="flex-start">
         <Skeleton flex={2} isLoaded={imageLoad && isFetched && detailAirdrop && detailAirdrop?.imageUrls?.length > 0}>
           <Flex
             sx={{
