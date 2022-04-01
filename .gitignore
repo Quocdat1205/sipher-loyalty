@@ -41,3 +41,7 @@ yarn-error.log*
 # Docker volumes
 docker/postgres
 docker/redis
+
+
+# Test coverage
+packages/coverage
