@@ -18,7 +18,7 @@ interface WalletInUseUIProps {
 const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
   const toast = useChakraToast()
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
-  const { connect, scCaller, reset } = useWalletContext()
+  const { connect, scCaller, reset, isActive, account } = useWalletContext()
   const qc = useQueryClient()
   const router = useRouter()
   const [connectingWallet, setConnectingWallet] = useState("")
@@ -73,11 +73,15 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
 
   const handleConnectWallet = async (connectorId: Parameters<typeof connect>["0"]) => {
     setConnectingMethod(connectorId)
-    const account = await connect(connectorId)
+    let currentAccount = account
+    if (!currentAccount) {
+      currentAccount = (await connect(connectorId))?.toLowerCase() || null
+    }
+
     // Try to add wallet to account if not linked yet
-    if (account) {
-      setConnectingWallet(account)
-      mutateConnectWallet(account)
+    if (currentAccount) {
+      setConnectingWallet(currentAccount)
+      mutateConnectWallet(currentAccount)
     } else setConnectingMethod(null)
   }
 

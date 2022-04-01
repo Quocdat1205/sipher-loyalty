@@ -80,12 +80,15 @@ const ConnectToWallet = () => {
 
   const handleConnectWallet = async (connectorId: Parameters<typeof connect>["0"]) => {
     setConnectingMethod(connectorId)
-    const account = await connect(connectorId)
+    let currentAccount = account
+    if (!currentAccount) {
+      currentAccount = (await connect(connectorId))?.toLowerCase() || null
+    }
     // Try to add wallet to account if not linked yet
-    if (account) {
-      setCurrentAddress(account)
-      if (!ownedWallets.includes(account)) {
-        mutateConnectWallet(account)
+    if (currentAccount) {
+      setCurrentAddress(currentAccount)
+      if (!ownedWallets.includes(currentAccount)) {
+        mutateConnectWallet(currentAccount)
       } else {
         setConnectingMethod(null)
         setFlowState(null)
