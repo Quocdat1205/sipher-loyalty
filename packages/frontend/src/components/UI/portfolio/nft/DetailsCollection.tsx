@@ -8,6 +8,7 @@ import { SpVerified } from "@components/shared/icons"
 import { capitalize } from "@utils"
 
 import GridSelector from "../GridSelector"
+import { BringModal } from "../modal"
 
 import LoadingCard from "./LoadingCard"
 import NFTCard from "./NFTCard"
@@ -18,7 +19,22 @@ interface DetailsCollectionProps {
 }
 
 const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
-  const { collectionData, columns, total, nftsData, isFetched, query, router } = useNFTs(collectionId)
+  const {
+    collectionData,
+    columns,
+    total,
+    nftsData,
+    isFetched,
+    query,
+    router,
+    nftsDataCheck,
+    handleClick,
+    modal,
+    setModal,
+    handleBring,
+    dataMinted,
+    isLoadingBurn,
+  } = useNFTs(collectionId)
   const { data, hasNextPage, fetchNextPage, isLoading } = query
 
   const renderLoadingCards = () => {
@@ -35,7 +51,14 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
     <Flex flexDir="column" flex={1} w="full" pos="relative">
       <Flex pos="fixed" top="4rem" left={0} zIndex={1} flexDir="column">
         <Box pt={8} px={8} w="full">
-          <Button onClick={() => router.back()} pl={2} bg="white" rounded="full" alignItems="center">
+          <Button
+            _hover={{ bg: "white" }}
+            onClick={() => router.push("/portfolio")}
+            pl={2}
+            bg="white"
+            rounded="full"
+            alignItems="center"
+          >
             <Box color="neutral.500">
               <BiChevronLeft size="1.4rem" />
             </Box>
@@ -79,13 +102,24 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
               </Text>
             </Skeleton>
           </Stack>
-          <Flex align="center" justify="space-between">
+          <Flex mb={4} align="center" justify="space-between">
             <Skeleton isLoaded={isFetched}>
               <Text color="neutral.300" fontWeight={600}>
                 TOTAL: {total} {total > 0 ? "NFTs" : "NFT"}
               </Text>
             </Skeleton>
             <GridSelector />
+          </Flex>
+          <Flex>
+            {nftsDataCheck.length > 0 && (
+              <Button onClick={handleClick}>
+                {collectionData?.category === "lootbox"
+                  ? `BRING TO OFF-CHAIN (${nftsDataCheck?.length})`
+                  : collectionData?.category === "sculpture"
+                  ? `REDEEM SCULPTURE (${nftsDataCheck?.length})`
+                  : ""}
+              </Button>
+            )}
           </Flex>
           <Box py={8} flex={1}>
             <InfiniteScroll
@@ -110,6 +144,15 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
           </Box>
         </Flex>
       </Flex>
+      <BringModal
+        isLoading={isLoadingBurn}
+        status={modal}
+        dataMinted={dataMinted}
+        handleMint={handleBring}
+        dataMint={nftsDataCheck ?? []}
+        isOpen={modal !== ""}
+        onClose={() => setModal("")}
+      />
     </Flex>
   )
 }

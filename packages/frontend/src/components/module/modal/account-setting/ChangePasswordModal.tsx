@@ -5,9 +5,9 @@ import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Box, Button, Flex, FormControl, HStack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, Divider, Flex, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 
-import { ChakraModal, CustomInput, Form, FormField } from "@components/shared"
+import { ChakraModal, Form, StyledInput } from "@components/shared"
 import { useChakraToast } from "@hooks"
 import { useAuth } from "src/providers/auth"
 
@@ -20,9 +20,6 @@ interface ChangePasswordModal {
 const validationSchema = Yup.object().shape({
   currentPassword: Yup.string().required("Current password is required"),
   newPassword: Yup.string().required("New password is required"),
-  confirmPassword: Yup.string()
-    .required("Confirm password is required")
-    .oneOf([Yup.ref("newPassword")], "Passwords must match"),
 })
 
 const ChangePasswordModal = ({ isOpen, onClose, onBack }: ChangePasswordModal) => {
@@ -77,36 +74,22 @@ const ChangePasswordModal = ({ isOpen, onClose, onBack }: ChangePasswordModal) =
     >
       <Box px={6}>
         <Form onSubmit={handleSubmit(d => mutateChangePassword(d))}>
-          <FormControl mb={4}>
-            <FormField error={errors?.currentPassword?.message}>
-              <CustomInput
-                placeholder="Current password"
-                type="password"
-                autoComplete="new-password"
-                {...register("currentPassword")}
-              />
-            </FormField>
-          </FormControl>
-          <FormControl mb={4}>
-            <FormField error={errors?.newPassword?.message}>
-              <CustomInput
-                type={"password"}
-                placeholder="New password"
-                autoComplete="new-password"
-                {...register("newPassword")}
-              />
-            </FormField>
-          </FormControl>
-          <FormControl mb={4}>
-            <FormField error={errors?.confirmPassword?.message}>
-              <CustomInput
-                type={"password"}
-                placeholder="Confirm your password"
-                autoComplete="new-password"
-                {...register("confirmPassword")}
-              />
-            </FormField>
-          </FormControl>
+          <Stack spacing={4}>
+            <StyledInput
+              error={errors.currentPassword?.message}
+              label="Current password"
+              type="password"
+              {...register("currentPassword")}
+            />
+            <StyledInput
+              error={errors.newPassword?.message}
+              label="New password"
+              type="password"
+              {...register("newPassword")}
+              mb={4}
+            />
+          </Stack>
+          <Divider my={6} />
           <HStack spacing={4} justify="center">
             <Button type="submit" fontSize="md" py={6} fontWeight={600} isLoading={isLoading}>
               UPDATE PASSWORD

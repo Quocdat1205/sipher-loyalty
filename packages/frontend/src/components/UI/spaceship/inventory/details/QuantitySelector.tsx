@@ -21,8 +21,9 @@ const QuantitySelector = ({ onChange, value, maxValue, minValue = 0, isDisabled 
       overflow="hidden"
       align="center"
       h="40px"
+      maxW="16rem"
     >
-      <Flex flex={1} align="center" justify="space-between">
+      <Flex flex={2} align="center" justify="space-between">
         <IconButton
           boxSize="24px"
           size="xs"
@@ -35,6 +36,7 @@ const QuantitySelector = ({ onChange, value, maxValue, minValue = 0, isDisabled 
           rounded="full"
         />
         <Input
+          flex={1}
           variant="filled"
           bgColor="transparent"
           fontWeight={500}

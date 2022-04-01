@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query"
 import { Avatar, Box, Button, Divider, Flex, FormControl, FormLabel, HStack, Image, Text } from "@sipher.dev/sipher-ui"
 
 import { getProfile, updateProfile } from "@api"
-import { ChakraModal, CustomInput, CustomTextarea, FormField } from "@components/shared"
+import { ChakraModal, CustomInput, CustomTextarea, FormField, StyledInput, StyledTextArea } from "@components/shared"
 import { useChakraToast, useFormCoreWithError } from "@hooks"
 import { useAuth } from "src/providers/auth"
 
@@ -76,31 +76,33 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
               onClick={onSetAvatar}
               px={2}
             >
-              <Image src="/images/nft/sipher5.png" h="1.3rem" />
+              <Image src="/images/nft/sipher1.png" rounded="md" h="1.3rem" />
               <Text ml={2}>Choose NFT</Text>
             </Button>
           </Box>
         </Flex>
-        <FormControl mb={4}>
-          <FormLabel mb={1} fontSize="sm" color="neutral.400">
-            Email
-          </FormLabel>
-          <Text>{user?.email}</Text>
-        </FormControl>
-        <FormControl mb={4}>
-          <FormLabel mb={1} fontSize="sm" color="neutral.400">
-            Name
-          </FormLabel>
-          <FormField error={errors.name}>
-            <CustomInput maxLength={20} value={values.name} onChange={e => setValue("name", e.target.value)} />
-          </FormField>
-        </FormControl>
-        <FormControl>
-          <FormLabel mb={1} fontSize="sm" color="neutral.400">
-            Bio
-          </FormLabel>
-          <CustomTextarea maxLength={255} h="6rem" value={values.bio} onChange={e => setValue("bio", e.target.value)} />
-        </FormControl>
+        <HStack spacing={4} align="flex-start" mb={4}>
+          <Box flex={1}>
+            <StyledInput label="Email" value={user?.email} isReadOnly={true} flex={1} />
+          </Box>
+          <Box flex={1}>
+            <StyledInput
+              label="Name"
+              value={values.name}
+              onChange={e => setValue("name", e.target.value)}
+              error={errors.name}
+              flex={1}
+            />
+          </Box>
+        </HStack>
+        <StyledTextArea
+          label="Bio"
+          maxLength={255}
+          h="6rem"
+          value={values.bio}
+          resize="none"
+          onChange={e => setValue("bio", e.target.value)}
+        />
 
         <Divider mt={4} orientation="horizontal" />
         <Flex py={4} role="group" cursor="pointer" justify="space-between" align="center" onClick={onChangePassword}>

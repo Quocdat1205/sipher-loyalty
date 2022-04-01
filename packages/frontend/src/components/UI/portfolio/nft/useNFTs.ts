@@ -1,20 +1,34 @@
-import { useInfiniteQuery } from "react-query"
+import { useState } from "react"
+import { useInfiniteQuery, useMutation, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
 import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
+import { POLYGON_NETWORK } from "@constant"
+import { useChakraToast } from "@hooks"
 import { NftItem, PortfolioByCollectionResponse } from "@sdk"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
+
+export interface NFTItemProp extends NftItem {
+  isChecked: boolean
+  slot: number
+}
 
 const useNFTs = collectionId => {
   const router = useRouter()
   const take = 30
   const { bearerToken } = useAuth()
-  const { account } = useWalletContext()
+  const { account, scCaller, switchNetwork, chainId } = useWalletContext()
   const gridSize = useStore(state => state.gridSize)
   const columns = gridSize === "small" ? [2, 3, 4, 5, 5] : [1, 2, 3, 4, 4]
+  const [data, setData] = useState<NFTItemProp[]>()
+  const [modal, setModal] = useState("")
+  const [dataMinted, setDataMinted] = useState<NFTItemProp[]>([])
+
+  const qc = useQueryClient()
+  const toast = useChakraToast()
 
   const getNFTWithRange = async ({ pageParam = 0 }) => {
     const { data } = await client.api.collectionControllerGetPortfolioByCollection(
@@ -33,22 +47,106 @@ const useNFTs = collectionId => {
     },
     keepPreviousData: true,
     enabled: !!account && !!bearerToken,
+    onSuccess: data =>
+      setData(
+        data.pages
+          ?.reduce((acc: NftItem[], cur) => [...acc, ...cur.items], [])
+          .map(item => ({
+            ...item,
+            slot: item.value,
+            isChecked: false,
+          })),
+      ),
+    refetchOnWindowFocus: false,
   })
 
-  const nftsData = query.data
-    ? query.data.pages
-        .reduce((acc: NftItem[], cur) => [...acc, ...cur.items], [])
-        .map(item => ({
-          ...item,
-          onView: () => router.push(`/portfolio/${collectionId}/${item.id}`),
-        }))
-    : []
+  const revalidate = () => {
+    qc.invalidateQueries(["nfts", account, collectionId])
+  }
 
   const nftCount: number = !query.data ? 0 : query.data?.pages[0]?.total
 
   const collectionData = !query.data ? undefined : query.data?.pages[0]?.collection
 
+  const nftsData =
+    data?.map(item => ({
+      ...item,
+      onView: () => router.push(`/portfolio/${collectionId}/${item.id}`),
+      onSelect: (isChecked = false) => {
+        if (collectionData?.collectionType === "ERC1155") {
+          const oldState = data
+          oldState.find(i => i.id === item.id)!.isChecked = isChecked
+          setData([...oldState])
+        } else {
+          return
+        }
+      },
+    })) ?? []
+
+  const nftsDataCheck = nftsData
+    ?.filter(i => i.isChecked)
+    .map(item => ({
+      ...item,
+      onChange: (slot: number) => {
+        if (data) {
+          const oldState = data
+          oldState.find(i => i.id === item.id)!.slot = slot
+          setData([...oldState])
+        }
+      },
+    }))
+
+  const { mutate: mutateBurnBatch, isLoading: isLoadingBurn } = useMutation(
+    async () => {
+      if (nftsDataCheck.length > 1) {
+        await scCaller.current!.SipherSpaceshipLootBox.burnBatch({
+          batchIDs: nftsDataCheck.map(i => parseInt(i.tokenId)),
+          amounts: nftsDataCheck.map(i => i.slot),
+        })
+      } else {
+        await scCaller.current!.SipherSpaceshipLootBox.burn({
+          batchID: parseInt(nftsDataCheck[0].tokenId),
+          amount: nftsDataCheck[0].slot,
+        })
+      }
+    },
+    {
+      onMutate: () => {
+        setDataMinted(data!.filter(i => i.isChecked))
+      },
+      onSuccess: () => {
+        setModal("SUCCESS")
+      },
+      onSettled: () => {
+        revalidate()
+      },
+      onError: (err: any) => {
+        toast({ status: "error", title: "Error", message: err?.message })
+        setModal("ERROR")
+      },
+    },
+  )
+
+  const handleClick = () => {
+    setModal("CONFIRM")
+  }
+
+  const handleBring = () => {
+    if (chainId !== POLYGON_NETWORK) {
+      switchNetwork(POLYGON_NETWORK)
+    } else {
+      mutateBurnBatch()
+    }
+  }
+
   return {
+    handleBring,
+    isLoadingBurn,
+    dataMinted,
+    modal,
+    setModal,
+    handleClick,
+    nftsDataCheck,
     router,
     collectionData: collectionData,
     columns,

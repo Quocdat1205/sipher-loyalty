@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { ConnectWalletResponse } from "@sipher.dev/ather-id/lib/esm/api/sdk"
-import { Box, Flex, Heading, HStack, Link, Text } from "@sipher.dev/sipher-ui"
+import { Box, chakra, Flex, Heading, HStack, Link, Text } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
 import { WalletCard } from "@components/shared"
@@ -18,12 +18,12 @@ interface WalletInUseUIProps {
 const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
   const toast = useChakraToast()
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
-  const { connect, scCaller, reset } = useWalletContext()
+  const { connect, scCaller, reset, isActive, account } = useWalletContext()
   const qc = useQueryClient()
   const router = useRouter()
   const [connectingWallet, setConnectingWallet] = useState("")
   // Initiate wallet connection => Sign the message to get signature => Confirm wallet connection
-  const { mutate: mutateAddWallet, isLoading: isAddingWallet } = useMutation<unknown, unknown, ConnectWalletResponse>(
+  const { mutate: mutateAddWallet } = useMutation<unknown, unknown, ConnectWalletResponse>(
     async res => {
       const signature = await scCaller.current?.sign(res.message)
       await AtherIdAuth.confirmConectWallet(res, signature!)
@@ -46,43 +46,51 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
     },
   )
 
-  const { mutate: mutateConnectWallet, isLoading: isConnectingWallet } = useMutation<
-    ConnectWalletResponse,
-    unknown,
-    string
-  >(account => AtherIdAuth.connectWallet(account), {
-    onSuccess: res => mutateAddWallet(res),
-    onError: (e: any) => {
-      const status = e?.toJSON()?.status || 400
-      if (status === 401) {
-        toast({
-          status: "error",
-          title: "Network error!",
-          message: "Please try again later",
-        })
-      } else {
-        setCurrentAddress(connectingWallet)
-      }
+  const { mutate: mutateConnectWallet } = useMutation<ConnectWalletResponse, unknown, string>(
+    account => AtherIdAuth.connectWallet(account),
+    {
+      onSuccess: res => mutateAddWallet(res),
+      onError: (e: any) => {
+        const status = e?.toJSON()?.status || 400
+        setConnectingMethod(null)
+        if (status === 401) {
+          toast({
+            status: "error",
+            title: "Network error!",
+            message: "Please try again later",
+          })
+        } else {
+          toast({
+            status: "error",
+            title: "Wallet linked to other account",
+            message: "Please sign in by that wallet or switch to another wallet and try again",
+          })
+          setCurrentAddress(connectingWallet)
+        }
+      },
     },
-  })
-
-  const isLoading = isConnectingWallet || isAddingWallet
-
-  useEffect(() => {
-    if (!isLoading && connectingMethod) {
-      setConnectingMethod(null)
-    }
-  }, [isLoading, connectingMethod])
+  )
 
   const handleConnectWallet = async (connectorId: Parameters<typeof connect>["0"]) => {
     setConnectingMethod(connectorId)
-    const account = await connect(connectorId)
-    // Try to add wallet to account if not linked yet
-    if (account) {
-      setConnectingWallet(account)
-      mutateConnectWallet(account)
+    let currentAccount = account
+    if (!currentAccount) {
+      currentAccount = (await connect(connectorId))?.toLowerCase() || null
     }
+
+    // Try to add wallet to account if not linked yet
+    if (currentAccount) {
+      setConnectingWallet(currentAccount)
+      mutateConnectWallet(currentAccount)
+    } else setConnectingMethod(null)
   }
+
+  const handleClose = async () => {
+    reset()
+    await AtherIdAuth.signOut()
+    router.push("/signin")
+  }
+
   return (
     <Box>
       <Heading fontSize={"lg"} fontWeight={600} mb={8} color="white" textAlign={"center"}>
@@ -102,9 +110,9 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
         </Box>
         <Text color="neutral.400">
           This wallet is connected to an existing Ather Account. You can{" "}
-          <Link href="/signin" fontWeight={600} color="cyan.600">
+          <chakra.span cursor={"pointer"} onClick={handleClose} fontWeight={600} color="cyan.600">
             Sign In
-          </Link>{" "}
+          </chakra.span>{" "}
           now.
         </Text>
       </Flex>

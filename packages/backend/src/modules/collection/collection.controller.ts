@@ -22,7 +22,7 @@ import { AtherGuard } from "@modules/auth/auth.guard";
 import { AuthService } from "@modules/auth/auth.service";
 import { LoggerService } from "@modules/logger/logger.service";
 import { NftItem } from "@modules/nft/nft-item.dto";
-import { CollectionCategory } from "src/entity/sipher-collection.entity";
+import { CollectionCategory } from "@entity";
 
 import {
   Portfolio,

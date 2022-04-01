@@ -19,7 +19,7 @@ const ChooseAvatarForm = ({ isOpen, onClose, onBack, onChangeAvatar }: ChooseAva
 
   const { data: availableAvatars } = useQuery(
     ["available-avatars", bearerToken],
-    () => getAvailableAvatars(bearerToken, 0, 2),
+    () => getAvailableAvatars(bearerToken, 0, 10),
     {
       enabled: !!bearerToken,
       initialData: { data: [], total: 0 },

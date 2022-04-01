@@ -1,6 +1,7 @@
 import React, { Fragment } from "react"
 import { Box, Button, HStack, Skeleton } from "@sipher.dev/sipher-ui"
 
+import { DetailLootbox } from "./modal"
 import { useDetailContext } from "./useDetail"
 
 interface ActionContainerProps {
@@ -8,7 +9,7 @@ interface ActionContainerProps {
 }
 
 const ActionContainer = ({ isFetched }: ActionContainerProps) => {
-  const { tokenDetails, handleLinkOpenSea } = useDetailContext()
+  const { tokenDetails, handleLinkOpenSea, handleClick, modal, setModal } = useDetailContext()
   return (
     <Box
       px={4}
@@ -24,9 +25,14 @@ const ActionContainer = ({ isFetched }: ActionContainerProps) => {
         {tokenDetails?.collection.collectionType === "ERC1155" ? (
           <Fragment>
             <Skeleton isLoaded={isFetched} flex={1}>
-              <Button isDisabled py={5} colorScheme="accent" w="full">
-                {/* {tokenDetails?.collection.category === "lootbox" ? "BRING TO OFF-CHAIN" : "REDEEM SCULPTURE"} */}
-                COMING SOON
+              <Button
+                onClick={handleClick}
+                isDisabled={tokenDetails?.collection.category !== "lootbox" ?? true}
+                py={5}
+                colorScheme="accent"
+                w="full"
+              >
+                {tokenDetails?.collection.category === "lootbox" ? "BRING TO OFF-CHAIN" : "REDEEM SCULPTURE"}
               </Button>
             </Skeleton>
             <Skeleton isLoaded={isFetched} flex={1}>
@@ -46,6 +52,7 @@ const ActionContainer = ({ isFetched }: ActionContainerProps) => {
           </Fragment>
         )}
       </HStack>
+      <DetailLootbox isOpen={modal === "BRING"} onClose={() => setModal("")} />
     </Box>
   )
 }
