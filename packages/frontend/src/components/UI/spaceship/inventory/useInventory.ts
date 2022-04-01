@@ -128,12 +128,13 @@ export const useInventory = () => {
       },
       onError: (err: any) => {
         toast({ status: "error", title: "Error", message: err?.message })
-        mutateStatus({ id: idError!.current!, status: "Rejected" as MintStatus })
 
         if (err.code === 4001) {
           setIsStatusModal("PENDING")
+          mutateStatus({ id: idError!.current!, status: "Rejected" as MintStatus })
         } else {
           setIsStatusModal("ERROR")
+          mutateStatus({ id: idError!.current!, status: "Error" as MintStatus })
         }
       },
     },

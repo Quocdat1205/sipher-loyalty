@@ -1,12 +1,12 @@
-export const INU_ADDRESS = "0x9c57D0278199c931Cf149cc769f37Bb7847091e7" //main
+export const INU_ADDRESS = "0x4d91fa57abfead5fbc8445e45b906b85bbd9744c" //test
 
-export const NEKO_ADDRESS = "0x09E0dF4aE51111CA27d6B85708CFB3f1F7cAE982" //main
+export const NEKO_ADDRESS = "0x97c8480d593b93ae90f8613a5b2ac02e7a3dd0ed" //test
 
 export const EXCHANGE_V2_ADDRESS = "0x21E77f475E8B4eA1500A083905CD642044C4eF7A" //test
 
 export const TRANSFER_PROXY_ADDRESS = "0xC399b4C40AaE47bb17f3C5e03F5CEc337C365C8a" //test
 
-export const WETH_ADDRESS = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2" // WETH //main
+export const WETH_ADDRESS = "0xc778417E063141139Fce010982780140Aa0cD5Ab" // WETH //test
 
 export const TRANSFER_ERC20_PROXY_ADDRESS = "0x5acFbF9681fD5e9A32E74EFB7Fd0CA794138aBe6" //test
 
@@ -30,7 +30,7 @@ export const SipherAirdropsAddress = "0x0b761403fdc1E7CD8763cCd89D0b269AcFDc4926
 
 export const SipherLootBoxAddress = "0x3E445D426c8FdE12F5F0C223019CA9158f7Da93B" //test
 
-export const SipherSculptureAddress = "0x315Bc085A14E251f129A361afa37205E3313bF15" // main
+export const SipherSculptureAddress = "0X3EDB954303D0A13EE347C6989189294B0422E7D6" // test
 
 export const PRICE_TYPE = [
   { id: "ETH", contract: ZERO_ADDRESS },

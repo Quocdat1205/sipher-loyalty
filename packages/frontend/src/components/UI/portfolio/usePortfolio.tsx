@@ -11,13 +11,6 @@ import { CollectionCategory } from "@sdk"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
-export const collectionSort = [
-  { value: "sipherianflash", text: "SIPHER NEKO" },
-  { value: "sipheriansurge", text: "SIPHER INU" },
-  { value: "siphersculpture", text: "SIPHER Sculpture" },
-  { value: "sipherspaceship", text: "SIPHER Spaceship" },
-]
-
 export const categoriesSort = [
   { value: "character", text: "Character" },
   { value: "sculpture", text: "Sculpture" },
@@ -25,28 +18,23 @@ export const categoriesSort = [
   { value: "spaceship", text: "Spaceship" },
 ]
 
-const initFilter = {
-  categories: "",
-  collection: "",
-}
-
 const usePortfolio = () => {
   const router = useRouter()
   const { bearerToken } = useAuth()
   const { account, chainId } = useWalletContext()
   const { dataPrice, balance, totalETHPrice, totalUsdPrice } = useBalanceContext()
-  const [filter, setFilter] = useState(initFilter)
+  const [filter, setFilter] = useState("")
 
   const currentTab = router.query.tab || "nfts"
 
-  const { data: initData, isFetched } = useQuery<any>(
+  const { data: initData, isFetched } = useQuery(
     ["collection", bearerToken, account, filter],
     () =>
       client.api
         .collectionControllerGetUserCollection(
           account!,
           {
-            category: (filter.categories !== "" ? filter.categories : undefined) as CollectionCategory,
+            category: (filter !== "" ? filter : undefined) as CollectionCategory,
           },
           setBearerToken(bearerToken),
         )
@@ -56,6 +44,7 @@ const usePortfolio = () => {
       initialData: [],
     },
   )
+  console.log(filter)
 
   const tokensData = account
     ? [
@@ -83,14 +72,15 @@ const usePortfolio = () => {
       ]
     : []
 
-  const collectionData = initData?.map(item => ({
-    ...item,
-    onView: () => router.push(`/portfolio/${item.id}`),
-  }))
+  const collectionData =
+    initData?.map(item => ({
+      ...item,
+      onView: () => router.push(`/portfolio/${item.id}`),
+    })) ?? []
 
-  const totalNFTs = collectionData.reduce((accu, curr) => accu + curr.total, 0)
+  const totalNFTs = collectionData?.reduce((accu, curr) => accu + curr.total, 0)
   const totalToken = tokensData.length
-  const arrayCollectionPrice = collectionData.map(item => item.total * parseFloat(item.floorPrice ?? 0))
+  const arrayCollectionPrice = collectionData?.map(item => item.total * item.floorPrice ?? 0) ?? []
   const totalCollectionPrice = arrayCollectionPrice.reduce((acc, curr) => acc + curr, 0)
 
   return {
