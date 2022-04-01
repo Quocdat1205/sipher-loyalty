@@ -21,7 +21,6 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
       bg="linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(51, 52, 74, 0) 100%)"
       w="full"
       justify="space-between"
-      align="center"
       backdropFilter="blur(30px)"
       top={0}
       left={0}
@@ -29,7 +28,7 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
       pos={isSticky ? "sticky" : "relative"}
       zIndex="sticky"
     >
-      <Flex pos="relative" overflow={"hidden"}>
+      <Flex h="full" pos="relative" overflow={"hidden"}>
         {/* <GradientBox /> */}
         <Box p={2} pt={4} px={[4, 4, 8]} pos="relative">
           <Logo />
@@ -45,10 +44,10 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
         }
         h="1px"
       />
-      <Flex h="full" flex={1} justify="center" align="center">
+      <Flex flex={1} justify="center">
         <NavMenus menus={menus} />
       </Flex>
-      <Flex justify={"flex-end"} px={8}>
+      <Flex justify={"center"} align="center" px={8}>
         <SignInButton />
       </Flex>
     </Flex>

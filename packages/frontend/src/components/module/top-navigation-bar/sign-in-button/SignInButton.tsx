@@ -39,7 +39,7 @@ const SignInButton = () => {
 
   return (
     <SignInProvider>
-      <Box ref={popRef} h="full" minW="6rem" pos="relative" zIndex={"modal"}>
+      <Box ref={popRef} minW="6rem" pos="relative" zIndex={"modal"}>
         <Flex
           bg={!(authenticated && wallet.isActive && flowState === null) ? "accent.500" : "transparent"}
           rounded="md"
