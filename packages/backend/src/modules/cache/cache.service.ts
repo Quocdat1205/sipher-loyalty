@@ -8,7 +8,16 @@ import { LoggerService } from "@modules/logger/logger.service";
 export class CacheService {
   constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {}
 
-  get = async (token: string) => this.cacheManager.get<UserData>(token);
+  get = async (token: string) => {
+    console.log(token);
+    try {
+      const result = this.cacheManager.get<UserData>(token);
+      console.log(result);
+      return result;
+    } catch (err) {
+      console.log("get", err);
+    }
+  };
 
   set = async (token: string, userData: UserData) => {
     console.log(token, userData);
