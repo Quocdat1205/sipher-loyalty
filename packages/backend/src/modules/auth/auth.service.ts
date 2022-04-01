@@ -66,7 +66,7 @@ export class AuthService {
       }
     } catch (err) {
       LoggerService.error(err);
-      throw new HttpException("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+      throw new HttpException("validate failed", HttpStatus.UNAUTHORIZED);
     }
     return true;
   }
@@ -78,7 +78,10 @@ export class AuthService {
       ) === -1
     ) {
       this.fetchUserData(req);
-      throw new HttpException("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        "user not owned public address",
+        HttpStatus.UNAUTHORIZED
+      );
     } else req.userData.currentpublicAddress = publicAddress.toLowerCase();
     return req.userData;
   };
