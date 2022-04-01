@@ -55,8 +55,15 @@ export const SpaceshipContainer = () => {
                 CLAIM LOOTBOX
               </Button>
             </Box>
-            <Flex pos="relative" flexDir="column" align="flex-end" ml={8} p={4} flex={3}>
-              <Image src={activeData.image || ""} alt={activeData.title} width={480} height={340} quality={100} />
+            <Flex blendMode="lighten" pos="relative" flexDir="column" align="flex-end" ml={8} p={4} flex={3}>
+              <Image
+                objectFit="contain"
+                src={activeData.image || ""}
+                alt={activeData.title}
+                width={869}
+                height={448}
+                quality={100}
+              />
             </Flex>
           </Flex>
         </Box>

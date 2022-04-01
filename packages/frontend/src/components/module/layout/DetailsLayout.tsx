@@ -1,8 +1,6 @@
 import { ReactNode } from "react"
 import { Flex } from "@sipher.dev/sipher-ui"
-import { useWalletContext } from "@web3"
 
-import { OnBoardModal } from "../modal"
 import { TopNavigationBar } from "../top-navigation-bar"
 
 interface StoreFrontLayoutProps {
@@ -10,8 +8,6 @@ interface StoreFrontLayoutProps {
 }
 
 export const DetailsLayout = ({ children }: StoreFrontLayoutProps) => {
-  const { account } = useWalletContext()
-
   return (
     <Flex
       pos="relative"
@@ -24,7 +20,7 @@ export const DetailsLayout = ({ children }: StoreFrontLayoutProps) => {
     >
       <TopNavigationBar isSticky />
       <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
-        {account ? children : <OnBoardModal />}
+        {children}
       </Flex>
     </Flex>
   )

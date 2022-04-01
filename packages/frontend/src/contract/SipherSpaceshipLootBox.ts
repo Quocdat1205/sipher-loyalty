@@ -19,6 +19,16 @@ interface mintBatchProps {
   signature: string
 }
 
+interface burnProps {
+  batchID: number
+  amount: number
+}
+
+interface burnBatchProps {
+  batchIDs: number[]
+  amounts: number[]
+}
+
 export class SipherSpaceshipLootBox {
   provider: providers.Web3Provider
   contract: Contract
@@ -39,6 +49,20 @@ export class SipherSpaceshipLootBox {
     const signer = this.provider.getSigner()
 
     const tx = await this.contract.connect(signer).mint(deadline, batchID, amount, salt, signature)
+    await tx.wait()
+  }
+
+  async burn({ batchID, amount }: burnProps) {
+    const signer = this.provider.getSigner()
+
+    const tx = await this.contract.connect(signer).burn(batchID, amount)
+    await tx.wait()
+  }
+
+  async burnBatch({ batchIDs, amounts }: burnBatchProps) {
+    const signer = this.provider.getSigner()
+
+    const tx = await this.contract.connect(signer).burnBatch(batchIDs, amounts)
     await tx.wait()
   }
 

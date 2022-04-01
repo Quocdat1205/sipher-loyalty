@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import Image from "next/image"
 import { Avatar, Box, BoxProps, Flex, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
@@ -14,6 +14,7 @@ interface CardProps extends BoxProps {
 }
 
 const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
+  const [imageLoad, setImageLoad] = useState(false)
   return (
     <Box
       onClick={data.onView}
@@ -25,7 +26,7 @@ const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
       pos="relative"
       {...rest}
     >
-      <Skeleton pos="relative" display="flex" isLoaded={isFetched}>
+      <Skeleton pos="relative" display="flex" isLoaded={imageLoad && isFetched}>
         <Image
           blurDataURL="https://via.placeholder.com/150"
           src={data.bannerImage ?? "https://via.placeholder.com/150"}
@@ -35,6 +36,7 @@ const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
           width={500}
           objectFit="cover"
           quality={100}
+          onLoad={() => setImageLoad(true)}
         />
         <Flex align="center" py={0.5} px={2} rounded="full" bg="white" pos="absolute" bottom="0.5rem" left="0.5rem">
           <SpLayer />
@@ -44,7 +46,7 @@ const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
         </Flex>
       </Skeleton>
       <Flex p={4} align="center">
-        <Skeleton isLoaded={isFetched} rounded="full">
+        <Skeleton isLoaded={imageLoad && isFetched} rounded="full">
           <Avatar size="lg" src={data.logoImage || ""} />
         </Skeleton>
         <Box flex={1} ml={6}>

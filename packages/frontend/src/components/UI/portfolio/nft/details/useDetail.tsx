@@ -64,6 +64,27 @@ const useDetail = () => {
     },
   )
 
+  // const { mutate: mutameBurn, isLoading: isLoadingBurn } = useMutation(
+  //   async () => {
+  //     if (wallet.chainId !== ETHEREUM_NETWORK) {
+  //       wallet.switchNetwork(ETHEREUM_NETWORK)
+  //     } else {
+  //       wallet.scCaller.current!.SipherSpaceshipLootBox.burn(tokenDetails!., tokenDetails!.tokenId)
+  //     }
+  //   },
+  //   {
+  //     onSuccess: () => {
+  //       toast({
+  //         status: "success",
+  //         title: "Transaction pending",
+  //         message: "Please review your wallet notifications.",
+  //         duration: 10000,
+  //       })
+  //       revalidate()
+  //     },
+  //   },
+  // )
+
   const handleLinkOpenSea = () => {
     window.open(`https://opensea.io/assets/${tokenDetails?.collectionId}/${tokenDetails?.tokenId}`, "_blank")
   }

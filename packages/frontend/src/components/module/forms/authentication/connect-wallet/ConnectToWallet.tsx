@@ -1,8 +1,10 @@
 import { useState } from "react"
+import { IoIosWarning } from "react-icons/io"
 import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { chakra, Divider, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
-import { AuthType, ConnectWalletAction, useAuthFlowStore } from "@store"
+import { ConnectWalletResponse } from "@sipher.dev/ather-id/lib/esm/api/sdk"
+import { Box, chakra, Flex, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
+import { useAuthFlowStore } from "@store"
 import { useWalletContext } from "@web3"
 
 import { ChakraModal, WalletCard } from "@components/shared"
@@ -17,33 +19,52 @@ const ConnectToWallet = () => {
   const { connect, scCaller, reset, account, connector } = useWalletContext()
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
   const qc = useQueryClient()
+  const [isWalledUsed, setIsWalledUsed] = useState(false)
+
   // Initiate wallet connection => Sign the message to get signature => Confirm wallet connection
-  const { mutate: mutateAddWallet } = useMutation<unknown, unknown, string>(
-    async account => {
-      const res = await AtherIdAuth.connectWallet(account!)
+  const { mutate: mutateAddWallet } = useMutation<unknown, unknown, ConnectWalletResponse>(
+    async res => {
       const signature = await scCaller.current?.sign(res.message)
       await AtherIdAuth.confirmConectWallet(res, signature!)
     },
     {
       onSuccess: () => {
-        setFlowState(null)
         qc.invalidateQueries("owned-wallets")
       },
       onError: async (e: any) => {
         reset()
         if (e?.code === 4001) {
-          await AtherIdAuth.signOut()
           toast({ status: "error", title: "Signature error", message: "User denied to sign the message" })
+        }
+      },
+      onSettled: () => {
+        setConnectingMethod(null)
+      },
+    },
+  )
+
+  const { mutate: mutateConnectWallet } = useMutation<ConnectWalletResponse, unknown, string>(
+    account => AtherIdAuth.connectWallet(account),
+    {
+      onSuccess: res => mutateAddWallet(res),
+      onError: (e: any) => {
+        setConnectingMethod(null)
+        reset()
+        const status = e?.toJSON()?.status || 400
+        if (status === 401) {
+          toast({
+            status: "error",
+            title: "Network error!",
+            message: "Please try again later",
+          })
         } else {
+          setIsWalledUsed(true)
           toast({
             status: "error",
             title: "Wallet linked to other account",
             message: "Please sign in by that wallet or switch to another wallet and try again",
           })
         }
-      },
-      onSettled: () => {
-        setConnectingMethod(null)
       },
     },
   )
@@ -53,30 +74,54 @@ const ConnectToWallet = () => {
     const account = await connect(connectorId)
     // Try to add wallet to account if not linked yet
     if (account && !ownedWallets.includes(account)) {
-      mutateAddWallet(account)
-    } else setFlowState(null)
+      mutateConnectWallet(account)
+    } else {
+      setConnectingMethod(null)
+      setFlowState(null)
+    }
+  }
+
+  const handleSignout = async () => {
+    await AtherIdAuth.signOut()
+    setFlowState(null)
   }
 
   return (
-    <ChakraModal
-      closeOnOverlayClick={false}
-      hideCloseButton
-      title={"CONNECT TO A WALLET"}
-      size="lg"
-      isOpen={flowState?.type === AuthType.ConnectWallet && flowState.action === ConnectWalletAction.Connect}
-      onClose={() => setFlowState(null)}
-    >
-      <Stack pos="relative" px={6} spacing={4} w="full">
+    <ChakraModal title={"CONNECT TO A WALLET"} size="lg" isOpen={flowState === "connectWallet"} hideCloseButton>
+      <Stack pos="relative" px={6} spacing={6} w="full">
         <Text>
           You're signed in as <chakra.span color="cyan.600">{user?.email}</chakra.span> but you didn't connect to your
           wallet. Please connect to continue!
         </Text>
+        {isWalledUsed && (
+          <Box>
+            <Flex w="full">
+              <Box color="accent.500" mr={1}>
+                <IoIosWarning size="1.2rem" />
+              </Box>
+              <Text color="neutral.400" flex={1}>
+                This wallet is connected to an existing Ather Account. You can{" "}
+                <chakra.span cursor={"pointer"} onClick={handleSignout} fontWeight={600} color="cyan.600">
+                  Sign In
+                </chakra.span>{" "}
+                now.
+              </Text>
+            </Flex>
+            <Flex align="center" mt={6}>
+              <Box flex={1} h="1px" bg="neutral.500" />
+              <Text mx={2} fontWeight={600}>
+                or Connect to another wallet
+              </Text>
+              <Box flex={1} h="1px" bg="neutral.500" />
+            </Flex>
+          </Box>
+        )}
         <HStack w="full" justify="space-between" align="center" spacing={4}>
           <WalletCard
             onClick={() => {
               handleConnectWallet("injected")
             }}
-            text={account && connector === "injected" ? shortenAddress(account) : "Metamask"}
+            text={"MetaMask"}
             src="/images/icons/wallets/metamask.svg"
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "injected"}
@@ -91,13 +136,6 @@ const ConnectToWallet = () => {
             isLoading={connectingMethod === "walletConnect"}
           />
         </HStack>
-        <Divider />
-        <Text color="neutral.400" textAlign="center">
-          Don't have a Wallet?{" "}
-          <chakra.span textDecor="underline" cursor="pointer" color="cyan.600">
-            Learn More
-          </chakra.span>
-        </Text>
       </Stack>
     </ChakraModal>
   )

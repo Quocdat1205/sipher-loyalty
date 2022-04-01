@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { BiChevronRight } from "react-icons/bi"
 import Image from "next/image"
 import { Box, Button, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
@@ -15,6 +15,7 @@ interface CardProps {
 
 export const BoxCard = ({ data, isFetched }: CardProps) => {
   const { isChecked, onSelect, isDisabled, onView, propertyLootbox, mintable } = data
+  const [imageLoad, setImageLoad] = useState(false)
 
   return (
     <Box
@@ -68,7 +69,7 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
           </Box>
         </Flex>
       </Button>
-      <Skeleton bg="black" pos="relative" isLoaded={isFetched}>
+      <Skeleton bg="black" pos="relative" isLoaded={imageLoad && isFetched}>
         <Image
           quality={100}
           width={500}
@@ -77,6 +78,7 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
           src={propertyLootbox.image}
           alt={propertyLootbox.name}
           loading="lazy"
+          onLoad={() => setImageLoad(true)}
         />
         <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white" pos="absolute" bottom="1rem" left="0.5rem">
           <SpLayer />

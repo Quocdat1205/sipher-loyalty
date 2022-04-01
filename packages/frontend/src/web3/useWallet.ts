@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useRouter } from "next/router"
 import { ContractCaller } from "@contract"
-import { AuthType, ChangeWalletAction, useAuthFlowStore } from "@store"
+import { useAuthFlowStore } from "@store"
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core"
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector"
 
@@ -33,6 +34,7 @@ const useWallet = () => {
   const chain = useMemo(() => (chainId ? getChainName(chainId) : null), [chainId])
   const scCaller = useRef<ContractCaller | null>(null)
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
+  const router = useRouter()
   const reset = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-extra-semi
     ;(connectors.walletConnect().web3ReactConnector as WalletConnectConnector).walletConnectProvider = undefined
@@ -55,7 +57,7 @@ const useWallet = () => {
     }
   }, [web3React.library])
 
-  const { ownedWallets, authenticated } = useAuth()
+  const { authenticated, refetchOwnedWallets } = useAuth()
   // connect to wallet
   const connect = useCallback(
     async (connectorId: ConnectorId = "injected") => {
@@ -83,6 +85,7 @@ const useWallet = () => {
           }
         }
         const account = await web3ReactConnector.getAccount()
+
         return account?.toLowerCase()
       } catch (err: any) {
         if (id !== activationId.current) return
@@ -114,26 +117,19 @@ const useWallet = () => {
   )
 
   useEffect(() => {
-    if (ethereum && !isListened) {
-      console.log("Setting up account listener")
-      setIsListened(true)
-      ethereum.on("accountsChanged", ([account]) => {
-        console.log("Event: accountsChanged", account)
-        if (authenticated && account) {
-          console.log(ownedWallets, flowState)
-          if (!ownedWallets.includes(account) && flowState === null) {
-            setFlowState({ type: AuthType.ChangeWallet, action: ChangeWalletAction.Change })
-          } else if (
-            ownedWallets.includes(account) &&
-            flowState?.type === AuthType.ChangeWallet &&
-            flowState.action === ChangeWalletAction.Change
-          ) {
-            setFlowState(null)
-          }
+    const check = async () => {
+      const isAuthRoute = ["/signin", "/signup", "/forgot-password"].includes(router.pathname)
+      if (authenticated && account && !isAuthRoute) {
+        const ownedWallets = await refetchOwnedWallets()
+          .then(res => res.data)
+          .then(data => data?.map(wallet => wallet.address))
+        if (ownedWallets && !ownedWallets.includes(account.toLowerCase()) && flowState === null) {
+          setFlowState("changeWallet")
         }
-      })
+      }
     }
-  }, [ethereum, authenticated, ownedWallets, flowState, reset, isListened])
+    check()
+  }, [account, router.pathname])
 
   const switchNetwork = async (id: number) => {
     const decimalToHexString = (value: number) =>

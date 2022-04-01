@@ -12,7 +12,7 @@ const NavMenus = ({ menus }: NavMenusProps) => {
   const router = useRouter()
   const currentPath = router.pathname.split("/")[1]
   return (
-    <HStack h="full" align="center" spacing={12} display={["none", "none", "flex"]}>
+    <HStack h="full" align="center" spacing={[4, 4, 8, 12]} display={"flex"}>
       {menus.map(item => (
         <Flex h="full" align="center" key={item.path} pos="relative">
           <Text

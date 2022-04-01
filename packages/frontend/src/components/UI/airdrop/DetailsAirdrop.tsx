@@ -18,6 +18,7 @@ export function DetailsAirdrop() {
   const extension = detailAirdrop ? detailAirdrop.imageUrls[0]?.default.split(".")[5] : ""
   const [selectedSize, setSelectedSize] = useState("S")
   const [selectedColor, setSelectedColor] = useState("black")
+  const [imageLoad, setImageLoad] = useState(false)
 
   const handleSize = id => {
     setSelectedSize(id)
@@ -57,7 +58,7 @@ export function DetailsAirdrop() {
   return (
     <ChakraModal scrollBehavior="inside" title={""} isOpen={isOpen} onClose={onClose} size="4xl">
       <Flex p={6} minH="28rem" h="full" align="flex-start">
-        <Skeleton flex={2} isLoaded={isFetched || (detailAirdrop && detailAirdrop?.imageUrls?.length > 0)}>
+        <Skeleton flex={2} isLoaded={imageLoad && isFetched && detailAirdrop && detailAirdrop?.imageUrls?.length > 0}>
           <Flex
             sx={{
               video: {
@@ -88,6 +89,7 @@ export function DetailsAirdrop() {
                     alt=""
                     w="full"
                     h="full"
+                    onLoad={() => setImageLoad(true)}
                   />
                 )}
                 <Img
@@ -102,6 +104,7 @@ export function DetailsAirdrop() {
                   alt=""
                   w="full"
                   h="full"
+                  onLoad={() => setImageLoad(true)}
                 />
                 <Flex
                   boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
@@ -121,7 +124,15 @@ export function DetailsAirdrop() {
                 </Flex>
               </>
             ) : (
-              <Image quality={100} src={imageState.front} alt="airdrop" width={300} height={300} objectFit="contain" />
+              <Image
+                quality={100}
+                src={imageState.front}
+                alt="airdrop"
+                width={300}
+                height={300}
+                objectFit="contain"
+                onLoad={() => setImageLoad(true)}
+              />
             )}
           </Flex>
         </Skeleton>

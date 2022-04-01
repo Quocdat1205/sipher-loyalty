@@ -1,7 +1,6 @@
 import { ReactNode } from "react"
 import { Flex } from "@sipher.dev/sipher-ui"
 
-import { OnBoardModal } from "../modal"
 import { TopNavigationBar } from "../top-navigation-bar"
 
 export const CommonLayout = ({ children }: { children: ReactNode }) => {
@@ -19,7 +18,6 @@ export const CommonLayout = ({ children }: { children: ReactNode }) => {
         <TopNavigationBar isSticky />
         <Flex flexDir="column" zIndex={2} flex={1}>
           {children}
-          <OnBoardModal />
         </Flex>
       </Flex>
     </Flex>

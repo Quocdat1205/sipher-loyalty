@@ -77,10 +77,14 @@ const useAuthState = () => {
     enabled: !!bearerToken,
   })
 
-  const { data: ownedWallets } = useQuery("owned-wallets", () => AtherIdAuth.ownedWallets(), {
-    initialData: [],
-    enabled: authenticated,
-  })
+  const { data: ownedWallets, refetch: refetchOwnedWallets } = useQuery(
+    "owned-wallets",
+    () => AtherIdAuth.ownedWallets(),
+    {
+      initialData: [],
+      enabled: authenticated,
+    },
+  )
 
   useEffect(() => {
     const client = getClient()
@@ -139,6 +143,7 @@ const useAuthState = () => {
     userProfile,
     ownedWallets: ownedWallets!.map(w => w.address),
     bearerToken,
+    refetchOwnedWallets,
   }
 }
 

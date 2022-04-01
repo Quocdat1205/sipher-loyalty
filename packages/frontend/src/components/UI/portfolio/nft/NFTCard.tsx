@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import Image from "next/image"
 import { Box, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
@@ -20,6 +20,8 @@ const NFTCard = ({ data, isFetched }: CardProps) => {
     property => property.address.toUpperCase() === data?.collectionId.toUpperCase(),
   )?.name
   const extension = data?.imageUrl?.split(".")[5]
+  const [imageLoad, setImageLoad] = useState(false)
+
   return (
     <Box
       onClick={data.onView}
@@ -30,7 +32,7 @@ const NFTCard = ({ data, isFetched }: CardProps) => {
       bg="neutral.700"
       pos="relative"
     >
-      <Skeleton bg="black" isLoaded={isFetched} pos="relative">
+      <Skeleton bg="black" isLoaded={imageLoad && isFetched} pos="relative">
         {videos.includes(extension) ? (
           <video src={data.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
         ) : (
@@ -43,6 +45,7 @@ const NFTCard = ({ data, isFetched }: CardProps) => {
             width={425}
             quality={100}
             objectFit="contain"
+            onLoad={() => setImageLoad(true)}
           />
         )}
         {data.type === "ERC1155" && (

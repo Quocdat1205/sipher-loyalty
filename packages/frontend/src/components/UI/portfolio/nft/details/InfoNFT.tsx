@@ -19,16 +19,14 @@ const InfoNFT = ({ tokenDetails, isFetched }: InfoNFTProps) => {
   return (
     <HStack mb={8} spacing={8}>
       <Flex align="center" flex={1} minW={0}>
-        <Avatar src={tokenDetails?.creatorInfo.profileImage} bg="gray" />
+        <Avatar src={"/images/general/creator.png"} bg="gray" />
         <Flex ml={2} flexDir="column" overflow="hidden" flex={1}>
           <Text pb={1} fontWeight={600} color="neutral.400">
             Creator
           </Text>
           <Skeleton isLoaded={isFetched}>
             <Text color="cyan.600" w="full" isTruncated>
-              {tokenDetails?.creatorInfo.username
-                ? tokenDetails?.creatorInfo.username
-                : shortenAddress(tokenDetails?.creatorInfo.publicAddress || "")}
+              SIPHER
             </Text>
           </Skeleton>
         </Flex>

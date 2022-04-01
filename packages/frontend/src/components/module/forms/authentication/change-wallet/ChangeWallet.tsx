@@ -1,20 +1,26 @@
 import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, Button, chakra, Divider, Text } from "@sipher.dev/sipher-ui"
-import { AuthType, ChangeWalletAction, useAuthFlowStore } from "@store"
+import { useAuthFlowStore } from "@store"
 import { useWalletContext } from "@web3"
 
 import { ChakraModal } from "@components/shared"
 import { useChakraToast } from "@hooks"
+import { useAuth } from "src/providers/auth"
 
 const ChangeWallet = () => {
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
   const { account, scCaller, reset } = useWalletContext()
+  const { ownedWallets } = useAuth()
   const toast = useChakraToast()
   const qc = useQueryClient()
 
   const { mutate: mutateAddWallet, isLoading } = useMutation<unknown, unknown, string>(
     async account => {
+      if (ownedWallets.includes(account)) {
+        setFlowState(null)
+        return
+      }
       const res = await AtherIdAuth.connectWallet(account!)
       const signature = await scCaller.current?.sign(res.message)
       await AtherIdAuth.confirmConectWallet(res, signature!)
@@ -41,19 +47,14 @@ const ChangeWallet = () => {
     },
   )
 
+  const handleClose = async () => {
+    setFlowState(null)
+    reset()
+    await AtherIdAuth.signOut()
+  }
+
   return (
-    <ChakraModal
-      title={"CHANGE WALLET"}
-      closeOnOverlayClick={false}
-      hideCloseButton
-      size="lg"
-      isOpen={flowState?.type === AuthType.ChangeWallet && flowState.action === ChangeWalletAction.Change}
-      onClose={() => {
-        setFlowState(null)
-        AtherIdAuth.signOut()
-        reset()
-      }}
-    >
+    <ChakraModal title={"CHANGE WALLET"} size="lg" isOpen={flowState === "changeWallet"} onClose={handleClose}>
       <Box px={6}>
         <Text mb={2}>We detect change in your wallet, please connect this wallet to your account.</Text>
         <Text mb={4}>
