@@ -28,7 +28,7 @@ export const StakingLPSipherWethKyberAddress = "0xEB3CadDe330a4AA3D627F666aEcdD6
 
 export const SipherAirdropsAddress = "0x0b761403fdc1E7CD8763cCd89D0b269AcFDc4926" //main
 
-export const SipherLootBoxAddress = "0x890E002A6Bb11D0094d80f4C301CaF645D168333" //test
+export const SipherLootBoxAddress = "0x3E445D426c8FdE12F5F0C223019CA9158f7Da93B" //test
 
 export const SipherSculptureAddress = "0X3EDB954303D0A13EE347C6989189294B0422E7D6" // test
 
