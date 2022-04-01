@@ -74,15 +74,15 @@ export class Portfolio extends SipherCollection {
 export class CollectionStats {
   @IsDecimal()
   @ApiProperty({ type: Number })
-  floorPrice: string;
+  floorPrice: number;
 
   @IsDecimal()
   @ApiProperty({ type: Number })
-  totalVolume: string;
+  totalVolume: number;
 
   @IsDecimal()
   @ApiProperty({ type: Number })
-  marketCap: string;
+  marketCap: number;
 
   @IsNumber()
   @ApiProperty({ type: Number })
