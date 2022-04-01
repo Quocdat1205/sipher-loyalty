@@ -55,7 +55,7 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
       <Flex flex={1} justify="center">
         <NavMenus menus={menus} />
       </Flex>
-      <Flex justify="flex-end" flex={1} px={4} minW="10rem">
+      <Flex justify="flex-end" flex={1} px={4} minW="10rem" align="center">
         <SignInButton />
       </Flex>
     </Flex>
