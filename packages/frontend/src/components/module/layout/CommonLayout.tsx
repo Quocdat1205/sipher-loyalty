@@ -9,16 +9,18 @@ export const CommonLayout = ({ children }: { children: ReactNode }) => {
     <Flex
       pos="relative"
       overflow="hidden"
-      h="100vh"
+      minH="100vh"
       w="full"
       direction="column"
       color="whiteAlpha.900"
       bg="neutral.900"
     >
-      <TopNavigationBar isSticky />
-      <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
-        {children}
-        <OnBoardModal />
+      <Flex flexDir="column" flex={1} w="full">
+        <TopNavigationBar isSticky />
+        <Flex flexDir="column" zIndex={2} flex={1}>
+          {children}
+          <OnBoardModal />
+        </Flex>
       </Flex>
     </Flex>
   )

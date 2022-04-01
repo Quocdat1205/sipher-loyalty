@@ -19,34 +19,23 @@ export class LootboxTrackerCancelService {
 
   private fromBlockCanceled: number;
 
+  private chain = constant.isProduction ? Chain.Polygon : Chain.Mumbai;
+
   constructor(
     private lootBoxService: LootBoxService,
     @InjectRepository(TrackedBlock)
     private trackedBlockRepo: Repository<TrackedBlock>
   ) {
-    this.getStartCanceledBlock();
+    this.start();
+  }
 
-    this.provider = getProvider(
-      constant.isProduction ? Chain.Polygon : Chain.Mumbai
-    );
+  private start = async () => {
+    this.provider = await getProvider(this.chain);
     this.contract = getContract(
       constant.config.erc1155LootBox.verifyingContract,
       erc1155Abi,
       this.provider
     );
-  }
-
-  @Interval("tracking lootbox canceled", 15000)
-  async TrackingCanceledInterval() {
-    this.fromBlockCanceled = await this.trackingCancel(this.fromBlockCanceled);
-    const trackedBlock = await this.trackedBlockRepo.findOne({
-      where: { type: "cancel" },
-    });
-    trackedBlock.tracked = this.fromBlockCanceled;
-    this.trackedBlockRepo.save(trackedBlock);
-  }
-
-  private getStartCanceledBlock = async () => {
     try {
       const trackedBlock = await this.trackedBlockRepo.findOne({
         where: { type: "cancel" },
@@ -61,6 +50,16 @@ export class LootboxTrackerCancelService {
       this.fromBlockCanceled = 0;
     }
   };
+
+  @Interval("tracking lootbox canceled", 15000)
+  async TrackingCanceledInterval() {
+    this.fromBlockCanceled = await this.trackingCancel(this.fromBlockCanceled);
+    const trackedBlock = await this.trackedBlockRepo.findOne({
+      where: { type: "cancel" },
+    });
+    trackedBlock.tracked = this.fromBlockCanceled;
+    this.trackedBlockRepo.save(trackedBlock);
+  }
 
   private currentBlock = async () => {
     try {

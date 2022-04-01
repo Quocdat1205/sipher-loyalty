@@ -109,9 +109,7 @@ export interface ClaimableLootbox {
   quantity: number;
   tokenId: number;
   propertyLootbox: ERC1155Lootbox;
-
-  /** @format date-time */
-  expiredDate: string;
+  expiredDate: number;
 
   /** @format date-time */
   createdAt: string;
@@ -122,8 +120,9 @@ export interface ClaimableLootbox {
 
 export interface ERC1155Lootbox {
   id: number;
-  tokenId: string;
+  tokenId: number;
   name: string;
+  shortDescription: string;
   description: string;
   external_url: string;
   image: string;
@@ -139,12 +138,14 @@ export interface MintBatchLootboxInputDto {
   publicAddress: string;
   batchID: number[];
   amount: number[];
+  deadline?: number;
 }
 
 export interface MintLootboxInputDto {
   publicAddress: string;
   batchID: number;
   amount: number;
+  deadline?: number;
 }
 
 export enum CollectionCategory {
@@ -166,9 +167,9 @@ export interface Portfolio {
   chainId: number;
   collectionType: CollectionType;
   category: CollectionCategory;
-  floorPrice: number;
-  totalVolume: number;
-  marketCap: number;
+  floorPrice: string;
+  totalVolume: string;
+  marketCap: string;
   totalSupply: number;
   totalSales: number;
   description: string;
@@ -192,9 +193,9 @@ export interface SipherCollection {
   chainId: number;
   collectionType: CollectionType;
   category: CollectionCategory;
-  floorPrice: number;
-  totalVolume: number;
-  marketCap: number;
+  floorPrice: string;
+  totalVolume: string;
+  marketCap: string;
   totalSupply: number;
   totalSales: number;
   description: string;
@@ -219,6 +220,20 @@ export interface NftItemAttribute {
 export interface Erc1155Owner {
   publicAddress: string;
   totalOwned: number;
+  profileImage: string;
+  username: string;
+}
+
+export interface Erc721Owner {
+  publicAddress: string;
+  profileImage: string;
+  username: string;
+}
+
+export interface CreatorInfo {
+  publicAddress: string;
+  profileImage: string;
+  username: string;
 }
 
 export interface NftItem {
@@ -238,14 +253,49 @@ export interface NftItem {
   rarityScore: number;
   value: number;
   quantity: number;
+  type: string;
   allOwner: Erc1155Owner[];
+  ownerInfo: Erc721Owner;
+  creatorInfo: CreatorInfo;
   collection: SipherCollection;
 }
 
 export interface PortfolioByCollectionResponse {
   collection: SipherCollection;
   total: number;
-  items: NftItem;
+  items: NftItem[];
+}
+
+export enum AirdropType {
+  NFT = 'NFT',
+  TOKEN = 'TOKEN',
+  MERCH = 'MERCH',
+  ALL = 'ALL',
+  OTHER = 'OTHER',
+}
+
+export interface Airdrop {
+  id: number;
+  merkleRoot: string;
+  proof: string[];
+  leaf: string;
+  claimer: string;
+  addressContract: string;
+  imageUrls: ImageUrl[];
+  totalAmount: string;
+  type: AirdropType;
+  startTime: string;
+  vestingInterval: string;
+  name: string;
+  shortDescription: string;
+  description: string[];
+  numberOfVestingPoint: string;
+
+  /** @format date-time */
+  createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
 }
 
 export enum ItemType {
@@ -264,23 +314,15 @@ export enum ViewType {
   ThankYouCard = 'Thank You Card',
 }
 
-export enum AirdropType {
-  NFT = 'NFT',
-  TOKEN = 'TOKEN',
-  MERCH = 'MERCH',
-  ALL = 'ALL',
-  OTHER = 'OTHER',
-}
-
 export interface Merchandise {
   id: number;
   publicAddress: string;
   tier: string;
-  merch_item: string;
+  merchItem: ItemType;
   quantity: number;
-  quantity_shipped: number;
+  quantityShipped: number;
   isShipped: boolean;
-  isShip: boolean;
+  shippable: boolean;
   item: Item;
 
   /** @format date-time */
@@ -292,10 +334,11 @@ export interface Merchandise {
 
 export interface Item {
   id: number;
-  merch_item: ItemType;
+  merchItem: ItemType;
   name: ViewType;
   type: AirdropType;
-  description: string;
+  shortDescription: string;
+  description: string[];
   imageUrls: ImageUrl[];
   merchandise: Merchandise[];
   size: string[] | null;
@@ -328,7 +371,7 @@ export interface ImageUrl {
   updatedAt: string;
 }
 
-export interface Airdrop {
+export interface ResAirdrop {
   id: number;
   merkleRoot: string;
   proof: string[];
@@ -341,7 +384,8 @@ export interface Airdrop {
   startTime: string;
   vestingInterval: string;
   name: string;
-  description: string;
+  shortDescription: string;
+  description: string[];
   numberOfVestingPoint: string;
 
   /** @format date-time */
@@ -349,23 +393,16 @@ export interface Airdrop {
 
   /** @format date-time */
   updatedAt: string;
+  size: string[] | null;
+  color: string[] | null;
+  quantity: number;
 }
 
 export interface ResAllAirdrop {
-  token: Airdrop[];
-  nft: Airdrop[];
-  merchandise: Airdrop[];
-  other: Airdrop[];
-}
-
-export interface ResAirdrop {
-  id: number;
-  name: string;
-  description: string;
-  imageUrls: ImageUrl[];
-  size: string[] | null;
-  color: string[] | null;
-  type: string;
+  token: ResAirdrop[];
+  nft: ResAirdrop[];
+  merchandise: ResAirdrop[];
+  other: ResAirdrop[];
 }
 
 export interface PriceData {
@@ -378,6 +415,106 @@ export interface PriceDatas {
   sipherPrice: PriceData;
   ethereumPrice: PriceData;
   maticPrice: PriceData;
+}
+
+export interface DataAirdropTokens {
+  proof: string[];
+  leaf: string;
+  index: number;
+  claimer: string;
+  totalAmount: string;
+}
+
+export interface AirdropToken {
+  merkleRoot: string;
+  addressContract: string;
+  startTime: number;
+  vestingInterval: number;
+  numberOfVestingPoint: number;
+  imageUrls: ImageUrl[];
+  name: string;
+  description: string[];
+  shortDescription: string;
+  data: DataAirdropTokens[];
+}
+
+export interface AirdropTokens {
+  data: AirdropToken;
+}
+
+export interface MerchUpdateDto {
+  publicAddress?: string;
+  tier?: string;
+  merchItem?: ItemType;
+  quantity?: number;
+  quantityShipped?: number;
+  isShipped?: boolean;
+  shippable?: boolean;
+  itemId: number;
+}
+
+export interface UpdateItemDto {
+  merchItem?: ItemType;
+  name?: ViewType;
+  type?: AirdropType;
+  shortDescription?: string;
+  description?: string[];
+  size?: string[] | null;
+  color?: string[] | null;
+}
+
+export interface UpdateImageUrlDto {
+  color?: string;
+  default?: string;
+  front?: string;
+  back?: string;
+  left?: string;
+  right?: string;
+  top?: string;
+  bot?: string;
+  itemId: number;
+  airdropId: number;
+}
+
+export interface DistributeLootbox {
+  publicAddress: string;
+  tokenId: number;
+  quantity: number;
+  expiredDate: number;
+}
+
+export interface DistributeLootboxs {
+  data: DistributeLootbox[];
+}
+
+export interface ERC1155Sculpture {
+  id: number;
+  tokenId: number;
+  name: string;
+  shortDescription: string;
+  description: string;
+  external_url: string;
+  image: string;
+  attributes: ERC1155SculptureAttribute[];
+
+  /** @format date-time */
+  createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
+}
+
+export interface ERC1155SculptureAttribute {
+  id: number;
+  trait_type: string;
+  value: string;
+  erc1155: ERC1155Sculpture;
+
+  /** @format date-time */
+  createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
@@ -593,12 +730,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags lootbox
      * @name LootBoxControllerGetClaimableLootboxFromWallet
-     * @request GET:/api/sipher/loyalty/lootbox/get-by-walllet/claimable/{publicAddress}
+     * @request GET:/api/sipher/loyalty/lootbox/claimable/get-by-walllet/{publicAddress}
      * @secure
      */
     lootBoxControllerGetClaimableLootboxFromWallet: (publicAddress: string, params: RequestParams = {}) =>
       this.request<ClaimableLootbox[], any>({
-        path: `/api/sipher/loyalty/lootbox/get-by-walllet/claimable/${publicAddress}`,
+        path: `/api/sipher/loyalty/lootbox/claimable/get-by-walllet/${publicAddress}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -627,12 +764,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags lootbox
      * @name LootBoxControllerGetClaimableLootboxFromUserId
-     * @request GET:/api/sipher/loyalty/lootbox/get-by-userId/claimable
+     * @request GET:/api/sipher/loyalty/lootbox/claimable/get-by-userId
      * @secure
      */
     lootBoxControllerGetClaimableLootboxFromUserId: (params: RequestParams = {}) =>
       this.request<ClaimableLootbox[], any>({
-        path: `/api/sipher/loyalty/lootbox/get-by-userId/claimable`,
+        path: `/api/sipher/loyalty/lootbox/claimable/get-by-userId`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -762,10 +899,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/api/sipher/loyalty/collection/{collectionId}/portfolio/{userAddress}
      * @secure
      */
-    collectionControllerGetPortfolioByCollection: (userAddress: string, collectionId: string, params: RequestParams = {}) =>
+    collectionControllerGetPortfolioByCollection: (
+      userAddress: string,
+      collectionId: string,
+      query?: { size?: number; from?: number },
+      params: RequestParams = {},
+    ) =>
       this.request<PortfolioByCollectionResponse, any>({
         path: `/api/sipher/loyalty/collection/${collectionId}/portfolio/${userAddress}`,
         method: 'GET',
+        query: query,
         secure: true,
         format: 'json',
         ...params,
@@ -864,6 +1007,184 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: 'GET',
         secure: true,
         format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateAirdropTokens
+     * @request PUT:/api/sipher/loyalty/admin/updateTokenList/{smartContract}
+     * @secure
+     */
+    adminControllerUpdateAirdropTokens: (smartContract: string, data: AirdropTokens, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/updateTokenList/${smartContract}`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerGetMerchById
+     * @request GET:/api/sipher/loyalty/admin/merch/{publicAddress}
+     * @secure
+     */
+    adminControllerGetMerchById: (publicAddress: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/merch/${publicAddress}`,
+        method: 'GET',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateMerchById
+     * @request PATCH:/api/sipher/loyalty/admin/merch/{merchId}
+     * @secure
+     */
+    adminControllerUpdateMerchById: (merchId: number, data: MerchUpdateDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/merch/${merchId}`,
+        method: 'PATCH',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateItemById
+     * @request PATCH:/api/sipher/loyalty/admin/item/{itemId}
+     * @secure
+     */
+    adminControllerUpdateItemById: (itemId: number, data: UpdateItemDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/item/${itemId}`,
+        method: 'PATCH',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateImageUrlById
+     * @request PATCH:/api/sipher/loyalty/admin/imageUrl/{imageUrlId}
+     * @secure
+     */
+    adminControllerUpdateImageUrlById: (imageUrlId: number, data: UpdateImageUrlDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/imageUrl/${imageUrlId}`,
+        method: 'PATCH',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerDistributeLootbox
+     * @request PUT:/api/sipher/loyalty/admin/distribute
+     * @secure
+     */
+    adminControllerDistributeLootbox: (data: DistributeLootboxs, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/distribute`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateErc1155Sculpture
+     * @request PUT:/api/sipher/loyalty/admin/erc1155-sculpture
+     * @secure
+     */
+    adminControllerUpdateErc1155Sculpture: (data: ERC1155Sculpture, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/erc1155-sculpture`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerAddErc1155Sculpture
+     * @request POST:/api/sipher/loyalty/admin/erc1155-sculpture
+     * @secure
+     */
+    adminControllerAddErc1155Sculpture: (data: ERC1155Sculpture, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/erc1155-sculpture`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateErc1155Lootbox
+     * @request PUT:/api/sipher/loyalty/admin/erc1155-lootbox
+     * @secure
+     */
+    adminControllerUpdateErc1155Lootbox: (data: ERC1155Lootbox, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/erc1155-lootbox`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerAddErc1155Lootbox
+     * @request POST:/api/sipher/loyalty/admin/erc1155-lootbox
+     * @secure
+     */
+    adminControllerAddErc1155Lootbox: (data: ERC1155Lootbox, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/erc1155-lootbox`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         ...params,
       }),
   };

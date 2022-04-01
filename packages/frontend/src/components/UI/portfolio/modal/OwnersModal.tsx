@@ -27,9 +27,9 @@ export function OwnersModal({ isOpen, onClose, ownersData }: OwnersModalProps) {
             key={item.publicAddress}
           >
             <Flex align="center">
-              <Avatar bg="gray" />
+              <Avatar src={item.profileImage} bg="gray" />
               <Box ml={4}>
-                <Text fontWeight={600}>Unnamed</Text>
+                <Text fontWeight={600}>{item.username}</Text>
                 <Text>{shortenAddress(item.publicAddress)}</Text>
               </Box>
             </Flex>

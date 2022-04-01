@@ -1,12 +1,9 @@
 // import library
 
-import { toChecksumAddress } from "ethereumjs-util";
 import { Repository } from "typeorm";
 import { Canceled, CancelType } from "@entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-
-import { BatchOrder, Order } from "@utils/type";
 
 import { LoggerService } from "../logger/logger.service";
 

@@ -13,10 +13,13 @@ export const useClaim = () => {
   const { account } = useWalletContext()
 
   const { data } = useQuery(
-    "claimableLootBox",
-    () => client.api.lootBoxControllerGetClaimableLootboxFromUserId(setBearerToken(bearerToken)).then(res => res.data),
+    ["claimableLootBox", account],
+    () =>
+      client.api
+        .lootBoxControllerGetClaimableLootboxFromWallet(account!, setBearerToken(bearerToken))
+        .then(res => res.data),
     {
-      enabled: !!bearerToken,
+      enabled: !!bearerToken && !!account,
       initialData: [],
     },
   )
@@ -25,6 +28,8 @@ export const useClaim = () => {
     {
       onSuccess: () => {
         setIsStatusModal("SUCCESS")
+      },
+      onSettled: () => {
         query.invalidateQueries("claimableLootBox")
       },
       onError: () => {
@@ -40,7 +45,9 @@ export const useClaim = () => {
 
   const totalQuantity = claimData.reduce((accu, curr) => accu + curr.quantity, 0)
 
-  const isCheckAccountClaim = claimData.every(item => item.publicAddress === account)
+  const isCheckAccountClaim = claimData.every(
+    item => item.publicAddress.toLocaleUpperCase() === account?.toLocaleUpperCase(),
+  )
 
   return {
     account,

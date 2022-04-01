@@ -6,9 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { ERC1155Lootbox, ERC1155Sculpture } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
-
-import { ERC1155Lootbox, ERC1155Sculpture } from "./erc1155.entity";
 
 @Entity()
 export class ERC1155LootboxAttribute {
@@ -29,7 +28,7 @@ export class ERC1155LootboxAttribute {
   erc1155: ERC1155Lootbox;
 
   @ApiProperty()
-  @CreateDateColumn({ default: new Date() })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 }
 
@@ -52,10 +51,10 @@ export class ERC1155SculptureAttribute {
   erc1155: ERC1155Sculpture;
 
   @ApiProperty()
-  @CreateDateColumn({ default: new Date() })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }

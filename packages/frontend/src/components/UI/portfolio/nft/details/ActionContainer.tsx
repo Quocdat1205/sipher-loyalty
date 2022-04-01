@@ -8,7 +8,7 @@ interface ActionContainerProps {
 }
 
 const ActionContainer = ({ isFetched }: ActionContainerProps) => {
-  const { tokenDetails } = useDetailContext()
+  const { tokenDetails, handleLinkOpenSea } = useDetailContext()
   return (
     <Box
       px={4}
@@ -25,11 +25,12 @@ const ActionContainer = ({ isFetched }: ActionContainerProps) => {
           <Fragment>
             <Skeleton isLoaded={isFetched} flex={1}>
               <Button isDisabled py={5} colorScheme="accent" w="full">
-                {tokenDetails?.collection.category === "spaceship" ? "BRING TO OFF-CHAIN" : "REDEEM SCULPTURE"}
+                {/* {tokenDetails?.collection.category === "lootbox" ? "BRING TO OFF-CHAIN" : "REDEEM SCULPTURE"} */}
+                COMING SOON
               </Button>
             </Skeleton>
             <Skeleton isLoaded={isFetched} flex={1}>
-              <Button py={5} variant="secondary" colorScheme="cyan" w="full">
+              <Button onClick={handleLinkOpenSea} py={5} variant="secondary" colorScheme="cyan" w="full">
                 VIEW ON MARKETPLACE
               </Button>
             </Skeleton>
@@ -37,7 +38,7 @@ const ActionContainer = ({ isFetched }: ActionContainerProps) => {
         ) : (
           <Fragment>
             <Skeleton isLoaded={isFetched} flex={1}>
-              <Button py={5} variant="secondary" colorScheme="cyan" w="full">
+              <Button onClick={handleLinkOpenSea} py={5} variant="secondary" colorScheme="cyan" w="full">
                 VIEW ON MARKETPLACE
               </Button>
             </Skeleton>

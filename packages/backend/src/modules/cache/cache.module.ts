@@ -6,12 +6,11 @@ import { CacheService } from "./cache.service";
 
 @Module({
   imports: [
-    CacheModule.register({
-      store: redisStore,
-      host: constant.SESSION_HOST,
-      port: constant.SESSION_PORT,
-      auth_pass: constant.SESSION_PASS,
-      no_ready_check: true,
+    CacheModule.registerAsync({
+      useFactory: async () => ({
+        store: redisStore,
+        url: await constant.getSESSION_URL(),
+      }),
     }),
   ],
   providers: [CacheService],

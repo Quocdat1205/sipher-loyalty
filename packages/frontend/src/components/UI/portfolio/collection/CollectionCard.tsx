@@ -1,6 +1,6 @@
 import React from "react"
 import Image from "next/image"
-import { Avatar, Box, Flex, Skeleton, Text } from "@sipher.dev/sipher-ui"
+import { Avatar, Box, BoxProps, Flex, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import { EthereumIcon } from "@components/shared"
 import { SpLayer, SpVerified } from "@components/shared/icons"
@@ -8,25 +8,27 @@ import { currency } from "@utils"
 
 import usePortfolio from "../usePortfolio"
 
-interface CardProps {
-  data: ReturnType<typeof usePortfolio>["collectionData"]
+interface CardProps extends BoxProps {
+  data: ReturnType<typeof usePortfolio>["collectionData"][number]
   isFetched: boolean
 }
 
-const CollectionCard = ({ data, isFetched }: CardProps) => {
+const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
   return (
     <Box
       onClick={data.onView}
-      _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
+      _hover={{ filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))" }}
       overflow="hidden"
       rounded="lg"
       cursor="pointer"
       bg="neutral.700"
       pos="relative"
+      {...rest}
     >
       <Skeleton pos="relative" display="flex" isLoaded={isFetched}>
         <Image
-          src={data.bannerImage || ""}
+          blurDataURL="https://via.placeholder.com/150"
+          src={data.bannerImage ?? "https://via.placeholder.com/150"}
           alt={data.name}
           loading="lazy"
           height={200}
@@ -61,9 +63,7 @@ const CollectionCard = ({ data, isFetched }: CardProps) => {
               </Text>
               <Flex align="center">
                 <EthereumIcon />
-                <Text color="neutral.50">
-                  {0} {""}M
-                </Text>
+                <Text color="neutral.50">{currency(parseFloat(data.totalVolume ?? "0"))}</Text>
               </Flex>
             </Skeleton>
             <Skeleton isLoaded={isFetched} ml={8}>
@@ -72,7 +72,7 @@ const CollectionCard = ({ data, isFetched }: CardProps) => {
               </Text>
               <Flex align="center">
                 <EthereumIcon />
-                <Text color="neutral.50">{currency(data.floorPrice ? data.floorPrice : 0)} </Text>
+                <Text color="neutral.50">{currency(parseFloat(data.floorPrice) ?? "0")} </Text>
               </Flex>
             </Skeleton>
           </Flex>

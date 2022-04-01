@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { catchError } from "rxjs";
 import {
   Controller,
@@ -62,7 +63,7 @@ export class CollectionController {
   async getUserCollection(
     @Query() query: PortfolioQuery,
     @Param("userAddress") userAddress: string,
-    @Req() req: any
+    @Req() req: Request
   ) {
     await this.authService.verifyAddress(userAddress, req.userData);
     return this.collectionService.getPortfolio(
@@ -74,17 +75,31 @@ export class CollectionController {
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @Get(":collectionId/portfolio/:userAddress")
+  @ApiQuery({
+    name: "from",
+    type: Number,
+    required: false,
+  })
+  @ApiQuery({
+    name: "size",
+    type: Number,
+    required: false,
+  })
   @ApiOkResponse({ type: PortfolioByCollectionResponse })
   async getPortfolioByCollection(
     @Param("userAddress") userAddress: string,
     @Param("collectionId") collectionId: string,
-    @Req() req: any
+    @Req() req: any,
+    @Query("from") from = 0,
+    @Query("size") size = 20
   ) {
     await this.authService.verifyAddress(userAddress, req.userData);
-    return this.collectionService.getPortfolioByCollection(
-      userAddress.toLowerCase(),
-      collectionId.toLowerCase()
-    );
+    return this.collectionService.getPortfolioByCollection({
+      userAddress: userAddress.toLowerCase(),
+      collectionId: collectionId.toLowerCase(),
+      from,
+      size,
+    });
   }
 
   @UseGuards(AtherGuard)
@@ -96,10 +111,14 @@ export class CollectionController {
   async getItemById(
     @Param("userAddress") userAddress: string,
     @Param("itemId") itemId: string,
-    @Req() req: any
+    @Req() req: Request
   ) {
     await this.authService.verifyAddress(userAddress, req.userData);
-    const result = await this.collectionService.getItemById(itemId);
+    // Best Practice 🤡
+    const result = await this.collectionService.getItemById(
+      itemId,
+      req.headers.authorization
+    );
     if (!result) {
       throw new HttpException("Item not found", 404);
     }

@@ -4,6 +4,8 @@ import { Box, Button, Flex, Text } from "@sipher.dev/sipher-ui"
 
 import { useWidth } from "@hooks"
 
+import CountDown from "../../CountDown"
+
 import { ContentDetails } from "./ContentDetails"
 import { HeaderDetails } from "./HeaderDetails"
 import { useDetailBox } from "./useDetailBox"
@@ -15,7 +17,19 @@ interface DetailBoxProps {
 
 export const DetailBox = ({ id }: DetailBoxProps) => {
   const [boxWidth, setBoxWidth] = useState(0)
-  const { isFetched, details, slot, setSlot, mutateMint, isLoading, router } = useDetailBox(id)
+  const {
+    isFetched,
+    details,
+    slot,
+    setSlot,
+    mutateMint,
+    isLoading,
+    router,
+    status,
+    setStatus,
+    mintedData,
+    handleClick,
+  } = useDetailBox(id)
   const windowWidth = useWidth()
   // right UI info details
   const widthContainer = 800
@@ -25,7 +39,7 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
   }, [windowWidth])
   return (
     <Flex flex={1} flexDir="column" align="center">
-      <Flex w="full" flex={1} flexDir={["column", "row"]}>
+      <Flex pos="relative" w="full" flex={1} flexDir={["column", "row"]}>
         <Flex pos="fixed" top="4rem" left={0} zIndex={1} flexDir="column">
           <Box pt={8} px={8} w="full">
             <Button onClick={() => router.back()} pl={2} bg="white" rounded="full" alignItems="center">
@@ -54,6 +68,12 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
             src={details?.propertyLootbox.image || ""}
             alt={"box"}
           />
+          <Box pos="absolute" bottom="1rem" left="50%" zIndex={1} transform="translate(-50% ,-50%)">
+            <Text fontSize="sm" color="neutral.400" fontWeight={600}>
+              Reveal Date
+            </Text>
+            <CountDown fontWeight={600} deadline={1650024000000} />
+          </Box>
         </Box>
         <Flex flex={1} pl={[0, `${boxWidth - 8}px`]} flexDir="column">
           <Box flex={1} py={8} px={[4, 0]}>
@@ -67,10 +87,14 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
             </Box>
             <Box maxWidth={`${widthContainer}px`} flex={1}>
               <HeaderDetails details={details} isFetching={isFetched} />
-              <ContentDetails description={details?.propertyLootbox.description ?? ""} isFetching={isFetched} />
+              <ContentDetails isFetching={isFetched} />
             </Box>
           </Box>
           <ActionContainer
+            handleClick={handleClick}
+            mintedData={mintedData}
+            status={status}
+            setStatus={setStatus}
             isFetching={isFetched}
             details={details}
             slot={slot}

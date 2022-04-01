@@ -14,7 +14,7 @@ const NavMenus = ({ menus }: NavMenusProps) => {
   return (
     <HStack h="full" align="center" spacing={[4, 4, 8, 12]} display={"flex"}>
       {menus.map(item => (
-        <Flex py={2} align="center" key={item.path} pos="relative">
+        <Flex h="full" align="center" key={item.path} pos="relative">
           <Text
             cursor="pointer"
             onClick={() => router.push(item.path)}

@@ -43,10 +43,10 @@ export class SculptureTransaction {
   ownerAddress: string;
 
   @ApiProperty()
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }

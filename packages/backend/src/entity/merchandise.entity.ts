@@ -1,4 +1,11 @@
 import {
+  IsBoolean,
+  IsEnum,
+  IsEthereumAddress,
+  IsNumber,
+  IsString,
+} from "class-validator";
+import {
   Column,
   CreateDateColumn,
   Entity,
@@ -15,49 +22,57 @@ import { Item, ItemType } from "./item.entity";
 @Entity()
 export class Merchandise {
   @ApiProperty({ type: Number })
+  @IsNumber()
   @PrimaryGeneratedColumn("increment")
-  id?: number;
+  id: number;
 
   @TransformLowercase()
   @ApiProperty({ type: String })
+  @IsEthereumAddress()
   @Column()
   publicAddress: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column()
   tier?: string;
 
   @ApiProperty({ type: String, enum: ItemType, enumName: "ItemType" })
+  @IsEnum(ItemType)
   @Column({
     type: String,
   })
-  merch_item: ItemType;
+  merchItem: ItemType;
 
   @ApiProperty({ type: Number })
+  @IsNumber()
   @Column()
   quantity: number;
 
   @ApiProperty({ type: Number })
-  @Column()
-  quantity_shipped: number;
+  @IsNumber()
+  @Column({ default: 0 })
+  quantityShipped?: number;
 
   @ApiProperty({ type: Boolean })
+  @IsBoolean()
   @Column({ default: false })
   isShipped?: boolean;
 
   @ApiProperty({ type: Boolean })
+  @IsBoolean()
   @Column({ default: false })
-  isShip?: boolean;
+  shippable?: boolean;
 
   @ApiProperty({ type: () => Item })
   @ManyToOne(() => Item, (item) => item.merchandise)
   item?: Item;
 
   @ApiProperty()
-  @CreateDateColumn({ default: new Date() })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt?: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }

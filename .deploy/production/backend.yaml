@@ -7,12 +7,12 @@ sipher-chart:
       kubernetes.io/ingress.class: alb
       service.beta.kubernetes.io/aws-load-balancer-internal: "true"
     rules:
-    - host:  api-loyalty.sipher.xyz
-      paths:
-      - path: /
-        serviceName: loyalty-backend-api
-        servicePort: 5500
-        pathType: ImplementationSpecific
+      - host: api-dashboard.atherlabs.xyz
+        paths:
+          - path: /
+            serviceName: loyalty-backend-api
+            servicePort: 5500
+            pathType: ImplementationSpecific
   deploys:
     - name: backend
       replicasCount: 2
@@ -26,10 +26,10 @@ sipher-chart:
         limits:
           memory: 512Mi
           cpu: 512m
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
       args:
-        - '-c'
-        - 'node ./dist/main.js'
+        - "-c"
+        - "node ./dist/main.js"
       services:
         - name: api
           containerPort:
@@ -37,15 +37,30 @@ sipher-chart:
     - name: lootbox-tracker
       replicasCount: 1
       resources: {}
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
       args:
-        - '-c'
-        - 'node ./dist/scripts/lootbox-tracker.js'
+        - "-c"
+        - "node ./dist/scripts/lootbox-tracker.js"
     - name: sculpture-tracker
       replicasCount: 1
       resources: {}
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
       args:
-        - '-c'
-        - 'node ./dist/scripts/sculpture-tracker.js'
-  env: {}
+        - "-c"
+        - "node ./dist/scripts/sculpture-tracker.js"
+  env:
+    PORT: 5500
+    NODE_ENV: "production"
+    POSTGRES_URL: ssm:/atherlabs/dashboard/prod/POSTGRES_URL
+    POSTGRES_SYNCHRONIZE: false
+    SESSION_URL: ssm:/atherlabs/dashboard/prod/SESSION_URL
+    RPC_URL_ETHEREUM: ssm:/atherlabs/dashboard/prod/RPC_URL_ETHEREUM
+    RPC_URL_RINKERBY: "https://eth-rinkeby.alchemyapi.io/v2/-295c0M3micMRJvOU0MWMOx5Mo4WYj0X"
+    RPC_URL_POLYGON_MUMBAI: "https://polygon-mumbai.g.alchemy.com/v2/1dyROd_yNg9c4hYmKx4et4hotTV-wCgb"
+    RPC_URL_POLYGON_MAINNET: ssm:/atherlabs/dashboard/prod/RPC_URL_POLYGON_MAINNET
+    ELASTICSEARCH_ENDPOINT: "https://search-marketplace-prod-n7642lrgd7575r6mz62jiexa44.ap-southeast-1.es.amazonaws.com"
+    ELASTICSEARCH_INDEX: "marketplace"
+    PRIVATE_KEY_LOYALTY: ssm:/atherlabs/dashboard/prod/PRIVATE_KEY_LOYALTY
+    ATHER_ID_URL: "http://backend-ather-id-api.ather-id:3001"
+    ATHER_SOCIAL_URL: "http://ather-social-backend-api.ather-social:3001"
+    MARKETPLACE_SDK_URL: "http://marketplace-backend-api.marketplace:3001"

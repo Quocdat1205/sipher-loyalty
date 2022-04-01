@@ -9,13 +9,13 @@ interface CardGeneralProps {
   name: string
   icon: React.ReactNode
   popoverProps?: { label: string; content: string }
-  rightChildren?: React.ReactNode
+  bottomChildren?: React.ReactNode
 }
 
-const CardGeneral = ({ value, name, icon, popoverProps, rightChildren }: CardGeneralProps) => {
+const CardGeneral = ({ value, name, icon, popoverProps, bottomChildren }: CardGeneralProps) => {
   return (
-    <Box bg="blackAlpha.800" rounded="lg" w="full" p={4}>
-      <Flex mb={4} align="center" justify="space-between">
+    <Flex flexDir="column" bg="blackAlpha.800" rounded="lg" w="full" p={6}>
+      <Flex mb={2} align="center" justify="space-between">
         <Flex align="center">
           <Text color="neutral.300" textTransform="capitalize">
             {name}
@@ -37,13 +37,13 @@ const CardGeneral = ({ value, name, icon, popoverProps, rightChildren }: CardGen
           {icon}
         </Flex>
       </Flex>
-      <Flex lineHeight={1.3} alignSelf="flex-end" align="flex-end" justify="space-between">
-        <Text fontSize="3xl" color="text.primary" fontWeight={600}>
+      <Flex w="full" flexDir="column">
+        <Text mb={2} fontSize="3xl" color="text.primary" fontWeight={600}>
           {value}
         </Text>
-        {rightChildren}
+        <Box>{bottomChildren}</Box>
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 

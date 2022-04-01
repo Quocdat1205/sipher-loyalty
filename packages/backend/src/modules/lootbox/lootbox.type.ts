@@ -1,14 +1,11 @@
-import { IsEthereumAddress } from "class-validator";
-import { Lootbox, PendingMint } from "@entity";
-import { ApiProperty } from "@nestjs/swagger";
+import { ClaimableLootbox, Lootbox, PendingMint } from "@entity";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 import { TransformLowercase } from "@utils/transfomers";
-import { ClaimableLootbox } from "src/entity/claimableLootbox.entity";
 
 export class MintBatchLootboxInputDto {
   @TransformLowercase()
   @ApiProperty({ type: String })
-  @IsEthereumAddress()
   publicAddress: string;
 
   @ApiProperty({ type: Number, isArray: true })
@@ -16,12 +13,14 @@ export class MintBatchLootboxInputDto {
 
   @ApiProperty({ type: Number, isArray: true })
   amount: number[];
+
+  @ApiPropertyOptional({ type: Number })
+  deadline?: number;
 }
 
 export class MintLootboxInputDto {
   @TransformLowercase()
   @ApiProperty({ type: String })
-  @IsEthereumAddress()
   publicAddress: string;
 
   @ApiProperty({ type: Number })
@@ -29,6 +28,9 @@ export class MintLootboxInputDto {
 
   @ApiProperty({ type: Number })
   amount: number;
+
+  @ApiPropertyOptional({ type: Number })
+  deadline?: number;
 }
 
 export class resMintBatchDto {
@@ -63,16 +65,21 @@ export class resClaimableLootboxDto {
   data: ClaimableLootbox[];
 }
 
-export interface MintLootboxInput {
+export class DistributeLootbox {
+  @TransformLowercase()
+  @ApiProperty({ type: String })
   publicAddress: string;
-  batchID: number;
-  amount: number;
-  deadline?: number;
-}
 
-export interface MintBatchLootboxInput {
-  publicAddress: string;
-  batchID: number[];
-  amount: number[];
-  deadline?: number;
+  @ApiProperty({ type: Number })
+  tokenId: number;
+
+  @ApiProperty({ type: Number })
+  quantity: number;
+
+  @ApiProperty()
+  expiredDate: number;
+}
+export class DistributeLootboxs {
+  @ApiProperty({ type: DistributeLootbox, isArray: true })
+  data: DistributeLootbox[];
 }

@@ -8,7 +8,6 @@ import { useWalletContext } from "@web3"
 
 import { WalletCard } from "@components/shared"
 import { useChakraToast } from "@hooks"
-import { useAuth } from "src/providers/auth"
 
 import { SignUpStep } from "./SignUpUI"
 

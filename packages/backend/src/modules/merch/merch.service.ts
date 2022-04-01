@@ -1,18 +1,46 @@
 import { Repository } from "typeorm";
-import { AirdropType, Merchandise, SculptureTransaction } from "@entity";
+import { AirdropType, Item, Merchandise } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { LoggerService } from "../logger/logger.service";
+
+import { MerchUpdateDto } from "./merch.dto";
 
 @Injectable()
 export class MerchService {
   constructor(
     @InjectRepository(Merchandise)
     private merchRepo: Repository<Merchandise>,
-    @InjectRepository(SculptureTransaction)
-    private sculptureTransactionRepo: Repository<SculptureTransaction>
+    @InjectRepository(Item)
+    private itemRepo: Repository<Item>
   ) {}
+
+  async updateMerch(merchId: number, merchInfo: MerchUpdateDto) {
+    const merch = await this.merchRepo.findOne(merchId);
+    if (!merch) {
+      throw new HttpException("Merch not found", HttpStatus.NOT_FOUND);
+    }
+    if (merchInfo.itemId !== undefined) {
+      const item = await this.itemRepo.findOne(merchInfo.itemId);
+      if (!item) {
+        throw new HttpException("Item not found", HttpStatus.NOT_FOUND);
+      }
+      merch.item = item;
+    }
+    merch.shippable = merchInfo.shippable;
+    merch.isShipped = merchInfo.isShipped;
+    merch.merchItem = merchInfo.merchItem;
+    merch.publicAddress = merchInfo.publicAddress;
+    merch.quantity = merchInfo.quantity;
+    merch.quantityShipped = merchInfo.quantityShipped;
+    merch.tier = merchInfo.tier;
+    /* 
+      Apparently TypeORM doesn't return the whole updated item like other ORM, 
+      have to do another find query after save() if needed. Return nothing for now
+    */
+    await this.merchRepo.save(merch);
+  }
 
   async getAllMerchByPublicAddress(
     publicAddress: string

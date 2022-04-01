@@ -1,5 +1,3 @@
-// import library
-import { toChecksumAddress } from "ethereumjs-util";
 import { In, Repository } from "typeorm";
 import { ERC1155Lootbox, MintStatus, MintType, PendingMint } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
@@ -7,8 +5,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
 
 import {
-  MintBatchLootboxInput,
-  MintLootboxInput,
+  MintBatchLootboxInputDto,
+  MintLootboxInputDto,
 } from "@modules/lootbox/lootbox.type";
 import {
   recoverBatchOrderSignature,
@@ -39,7 +37,7 @@ export class MintService {
 
   private genInfoPendings = async () => {
     this.infoPendings = (await this.erc1155LootboxRepo.find())
-      .sort((a, b) => parseInt(a.tokenId, 10) - parseInt(b.tokenId, 10))
+      .sort((a, b) => a.tokenId - b.tokenId)
       .map((el) => ({ name: el.name, image: el.image }));
   };
 
@@ -47,19 +45,16 @@ export class MintService {
     const pendings = await this.PendingMintRepo.find({
       where: [
         {
-          to: In([
-            publicAddress.toLowerCase(),
-            toChecksumAddress(publicAddress),
-          ]),
+          to: publicAddress.toLowerCase(),
           type: MintType.Lootbox,
           status: In([MintStatus.Minting, MintStatus.Reject, MintStatus.Error]),
         },
       ],
     });
-
+    if (this.infoPendings.length < 1) this.genInfoPendings();
     const data = [];
     pendings.forEach((element) => {
-      if (element.batchID) {
+      if (element.batchIDs.length === 0) {
         const pending = {
           ...element,
           info: [
@@ -96,10 +91,7 @@ export class MintService {
     const pending = await this.PendingMintRepo.findOne({
       where: [
         {
-          to: In([
-            batchOrder.to.toLowerCase(),
-            toChecksumAddress(batchOrder.to),
-          ]),
+          to: batchOrder.to.toLowerCase(),
           type: MintType.Lootbox,
           status: In([MintStatus.Minting, MintStatus.Reject, MintStatus.Error]),
           salt: batchOrder.salt,
@@ -120,7 +112,7 @@ export class MintService {
     const pending = await this.PendingMintRepo.findOne({
       where: [
         {
-          to: In([order.to.toLowerCase(), toChecksumAddress(order.to)]),
+          to: order.to.toLowerCase(),
           type: MintType.Lootbox,
           status: In([MintStatus.Minting, MintStatus.Reject, MintStatus.Error]),
           salt: order.salt,
@@ -140,7 +132,7 @@ export class MintService {
     return this.PendingMintRepo.save(pendingMint);
   }
 
-  async mintBatch(mintBatchLootboxInput: MintBatchLootboxInput) {
+  async mintBatch(mintBatchLootboxInput: MintBatchLootboxInputDto) {
     mintBatchLootboxInput.deadline = getDeadline3Day();
     const { publicAddress, batchID, amount, deadline } = mintBatchLootboxInput;
     LoggerService.log(
@@ -180,7 +172,7 @@ export class MintService {
     return pendingMint;
   }
 
-  async mint(mintLootboxInput: MintLootboxInput) {
+  async mint(mintLootboxInput: MintLootboxInputDto) {
     mintLootboxInput.deadline = getDeadline3Day();
     const { publicAddress, batchID, amount, deadline } = mintLootboxInput;
     LoggerService.log(

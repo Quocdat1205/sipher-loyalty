@@ -26,7 +26,7 @@ export const useAirdrops = () => {
   const toast = useChakraToast()
 
   const { data: airdropsData, isFetched } = useQuery(
-    ["airdrops", account],
+    ["airdrops", account, currentTab],
     () =>
       client.api
         .airdropControllerGetAirdropsByType(account!, AirdropType.ALL, setBearerToken(bearerToken))
@@ -50,12 +50,7 @@ export const useAirdrops = () => {
         airdropsData!.token.find(item => item.addressContract === SipherAirdropsAddress)!.proof,
       ),
     {
-      enabled:
-        !!scCaller.current &&
-        !!account &&
-        airdropsData!.token?.length > 0 &&
-        chainId === ETHEREUM_NETWORK &&
-        airdropsData!.token.find(item => item.addressContract === SipherAirdropsAddress)!.totalAmount === "0",
+      enabled: !!scCaller.current && !!account && airdropsData!.token?.length > 0 && chainId === ETHEREUM_NETWORK,
       initialData: 0,
     },
   )
@@ -94,9 +89,9 @@ export const useAirdrops = () => {
     ? [
         ...airdropsData!.nft?.map(item => ({
           ...item,
-          buttonText: "Claim",
+          buttonText: "Coming soon",
           isClaiming: claimId === item.id,
-          isDisabled: chainId !== ETHEREUM_NETWORK && claimableAmount !== 0,
+          isDisabled: true,
           onView: () => {
             router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
           },
@@ -108,7 +103,7 @@ export const useAirdrops = () => {
         ...airdropsData!.token?.map(item => ({
           ...item,
           isClaiming: claimId === item.id,
-          isDisabled: true,
+          isDisabled: item.totalAmount > "0" ? chainId !== ETHEREUM_NETWORK && claimableAmount === 0 : true,
           buttonText: "Claim",
           onView: () => {
             router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
@@ -121,7 +116,7 @@ export const useAirdrops = () => {
           ...item,
           isClaiming: claimId === item.id,
           isDisabled: true,
-          buttonText: "Redeem",
+          buttonText: "Coming soon",
           onView: () => {
             router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
           },
@@ -131,7 +126,7 @@ export const useAirdrops = () => {
         })),
         ...airdropsData!.other?.map(item => ({
           ...item,
-          buttonText: "Redeem",
+          buttonText: "Coming soon",
           isClaiming: claimId === item.id,
           isDisabled: true,
           onView: () => {

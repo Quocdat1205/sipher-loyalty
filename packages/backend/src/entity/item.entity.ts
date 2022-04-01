@@ -1,3 +1,4 @@
+import { IsArray, IsEnum, IsNumber, IsString } from "class-validator";
 import {
   Column,
   CreateDateColumn,
@@ -6,11 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { AirdropType, ImageUrl, Merchandise } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
-
-import { AirdropType } from "./airdrop.entity";
-import { ImageUrl } from "./imageUrl.entity";
-import { Merchandise } from "./merchandise.entity";
 
 export enum ItemType {
   Bomber = "Bomber",
@@ -31,6 +29,7 @@ export enum ViewType {
 @Entity()
 export class Item {
   @ApiProperty({ type: Number })
+  @IsNumber()
   @PrimaryGeneratedColumn("increment")
   id: number;
 
@@ -39,12 +38,14 @@ export class Item {
     enum: ItemType,
     enumName: "ItemType",
   })
+  @IsEnum(ItemType)
   @Column({
     type: String,
   })
-  merch_item: ItemType;
+  merchItem: ItemType;
 
   @ApiProperty({ type: String, enum: ViewType, enumName: "ViewType" })
+  @IsEnum(ViewType)
   @Column({
     type: String,
   })
@@ -54,11 +55,21 @@ export class Item {
   @Column({
     type: String,
   })
+  @IsEnum(AirdropType)
   type: AirdropType;
 
   @ApiProperty({ type: String })
-  @Column()
-  description: string;
+  @IsString()
+  @Column({ nullable: true })
+  shortDescription?: string;
+
+  @ApiProperty({ type: String, isArray: true })
+  @IsArray()
+  @IsString({
+    each: true,
+  })
+  @Column("character varying", { array: true, default: [] })
+  description?: string;
 
   @ApiProperty({
     type: () => ImageUrl,
@@ -75,18 +86,26 @@ export class Item {
   merchandise?: Merchandise[];
 
   @ApiProperty({ type: String, isArray: true, default: [], nullable: true })
+  @IsArray()
+  @IsString({
+    each: true,
+  })
   @Column("character varying", { array: true, default: [], nullable: true })
   size?: string[];
 
   @ApiProperty({ type: String, isArray: true, default: [], nullable: true })
+  @IsArray()
+  @IsString({
+    each: true,
+  })
   @Column("character varying", { array: true, default: [], nullable: true })
   color?: string[];
 
   @ApiProperty()
-  @CreateDateColumn({ default: new Date() })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }

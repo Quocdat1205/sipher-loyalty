@@ -17,7 +17,9 @@ import { LoggerService } from "../logger/logger.service";
 export class SeedLootboxService {
   private src = path.resolve(
     __dirname,
-    `../../../src/data/LOOTBOX/data${constant.isProduction ? "" : "_test"}.json`
+    `../../../src/data/DISTRIBUTE/LOOTBOX/data${
+      constant.isProduction ? "" : "_test"
+    }.json`
   );
 
   private lootboxData = JSON.parse(fs.readFileSync(this.src).toString());
@@ -35,11 +37,11 @@ export class SeedLootboxService {
       tokenId: lootbox.tokenId,
     });
 
-    this.lootboxService.addQuantityClaimedLootbox({
-      publicAddress: lootbox.publicAddress,
+    await this.lootboxService.addQuantityClaimedLootbox({
+      publicAddress: lootbox.publicAddress.toLowerCase(),
       tokenId: lootbox.tokenId,
       quantity: lootbox.quantity,
-      expiredDate: new Date(lootbox.expiredDate),
+      expiredDate: lootbox.expiredDate,
       propertyLootbox: erclootbox,
     });
   }
@@ -52,6 +54,6 @@ export class SeedLootboxService {
       promises.push(this.createClaimableLootbox(this.lootboxData[i]));
     }
     await Promise.all(promises);
-    LoggerService.log("Done");
+    LoggerService.log("Done add lootbox test");
   };
 }

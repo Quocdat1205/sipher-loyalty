@@ -1,5 +1,4 @@
 import { Transform } from "class-transformer";
-import { IsEthereumAddress } from "class-validator";
 import {
   Column,
   CreateDateColumn,
@@ -23,7 +22,6 @@ export class ClaimableLootbox {
   @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
-  @IsEthereumAddress()
   publicAddress: string;
 
   @ApiProperty({ type: Number })
@@ -42,15 +40,14 @@ export class ClaimableLootbox {
   propertyLootbox?: ERC1155Lootbox;
 
   @ApiProperty()
-  @Column({ type: "timestamptz", nullable: true })
-  @Transform(({ value }) => new Date(value))
-  expiredDate: Date;
+  @Column()
+  expiredDate: number;
 
   @ApiProperty()
-  @CreateDateColumn({ default: new Date() })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt?: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }

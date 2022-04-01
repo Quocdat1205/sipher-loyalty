@@ -1,9 +1,12 @@
 [
   {
     "id": 1,
-    "merch_item": "Bomber",
+    "merchItem": "Bomber",
     "name": "SIPHER Exclusive Bomber",
-    "description": "merchandise for investor nft support Sipher team early",
+    "shortDescription": "This Airdrop is limited and applied for Diamond tier ",
+    "description": [
+      "Redeem your free and premium Sipher Bomber from our Exclusive Collection as a reward for being a Diamond Tier contributor during the NEKO Dutch Auction. A minimalist designed snapback hat with adjustable closure for your style and comfort, embroidered with Sipher brand."
+    ],
     "imageUrls": [
       {
         "color": "black",
@@ -24,9 +27,12 @@
   },
   {
     "id": 2,
-    "merch_item": "Hoodie",
+    "merchItem": "Hoodie",
     "name": "SIPHER Exclusive Hoodie",
-    "description": "merchandise for investor nft support Sipher team early",
+    "shortDescription": "This Airdrop is limited and applied for Platinum tier ",
+    "description": [
+      "Redeem your free and premium Sipher Hoodie from our Exclusive Collection as a reward for being a Platinum Tier contributor during the NEKO Dutch Auction. A minimalist designed snapback hat with adjustable closure for your style and comfort, embroidered with Sipher brand."
+    ],
     "imageUrls": [
       {
         "color": "black",
@@ -47,9 +53,12 @@
   },
   {
     "id": 3,
-    "merch_item": "Tshirt",
+    "merchItem": "Tshirt",
     "name": "SIPHER Exclusive T-shirt",
-    "description": "merchandise for investor nft support Sipher team early",
+    "shortDescription": "This Airdrop is limited and applied for Gold tier ",
+    "description": [
+      "Redeem your free and premium Sipher Tshirt from our Exclusive Collection as a reward for being a Gold Tier contributor during the NEKO Dutch Auction. A minimalist designed snapback hat with adjustable closure for your style and comfort, embroidered with Sipher brand."
+    ],
     "imageUrls": [
       {
         "color": "black",
@@ -70,9 +79,12 @@
   },
   {
     "id": 4,
-    "merch_item": "Hat",
+    "merchItem": "Hat",
     "name": "SIPHER Exclusive Hat",
-    "description": "merchandise for investor nft support Sipher team early",
+    "shortDescription": "This Airdrop is limited and applied for Silver tier ",
+    "description": [
+      "Redeem your free and premium Sipher Hat from our Exclusive Collection as a reward for being a Silver Tier contributor during the NEKO Dutch Auction. A minimalist designed snapback hat with adjustable closure for your style and comfort, embroidered with Sipher brand."
+    ],
     "imageUrls": [
       {
         "color": "black",
@@ -91,9 +103,13 @@
   },
   {
     "id": 5,
-    "merch_item": "Card",
+    "merchItem": "Card",
     "name": "Thank You Card",
-    "description": "A personal note to thank our early backers from Sipher's team",
+    "shortDescription": "A personal note to thank our early backers from Sipher's team",
+    "description": [
+      "This is a tribute to all the Diamond, Platinum, Gold and Silver tier MVPs for participating in our Neko Dutch Auction Launch. Our eventful journey to architect Sipheria has been owing to all of your remarkable contributions so thank you for being a part of it.",
+      "Let’s continue our next chapter for a phenomenal Sipheria ahead, from one to many."
+    ],
     "imageUrls": [
       {
         "color": "black",

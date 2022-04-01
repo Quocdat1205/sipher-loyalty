@@ -38,7 +38,6 @@ const contentWhatSpaceships = [
 export const WhatSpaceship = () => {
   return (
     <Flex
-      px={[4, 4, 4, 0, 0]}
       pos="relative"
       flexDir="column"
       align="center"
@@ -46,6 +45,7 @@ export const WhatSpaceship = () => {
       bg="url(/images/spaceship/bg-galaxy2.png)"
       bgRepeat="no-repeat"
       bgSize="cover"
+      px={[4, 4, 4, 0, 0]}
     >
       <Box
         pos="absolute"
@@ -78,7 +78,7 @@ export const WhatSpaceship = () => {
             </WrapItem>
           ))}
         </Wrap>
-        <Box pos="relative">
+        <Box sx={{ img: { rounded: "lg" } }} pos="relative">
           <Image src="/images/home/banner-home.png" alt="banner" width={1200} height={360} />
           <Box pos="absolute" top="75%" left="50%" w="full" transform="translate(-50%,-50%)">
             <Text textAlign="center" lineHeight={1.2} fontWeight={600} fontSize="2xl">

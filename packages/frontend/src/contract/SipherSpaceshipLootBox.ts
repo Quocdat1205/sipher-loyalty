@@ -1,6 +1,6 @@
 import { Contract, ethers, providers } from "ethers"
 
-import { SipherSpaceshipAddress } from "@constant"
+import { SipherLootBoxAddress } from "@constant"
 import { SipherSpaceshipLootBoxAbi } from "src/constant/abi"
 
 interface mintProps {
@@ -25,7 +25,7 @@ export class SipherSpaceshipLootBox {
 
   constructor(provider: providers.Web3Provider) {
     this.provider = provider
-    this.contract = new ethers.Contract(SipherSpaceshipAddress, SipherSpaceshipLootBoxAbi, provider)
+    this.contract = new ethers.Contract(SipherLootBoxAddress, SipherSpaceshipLootBoxAbi, provider)
   }
 
   async mintBatch({ deadline, batchIDs, amounts, salt, signature }: mintBatchProps) {

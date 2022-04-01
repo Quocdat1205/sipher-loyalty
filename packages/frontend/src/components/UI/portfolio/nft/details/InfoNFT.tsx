@@ -16,24 +16,27 @@ interface InfoNFTProps {
 const InfoNFT = ({ tokenDetails, isFetched }: InfoNFTProps) => {
   const collectionName = NftContracts.find(contract => contract.address === tokenDetails?.collection.id)?.name
   const [isModal, setIsModal] = useState(false)
-
   return (
     <HStack mb={8} spacing={8}>
       <Flex align="center" flex={1} minW={0}>
-        <Avatar bg="gray" />
+        <Avatar src={"/images/general/creator.png"} bg="gray" />
         <Flex ml={2} flexDir="column" overflow="hidden" flex={1}>
           <Text pb={1} fontWeight={600} color="neutral.400">
             Creator
           </Text>
           <Skeleton isLoaded={isFetched}>
             <Text color="cyan.600" w="full" isTruncated>
-              Sipher
+              SIPHER
             </Text>
           </Skeleton>
         </Flex>
       </Flex>
       <Flex align="center" flex={1} minW={0}>
-        <Avatar bg="gray" />
+        {tokenDetails?.collection.collectionType === "ERC1155" ? (
+          <Avatar src={tokenDetails?.allOwner[0].profileImage} bg="gray" />
+        ) : (
+          <Avatar src={tokenDetails?.ownerInfo.profileImage} bg="gray" />
+        )}
         <Flex ml={2} flexDir="column">
           <Text pb={1} fontWeight={600} color="neutral.400">
             {tokenDetails?.collection.collectionType === "ERC1155" ? "Owner(s)" : "Owner"}
@@ -44,7 +47,11 @@ const InfoNFT = ({ tokenDetails, isFetched }: InfoNFTProps) => {
                 {tokenDetails?.allOwner.length}
               </Text>
             ) : (
-              <Text>{shortenAddress(tokenDetails?.owner || "")}</Text>
+              <Text>
+                {tokenDetails?.ownerInfo.username
+                  ? tokenDetails?.ownerInfo.username
+                  : shortenAddress(tokenDetails?.ownerInfo.publicAddress || "")}
+              </Text>
             )}
           </Skeleton>
         </Flex>

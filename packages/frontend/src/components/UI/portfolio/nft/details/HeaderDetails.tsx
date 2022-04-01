@@ -34,7 +34,7 @@ const HeaderDetails = ({ tokenDetails, isFetched }: HeaderDetailsProps) => {
                 Token ID:
               </Text>
               <Text mr={2}>{tokenDetails?.tokenId}</Text>
-              <ClipboardCopy text={tokenDetails?.tokenId ?? ""} />
+              <ClipboardCopy text={tokenDetails?.tokenId.toString() ?? ""} />
             </Flex>
             <Flex align="center">
               <Text fontWeight={600} color="neutral.400" mr={1}>

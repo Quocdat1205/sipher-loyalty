@@ -40,16 +40,26 @@ export const useInventory = () => {
     },
   )
 
-  const inventoryData = data!.map(item => ({
-    ...item,
-    isDisabled: item.publicAddress !== account,
-    onSelect: (isChecked = false) => {
-      const oldState = data
-      oldState.find(i => i.id === item.id)!.isChecked = isChecked
-      setData([...oldState])
-    },
-    onView: () => router.push(`/spaceship/${item.id}`),
-  }))
+  const inventoryData = !!account
+    ? data!.map(item => ({
+        ...item,
+        isDisabled: item.publicAddress.toUpperCase() !== account?.toUpperCase(),
+        onSelect: (isChecked = false) => {
+          if (item.publicAddress.toUpperCase() !== account?.toUpperCase()) {
+            toast({
+              status: "warning",
+              title: `Owned by ${item.publicAddress}`,
+              message: `Please switch to ${item.publicAddress} to mint`,
+            })
+            return
+          }
+          const oldState = data
+          oldState.find(i => i.id === item.id)!.isChecked = isChecked
+          setData([...oldState])
+        },
+        onView: () => router.push(`/spaceship/${item.id}`),
+      }))
+    : []
 
   const inventoryDataCheck = data!
     .filter(i => i.isChecked)
@@ -126,12 +136,13 @@ export const useInventory = () => {
       },
       onError: (err: any) => {
         toast({ status: "error", title: "Error", message: err?.message })
-        mutateStatus({ id: idError!.current!, status: "Rejected" as MintStatus })
 
         if (err.code === 4001) {
           setIsStatusModal("PENDING")
+          mutateStatus({ id: idError!.current!, status: "Rejected" as MintStatus })
         } else {
           setIsStatusModal("ERROR")
+          mutateStatus({ id: idError!.current!, status: "Error" as MintStatus })
         }
       },
     },

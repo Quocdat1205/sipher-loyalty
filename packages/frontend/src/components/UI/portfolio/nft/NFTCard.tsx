@@ -17,25 +17,20 @@ export const videos = ["mp4", "3gp", "ogg"]
 
 const NFTCard = ({ data, isFetched }: CardProps) => {
   const collectionName = NftContracts.find(
-    property => property.address.toUpperCase() === data.collectionId.toUpperCase(),
+    property => property.address.toUpperCase() === data?.collectionId.toUpperCase(),
   )?.name
-  const extension = data.imageUrl?.split(".")[5]
-
+  const extension = data?.imageUrl?.split(".")[5]
   return (
     <Box
       onClick={data.onView}
-      _hover={{ boxShadow: "rgb(255 255 255 / 30%) 0px 0px 8px 0px" }}
+      _hover={{ filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))" }}
       overflow="hidden"
       rounded="lg"
       cursor="pointer"
       bg="neutral.700"
       pos="relative"
     >
-      <Skeleton
-        sx={{ img: { transform: "auto", scale: collectionName === "Sipher Spaceship" ? "1.25" : "1" } }}
-        isLoaded={isFetched}
-        pos="relative"
-      >
+      <Skeleton bg="black" isLoaded={isFetched} pos="relative">
         {videos.includes(extension) ? (
           <video src={data.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
         ) : (
@@ -53,7 +48,7 @@ const NFTCard = ({ data, isFetched }: CardProps) => {
         {data.type === "ERC1155" && (
           <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white" pos="absolute" bottom="1rem" left="0.5rem">
             <SpLayer />
-            <Text fontSize="xs" color="neutral.900" fontWeight={600}>
+            <Text ml={1} fontSize="xs" color="neutral.900" fontWeight={600}>
               {data.value}
             </Text>
           </Flex>

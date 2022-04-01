@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import "@env";
 
+import AWS, { Credentials, SSM } from "aws-sdk";
 import { Injectable } from "@nestjs/common";
 
 import { ZERO_ADDRESS } from "@utils/constants";
@@ -13,7 +14,6 @@ export enum Chain {
 }
 
 type BlockchainConfiguration = {
-  rpcUrls: { [k in Chain]: string };
   contracts: {
     erc1155LootBox: {
       [k in Chain]: { address: string };
@@ -29,69 +29,73 @@ type ConfigMint = {
     chainId: number;
     verifyingContract: string;
   };
+  erc1155Sculpture: {
+    chainId: number;
+    verifyingContract: string;
+  };
 };
 @Injectable()
 export class SystemConfigProvider {
-  PORT = parseInt(this.get("PORT"), 10);
-
-  MODE = this.get("MODE");
-
-  NODE_ENV = this.get("NODE_ENV");
-
-  JWT_EXPIRATION_TIME = this.get("JWT_EXPIRATION_TIME");
-
-  SESSION_PORT = this.get("SESSION_PORT");
-
-  SESSION_PASS = this.get("SESSION_PASS");
-
-  SESSION_HOST = this.get("SESSION_HOST");
-
-  SC_INFURA = this.get("SC_INFURA");
-
-  POLYGON_RPC_URL = this.get("POLYGON_RPC_URL");
-
-  AWS_ACCESS_KEY_ID = this.get("AWS_ACCESS_KEY_ID");
-
-  AWS_SECRET_ACCESS_KEY = this.get("AWS_SECRET_ACCESS_KEY");
-
-  AWS_REGION = this.get("AWS_REGION");
-
-  AWS_NAME_BUCKET = this.get("AWS_NAME_BUCKET");
-
-  ELASTICSEARCH_ENDPOINT = this.get("ELASTICSEARCH_ENDPOINT");
-
-  ELASTICSEARCH_INDEX = this.get("ELASTICSEARCH_INDEX");
-
-  PRIVATE_KEY = this.get("PRIVATE_KEY");
-
-  CHAIN_ID = parseInt(this.get("CHAIN_ID"), 10);
-
-  ATHER_ID_URL = this.get("ATHER_ID_URL");
-
   PENDING_TIME_LOOTBOX_MINT = 86400 * 3;
 
-  MARKETPLACE_SDK_URL = this.get("MARKETPLACE_SDK_URL");
+  PORT = parseInt(this.getSync("PORT"), 10);
+
+  NODE_ENV = this.getSync("NODE_ENV");
+
+  POSTGRES_SYNCHRONIZE = this.getSync("POSTGRES_SYNCHRONIZE", "false");
+
+  ELASTICSEARCH_ENDPOINT = this.getSync("ELASTICSEARCH_ENDPOINT");
+
+  ELASTICSEARCH_INDEX = this.getSync("ELASTICSEARCH_INDEX");
+
+  ATHER_ID_URL = this.getSync("ATHER_ID_URL");
+
+  ATHER_SOCIAL_URL = this.getSync("ATHER_SOCIAL_URL");
+
+  MARKETPLACE_SDK_URL = this.getSync("MARKETPLACE_SDK_URL");
+
+  public async getPOSTGRES_URL() {
+    return this.get("POSTGRES_URL");
+  }
+
+  public async getSESSION_URL() {
+    return this.get("SESSION_URL");
+  }
+
+  public async getKEY_INFURA() {
+    return this.get("KEY_INFURA");
+  }
+
+  public async getPRIVATE_KEY_LOYALTY() {
+    return this.get("PRIVATE_KEY_LOYALTY");
+  }
 
   public get isDebugging() {
-    return !!this.get("DEBUG");
+    return !!this.getSync("DEBUG");
   }
 
   public get isProduction() {
-    return this.get("NODE_ENV", "development") === "production";
+    return this.getSync("NODE_ENV", "development") === "production";
   }
 
   public get isTest() {
-    return this.get("NODE_ENV", "development") === "test";
+    return this.getSync("NODE_ENV", "development") === "test";
+  }
+
+  public get enableSwagger() {
+    return true; //! this.isTest && (!this.isProduction || this.isDebugging);
+  }
+
+  public async getRpcUrls() {
+    return {
+      [Chain.Mainnet]: await this.get("RPC_URL_ETHEREUM"),
+      [Chain.Rinkeby]: this.getSync("RPC_URL_RINKERBY"),
+      [Chain.Mumbai]: this.getSync("RPC_URL_POLYGON_MUMBAI"),
+      [Chain.Polygon]: await this.get("RPC_URL_POLYGON_MAINNET"),
+    };
   }
 
   public get blockchain(): BlockchainConfiguration {
-    const rpcUrls = {
-      [Chain.Mainnet]: `https://mainnet.infura.io/v3/${this.SC_INFURA}`,
-      [Chain.Rinkeby]: `https://rinkeby.infura.io/v3/${this.SC_INFURA}`,
-      [Chain.Mumbai]: `${this.POLYGON_RPC_URL}`,
-      [Chain.Polygon]: `${this.POLYGON_RPC_URL}`,
-    };
-
     const erc1155LootBox = {
       [Chain.Mainnet]: {
         address: ZERO_ADDRESS,
@@ -104,7 +108,7 @@ export class SystemConfigProvider {
       },
 
       [Chain.Polygon]: {
-        address: ZERO_ADDRESS,
+        address: "0xD95006adFd42E582367Ea5Da3e0A875d68a97308",
       },
     };
 
@@ -120,27 +124,67 @@ export class SystemConfigProvider {
       },
 
       [Chain.Polygon]: {
-        address: ZERO_ADDRESS,
+        address: "0x315Bc085A14E251f129A361afa37205E3313bF15",
       },
     };
 
-    return { rpcUrls, contracts: { erc1155LootBox, erc1155Sculpture } };
+    return { contracts: { erc1155LootBox, erc1155Sculpture } };
   }
 
   public get config(): ConfigMint {
+    const chainId = this.isProduction ? Chain.Polygon : Chain.Mumbai;
     return {
       erc1155LootBox: {
-        chainId: this.isProduction ? Chain.Polygon : Chain.Mumbai,
+        chainId,
         verifyingContract:
-          this.blockchain.contracts.erc1155LootBox[
-            this.isProduction ? Chain.Polygon : Chain.Mumbai
-          ].address,
+          this.blockchain.contracts.erc1155LootBox[chainId].address,
+      },
+      erc1155Sculpture: {
+        chainId,
+        verifyingContract:
+          this.blockchain.contracts.erc1155Sculpture[chainId].address,
       },
     };
   }
 
-  public get(key: string, defaultValue?: string) {
+  public getSync(key: string, defaultValue?: string) {
     return process.env[key] || defaultValue;
+  }
+
+  public get awsCredentials(): Promise<Credentials> {
+    if (process.env.AWS_CONTAINER_CREDENTIALS_RELATIVE_URI) {
+      const ecsCredentials = new AWS.ECSCredentials();
+      return ecsCredentials.getPromise().then(() => ecsCredentials);
+    }
+    if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+      const envCredentials = new AWS.EnvironmentCredentials("AWS");
+      return envCredentials.getPromise().then(() => envCredentials);
+    }
+    if (process.env.AWS_SDK_LOAD_CONFIG) {
+      const localCredentials = new AWS.SharedIniFileCredentials();
+      return localCredentials.getPromise().then(() => localCredentials);
+    }
+  }
+
+  private async get(key: string, defaultValue?: string): Promise<string> {
+    const value = process.env[key];
+    if (value === undefined) return defaultValue;
+
+    if (value.startsWith("ssm:")) {
+      const credentials = await Promise.resolve(this.awsCredentials);
+      const ssm = new SSM({ credentials });
+
+      const param = await ssm
+        .getParameter({
+          Name: value.slice(4),
+          WithDecryption: true,
+        })
+        .promise();
+
+      return param.Parameter?.Value ?? defaultValue;
+    }
+
+    return value;
   }
 }
 

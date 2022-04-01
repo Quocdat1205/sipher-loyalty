@@ -1,5 +1,5 @@
-import React from "react"
-import { Box, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
+import React, { Fragment } from "react"
+import { chakra, Flex } from "@sipher.dev/sipher-ui"
 
 import { SpaceshipDataProps } from "./useOverview"
 
@@ -7,10 +7,37 @@ const opacityArr = ["10%", "40%", "40%", "60%", "80%", "100%", "80%", "60%", "40
 interface TimelineProps {
   mappedData: SpaceshipDataProps[]
 }
+
+function defaultPointElement(center: [number, number], i: number, title: string, isActive: boolean): React.ReactNode {
+  return (
+    <Fragment key={i}>
+      <chakra.circle
+        cx={center[0]}
+        cy={center[1]}
+        r="6"
+        fill={isActive ? "accent.500" : "white"}
+        stroke="rgba(255,255,255,0.1)"
+        strokeWidth="20"
+      ></chakra.circle>
+      <text
+        x={center[0]}
+        y={center[1] - 40}
+        alignmentBaseline="middle"
+        textAnchor="middle"
+        fill={isActive ? "#F4B433" : "white"}
+        fontWeight={600}
+        fontSize={16}
+      >
+        {title}
+      </text>
+    </Fragment>
+  )
+}
+
 export const Timeline = ({ mappedData }: TimelineProps) => {
   return (
-    <Box mb={16} pos="relative">
-      <svg viewBox="300 300 1200 75" xmlns="http://www.w3.org/2000/svg">
+    <Flex align="center" justify="center" pos="relative" mb={16}>
+      <chakra.svg height="200" viewBox="300 300 1200 100" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="grad1">
             {opacityArr.map((item, index) => (
@@ -18,48 +45,17 @@ export const Timeline = ({ mappedData }: TimelineProps) => {
             ))}
           </linearGradient>
         </defs>
-        <path strokeWidth="2" d="M 300 300 C 600 400, 1200 400, 1500 300" stroke="url(#grad1)" fill="transparent" />
-      </svg>
-      <HStack
-        top="50%"
-        left="50%"
-        transform="translate(-50%, -50%)"
-        pos="absolute"
-        px={24}
-        w="full"
-        justify="space-between"
-      >
-        {mappedData.map((item, idx) => (
-          <Flex
-            transform={`translateY(${item.y})`}
-            justify="center"
-            align="center"
-            rounded="full"
-            zIndex={3}
-            pos="relative"
-            key={idx}
-            bg="radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 100%)"
-            boxSize="34px"
-          >
-            <>
-              <Box bg={item.isActive ? "accent.500" : "neutral.400"} rounded="full" boxSize="12px"></Box>
-              <Text
-                w="auto"
-                whiteSpace="nowrap"
-                color={item.isActive ? "accent.500" : "white"}
-                fontWeight={600}
-                fontSize="lg"
-                pos="absolute"
-                top="0"
-                left="50%"
-                transform="translate(-50%, -2.5rem)"
-              >
-                {item.id}
-              </Text>
-            </>
-          </Flex>
-        ))}
-      </HStack>
-    </Box>
+        <path
+          id="myPath"
+          strokeWidth="2"
+          d="M 300 300 C 600 400, 1200 400, 1500 300"
+          stroke="url(#grad1)"
+          fill="transparent"
+        />
+        {mappedData.map((item, index) => {
+          return defaultPointElement([(index + 1) * 160 + 250, item.y], index, item.id, item.isActive || false)
+        })}
+      </chakra.svg>
+    </Flex>
   )
 }

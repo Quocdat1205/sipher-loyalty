@@ -1,4 +1,4 @@
-import { IsEthereumAddress, IsString } from "class-validator";
+import { IsString } from "class-validator";
 import {
   Column,
   CreateDateColumn,
@@ -7,11 +7,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { ImageUrl } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
 import { TransformLowercase } from "@utils/transfomers";
-
-import { ImageUrl } from "./imageUrl.entity";
 
 export enum AirdropType {
   NFT = "NFT",
@@ -48,7 +47,6 @@ export class Airdrop {
   @TransformLowercase()
   @ApiProperty({ type: String })
   @Column({ nullable: false })
-  @IsEthereumAddress()
   addressContract?: string;
 
   @ApiProperty({
@@ -82,17 +80,21 @@ export class Airdrop {
 
   @ApiProperty({ type: String })
   @Column({ nullable: true })
-  description: string;
+  shortDescription?: string;
+
+  @ApiProperty({ type: String, isArray: true })
+  @Column("character varying", { array: true })
+  description?: string;
 
   @ApiProperty({ type: String })
   @Column({ nullable: false })
   numberOfVestingPoint?: string;
 
   @ApiProperty()
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt?: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }

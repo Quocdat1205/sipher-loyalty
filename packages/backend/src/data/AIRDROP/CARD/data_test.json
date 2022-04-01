@@ -3,18 +3,20 @@
     "id": 1,
     "publicAddress": "0x33060a92194079615BD25DdD92A081E1777e3DEf",
     "tier": "Diamond",
-    "merch_item": "Card",
+    "merchItem": "Card",
     "quantity": 1,
-    "quantity_shipped": "0",
-    "isShip": false
+    "quantityShipped": "0",
+    "shippable": false,
+    "isShipped": false
   },
   {
     "id": 2,
     "publicAddress": "0x83629905189464CC16F5E7c12D54dD5e87459B33",
     "tier": "Diamond",
-    "merch_item": "Card",
+    "merchItem": "Card",
     "quantity": 1,
-    "quantity_shipped": "0",
-    "isShip": false
+    "quantityShipped": "0",
+    "shippable": false,
+    "isShipped": false
   }
 ]

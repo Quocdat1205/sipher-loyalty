@@ -1,13 +1,15 @@
 import React from "react"
+import { BiChevronLeft } from "react-icons/bi"
+import InfiniteScroll from "react-infinite-scroll-component"
 import Image from "next/image"
-import { Avatar, Box, Flex, Heading, Link, SimpleGrid, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Avatar, Box, Button, chakra, Flex, Heading, SimpleGrid, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
-import { NotifyNetwork } from "@components/shared"
 import { SpVerified } from "@components/shared/icons"
 import { capitalize } from "@utils"
 
 import GridSelector from "../GridSelector"
 
+import LoadingCard from "./LoadingCard"
 import NFTCard from "./NFTCard"
 import useNFTs from "./useNFTs"
 
@@ -16,15 +18,31 @@ interface DetailsCollectionProps {
 }
 
 const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
-  const { collectionData, columns, total, nftsData, isFetched } = useNFTs(collectionId)
+  const { collectionData, columns, total, nftsData, isFetched, query, router } = useNFTs(collectionId)
+  const { data, hasNextPage, fetchNextPage, isLoading } = query
 
+  const renderLoadingCards = () => {
+    return Array.from(Array(columns).keys()).map(i => <LoadingCard key={i} />)
+  }
   const renderNFTs = () => {
-    return nftsData?.map(i => <NFTCard key={i.id} data={i} isFetched={isFetched} />)
+    if (isLoading) {
+      return renderLoadingCards()
+    }
+    return nftsData?.map((i, idx) => <NFTCard key={idx} data={i} isFetched={isFetched} />)
   }
 
   return (
-    <Box pos="relative">
-      <NotifyNetwork chainId={collectionData?.chainId} />
+    <Flex flexDir="column" flex={1} w="full" pos="relative">
+      <Flex pos="fixed" top="4rem" left={0} zIndex={1} flexDir="column">
+        <Box pt={8} px={8} w="full">
+          <Button onClick={() => router.back()} pl={2} bg="white" rounded="full" alignItems="center">
+            <Box color="neutral.500">
+              <BiChevronLeft size="1.4rem" />
+            </Box>
+            <Text color="neutral.500">Back</Text>
+          </Button>
+        </Box>
+      </Flex>
       <Skeleton isLoaded={isFetched} flexDir="column" w="full" justify="center" position="relative">
         <Image
           layout="responsive"
@@ -36,15 +54,15 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
           alt={"banner"}
         />
       </Skeleton>
-      <Flex flexDir="column" w="full" align="center">
-        <Box px={[4, 4, 4, 0, 0]} w="full" maxW="1200px">
+      <Flex flex={1} flexDir="column" w="full" align="center">
+        <Flex flexDir="column" px={[4, 4, 4, 0, 0]} w="full" maxW="1200px">
           <Stack mb={4} flexDir="column" align="center" pos="relative">
             <Skeleton pos="absolute" transform="translateY(-50%)" isLoaded={isFetched} rounded="full">
               <Avatar src={collectionData?.logoImage} size="xl" />
             </Skeleton>
-            <Box pt={16} />
+            <Box pt={12} />
             <Skeleton isLoaded={isFetched}>
-              <Flex align="center">
+              <Flex minW="10rem" minH="2.5rem" align="center">
                 <Heading mr={1} fontSize="3xl" fontWeight={600}>
                   {capitalize(collectionData?.name?.toLowerCase() ?? "")}
                 </Heading>
@@ -55,12 +73,11 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
                 )}
               </Flex>
             </Skeleton>
-            <Text>
-              Created by{" "}
-              <Link color="cyan.600" isExternal>
-                Sipher
-              </Link>
-            </Text>
+            <Skeleton isLoaded={isFetched}>
+              <Text>
+                Created by <chakra.span color="cyan.600">Sipher</chakra.span>
+              </Text>
+            </Skeleton>
           </Stack>
           <Flex align="center" justify="space-between">
             <Skeleton isLoaded={isFetched}>
@@ -70,12 +87,30 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
             </Skeleton>
             <GridSelector />
           </Flex>
-          <SimpleGrid py={8} maxW="1200px" w="full" spacing={6} columns={columns}>
-            {renderNFTs()}
-          </SimpleGrid>
-        </Box>
+          <Box py={8} flex={1}>
+            <InfiniteScroll
+              dataLength={data ? total : 0}
+              next={fetchNextPage}
+              hasMore={!!hasNextPage}
+              style={{
+                width: "100%",
+                overflow: "hidden",
+              }}
+              loader={
+                <SimpleGrid mt={6} spacing={6} columns={columns}>
+                  {renderLoadingCards()}
+                </SimpleGrid>
+              }
+              scrollableTarget="scrollContainer"
+            >
+              <SimpleGrid spacing={6} columns={columns}>
+                {renderNFTs()}
+              </SimpleGrid>
+            </InfiniteScroll>
+          </Box>
+        </Flex>
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 export default DetailsCollection

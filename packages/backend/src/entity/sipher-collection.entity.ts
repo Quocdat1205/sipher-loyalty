@@ -59,21 +59,21 @@ export class SipherCollection {
     type: "decimal",
     nullable: true,
   })
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String })
   floorPrice?: number;
 
   @Column({
     type: "decimal",
     nullable: true,
   })
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String })
   totalVolume?: number;
 
   @Column({
     type: "decimal",
     nullable: true,
   })
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String })
   marketCap?: number;
 
   @Column({
@@ -121,11 +121,11 @@ export class SipherCollection {
   @ApiProperty({ type: Boolean })
   isVerified: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamptz" })
   @ApiProperty({ type: Date })
   createdAt: Date;
 
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   @ApiProperty({ type: Date })
   updatedAt?: Date;
 }

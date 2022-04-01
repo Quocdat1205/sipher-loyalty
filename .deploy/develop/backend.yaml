@@ -7,20 +7,20 @@ sipher-chart:
       kubernetes.io/ingress.class: alb
       service.beta.kubernetes.io/aws-load-balancer-internal: "true"
     rules:
-    - host:  api-loyalty.sipher.gg
-      paths:
-      - path: /
-        serviceName: loyalty-backend-api
-        servicePort: 5500
-        pathType: ImplementationSpecific
+      - host: api-loyalty.sipher.gg
+        paths:
+          - path: /
+            serviceName: loyalty-backend-api
+            servicePort: 5500
+            pathType: ImplementationSpecific
   deploys:
     - name: backend
       replicasCount: 1
       resources: {}
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
       args:
-        - '-c'
-        - 'node ./dist/main.js'
+        - "-c"
+        - "node ./dist/main.js"
       services:
         - name: api
           containerPort:
@@ -28,15 +28,30 @@ sipher-chart:
     - name: lootbox-tracker
       replicasCount: 1
       resources: {}
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
       args:
-        - '-c'
-        - 'node ./dist/scripts/lootbox-tracker.js'
+        - "-c"
+        - "node ./dist/scripts/lootbox-tracker.js"
     - name: sculpture-tracker
       replicasCount: 1
       resources: {}
-      command: ['/bin/sh']
+      command: ["/bin/sh"]
       args:
-        - '-c'
-        - 'node ./dist/scripts/sculpture-tracker.js'
-  env: {}
+        - "-c"
+        - "node ./dist/scripts/sculpture-tracker.js"
+  env:
+    PORT: 5500
+    NODE_ENV: "develop"
+    POSTGRES_URL: ssm:/atherlabs/dashboard/dev/POSTGRES_URL
+    POSTGRES_SYNCHRONIZE: true
+    SESSION_URL: ssm:/atherlabs/dashboard/dev/SESSION_URL
+    RPC_URL_ETHEREUM: ssm:/atherlabs/dashboard/dev/RPC_URL_ETHEREUM
+    RPC_URL_RINKERBY: "https://eth-rinkeby.alchemyapi.io/v2/-295c0M3micMRJvOU0MWMOx5Mo4WYj0X"
+    RPC_URL_POLYGON_MUMBAI: "https://polygon-mumbai.g.alchemy.com/v2/1dyROd_yNg9c4hYmKx4et4hotTV-wCgb"
+    RPC_URL_POLYGON_MAINNET: ssm:/atherlabs/dashboard/dev/RPC_URL_POLYGON_MAINNET
+    ELASTICSEARCH_ENDPOINT: "https://search-dev-marketplace-j3etkzos2pedv2c2q6jl2wy5d4.us-west-2.es.amazonaws.com"
+    ELASTICSEARCH_INDEX: "dev-marketplace"
+    PRIVATE_KEY_LOYALTY: ssm:/atherlabs/dashboard/dev/PRIVATE_KEY_LOYALTY
+    ATHER_ID_URL: "http://backend-ather-id-api.ather-id:3001"
+    ATHER_SOCIAL_URL: "http://ather-social-backend-api.ather-social:3001"
+    MARKETPLACE_SDK_URL: "http://marketplace-backend-api.marketplace:3001"

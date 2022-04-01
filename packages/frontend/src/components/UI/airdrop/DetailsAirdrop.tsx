@@ -3,6 +3,7 @@ import Image from "next/image"
 import { Box, Button, Flex, HStack, Img, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
+import { SpLayer } from "@components/shared/icons"
 
 import { videos } from "../portfolio/nft/NFTCard"
 
@@ -45,13 +46,18 @@ export function DetailsAirdrop() {
 
   useEffect(() => {
     if (detailAirdrop)
-      setImageState({ front: detailAirdrop?.imageUrls[0]?.default, back: detailAirdrop?.imageUrls[0]?.back })
+      setImageState({
+        front:
+          detailAirdrop?.imageUrls.find(item => item.color === "black")?.default ||
+          detailAirdrop?.imageUrls[0]?.default,
+        back: detailAirdrop?.imageUrls.find(item => item.color === "black")?.back || detailAirdrop?.imageUrls[0]?.back,
+      })
   }, [detailAirdrop])
 
   return (
     <ChakraModal scrollBehavior="inside" title={""} isOpen={isOpen} onClose={onClose} size="4xl">
-      <Flex minH="18rem" p={6} align="flex-start">
-        <Skeleton flex={1} isLoaded={isFetched || (detailAirdrop && detailAirdrop?.imageUrls?.length > 0)}>
+      <Flex p={6} minH="28rem" h="full" align="flex-start">
+        <Skeleton flex={2} isLoaded={isFetched || (detailAirdrop && detailAirdrop?.imageUrls?.length > 0)}>
           <Flex
             sx={{
               video: {
@@ -60,9 +66,9 @@ export function DetailsAirdrop() {
               },
             }}
             overflow="hidden"
-            h="18rem"
+            minH="26rem"
             rounded="lg"
-            bg="black"
+            bg={detailAirdrop?.type === "MERCH" ? "white" : "black"}
             align="center"
             justify="center"
             pos="relative"
@@ -72,15 +78,18 @@ export function DetailsAirdrop() {
               <video src={detailAirdrop?.imageUrls[0]?.default} autoPlay loop muted datatype="video/mp4"></video>
             ) : detailAirdrop && detailAirdrop.type === "MERCH" ? (
               <>
-                <Img
-                  pos="absolute"
-                  left={0}
-                  transition="opacity 0.7s ease-in-out"
-                  src={imageState.back}
-                  objectFit="cover"
-                  w="full"
-                  h="full"
-                />
+                {imageState.back && (
+                  <Img
+                    pos="absolute"
+                    left={0}
+                    transition="opacity 0.7s ease-in-out"
+                    src={imageState.back}
+                    objectFit="contain"
+                    alt=""
+                    w="full"
+                    h="full"
+                  />
+                )}
                 <Img
                   pos="absolute"
                   left={0}
@@ -89,17 +98,34 @@ export function DetailsAirdrop() {
                     opacity: !!imageState.back ? 0 : 1,
                   }}
                   src={imageState.front}
-                  objectFit="cover"
+                  objectFit="contain"
+                  alt=""
                   w="full"
                   h="full"
                 />
+                <Flex
+                  boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+                  align="center"
+                  py={0.5}
+                  px={1.5}
+                  rounded="full"
+                  bg="white"
+                  pos="absolute"
+                  bottom="1rem"
+                  left="0.5rem"
+                >
+                  <SpLayer />
+                  <Text ml={1} fontSize="xs" color="neutral.900" fontWeight={600}>
+                    {detailAirdrop?.quantity}
+                  </Text>
+                </Flex>
               </>
             ) : (
               <Image quality={100} src={imageState.front} alt="airdrop" width={300} height={300} objectFit="contain" />
             )}
           </Flex>
         </Skeleton>
-        <Flex flexDir="column" justify="space-between" minH="18rem" flex={2} ml={4}>
+        <Flex minH="26rem" flexDir="column" justify="space-between" flex={3} ml={6}>
           <Stack spacing={4}>
             <Box>
               <Skeleton isLoaded={isFetched} mb={1}>
@@ -109,12 +135,22 @@ export function DetailsAirdrop() {
               </Skeleton>
               <Skeleton isLoaded={isFetched}>
                 <Text fontWeight={600} fontSize="2xl">
-                  {detailAirdrop?.name}
+                  {detailAirdrop?.type === "TOKEN" ? detailAirdrop?.description[0] : detailAirdrop?.name}
                 </Text>
               </Skeleton>
             </Box>
             <Skeleton isLoaded={isFetched}>
-              <Text color="neutral.400">{detailAirdrop?.description}</Text>
+              {detailAirdrop?.type === "TOKEN"
+                ? detailAirdrop?.description?.slice(1, detailAirdrop?.description?.length).map(item => (
+                    <Text mb={2} key={item} color="neutral.400">
+                      {item}
+                    </Text>
+                  ))
+                : detailAirdrop?.description?.map(item => (
+                    <Text mb={2} key={item} color="neutral.400">
+                      {item}
+                    </Text>
+                  ))}
             </Skeleton>
             {detailAirdrop?.size && detailAirdrop.size.length > 0 && (
               <Skeleton isLoaded={isFetched}>
@@ -142,7 +178,7 @@ export function DetailsAirdrop() {
               </Skeleton>
             )}
             {detailAirdrop?.color && detailAirdrop.color.length > 0 && (
-              <Skeleton isLoaded={isFetched}>
+              <Skeleton pb={4} isLoaded={isFetched}>
                 <Flex align="center">
                   <Text mr={6}>Color</Text>
                   <HStack>

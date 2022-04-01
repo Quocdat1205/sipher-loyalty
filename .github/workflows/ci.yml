@@ -68,7 +68,7 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd packages/frontend && terraform init -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_DEV }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_DEV }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_DEV }}'
+          cd packages/frontend && terraform init -var='region=us-west-2' -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_DEV }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_DEV }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_DEV }}' -backend-config='region=${{secrets.NONPROD_TF_AWS_REGION}}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
@@ -79,7 +79,7 @@ jobs:
 
       - name: Terraform Plan
         run: |
-          cd packages/frontend && terraform plan -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_DEV }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_DEV }}'
+          cd packages/frontend && terraform plan -var='region=us-west-2' -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_DEV }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_DEV }}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
@@ -124,7 +124,7 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd packages/frontend && terraform init -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_DEV }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_DEV }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_DEV }}'
+          cd packages/frontend && terraform init -var='region=us-west-2' -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_DEV }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_DEV }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_DEV }}' --backend-config='region=${{secrets.NONPROD_TF_AWS_REGION}}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
@@ -135,7 +135,7 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          cd packages/frontend && terraform apply -auto-approve -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_DEV }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_DEV }}'
+          cd packages/frontend && terraform apply -auto-approve -var='region=us-west-2' -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_DEV }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_DEV }}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
@@ -234,7 +234,7 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd packages/frontend && terraform init -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_PROD }}'
+          cd packages/frontend && terraform init -var='region=${{secrets.PROD_TF_AWS_REGION}}' -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_PROD }}' -backend-config='region=${{secrets.PROD_TF_AWS_REGION}}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_WEB_ACCESS_KEY_ID }}
@@ -245,7 +245,7 @@ jobs:
 
       - name: Terraform Plan
         run: |
-          cd packages/frontend && terraform plan -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}'
+          cd packages/frontend && terraform plan -var='region=${{secrets.PROD_TF_AWS_REGION}}' -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_WEB_ACCESS_KEY_ID }}
@@ -288,7 +288,7 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd packages/frontend && terraform init -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_PROD }}'
+          cd packages/frontend && terraform init -var='region=${{secrets.PROD_TF_AWS_REGION}}' -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}' -backend-config='bucket=${{ secrets.STATE_BUCKET_PROD }}' -backend-config='region=${{secrets.PROD_TF_AWS_REGION}}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_WEB_ACCESS_KEY_ID }}
@@ -299,7 +299,7 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          cd packages/frontend && terraform apply -auto-approve -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}'
+          cd packages/frontend && terraform apply -auto-approve -var='region=${{secrets.PROD_TF_AWS_REGION}}' -var='cloudfront_aliases=${{ secrets.CLOUDFRONT_ALIAS_PROD }}' -var='cloudfront_acm_certificate_arn=${{ secrets.CLOUDFRONT_ACM_CERT_ARN_PROD }}'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_WEB_ACCESS_KEY_ID }}

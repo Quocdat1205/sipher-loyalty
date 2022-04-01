@@ -3,10 +3,10 @@ import constant, { Chain } from "@setting/constant";
 
 const providerInstances: { [k in Chain]?: providers.Provider } = {};
 
-export const getProvider = (chain: Chain) => {
+export const getProvider = async (chain: Chain) => {
   if (!providerInstances[chain]) {
     providerInstances[chain] = new providers.StaticJsonRpcProvider(
-      constant.blockchain.rpcUrls[chain],
+      (await constant.getRpcUrls())[chain],
       chain
     );
   }

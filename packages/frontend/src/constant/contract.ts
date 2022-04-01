@@ -1,14 +1,14 @@
-export const INU_ADDRESS = "0x4d91fa57abfead5fbc8445e45b906b85bbd9744c"
+export const INU_ADDRESS = "0x4d91fa57abfead5fbc8445e45b906b85bbd9744c" //test
 
-export const NEKO_ADDRESS = "0x97c8480d593b93ae90f8613a5b2ac02e7a3dd0ed"
+export const NEKO_ADDRESS = "0x97c8480d593b93ae90f8613a5b2ac02e7a3dd0ed" //test
 
-export const EXCHANGE_V2_ADDRESS = "0x21E77f475E8B4eA1500A083905CD642044C4eF7A"
+export const EXCHANGE_V2_ADDRESS = "0x21E77f475E8B4eA1500A083905CD642044C4eF7A" //test
 
-export const TRANSFER_PROXY_ADDRESS = "0xC399b4C40AaE47bb17f3C5e03F5CEc337C365C8a"
+export const TRANSFER_PROXY_ADDRESS = "0xC399b4C40AaE47bb17f3C5e03F5CEc337C365C8a" //test
 
-export const WETH_ADDRESS = "0xc778417E063141139Fce010982780140Aa0cD5Ab" // WETH
+export const WETH_ADDRESS = "0xc778417E063141139Fce010982780140Aa0cD5Ab" // WETH //test
 
-export const TRANSFER_ERC20_PROXY_ADDRESS = "0x5acFbF9681fD5e9A32E74EFB7Fd0CA794138aBe6"
+export const TRANSFER_ERC20_PROXY_ADDRESS = "0x5acFbF9681fD5e9A32E74EFB7Fd0CA794138aBe6" //test
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000"
 
@@ -27,8 +27,6 @@ export const StakingLPSipherWethUniswapAddress = "0x5b2D34C26B5eb7388F54a3E8D4bE
 export const StakingLPSipherWethKyberAddress = "0xEB3CadDe330a4AA3D627F666aEcdD6F65208B19F" //main
 
 export const SipherAirdropsAddress = "0x0b761403fdc1E7CD8763cCd89D0b269AcFDc4926" //main
-
-export const SipherSpaceshipAddress = "0x3E445D426c8FdE12F5F0C223019CA9158f7Da93B" //test
 
 export const SipherLootBoxAddress = "0x3E445D426c8FdE12F5F0C223019CA9158f7Da93B" //test
 
@@ -95,10 +93,6 @@ export const NftContracts = [
   {
     name: "Sipherian Sculpture",
     address: SipherSculptureAddress,
-  },
-  {
-    name: "Sipher Spaceship",
-    address: SipherSpaceshipAddress,
   },
   {
     name: "Sipher Lootbox",

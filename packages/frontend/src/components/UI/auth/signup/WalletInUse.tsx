@@ -4,12 +4,11 @@ import { useMutation, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { ConnectWalletResponse } from "@sipher.dev/ather-id/lib/esm/api/sdk"
-import { Box, chakra, Divider, Flex, Heading, HStack, Link, Text } from "@sipher.dev/sipher-ui"
+import { Box, Flex, Heading, HStack, Link, Text } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
 import { WalletCard } from "@components/shared"
 import { useChakraToast } from "@hooks"
-import { useAuth } from "src/providers/auth"
 
 interface WalletInUseUIProps {
   address: string
@@ -18,7 +17,6 @@ interface WalletInUseUIProps {
 
 const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
   const toast = useChakraToast()
-  const { ownedWallets } = useAuth()
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
   const { connect, scCaller, reset } = useWalletContext()
   const qc = useQueryClient()

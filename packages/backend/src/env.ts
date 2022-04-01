@@ -3,11 +3,9 @@ import path from "path";
 
 import { config as dotEnvConfig } from "dotenv";
 
-const env = process.env.NODE_ENV || "development";
+const env = process.env.NODE_ENV || "develop";
 const envPath = path.resolve(__dirname, "../.env");
 const isTest = env === "test";
-
-process.env.NODE_ENV = env;
 
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
 const dotenvFiles = [

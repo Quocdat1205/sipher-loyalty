@@ -1,9 +1,9 @@
 import { FormEvent, useEffect, useState } from "react"
 import { useMutation } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Box, Button, chakra, Divider, FormControl, Heading, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Divider, Heading, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
 
-import { CustomInput, Form, FormField, StyledInput } from "@components/shared"
+import { Form, StyledInput } from "@components/shared"
 import { useChakraToast } from "@hooks"
 
 interface VerifyFormUIProps {

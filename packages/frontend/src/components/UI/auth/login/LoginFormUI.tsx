@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
-import AtherIdAuth, { CognitoUser } from "@sipher.dev/ather-id"
+import AtherIdAuth, { CognitoUser, SocialProvider } from "@sipher.dev/ather-id"
 import { Box, Button, Flex, Heading, Link, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
@@ -162,7 +162,12 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword }: LoginFormUIPr
           </Text>
           <Box flex={1} h="1px" bg="neutral.500" />
         </Flex>
-        <SocialAccountSignIn onGoogleSignIn={() => {}} onDiscordSignIn={() => {}} displayLabel mb={4} />
+        <SocialAccountSignIn
+          onGoogleSignIn={() => AtherIdAuth.signInWithSocial(SocialProvider.Google)}
+          onDiscordSignIn={() => AtherIdAuth.signInWithSocial(SocialProvider.Discord)}
+          displayLabel
+          mb={4}
+        />
         <WalletSignIn
           onMetamaskConnect={() => handleWalletSignin("injected")}
           onWalletConnectConnect={() => handleWalletSignin("walletConnect")}

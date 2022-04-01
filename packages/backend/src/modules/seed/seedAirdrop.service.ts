@@ -2,6 +2,7 @@
 import fs from "fs";
 import path from "path";
 
+import { BigNumber, ethers } from "ethers";
 import { Repository } from "typeorm";
 import { Airdrop, ImageUrl, Item, Merchandise } from "@entity";
 import { Injectable } from "@nestjs/common";
@@ -49,17 +50,26 @@ export class SeedAirdropService {
     @InjectRepository(ImageUrl)
     private imageUrlRepo: Repository<ImageUrl>,
     @InjectRepository(Merchandise)
-    private merchListRepo: Repository<Merchandise>,
+    private merchRepo: Repository<Merchandise>,
     @InjectRepository(Item)
     private itemRepo: Repository<Item>
   ) {}
 
+  async clear() {
+    await this.imageUrlRepo.query(`delete from image_url`);
+    await this.merchRepo.query(`delete from merchandise`);
+    await this.itemRepo.query(`delete from item`);
+    await this.airdropRepo.query(
+      `delete from airdrop where "addressContract"='${this.airdropDataHolder.addressContract.toLowerCase()}';`
+    );
+  }
+
   private seedToken = async (token: Airdrop) => {
     try {
-      const imageUrl = await this.seedImageUrls(token.imageUrls);
-      token.imageUrls = imageUrl;
+      token.claimer = token.claimer.toLowerCase();
       const _token = this.airdropRepo.create(token);
       await this.airdropRepo.save(_token);
+      LoggerService.log(`add token for ${token.claimer} success`);
     } catch (err) {
       LoggerService.error(err);
     }
@@ -69,6 +79,7 @@ export class SeedAirdropService {
     try {
       const _imageUrl = this.imageUrlRepo.create(imageUrl);
       const result = await this.imageUrlRepo.save(_imageUrl);
+
       return result;
     } catch (err) {
       LoggerService.error(err);
@@ -81,34 +92,63 @@ export class SeedAirdropService {
     for (let i = 0; i < imageUrls.length; i++) {
       promises.push(this.seedImageUrl(imageUrls[i]));
     }
-    return Promise.all(promises);
+    const a = await Promise.all(promises);
+    return a;
   };
 
-  seedTokens = async () => {
-    await this.imageUrlRepo.query(`delete from image_url`);
-    await this.airdropRepo.query(`delete from airdrop`);
+  private weiToEther = (wei: string | BigNumber) =>
+    parseFloat(ethers.utils.formatEther(wei));
 
+  private currency = (
+    amount: number,
+    prefix = "",
+    options: {
+      maximumFractionDigits?: number;
+      minimumFractionDigits?: number;
+    } = {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    }
+  ) => prefix + amount.toLocaleString(undefined, { ...options });
+
+  seedTokens = async () => {
     const tokenData = this.airdropDataHolder.data.map((el) => ({
       merkleRoot: this.airdropDataHolder.merkleRoot,
       imageUrls: this.airdropDataHolder.imageUrls,
       ...el,
-      addressContract: this.airdropDataHolder.addressContract,
+      addressContract: this.airdropDataHolder.addressContract.toLowerCase(),
       startTime: this.airdropDataHolder.startTime,
       vestingInterval: this.airdropDataHolder.vestingInterval,
       numberOfVestingPoint: this.airdropDataHolder.numberOfVestingPoint,
       name: this.airdropDataHolder.name,
-      description: this.airdropDataHolder.description,
+      shortDescription: this.airdropDataHolder.shortDescription,
+      description: [
+        `${this.currency(
+          this.weiToEther(el.totalAmount)
+        )} $SIPHER Token(s) Airdrop`,
+        `Over a ${
+          this.airdropDataHolder.numberOfVestingPoint
+        } month Vesting Period with each month getting ${this.currency(
+          this.weiToEther(el.totalAmount) /
+            this.airdropDataHolder.numberOfVestingPoint
+        )} $SIPHER starting on March 01 2022.`,
+        `Please come back for your first Vested Airdrop of ${this.currency(
+          this.weiToEther(el.totalAmount) /
+            this.airdropDataHolder.numberOfVestingPoint
+        )} $SIPHER on March 01 2022 `,
+      ],
       type: "TOKEN",
     }));
-    await this.airdropRepo.query(
-      `delete from airdrop where "addressContract"='${this.airdropDataHolder.addressContract}';`
-    );
+
+    const imageUrl = await this.seedImageUrls(tokenData[0].imageUrls);
 
     const promises = [];
     for (let i = 0; i < tokenData.length; i++) {
+      tokenData[i].imageUrls = imageUrl;
       promises.push(this.seedToken(tokenData[i]));
     }
     await Promise.all(promises);
+
     LoggerService.log("Done token");
   };
 
@@ -116,9 +156,10 @@ export class SeedAirdropService {
     try {
       const imageUrl = await this.seedImageUrls(item.imageUrls);
       item.imageUrls = imageUrl;
-      item.merchandise = await this.merchListRepo.find({
-        merch_item: item.merch_item,
+      item.merchandise = await this.merchRepo.find({
+        merchItem: item.merchItem,
       });
+
       const _item = this.itemRepo.create(item);
       await this.itemRepo.save(_item);
     } catch (err) {
@@ -127,8 +168,6 @@ export class SeedAirdropService {
   };
 
   seedItems = async () => {
-    await this.itemRepo.query(`delete from item`);
-
     const promises = [];
     for (let i = 0; i < this.airdropDataMerchItem.length; i++) {
       promises.push(this.seedItem(this.airdropDataMerchItem[i]));
@@ -139,16 +178,15 @@ export class SeedAirdropService {
 
   private seedMerch = async (merch) => {
     try {
-      const _merch = this.merchListRepo.create(merch);
-      await this.merchListRepo.save(_merch);
+      merch.publicAddress = merch.publicAddress.toLowerCase();
+      const _merch = this.merchRepo.create(merch);
+      await this.merchRepo.save(_merch);
     } catch (err) {
       LoggerService.error(JSON.stringify(err));
     }
   };
 
   seedMerchs = async () => {
-    await this.itemRepo.query(`delete from merchandise`);
-
     const promises = [];
     for (let i = 0; i < this.airdropDataMerchandise.length; i++) {
       promises.push(this.seedMerch(this.airdropDataMerchandise[i]));

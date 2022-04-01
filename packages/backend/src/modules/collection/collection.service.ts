@@ -1,25 +1,31 @@
 import _ from "lodash";
-import { lastValueFrom, map, Observable } from "rxjs";
+import { from, lastValueFrom, map, Observable } from "rxjs";
 import { Repository } from "typeorm";
 import { HttpService } from "@nestjs/axios";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ElasticsearchService } from "@nestjs/elasticsearch";
+import { Cron, CronExpression } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
 import constant from "@setting/constant";
 
 import { LoggerService } from "@modules/logger/logger.service";
+import { TokenType } from "@modules/nft/nft.dto";
 import { NftItemService } from "@modules/nft/nftItem.service";
 import { URIService } from "@modules/uri/uri.service";
-import { isSculptureContract, isLooboxContract } from "@utils/utils";
+import { isLooboxContract, isSculptureContract } from "@utils/utils";
 import marketplaceClient from "src/api/marketplaceClient";
 import {
   CollectionType,
   SipherCollection,
 } from "src/entity/sipher-collection.entity";
 
-import { CollectionStats, Portfolio, PortfolioQuery } from "./collection.dto";
-import { TokenType } from "@modules/nft/nft.dto";
-import { Cron, CronExpression } from "@nestjs/schedule";
+import {
+  CollectionStats,
+  Portfolio,
+  PortfolioByCollectionQuery,
+  PortfolioQuery,
+  UserSocialInfo,
+} from "./collection.dto";
 
 @Injectable()
 export class CollectionService {
@@ -33,6 +39,7 @@ export class CollectionService {
   ) {}
 
   private openseaApiBaseUrl = "https://api.opensea.io/api/v1";
+
   private openseaApiTestBaseUrl = "https://testnets-api.opensea.io/api/v1/";
 
   @Cron(CronExpression.EVERY_HOUR)
@@ -43,7 +50,7 @@ export class CollectionService {
   async getAllCollection() {
     const collections = await this.sipherCollectionRepo.find();
     if (constant.isProduction) {
-      return collections.filter((col) => col.chainId === 1);
+      return collections.filter((col) => [1, 137].indexOf(col.chainId) !== -1);
     }
     return collections;
   }
@@ -72,9 +79,13 @@ export class CollectionService {
 
   async getPortfolio(userAddress: string, query: PortfolioQuery) {
     /* Get user items */
-    const inventory = await this.nftService.search({
-      owner: userAddress,
-    });
+    const inventory = await this.nftService.search(
+      {
+        owner: userAddress,
+      },
+      0,
+      1000
+    );
 
     /* Aggregate collections */
     const groupedInventoryByCollectionId = _.groupBy(inventory, "collectionId");
@@ -118,10 +129,10 @@ export class CollectionService {
     );
   }
 
-  async getPortfolioByCollection(userAddress: string, collectionId: string) {
+  async getPortfolioByCollection(query: PortfolioByCollectionQuery) {
     const collection = await this.sipherCollectionRepo.findOne({
       where: {
-        id: collectionId,
+        id: query.collectionId,
       },
     });
     if (!collection) {
@@ -131,19 +142,27 @@ export class CollectionService {
         total: 0,
       };
     }
-    const inventory = await this.nftService.search({
-      owner: userAddress,
+    const inventory = await this.nftService.search(
+      {
+        owner: query.userAddress,
+        collections: [collection.id],
+      },
+      query.from,
+      query.size
+    );
+    inventory.forEach((item) => delete item._relation);
+    const total = await this.nftService.count({
+      owner: query.userAddress,
       collections: [collection.id],
     });
-    inventory.forEach((item) => delete item._relation);
     return {
       collection,
-      total: inventory.length,
+      total,
       items: await this.addUriToItem(inventory),
     };
   }
 
-  async getItemById(itemId: string): Promise<any> {
+  async getItemById(itemId: string, socialToken?: string): Promise<any> {
     /* Getting the base item */
     // So the marketpalce detail sdk doesn't work with ERC1155, have to do it in this way
     let item: any;
@@ -182,10 +201,20 @@ export class CollectionService {
         );
         const quantity = this.getErc1155Quantity(totalMintedItems);
         item.quantity = quantity;
-        const allOwner = this.getAllOwnerOfErc1155(totalMintedItems);
+        const allOwner = await this.getAllOwnerOfErc1155(
+          totalMintedItems,
+          socialToken
+        );
         item.allOwner = allOwner;
+      } else {
+        const ownerInfo = await this.getInfoFromAddress(
+          item.owner,
+          socialToken
+        );
+        item.ownerInfo = ownerInfo;
       }
     }
+    item.creatorInfo = await this.getInfoFromAddress(item.creator, socialToken);
     const itemWithUri = (await this.addUriToItem([item]))[0];
 
     return itemWithUri;
@@ -239,19 +268,73 @@ export class CollectionService {
         collections: [collectionId],
         tokenId,
       },
-      100
+      0,
+      1000
     );
     return totalMintedforCollection;
   }
 
-  private getAllOwnerOfErc1155(items: any) {
-    const ownerArray = items.map((item) => ({
-      publicAddress: item.owner,
-      totalOwned: item.value,
-      profileImage: "",
-      username: "",
-    }));
+  private async getInfoFromAddress(address: string, socialToken: string) {
+    const socialInfoArr = await this.getAvatarByAddresses(
+      [address],
+      socialToken
+    );
+    const socialInfo = socialInfoArr[0];
+    return {
+      publicAddress: address ? address.toLowerCase() : "",
+      profileImage: socialInfo ? socialInfo.avatarImage : "",
+      username: socialInfo ? socialInfo.name : "",
+    };
+  }
+
+  private async getAllOwnerOfErc1155(items: any, socialToken?: string) {
+    const socialInfo = socialToken
+      ? await this.getAvatarByAddresses(
+          items.map((item) => item.owner),
+          socialToken
+        )
+      : [];
+    const ownerArray = items.map((item) => {
+      const userSocialInfo = socialInfo.find(
+        (info) => info.address === item.owner
+      );
+      return {
+        publicAddress: item.owner.toLowerCase(),
+        totalOwned: item.value,
+        profileImage: userSocialInfo ? userSocialInfo.avatarImage : "",
+        username: userSocialInfo ? userSocialInfo.name : "",
+      };
+    });
     return ownerArray;
+  }
+
+  private async getAvatarByAddresses(
+    addresses: string[],
+    socialToken: string
+  ): Promise<UserSocialInfo[]> {
+    const addressQuery = addresses.join(",");
+    try {
+      const response = await lastValueFrom(
+        this.httpService.get(
+          `${constant.ATHER_SOCIAL_URL}/api/user/by-address`,
+          {
+            headers: {
+              Authorization: socialToken,
+            },
+            params: {
+              address: addressQuery,
+            },
+          }
+        )
+      );
+      return response.data;
+    } catch (err) {
+      LoggerService.error(
+        err,
+        `Failed to get ${addressQuery} info from social`
+      );
+      return [];
+    }
   }
 
   private getErc1155Quantity(items: any) {

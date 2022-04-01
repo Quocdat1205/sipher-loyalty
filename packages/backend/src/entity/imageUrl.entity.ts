@@ -1,4 +1,4 @@
-import { IsString } from "class-validator";
+import { IsNumber, IsString } from "class-validator";
 import {
   Column,
   CreateDateColumn,
@@ -7,47 +7,53 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Item } from "@entity";
+import { Airdrop, Item } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
-
-import { Airdrop } from "./airdrop.entity";
 
 @Entity()
 export class ImageUrl {
   @ApiProperty({ type: Number })
+  @IsNumber()
   @PrimaryGeneratedColumn("increment")
-  @IsString()
   id: number;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   color: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   default?: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   front?: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   back?: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   left?: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   right?: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   top?: string;
 
   @ApiProperty({ type: String })
+  @IsString()
   @Column({ nullable: true, default: "" })
   bot?: string;
 
@@ -60,10 +66,10 @@ export class ImageUrl {
   item: Item;
 
   @ApiProperty()
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt?: Date;
 
   @ApiProperty()
-  @UpdateDateColumn({ default: new Date() })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt?: Date;
 }
