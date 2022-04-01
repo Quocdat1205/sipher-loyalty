@@ -66,18 +66,8 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
           </Box>
           <Box ml={8}>
             <Text mb={4}>Change your Profile picture</Text>
-            <Button
-              role="group"
-              size="md"
-              color="neutral.50"
-              border="none"
-              bg="neutral.600"
-              _hover={{ bg: "neutral.500" }}
-              onClick={onSetAvatar}
-              px={2}
-            >
-              <Image src="/images/nft/sipher1.png" rounded="md" h="1.3rem" />
-              <Text ml={2}>Choose NFT</Text>
+            <Button size="md" border="none" onClick={onSetAvatar} px={4} colorScheme="neutral" color="neutral.50">
+              Choose Avatar
             </Button>
           </Box>
         </Flex>
