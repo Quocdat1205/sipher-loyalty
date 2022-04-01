@@ -22,6 +22,7 @@ COPY --from=packages /packages/node_modules ./node_modules
 COPY --from=src /packages/backend/dist ./dist
 COPY --from=src /packages/backend/src/data ./src/data
 COPY --from=src /packages/backend/package.json ./package.json
+ENV NODE_ENV=production
 ENTRYPOINT ["node"]
 
 FROM app as backend-loyalty
