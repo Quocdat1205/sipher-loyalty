@@ -11,7 +11,7 @@ export class CacheService {
   get = async (token: string) => {
     console.log(token);
     try {
-      const result = this.cacheManager.get<UserData>(token);
+      const result = await this.cacheManager.get<UserData>(token);
       console.log(result);
       return result;
     } catch (err) {
