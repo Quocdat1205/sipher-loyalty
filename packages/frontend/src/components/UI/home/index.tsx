@@ -36,7 +36,7 @@ const ContentHome = () => {
           totalNFTs={totalNFTs}
           totalToken={totalToken}
         />
-        <Box pos="relative">
+        <Box sx={{ img: { rounded: "lg" } }} pos="relative">
           <Image src="/images/home/banner-home.png" alt="banner" width={1200} height={360} />
           <Box pos="absolute" top="50%" left="0" transform="translate(25%,-50%)">
             <Text mb={2} fontSize="xl">

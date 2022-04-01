@@ -18,15 +18,7 @@ const ClaimContainer = () => {
   } = useClaim()
 
   return (
-    <Flex px={[4, 4, 4, 0, 0]} flex={1} pos="relative" flexDir="column" align="center">
-      <Box
-        pos="absolute"
-        top={0}
-        left={0}
-        w="full"
-        h="full"
-        bgGradient="linear(180deg, #1B1C27 0%, rgba(27, 28, 39, 0) 20%, #1B1C27 100%)"
-      />
+    <Flex flex={1} pos="relative" flexDir="column" align="center">
       <Flex flexDir="column" justify="space-between" zIndex={2} maxW="1200px" flex={1} w="full" pb={8}>
         <Flex mb={4} justify="center">
           <Box
@@ -34,7 +26,7 @@ const ClaimContainer = () => {
             py={4}
             px={6}
             textAlign="center"
-            bgGradient="linear(270deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0) 100%)"
+            bgGradient="linear(270deg, rgba(0, 0, 0, 0) 0%, rgba(112, 0, 255, 0.5) 50%, rgba(0, 0, 0, 0) 100%)"
             borderRadius="0px 0px 16px 16px"
           >
             <Text color="neutral.400">

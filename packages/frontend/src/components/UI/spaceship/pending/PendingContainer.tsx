@@ -17,7 +17,7 @@ export const PendingContainer = () => {
         <Text fontSize="sm" mb={4} color="neutral.400">
           Pending Lootboxes have been marked for minting or canceling minting. This request will take 3 days to process.
           You can initiate either request by clicking the STOP button and it will require an on-chain transaction to
-          execute.
+          execute. It could take up to 30 seconds for this page to get updated
         </Text>
         <Box bg="neutral.700" rounded="lg" p={4}>
           {pendingData.length > 0 ? (

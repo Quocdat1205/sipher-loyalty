@@ -102,6 +102,14 @@ export const useDetailBox = id => {
   )
 
   const handleClick = () => {
+    if (details?.publicAddress.toUpperCase() !== account?.toUpperCase()) {
+      toast({
+        status: "warning",
+        title: `Owned by ${details?.publicAddress}`,
+        message: `Please switch to ${details?.publicAddress} to mint`,
+      })
+      return
+    }
     setStatus("MINT")
   }
 

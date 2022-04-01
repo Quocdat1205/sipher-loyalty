@@ -18,12 +18,13 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
 
   return (
     <Box
-      onClick={() => !isDisabled && onSelect(!isChecked)}
+      onClick={() => onSelect(!isChecked)}
       _hover={{ filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))" }}
       role="group"
       overflow="hidden"
       rounded="lg"
-      cursor={!isDisabled ? "pointer" : "unset"}
+      cursor={"pointer"}
+      opacity={!isDisabled ? "1" : "0.6"}
       bg="neutral.700"
       pos="relative"
     >
@@ -46,7 +47,7 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
         pointerEvents={!isDisabled ? "unset" : "none"}
         onClick={e => {
           e.stopPropagation()
-          onView()
+          !isDisabled && onView()
         }}
         _groupHover={{ opacity: 1 }}
         size="sm"
@@ -61,7 +62,7 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
         opacity={0}
       >
         <Flex align="center">
-          <Text fontSize="sm">{!isDisabled ? "View" : "Doesn't own"}</Text>
+          <Text fontSize="sm">{"View"}</Text>
           <Box>
             <BiChevronRight size="1.2rem" />
           </Box>
