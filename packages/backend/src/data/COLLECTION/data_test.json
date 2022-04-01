@@ -34,11 +34,11 @@
     "category": "sculpture",
     "isVerified": false,
     "siteUrl": "https://sipher.xyz",
-    "bannerImage": "https://lh3.googleusercontent.com/I3bpxVjzPhD-Gs8z5DX__anyxgqPVVYBQjtKroEBV5H7j3iFRRsjXh7uyM-9lCxB8C_1sEUNh0wCR3-wKY5XQVoMO_he68X3sRoduQ=s2500",
-    "logoImage": "https://lh3.googleusercontent.com/-V0eEOrC5W9AcbS_tvv_Ew9zp-Gf5WLS0WNdBGhd2b9CKVjO2IMDUsbN5uEzwxRuLpR_AiUU_TDfANQuh9uO-auOxW5Cdu435MFcKg=s120"
+    "bannerImage": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/store_front/banner.png",
+    "logoImage": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/sculpture/store_front/logo.gif"
   },
   {
-    "id": "0x890E002A6Bb11D0094d80f4C301CaF645D168333",
+    "id": "0x3E445D426c8FdE12F5F0C223019CA9158f7Da93B",
     "name": "SIPHER LOOTBOX",
     "collectionType": "ERC1155",
     "collectionSlug": "sipherlootbox",
@@ -46,8 +46,8 @@
     "category": "lootbox",
     "isVerified": false,
     "siteUrl": "https://sipher.xyz",
-    "bannerImage": "https://lh3.googleusercontent.com/I3bpxVjzPhD-Gs8z5DX__anyxgqPVVYBQjtKroEBV5H7j3iFRRsjXh7uyM-9lCxB8C_1sEUNh0wCR3-wKY5XQVoMO_he68X3sRoduQ=s2500",
-    "logoImage": "https://lh3.googleusercontent.com/-V0eEOrC5W9AcbS_tvv_Ew9zp-Gf5WLS0WNdBGhd2b9CKVjO2IMDUsbN5uEzwxRuLpR_AiUU_TDfANQuh9uO-auOxW5Cdu435MFcKg=s120"
+    "bannerImage": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/store_front/banner.png",
+    "logoImage": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/store_front/logo.gif"
   },
   {
     "id": "0x4d91fa57abfead5fbc8445e45b906b85bbd9744c",
@@ -58,8 +58,8 @@
     "category": "character",
     "isVerified": false,
     "siteUrl": "https://sipher.xyz",
-    "bannerImage": "https://lh3.googleusercontent.com/I3bpxVjzPhD-Gs8z5DX__anyxgqPVVYBQjtKroEBV5H7j3iFRRsjXh7uyM-9lCxB8C_1sEUNh0wCR3-wKY5XQVoMO_he68X3sRoduQ=s2500",
-    "logoImage": "https://lh3.googleusercontent.com/-V0eEOrC5W9AcbS_tvv_Ew9zp-Gf5WLS0WNdBGhd2b9CKVjO2IMDUsbN5uEzwxRuLpR_AiUU_TDfANQuh9uO-auOxW5Cdu435MFcKg=s120"
+    "bannerImage": "https://lh3.googleusercontent.com/LrdoFh3E8rq43JucGYm9Xkhh0OLoERNCa5yJi98D1a6Tb0KlYGWmrmqhZF0JqsTezncOXCInL7iGnv-JV0YjIe9lSwrSknzaVW8orw=h600",
+    "logoImage": "https://lh3.googleusercontent.com/-V0eEOrC5W9AcbS_tvv_Ew9zp-Gf5WLS0WNdBGhd2b9CKVjO2IMDUsbN5uEzwxRuLpR_AiUU_TDfANQuh9uO-auOxW5Cdu435MFcKg=s0"
   },
   {
     "id": "0x97c8480d593b93ae90f8613a5b2ac02e7a3dd0ed",
