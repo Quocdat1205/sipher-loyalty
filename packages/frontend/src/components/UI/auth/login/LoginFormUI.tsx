@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
-import AtherIdAuth, { CognitoUser, SocialProvider } from "@sipher.dev/ather-id"
+import AtherIdAuth, { ChallengeType, CognitoUser, SocialProvider } from "@sipher.dev/ather-id"
 import { Box, Button, Flex, Heading, Link, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
@@ -22,9 +22,10 @@ interface LoginFormUIProps {
   setStep: (step: LoginStep) => void
   onChangeEmail: (email: string) => void
   onChangePassword: (password: string) => void
+  setTempUser: (user: CognitoUser | null) => void
 }
 
-const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword }: LoginFormUIProps) => {
+const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: LoginFormUIProps) => {
   const {
     register,
     handleSubmit,
@@ -60,14 +61,17 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword }: LoginFormUIPr
       return setUser(user)
     }
 
-    // ! TO DO: handle the case when user need to change their password
     if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
-      toast({ title: "Need new password" })
+      setTempUser(user)
+      setStep(LoginStep.NewPassword)
       return
     } else if (user.challengeName === "CUSTOM_CHALLENGE") {
       const { TYPE } = user.challengeParam
-      if (TYPE === "WALLET") {
+      if (TYPE === ChallengeType.Wallet) {
         return handleWalletChallenge(user, user.challengeParam.message)
+      }
+      if (TYPE === ChallengeType.Code) {
+        return
       }
     }
 
