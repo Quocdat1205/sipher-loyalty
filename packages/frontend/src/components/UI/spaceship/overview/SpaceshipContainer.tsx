@@ -19,7 +19,7 @@ export const SpaceshipContainer = () => {
     <Flex flexDir="column" w="full">
       <Flex
         px={[4, 4, 4, 0, 0]}
-        bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 35%)"
+        bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 40%)"
         flexDir="column"
         align="center"
         w="full"
@@ -57,8 +57,9 @@ export const SpaceshipContainer = () => {
             </Box>
             <Flex blendMode="lighten" pos="relative" flexDir="column" align="flex-end" ml={8} p={4} flex={3}>
               <Image
+                priority
                 objectFit="contain"
-                src={activeData.image || ""}
+                src={activeData.image ?? "/images/spaceship/ship/gif1.gif"}
                 alt={activeData.title}
                 width={869}
                 height={448}
