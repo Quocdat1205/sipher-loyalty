@@ -46,23 +46,23 @@ export const AuthLayout: FC = ({ children }) => {
           <Image src="/images/auth/neko_figure.svg" alt="neko" layout="fill" />
         </Box>
         <Box w="full" maxW="960px">
-          <Box w="full" maxW="400px" zIndex={2}>
+          <Box w="full" maxW="440px" zIndex={2}>
             <Text fontSize={"3xl"} mb={6} fontWeight={600}>
-              {`Get your Ather Account & start earning rewards`}
+              {`Get your Ather Account & Start earning rewards`}
             </Text>
             <Stack spacing={4}>
               {content.map(item => (
-                <Box key={item.title}>
-                  <Flex align="center">
-                    <Flex justify="center" w="2rem">
-                      <Img src={item.iconPath} mr={4} h={item.h} />
-                    </Flex>
+                <Flex key={item.title} mb={1.5}>
+                  <Flex justify="center" w="2rem" color="rgba(255, 255, 255, 0.7)" pt={1}>
+                    <Img src={item.iconPath} mr={4} h={item.h} />
+                  </Flex>
+                  <Box>
                     <Text fontSize={"lg"} fontWeight={600}>
                       {item.title}
                     </Text>
-                  </Flex>
-                  <Text>{item.description}</Text>
-                </Box>
+                    <Text color="rgba(255, 255, 255, 0.7)">{item.description}</Text>
+                  </Box>
+                </Flex>
               ))}
             </Stack>
           </Box>
