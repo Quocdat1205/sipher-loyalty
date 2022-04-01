@@ -19,12 +19,12 @@ export class PortfolioQuery {
   })
   @IsEnum(CollectionCategory)
   @IsOptional()
-  category: CollectionCategory;
+  category?: CollectionCategory;
 
   @ApiProperty()
   @IsNumberString()
   @IsOptional()
-  chainId: string;
+  chainId?: string;
 }
 
 export class PortfolioByCollectionQuery {
