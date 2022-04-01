@@ -14,12 +14,15 @@ COPY /packages/backend .
 COPY tsconfig.json /.
 RUN yarn install
 RUN yarn build
+RUN yarn migrate:config
 
 # DIST
 FROM mhart/alpine-node:14 AS app
 WORKDIR /app
 COPY --from=packages /packages/node_modules ./node_modules
 COPY --from=src /packages/backend/dist ./dist
+COPY --from=src /packages/backend/src/data ./src/data
+COPY --from=src /packages/backend/package.json ./packages.json
 ENTRYPOINT ["node"]
 
 FROM app as backend-loyalty
