@@ -6,7 +6,7 @@ import { AuthModule } from "@modules/auth/auth.module";
 import { RedisCacheModule } from "@modules/cache/cache.module";
 import { NftItemModule } from "@modules/nft/nftItem.module";
 import { URIModule } from "@modules/uri/uri.module";
-import { SipherCollection } from "src/entity/sipher-collection.entity";
+import { SipherCollection } from "@entity";
 
 import { CollectionController } from "./collection.controller";
 import { CollectionService } from "./collection.service";

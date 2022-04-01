@@ -10,3 +10,4 @@ export * from "./lootbox.entity";
 export * from "./merchandise.entity";
 export * from "./mint.entity";
 export * from "./sculpture-transaction.entity";
+export * from "./sipher-collection.entity";

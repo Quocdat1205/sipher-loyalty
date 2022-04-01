@@ -28,7 +28,7 @@ const isSculptureContract = (contractAddress: string) => {
   return isMumbaiSculpture || isPolygonSculpture;
 };
 
-const isLooboxContract = (contractAddress: string) => {
+const isLootboxContract = (contractAddress: string) => {
   const contractRegistry = constant.blockchain.contracts;
   const isMumbaiSpaceship =
     contractRegistry.erc1155LootBox[Chain.Mumbai].address.toLowerCase() ===
@@ -59,7 +59,7 @@ export {
   getDeadline3Day,
   getNow,
   insertDetailStringToImage,
-  isLooboxContract,
+  isLootboxContract,
   isSculptureContract,
   randomSalt,
   weiToEther,
