@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import { BsClockFill } from "react-icons/bs"
 import { MdInfo } from "react-icons/md"
-import Image from "next/image"
-import { Box, Flex, Link, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+// import Image from "next/image"
+import { Box, Flex, Img, Link, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
 
@@ -34,7 +34,7 @@ const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
         display="flex"
         isLoaded={imageLoaded}
       >
-        <Image
+        <Img
           src={"https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/Lootbox_1.gif"}
           alt={propertyLootbox?.name}
           loading="lazy"
