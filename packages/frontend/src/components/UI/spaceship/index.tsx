@@ -50,10 +50,14 @@ const ContentSpaceship = () => {
         flexDir="column"
         align="center"
         flex={1}
-        bgGradient={currentTab === "overview" ? "transparent" : "linear(150deg, #8A31E2 -125%, #0F041A 35%)"}
+        bgGradient={
+          currentTab === "overview" || currentTab === "claim"
+            ? "transparent"
+            : "linear(150deg, #8A31E2 -125%, #0F041A 40%)"
+        }
         w="full"
       >
-        {currentTab !== "overview" && (
+        {currentTab !== "overview" && currentTab !== "claim" && (
           <Box px={[4, 4, 4, 0, 0]} pt={12} w="full" maxW="1200px">
             <TabPage tabs={spaceshipTabs} />
           </Box>
