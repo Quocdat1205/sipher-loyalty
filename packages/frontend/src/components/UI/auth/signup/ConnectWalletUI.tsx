@@ -8,6 +8,7 @@ import { useWalletContext } from "@web3"
 
 import { WalletCard } from "@components/shared"
 import { useChakraToast } from "@hooks"
+import { useAuth } from "src/providers/auth"
 
 import { SignUpStep } from "./SignUpUI"
 
@@ -19,11 +20,12 @@ interface ConnectWalletUIProps {
 const ConnectWalletUI = ({ setStep, setCurrentAddress }: ConnectWalletUIProps) => {
   const toast = useChakraToast()
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
-  const { connect, scCaller, reset } = useWalletContext()
+  const { connect, scCaller, reset, isActive, account } = useWalletContext()
+  const { refetchOwnedWallets } = useAuth()
   const qc = useQueryClient()
   const router = useRouter()
   // Initiate wallet connection => Sign the message to get signature => Confirm wallet connection
-  const { mutate: mutateAddWallet, isLoading: isAddingWallet } = useMutation<unknown, unknown, ConnectWalletResponse>(
+  const { mutate: mutateAddWallet } = useMutation<unknown, unknown, ConnectWalletResponse>(
     async res => {
       const signature = await scCaller.current?.sign(res.message)
       await AtherIdAuth.confirmConectWallet(res, signature!)
@@ -46,42 +48,42 @@ const ConnectWalletUI = ({ setStep, setCurrentAddress }: ConnectWalletUIProps) =
     },
   )
 
-  const { mutate: mutateConnectWallet, isLoading: isConnectingWallet } = useMutation<
-    ConnectWalletResponse,
-    unknown,
-    string
-  >(account => AtherIdAuth.connectWallet(account), {
-    onSuccess: res => mutateAddWallet(res),
-    onError: (e: any) => {
-      const status = e?.toJSON()?.status || 400
-      if (status === 401) {
-        toast({
-          status: "error",
-          title: "Network error!",
-          message: "Please try again later",
-        })
-      } else {
-        setStep(SignUpStep.WalletInUse)
-      }
+  const { mutate: mutateConnectWallet } = useMutation<ConnectWalletResponse, unknown, string>(
+    account => AtherIdAuth.connectWallet(account),
+    {
+      onSuccess: res => mutateAddWallet(res),
+      onError: (e: any) => {
+        const status = e?.toJSON()?.status || 400
+        setConnectingMethod(null)
+        if (status === 401) {
+          toast({
+            status: "error",
+            title: "Network error!",
+            message: "Please try again later",
+          })
+        } else {
+          setStep(SignUpStep.WalletInUse)
+        }
+      },
     },
-  })
+  )
 
-  const isLoading = isConnectingWallet || isAddingWallet
-
-  useEffect(() => {
-    if (!isLoading && connectingMethod) {
-      setConnectingMethod(null)
-    }
-  }, [isLoading, connectingMethod])
-
+  // case 1: wallet is not active
+  // case 2: wallet is active but not linked to any account
   const handleConnectWallet = async (connectorId: Parameters<typeof connect>["0"]) => {
     setConnectingMethod(connectorId)
-    const account = await connect(connectorId)
-    // Try to add wallet to account if not linked yet
-    if (account) {
-      setCurrentAddress(account)
-      mutateConnectWallet(account)
+    let currentAccount = account
+    if (!currentAccount) {
+      currentAccount = (await connect(connectorId)) || null
     }
+    const ownedWallets = await refetchOwnedWallets()
+      .then(res => res.data)
+      .then(data => data?.map(wallet => wallet.address))
+    // Try to add wallet to account if not linked yet
+    if (currentAccount && ownedWallets && !ownedWallets.includes(currentAccount.toLowerCase())) {
+      setCurrentAddress(currentAccount)
+      mutateConnectWallet(currentAccount)
+    } else setConnectingMethod(null)
   }
   return (
     <Box>

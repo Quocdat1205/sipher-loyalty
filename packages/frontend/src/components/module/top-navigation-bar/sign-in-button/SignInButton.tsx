@@ -44,7 +44,7 @@ const SignInButton = () => {
     <Fragment>
       {authenticated && (
         <Box minW="6rem" ref={popRef} pos="relative" zIndex={"modal"}>
-          <Flex bg={"transparent"} rounded="md" align="center" transform={"auto"} boxShadow={"base"}>
+          <Flex bg={"transparent"} rounded="md" align="center" transform={"auto"}>
             <Flex align="center" cursor="pointer" onClick={() => setIsPopupOpen(!isPopupOpen)}>
               <Avatar
                 bg="gray"
