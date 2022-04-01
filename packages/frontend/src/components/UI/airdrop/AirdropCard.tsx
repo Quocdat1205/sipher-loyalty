@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import Image from "next/image"
 import { Box, Button, Flex, Img, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
@@ -15,6 +15,7 @@ interface AirdropProps {
 
 const AirdropCard = ({ data, isFetched }: AirdropProps) => {
   const extension = data.imageUrls[0]?.default.split(".")[5]
+  const [imageLoad, setImageLoad] = useState(false)
   return (
     <Flex
       flexDir="column"
@@ -43,7 +44,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
               transition: "opacity 0.7s ease-in-out",
             },
           }}
-          isLoaded={isFetched && data.imageUrls?.length > 0}
+          isLoaded={imageLoad && isFetched && data.imageUrls?.length > 0}
         >
           <Img
             src={
@@ -54,6 +55,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
             objectFit="contain"
             w="full"
             h="full"
+            onLoad={() => setImageLoad(true)}
           />
           <Img
             _groupHover={{
@@ -67,6 +69,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
             objectFit="contain"
             w="full"
             h="full"
+            onLoad={() => setImageLoad(true)}
           />
           <Flex
             boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"

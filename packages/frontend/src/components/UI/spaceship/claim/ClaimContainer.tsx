@@ -21,14 +21,7 @@ const ClaimContainer = () => {
     <Flex flex={1} pos="relative" flexDir="column" align="center">
       <Flex flexDir="column" justify="space-between" zIndex={2} maxW="1200px" flex={1} w="full" pb={8}>
         <Flex mb={4} justify="center">
-          <Box
-            w="full"
-            py={4}
-            px={6}
-            textAlign="center"
-            bgGradient="linear(270deg, rgba(0, 0, 0, 0) 0%, rgba(112, 0, 255, 0.5) 50%, rgba(0, 0, 0, 0) 100%)"
-            borderRadius="0px 0px 16px 16px"
-          >
+          <Box w="full" py={4} px={6} textAlign="center" borderRadius="0px 0px 16px 16px">
             <Text color="neutral.400">
               You have{" "}
               <chakra.span color="white" fontWeight={600}>
@@ -37,7 +30,7 @@ const ClaimContainer = () => {
             </Text>
           </Box>
         </Flex>
-        <HStack spacing={4} mb={4} justify={claimData.length > 1 ? "space-between" : "center"}>
+        <HStack blendMode="lighten" spacing={4} mb={4} justify={claimData.length > 1 ? "space-between" : "center"}>
           {claimData.map(item => (
             <ClaimCard key={item.id} isPopover={false} data={item} />
           ))}

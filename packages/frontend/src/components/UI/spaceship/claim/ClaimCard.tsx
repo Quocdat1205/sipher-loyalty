@@ -20,7 +20,13 @@ const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
-    <Flex bg="neutral.900" rounded="lg" align="center" justify="center" pos="relative">
+    <Flex
+      bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 35%)"
+      rounded="lg"
+      align="center"
+      justify="center"
+      pos="relative"
+    >
       <Skeleton
         blendMode="lighten"
         sx={{ span: { rounded: "lg" } }}
@@ -32,8 +38,9 @@ const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
           src={"https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/Lootbox_1.gif"}
           alt={propertyLootbox?.name}
           loading="lazy"
-          width={500 * 1.5}
-          height={300 * 1.5}
+          objectFit="contain"
+          width={500}
+          height={300}
           onLoad={() => setImageLoaded(true)}
         />
       </Skeleton>
