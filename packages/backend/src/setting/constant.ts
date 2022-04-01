@@ -52,6 +52,8 @@ export class SystemConfigProvider {
 
   ATHER_SOCIAL_URL = this.getSync("ATHER_SOCIAL_URL");
 
+  MARKETPLACE_SDK_URL = this.getSync("MARKETPLACE_SDK_URL");
+
   public async getPOSTGRES_URL() {
     return this.get("POSTGRES_URL");
   }

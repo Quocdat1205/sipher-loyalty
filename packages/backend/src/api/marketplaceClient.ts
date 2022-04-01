@@ -4,10 +4,7 @@ import { Api } from "./marketplaceSdk";
 
 const marketplaceClient = new Api({
   format: "json",
-  // baseURL: "https://dev-api-marketplace.sipher.gg",
-  baseURL: constant.isProduction
-    ? "https://dev-api-marketplace.sipher.gg"
-    : "marketplace-backend-api.marketplace:3001",
+  baseURL: constant.MARKETPLACE_SDK_URL,
 });
 
 export default marketplaceClient;
