@@ -76,8 +76,8 @@ export const PendingContainer = () => {
                     </chakra.td>
                     <chakra.td w="20%" textAlign="right" py={4}>
                       <Button
-                        isLoading={item.isMinting}
-                        isDisabled={item.isDisabled}
+                        isLoading={item.status === "Minting" || item.isMinting}
+                        isDisabled={item.status !== "Minting" || item.isDisabled}
                         onClick={() => {
                           item.batchIDs && item.batchIDs.length > 0 ? item.onMintBatch() : item.onMint()
                         }}
@@ -86,7 +86,8 @@ export const PendingContainer = () => {
                       </Button>
                       <Button
                         onClick={item.onCancel}
-                        isLoading={item.isCancel}
+                        isLoading={item.status === "Minting" || item.isCancel}
+                        isDisabled={item.status !== "Minting" || !item.isCancel || item.isMinting}
                         ml={4}
                         colorScheme="neutral"
                         border="1px"

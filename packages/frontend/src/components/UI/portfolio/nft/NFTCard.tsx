@@ -1,7 +1,9 @@
 import React, { useState } from "react"
+import { BiChevronRight } from "react-icons/bi"
 import Image from "next/image"
-import { Box, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
+import { CustomCheckbox } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
 import { NftContracts } from "@constant"
 
@@ -24,20 +26,57 @@ const NFTCard = ({ data, isFetched }: CardProps) => {
 
   return (
     <Box
-      onClick={data.onView}
+      onClick={() => data.onSelect(!data.isChecked)}
       _hover={{ filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))" }}
       overflow="hidden"
       rounded="lg"
+      role="group"
       cursor="pointer"
       bg="neutral.700"
       pos="relative"
     >
-      <Skeleton bg="black" isLoaded={imageLoad && isFetched} pos="relative">
+      <Skeleton bg="black" isLoaded={imageLoad && isFetched} pos="relative" w="full">
+        {data?.type === "ERC1155" && (
+          <Flex
+            justify="space-between"
+            align="center"
+            px={4}
+            _groupHover={{ opacity: 1 }}
+            transition=".35s opacity"
+            pos="absolute"
+            w="full"
+            left={0}
+            right={0}
+            top={3}
+            zIndex={1}
+            opacity={data.isChecked ? 1 : 0}
+          >
+            <CustomCheckbox onChange={e => data.onSelect(!e.target.checked)} isChecked={data.isChecked} />
+            <Button
+              onClick={e => {
+                e.stopPropagation()
+                data.onView()
+              }}
+              size="sm"
+              rounded="full"
+              bg="white"
+            >
+              <Flex align="center">
+                <Text fontSize="sm">{"View"}</Text>
+                <Box>
+                  <BiChevronRight size="1.2rem" />
+                </Box>
+              </Flex>
+            </Button>
+          </Flex>
+        )}
+
         {videos.includes(extension) ? (
           <video src={data.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
         ) : (
           <Image
-            src={data.imageUrl || "/images/nft/sipher1.png"}
+            blurDataURL="https://via.placeholder.com/150"
+            src={data.imageUrl ?? "https://via.placeholder.com/150"}
             alt={data.tokenId}
             layout="responsive"
             loading="lazy"
