@@ -32,25 +32,34 @@ export class AuthService {
   }
 
   fetchUserData = async (req: Request) => {
-    const token = req.headers.authorization.trim().split(" ").pop();
-    const dataAWSUser = await this.verifier.verify(token);
-    const roles = dataAWSUser["cognito:groups"];
-    const { data } = await axios.get(
-      `${constant.ATHER_ID_URL}/api/wallets/owned`,
-      {
-        headers: {
-          Authorization: `Bearer ${req.headers.authorization}`,
-        },
-      }
-    );
-    const userData = {
-      userId: data[0].userId,
-      publicAddress: data.map((el: any) => el.address.toLowerCase()),
-      roles,
-    };
-    await this.cacheService.set(req.headers.authorization, userData);
-    req.userData = userData;
-    return userData;
+    try {
+      const token = req.headers.authorization.trim().split(" ").pop();
+      console.log(token);
+
+      const dataAWSUser = await this.verifier.verify(token);
+      const roles = dataAWSUser["cognito:groups"];
+      const { data } = await axios.get(
+        `${constant.ATHER_ID_URL}/api/wallets/owned`,
+        {
+          headers: {
+            Authorization: `Bearer ${req.headers.authorization}`,
+          },
+        }
+      );
+
+      const userData = {
+        userId: data[0].userId,
+        publicAddress: data.map((el: any) => el.address.toLowerCase()),
+        roles,
+      };
+      console.log(userData);
+
+      await this.cacheService.set(req.headers.authorization, userData);
+      req.userData = userData;
+      return userData;
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   async validateRequest(req: Request) {
