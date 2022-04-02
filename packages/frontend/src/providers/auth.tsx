@@ -158,17 +158,18 @@ export const AuthProvider: FC = ({ children }) => {
   const { authenticated } = auth
 
   useEffect(() => {
-    const isAuthRoute = ["/signin", "/signup", "/forgot-password"].includes(router.pathname)
-
+    const currentRoute = window.location.pathname
+    const isAuthRoute = ["/signin", "/signup", "/forgot-password"].includes(currentRoute)
+    console.log("ROUTE", window.location.pathname)
     // move user inside after authenticated
-    if (authenticated && ["/signin", "/forgot-password"].includes(router.pathname)) {
+    if (authenticated && ["/signin", "/forgot-password"].includes(currentRoute)) {
       const next = decodeURIComponent((router.query["next"] as string) || "/")
       const [pathname, search] = next.split("?")
       router.push({ pathname, search })
     }
 
     if (!authenticated && !isAuthRoute) {
-      const next = encodeURIComponent(router.route)
+      const next = encodeURIComponent(currentRoute)
       router.push(`${"/signin"}?next=${next}`)
     }
   }, [authenticated, router.pathname])
