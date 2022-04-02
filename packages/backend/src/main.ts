@@ -59,29 +59,6 @@ async function bootstrap() {
         httpClientType: "axios",
       });
     }
-  } else {
-    const document = SwaggerModule.createDocument(
-      app,
-      new DocumentBuilder()
-        .setTitle("Sipher Loyalty")
-        .setDescription("Sipher loyalty API documents")
-        .addBearerAuth(
-          {
-            type: "http",
-            scheme: "bearer",
-            bearerFormat: "JWT",
-            name: "JWT",
-            description: "Enter JWT token",
-            in: "header",
-          },
-          "JWT-auth" // This name here is important for matching up with @ApiBearerAuth() in your controller!
-        )
-        .setVersion("1.0")
-        .setExternalDoc("Postman SIPHER", "./")
-        .build()
-    );
-
-    SwaggerModule.setup(path.resolve(__dirname, "./"), app, document);
   }
 
   app.useGlobalPipes(
