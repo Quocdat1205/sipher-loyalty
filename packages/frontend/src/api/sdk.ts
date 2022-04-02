@@ -517,6 +517,74 @@ export interface ERC1155SculptureAttribute {
   updatedAt: string;
 }
 
+export enum TableType {
+  MERCH = 'MERCH',
+  AIRDROP = 'AIRDROP',
+  LOOTBOX = 'LOOTBOX',
+  CLAIMABLELOOTBOX = 'CLAIMABLELOOTBOX',
+  MINT = 'MINT',
+  BURN = 'BURN',
+  CANCEL = 'CANCEL',
+  COLLECTION = 'COLLECTION',
+  ERC1155LOOTBOX = 'ERC1155LOOTBOX',
+  ERC1155SCULPTURE = 'ERC1155SCULPTURE',
+}
+
+export enum CancelType {
+  Lootbox = 'Lootbox',
+  SpaceshipPart = 'SpaceshipPart',
+  Spaceship = 'Spaceship',
+}
+
+export interface Canceled {
+  id: number;
+  signature: string;
+  type: CancelType;
+
+  /** @format date-time */
+  createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
+}
+
+export enum BurnType {
+  Lootbox = 'Lootbox',
+  SpaceshipPart = 'SpaceshipPart',
+  Spaceship = 'Spaceship',
+}
+
+export interface Burned {
+  id: number;
+  to: string;
+  batchID: number;
+  amount: number;
+  batchIDs: number[];
+  amounts: number[];
+  salt: string;
+  type: BurnType;
+
+  /** @format date-time */
+  createdAt: string;
+
+  /** @format date-time */
+  updatedAt: string;
+}
+
+export interface BodyAdminUpdate {
+  type: TableType;
+  airdrop: Airdrop;
+  merch: Merchandise;
+  item: Item;
+  imageUrl: ImageUrl;
+  mint: PendingMint;
+  cancel: Canceled;
+  burn: Burned;
+  collection: SipherCollection;
+  lootbox: Lootbox;
+  claimableLootbox: ClaimableLootbox;
+}
+
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from 'axios';
 
 export type QueryParamsType = Record<string | number, any>;
@@ -1102,11 +1170,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags admin
+     * @name AdminControllerDistributesLootbox
+     * @request PUT:/api/sipher/loyalty/admin/distributes
+     * @secure
+     */
+    adminControllerDistributesLootbox: (data: DistributeLootboxs, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/distributes`,
+        method: 'PUT',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
      * @name AdminControllerDistributeLootbox
      * @request PUT:/api/sipher/loyalty/admin/distribute
      * @secure
      */
-    adminControllerDistributeLootbox: (data: DistributeLootboxs, params: RequestParams = {}) =>
+    adminControllerDistributeLootbox: (data: DistributeLootbox, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/admin/distribute`,
         method: 'PUT',
@@ -1182,6 +1268,41 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, any>({
         path: `/api/sipher/loyalty/admin/erc1155-lootbox`,
         method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerGetAll
+     * @request GET:/api/sipher/loyalty/admin/get-all
+     * @secure
+     */
+    adminControllerGetAll: (query: { type: TableType; from: number; size: number }, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/get-all`,
+        method: 'GET',
+        query: query,
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerUpdateAll
+     * @request PUT:/api/sipher/loyalty/admin/update-by-id
+     * @secure
+     */
+    adminControllerUpdateAll: (data: BodyAdminUpdate, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/update-by-id`,
+        method: 'PUT',
         body: data,
         secure: true,
         type: ContentType.Json,

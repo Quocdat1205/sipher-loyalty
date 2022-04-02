@@ -2,6 +2,7 @@
 import fs from "fs";
 import path from "path";
 
+import axios from "axios";
 import { toChecksumAddress } from "ethereumjs-util";
 import { Contract, ethers, providers, Wallet } from "ethers";
 import { Injectable } from "@nestjs/common";
@@ -218,4 +219,19 @@ export class DistributeSculptureService {
       error: false,
     };
   }
+
+  // async distributeForUser(claimableLootbox: {
+  //   publicAddress: string;
+  //   tokenId: number;
+  //   quantity: number;
+  //   expiredDate: number;
+  // }) {
+  //   const claimableLootbox = {};
+  //   const { data } = await axios.post(`${constant.URL}`, {
+  //     headers: {
+  //       Authorization: constant.TOKEN,
+  //     },
+  //     claimableLootbox,
+  //   });
+  // }
 }

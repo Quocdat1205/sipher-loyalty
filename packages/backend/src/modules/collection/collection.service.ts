@@ -382,14 +382,15 @@ export class CollectionService {
     return newItem;
   }
 
-  async getDataCollectionTableForAdmin(
-    skip: number,
-    take: number
-  ): Promise<Array<SipherCollection>> {
+  async getDataCollectionTableForAdmin(skip: number, take: number) {
     const data = await this.sipherCollectionRepo.find({
       skip,
       take,
     });
-    return data;
+    return { total: data.length, data };
+  }
+
+  async updateDataCollectionTableForAdmin(collection: SipherCollection) {
+    return this.sipherCollectionRepo.save(collection);
   }
 }

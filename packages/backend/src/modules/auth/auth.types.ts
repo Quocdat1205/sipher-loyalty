@@ -9,5 +9,6 @@ export enum UserRole {
   LOYALTY_ADMIN_AIRDROP = "loyalty-airdrop-admin",
   LOYALTY_ADMIN_SMARTCONTRACT = "loyalty-smartcontract-admin",
   LOYALTY_ADMIN_LOOTBOX_SPACESHIP = "loyalty-spaceship-lootbox-admin",
+  LOYALTY_ADMIN = "loyalty-admin",
   USERS = "Users",
 }

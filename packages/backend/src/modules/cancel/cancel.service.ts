@@ -32,14 +32,11 @@ export class CancelService {
     return this.canceledRepo.save(canceled);
   }
 
-  async getDataCancelTableForAdmin(
-    from: number,
-    take: number
-  ): Promise<Array<Canceled>> {
+  async getDataCancelTableForAdmin(from: number, take: number) {
     const data = await this.canceledRepo.find({
       skip: from,
       take,
     });
-    return data;
+    return { total: data.length, data };
   }
 }

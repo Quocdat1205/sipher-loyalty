@@ -91,11 +91,12 @@ export class AuthService {
     return req.userData;
   };
 
-  verifyAdmin = async (userData: UserData, userRole: UserRole) => {
-    if (userData.roles.findIndex((role) => role === userRole) === -1) {
+  verifyAdmin = async (req: Request, userRole: UserRole) => {
+    if (req.userData.roles.findIndex((role) => role === userRole) === -1) {
       LoggerService.warn(
-        `not permisson, user data ${JSON.stringify(userData)}`
+        `not permisson, user data ${JSON.stringify(req.userData)}`
       );
+      this.fetchUserData(req);
       throw new HttpException("ACCESS DENIED !", HttpStatus.BAD_REQUEST);
     }
   };

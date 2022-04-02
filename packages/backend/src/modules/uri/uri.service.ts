@@ -175,4 +175,22 @@ export class URIService {
     }
     return Promise.all(promises);
   };
+
+  async getDataERC1155LootboxTableForAdmin(from: number, take: number) {
+    const data = await this.erc1155LootboxRepo.find({
+      relations: ["attributes"],
+      skip: from,
+      take,
+    });
+    return { total: data.length, data };
+  }
+
+  async getDataERC1155SculptureTableForAdmin(from: number, take: number) {
+    const data = await this.erc1155SculptureRepo.find({
+      relations: ["attributes"],
+      skip: from,
+      take,
+    });
+    return { total: data.length, data };
+  }
 }

@@ -7,10 +7,10 @@ import {
   IsOptional,
   IsString,
 } from "class-validator";
+import { CollectionCategory, SipherCollection } from "@entity";
 import { ApiProperty } from "@nestjs/swagger";
 
 import { NftItem } from "@modules/nft/nft-item.dto";
-import { CollectionCategory, SipherCollection } from "@entity";
 
 export class PortfolioQuery {
   @ApiProperty({

@@ -1,12 +1,10 @@
 import { Repository } from "typeorm";
 import {
   Airdrop,
-  ClaimableLootbox,
   ERC1155Lootbox,
   ERC1155Sculpture,
   ImageUrl,
   Item,
-  Lootbox,
 } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -18,9 +16,10 @@ import { CollectionService } from "@modules/collection/collection.service";
 import { LootBoxService } from "@modules/lootbox/lootbox.service";
 import { MerchService } from "@modules/merch/merch.service";
 import { MintService } from "@modules/mint/mint.service";
+import { URIService } from "@modules/uri/uri.service";
 
 import { UpdateImageUrlDto, UpdateItemDto } from "./admin.dto";
-import { TableType } from "./admin.type";
+import { BodyAdminUpdate, TableType } from "./admin.type";
 
 @Injectable()
 export class AdminService {
@@ -28,42 +27,15 @@ export class AdminService {
     @InjectRepository(Item) private itemRepo: Repository<Item>,
     @InjectRepository(ImageUrl) private imageUrlRepo: Repository<ImageUrl>,
     @InjectRepository(Airdrop) private airDropRepo: Repository<Airdrop>,
-    @InjectRepository(ERC1155Lootbox)
-    private erc1155LootboxRepo: Repository<ERC1155Lootbox>,
-    @InjectRepository(ERC1155Sculpture)
-    private erc1155SculptureRepo: Repository<ERC1155Sculpture>,
     private merchService: MerchService,
     private airdropService: AirdropService,
     private pendingMintService: MintService,
     private cancelService: CancelService,
     private burnService: BurnService,
     private lootBoxService: LootBoxService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private uriService: URIService
   ) {}
-
-  private async getDataERC1155LootboxTableForAdmin(
-    from: number,
-    take: number
-  ): Promise<Array<ERC1155Lootbox>> {
-    const data = await this.erc1155LootboxRepo.find({
-      relations: ["attributes"],
-      skip: from,
-      take,
-    });
-    return data;
-  }
-
-  private async getDataERC1155SculptureTableForAdmin(
-    from: number,
-    take: number
-  ): Promise<Array<ERC1155Sculpture>> {
-    const data = await this.erc1155SculptureRepo.find({
-      relations: ["attributes"],
-      skip: from,
-      take,
-    });
-    return data;
-  }
 
   async updateItemById(itemId: number, updateItemDto: UpdateItemDto) {
     const item = await this.itemRepo.findOne(itemId);
@@ -80,41 +52,77 @@ export class AdminService {
     await this.itemRepo.save(item);
   }
 
-  async getDataTableByType(from: number, to: number, type: TableType) {
+  async getDataTableByType(from: number, size: number, type: TableType) {
     switch (type) {
       case TableType.AIRDROP:
-        return this.airdropService.getDataAirdropTableForAdmin(from, to);
+        return this.airdropService.getDataAirdropTableForAdmin(from, size);
 
       case TableType.MERCH:
-        return this.merchService.getDataMerchTableForAdmin(from, to);
+        return this.merchService.getDataMerchTableForAdmin(from, size);
 
       case TableType.MINT:
-        return this.pendingMintService.getDataMintTableForAdmin(from, to);
+        return this.pendingMintService.getDataMintTableForAdmin(from, size);
 
       case TableType.BURN:
-        return this.burnService.getDataBurnTableForAdmin(from, to);
+        return this.burnService.getDataBurnTableForAdmin(from, size);
 
       case TableType.CANCEL:
-        return this.cancelService.getDataCancelTableForAdmin(from, to);
+        return this.cancelService.getDataCancelTableForAdmin(from, size);
 
       case TableType.LOOTBOX:
-        return this.lootBoxService.getDataLootboxTableForAdmin(from, to);
+        return this.lootBoxService.getDataLootboxTableForAdmin(from, size);
 
       case TableType.CLAIMABLELOOTBOX:
         return this.lootBoxService.getDataClaimableLootboxTableForAdmin(
           from,
-          to
+          size
         );
 
       case TableType.COLLECTION:
-        return this.collectionService.getDataCollectionTableForAdmin(from, to);
+        return this.collectionService.getDataCollectionTableForAdmin(
+          from,
+          size
+        );
 
       case TableType.ERC1155LOOTBOX:
-        return this.getDataERC1155LootboxTableForAdmin(from, to);
+        return this.uriService.getDataERC1155LootboxTableForAdmin(from, size);
 
       case TableType.ERC1155SCULPTURE:
-        return this.getDataERC1155SculptureTableForAdmin(from, to);
+        return this.uriService.getDataERC1155SculptureTableForAdmin(from, size);
 
+      default:
+        throw new HttpException("invalid type", HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async updateDataTableByType(body: BodyAdminUpdate) {
+    switch (body.type) {
+      case TableType.AIRDROP:
+        return this.airdropService.updateAirdropTokens(body.airdrop);
+
+      case TableType.MERCH:
+        return this.merchService.updateDataMerchTableForAdmin(body.merch);
+
+      case TableType.MINT:
+        return this.pendingMintService.updatePendingMint(body.mint);
+
+      case TableType.BURN:
+        return this.burnService.updateBurned(body.burn);
+
+      case TableType.CANCEL:
+        return this.cancelService.updateCanceled(body.cancel);
+
+      case TableType.LOOTBOX:
+        return this.lootBoxService.updateDataLootboxTableForAdmin(body.lootbox);
+
+      case TableType.CLAIMABLELOOTBOX:
+        return this.lootBoxService.updateDataClaimableLootboxTableForAdmin(
+          body.claimableLootbox
+        );
+      case TableType.COLLECTION:
+        return this.collectionService.updateDataCollectionTableForAdmin(
+          body.collection
+        );
       default:
         throw new HttpException("invalid type", HttpStatus.BAD_REQUEST);
     }

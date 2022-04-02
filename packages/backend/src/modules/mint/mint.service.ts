@@ -242,14 +242,15 @@ export class MintService {
     return this.PendingMintRepo.save(pending);
   };
 
-  async getDataMintTableForAdmin(
-    from: number,
-    take: number
-  ): Promise<Array<PendingMint>> {
+  async getDataMintTableForAdmin(from: number, take: number) {
     const data = await this.PendingMintRepo.find({
       skip: from,
       take,
     });
-    return data;
+    return { total: data.length, data };
+  }
+
+  async updateDataMintTableForAdmin(pendingMint: PendingMint) {
+    return this.PendingMintRepo.save(pendingMint);
   }
 }

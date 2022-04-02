@@ -58,14 +58,15 @@ export class BurnService {
     return this.burnedRepo.save(burned);
   }
 
-  async getDataBurnTableForAdmin(
-    from: number,
-    take: number
-  ): Promise<Array<Burned>> {
+  async getDataBurnTableForAdmin(from: number, take: number) {
     const data = await this.burnedRepo.find({
       skip: from,
       take,
     });
-    return data;
+    return { total: data.length, data };
+  }
+
+  async updateDataBurnTableForAdmin(burn: Burned) {
+    return this.burnedRepo.save(burn);
   }
 }

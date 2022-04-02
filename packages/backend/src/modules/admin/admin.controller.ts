@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from "@nestjs/common";
@@ -19,7 +20,10 @@ import { AtherGuard } from "@modules/auth/auth.guard";
 import { AuthService } from "@modules/auth/auth.service";
 import { UserRole } from "@modules/auth/auth.types";
 import { LootBoxService } from "@modules/lootbox/lootbox.service";
-import { DistributeLootboxs } from "@modules/lootbox/lootbox.type";
+import {
+  DistributeLootbox,
+  DistributeLootboxs,
+} from "@modules/lootbox/lootbox.type";
 import { MerchUpdateDto } from "@modules/merch/merch.dto";
 import { MerchService } from "@modules/merch/merch.service";
 import { URIService } from "@modules/uri/uri.service";
@@ -32,6 +36,7 @@ import {
   UpdateItemDto,
 } from "./admin.dto";
 import { AdminService } from "./admin.service";
+import { BodyAdminUpdate, QueryAdminGetAll } from "./admin.type";
 
 @ApiTags("admin")
 @Controller("admin")
@@ -49,10 +54,7 @@ export class AdminController {
   @ApiBearerAuth("JWT-auth")
   @Put("updateTokenList/:smartContract")
   async updateAirdropTokens(@Body() body: AirdropTokens, @Req() req: Request) {
-    await this.authService.verifyAdmin(
-      req.userData,
-      UserRole.LOYALTY_ADMIN_AIRDROP
-    );
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN_AIRDROP);
     return this.airdropService.updateAirdropTokens(body.data);
   }
 
@@ -63,10 +65,7 @@ export class AdminController {
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(
-      req.userData,
-      UserRole.LOYALTY_ADMIN_AIRDROP
-    );
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN_AIRDROP);
     return this.merchService.getAllMerchByPublicAddress(publicAddress);
   }
 
@@ -78,10 +77,7 @@ export class AdminController {
     @Body() merchUpdateDto: MerchUpdateDto,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(
-      req.userData,
-      UserRole.LOYALTY_ADMIN_AIRDROP
-    );
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN_AIRDROP);
     await this.merchService.updateMerch(merchId, merchUpdateDto);
     return {
       updated: true,
@@ -100,10 +96,7 @@ export class AdminController {
     @Body() updateItemDto: UpdateItemDto,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(
-      req.userData,
-      UserRole.LOYALTY_ADMIN_AIRDROP
-    );
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN_AIRDROP);
     await this.adminService.updateItemById(params.itemId, updateItemDto);
     return {
       updated: true,
@@ -122,10 +115,7 @@ export class AdminController {
     @Body() updateImageUrlDto: UpdateImageUrlDto,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(
-      req.userData,
-      UserRole.LOYALTY_ADMIN_AIRDROP
-    );
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN_AIRDROP);
     await this.adminService.updateImageUrlById(
       params.imageUrlId,
       updateImageUrlDto
@@ -137,16 +127,30 @@ export class AdminController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @Put("distribute")
-  async distributeLootbox(
+  @Put("distributes")
+  async distributesLootbox(
     @Body() body: DistributeLootboxs,
     @Req() req: Request
   ) {
     await this.authService.verifyAdmin(
-      req.userData,
+      req,
       UserRole.LOYALTY_ADMIN_LOOTBOX_SPACESHIP
     );
-    return this.lootBoxService.distributeLootbox(body.data);
+    return this.lootBoxService.distributesLootbox(body.data);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @Put("distribute")
+  async distributeLootbox(
+    @Body() body: DistributeLootbox,
+    @Req() req: Request
+  ) {
+    await this.authService.verifyAdmin(
+      req,
+      UserRole.LOYALTY_ADMIN_LOOTBOX_SPACESHIP
+    );
+    return this.lootBoxService.distributeLootbox(body);
   }
 
   @UseGuards(AtherGuard)
@@ -157,7 +161,7 @@ export class AdminController {
     @Req() req: Request
   ) {
     await this.authService.verifyAdmin(
-      req.userData,
+      req,
       UserRole.LOYALTY_ADMIN_SMARTCONTRACT
     );
     return this.uriService.updateERC1155Sculpture(body);
@@ -171,7 +175,7 @@ export class AdminController {
     @Req() req: Request
   ) {
     await this.authService.verifyAdmin(
-      req.userData,
+      req,
       UserRole.LOYALTY_ADMIN_SMARTCONTRACT
     );
     return this.uriService.updateERC1155Lootbox(body);
@@ -185,7 +189,7 @@ export class AdminController {
     @Req() req: Request
   ) {
     await this.authService.verifyAdmin(
-      req.userData,
+      req,
       UserRole.LOYALTY_ADMIN_SMARTCONTRACT
     );
     return this.uriService.addERC1155Sculpture(body);
@@ -196,9 +200,29 @@ export class AdminController {
   @Post("erc1155-lootbox")
   async addERC1155Lootbox(@Body() body: ERC1155Lootbox, @Req() req: Request) {
     await this.authService.verifyAdmin(
-      req.userData,
+      req,
       UserRole.LOYALTY_ADMIN_SMARTCONTRACT
     );
     return this.uriService.addERC1155Lootbox(body);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @Get("get-all")
+  async getAll(@Query() query: QueryAdminGetAll, @Req() req: Request) {
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
+    return this.adminService.getDataTableByType(
+      query.from,
+      query.size,
+      query.type
+    );
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @Put("update-by-id")
+  async updateAll(@Body() body: BodyAdminUpdate, @Req() req: Request) {
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
+    return this.adminService.updateDataTableByType(body);
   }
 }

@@ -114,7 +114,6 @@ export class SeedAirdropService {
   seedTokens = async () => {
     const tokenData = this.airdropDataHolder.data.map((el) => ({
       merkleRoot: this.airdropDataHolder.merkleRoot,
-      imageUrls: this.airdropDataHolder.imageUrls,
       ...el,
       addressContract: this.airdropDataHolder.addressContract.toLowerCase(),
       startTime: this.airdropDataHolder.startTime,
@@ -132,15 +131,11 @@ export class SeedAirdropService {
           this.weiToEther(el.totalAmount) /
             this.airdropDataHolder.numberOfVestingPoint
         )} $SIPHER starting on March 01 2022.`,
-        `Please come back for your first Vested Airdrop of ${this.currency(
-          this.weiToEther(el.totalAmount) /
-            this.airdropDataHolder.numberOfVestingPoint
-        )} $SIPHER on March 01 2022 `,
       ],
       type: "TOKEN",
     }));
 
-    const imageUrl = await this.seedImageUrls(tokenData[0].imageUrls);
+    const imageUrl = await this.seedImageUrls(this.airdropDataHolder.imageUrls);
 
     const promises = [];
     for (let i = 0; i < tokenData.length; i++) {

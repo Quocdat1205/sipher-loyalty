@@ -649,7 +649,15 @@ export class LootBoxService {
     }
   }
 
-  distributeLootbox = async (data: DistributeLootbox[]) => {
+  distributeLootbox = async (data: DistributeLootbox) => {
+    try {
+      return this.createClaimableLootbox(data);
+    } catch (err) {
+      return err;
+    }
+  };
+
+  distributesLootbox = async (data: DistributeLootbox[]) => {
     const promises = [];
 
     for (let i = 0; i < data.length; i++) {
@@ -662,27 +670,31 @@ export class LootBoxService {
     }
   };
 
-  async getDataLootboxTableForAdmin(
-    from: number,
-    take: number
-  ): Promise<Array<Lootbox>> {
+  async getDataLootboxTableForAdmin(from: number, take: number) {
     const data = await this.lootboxRepo.find({
       relations: ["propertyLootbox"],
       skip: from,
       take,
     });
-    return data;
+    return { total: data.length, data };
   }
 
-  async getDataClaimableLootboxTableForAdmin(
-    from: number,
-    take: number
-  ): Promise<Array<ClaimableLootbox>> {
+  async getDataClaimableLootboxTableForAdmin(from: number, take: number) {
     const data = await this.claimableLootboxRepo.find({
       relations: ["propertyLootbox"],
       skip: from,
       take,
     });
-    return data;
+    return { total: data.length, data };
+  }
+
+  async updateDataClaimableLootboxTableForAdmin(
+    claimableLootbox: ClaimableLootbox
+  ) {
+    return this.claimableLootboxRepo.save(claimableLootbox);
+  }
+
+  async updateDataLootboxTableForAdmin(lootbox: Lootbox) {
+    return this.lootboxRepo.save(lootbox);
   }
 }

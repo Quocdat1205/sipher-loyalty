@@ -27,16 +27,13 @@ export class AirdropService {
     return { token, nft, merchandise, other };
   }
 
-  async getDataAirdropTableForAdmin(
-    from: number,
-    take: number
-  ): Promise<Array<Airdrop>> {
+  async getDataAirdropTableForAdmin(from: number, take: number) {
     const data = await this.airdropRepo.find({
       relations: ["imageUrls"],
       skip: from,
       take,
     });
-    return data;
+    return { total: data.length, data };
   }
 
   private async getTokenAirdrops(
@@ -235,4 +232,8 @@ export class AirdropService {
       throw new HttpException(err, HttpStatus.BAD_REQUEST);
     }
   };
+
+  async updateDataAirdropTableForAdmin(airdrop: Airdrop) {
+    return this.airdropRepo.save(airdrop);
+  }
 }
