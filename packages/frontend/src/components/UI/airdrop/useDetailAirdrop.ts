@@ -32,7 +32,7 @@ export const useDetailAirdrop = () => {
     },
   )
 
-  const { data: claimableAmount } = useQuery(
+  const { data: initClaimableAmount } = useQuery(
     ["token-claimable-amount", detailAirdrop],
     () =>
       scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(detailAirdrop!.totalAmount, detailAirdrop!.proof),
@@ -80,10 +80,22 @@ export const useDetailAirdrop = () => {
   const isDisabled =
     detailAirdrop?.totalAmount === "0" ||
     chainId !== ETHEREUM_NETWORK ||
-    claimableAmount === 0 ||
+    initClaimableAmount === 0 ||
     detailAirdrop?.type !== "TOKEN"
 
   const tokenClaimed = detailAirdrop?.addressContract === SipherAirdropsAddress ? claimedInit : 0
+  const claimableAmount = detailAirdrop?.addressContract === SipherAirdropsAddress ? initClaimableAmount : 0
 
-  return { detailAirdrop, router, isOpen, onClose, isFetched, handleClaim, isLoadingClaim, isDisabled, tokenClaimed }
+  return {
+    detailAirdrop,
+    router,
+    isOpen,
+    onClose,
+    isFetched,
+    handleClaim,
+    isLoadingClaim,
+    isDisabled,
+    tokenClaimed,
+    claimableAmount,
+  }
 }

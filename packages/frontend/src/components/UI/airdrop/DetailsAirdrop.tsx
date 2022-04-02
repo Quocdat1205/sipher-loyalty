@@ -10,8 +10,17 @@ import { videos } from "../portfolio/nft/NFTCard"
 import { useDetailAirdrop } from "./useDetailAirdrop"
 
 export function DetailsAirdrop() {
-  const { isOpen, onClose, isFetched, detailAirdrop, handleClaim, isLoadingClaim, isDisabled, tokenClaimed } =
-    useDetailAirdrop()
+  const {
+    isOpen,
+    onClose,
+    isFetched,
+    detailAirdrop,
+    handleClaim,
+    isLoadingClaim,
+    isDisabled,
+    tokenClaimed,
+    claimableAmount,
+  } = useDetailAirdrop()
   const defaultImage = "/images/airdrops/sipher.png"
   const [imageState, setImageState] = useState({
     front: defaultImage,
@@ -157,6 +166,10 @@ export function DetailsAirdrop() {
                     {item}
                   </Text>
                 ))}
+                <Text mb={2} color="neutral.400">
+                  Your current claimable amount is {currency(claimableAmount!)} $SIPHER. You can claim every period or
+                  claim all at the end of the airdrops (00:00 UTC TUE JUL 19 2022)
+                </Text>
                 <Text mb={2} color="neutral.400">
                   Your claimed amount: {currency(tokenClaimed ?? 0)} $SIPHER
                 </Text>
