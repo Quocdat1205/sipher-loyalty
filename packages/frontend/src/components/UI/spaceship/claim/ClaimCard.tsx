@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { BsClockFill } from "react-icons/bs"
 import { MdInfo } from "react-icons/md"
-// import Image from "next/image"
 import { Box, Flex, Img, Link, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
@@ -33,8 +32,7 @@ const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
           alt={propertyLootbox?.name}
           loading="lazy"
           objectFit="contain"
-          width={500 * 1.2}
-          height={300 * 1.2}
+          maxH="22rem"
           onLoad={() => setImageLoaded(true)}
         />
       </Skeleton>

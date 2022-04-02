@@ -1,8 +1,7 @@
 import React from "react"
-import Image from "next/image"
-import { Box, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Img, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
-const LoadingCard = () => {
+const LoadingCard = ({ gridSize }) => {
   return (
     <Box
       _hover={{ filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))" }}
@@ -13,14 +12,11 @@ const LoadingCard = () => {
       pos="relative"
     >
       <Skeleton bg="black" pos="relative">
-        <Image
+        <Img
           src={"/images/nft/sipher1.png"}
           alt="loading card"
-          layout="responsive"
-          loading="lazy"
-          height={480}
-          width={425}
-          quality={100}
+          minH={gridSize === "small" ? "12rem" : "20rem"}
+          w="full"
           objectFit="contain"
         />
       </Skeleton>

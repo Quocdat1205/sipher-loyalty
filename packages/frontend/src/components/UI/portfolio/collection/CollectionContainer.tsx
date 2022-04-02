@@ -20,7 +20,7 @@ const CollectionContainer = ({ setFilter, collectionData, isFetched }: Collectio
   return (
     <Box>
       <FilterBar setFilter={setFilter} />
-      <SimpleGrid pt={8} spacing={6} columns={[1, 2, 3, 3, 3]}>
+      <SimpleGrid spacing={6} columns={[1, 2, 3, 3, 3]}>
         {renderNFTs()}
       </SimpleGrid>
     </Box>

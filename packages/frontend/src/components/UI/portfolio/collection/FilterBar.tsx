@@ -10,7 +10,7 @@ interface FilterBarProps {
 
 const FilterBar = ({ setFilter }: FilterBarProps) => {
   return (
-    <Box pt={[4, 0]}>
+    <Box pt={[4, 0]} mb={10}>
       <HStack display={["none", "flex"]} w="full" align="center" justify="flex-end">
         {/* <FilterSelector
           onSelectChange={v => setFilter({ ...filter, collection: v })}

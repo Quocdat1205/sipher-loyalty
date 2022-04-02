@@ -1,8 +1,19 @@
 import React from "react"
 import { BiChevronLeft } from "react-icons/bi"
 import InfiniteScroll from "react-infinite-scroll-component"
-import Image from "next/image"
-import { Avatar, Box, Button, chakra, Flex, Heading, SimpleGrid, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import {
+  Avatar,
+  Box,
+  Button,
+  chakra,
+  Flex,
+  Heading,
+  Img,
+  SimpleGrid,
+  Skeleton,
+  Stack,
+  Text,
+} from "@sipher.dev/sipher-ui"
 
 import { SpVerified } from "@components/shared/icons"
 import { capitalize } from "@utils"
@@ -20,6 +31,7 @@ interface DetailsCollectionProps {
 
 const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
   const {
+    gridSize,
     collectionData,
     columns,
     total,
@@ -38,13 +50,13 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
   const { data, hasNextPage, fetchNextPage, isLoading } = query
 
   const renderLoadingCards = () => {
-    return Array.from(Array(columns).keys()).map(i => <LoadingCard key={i} />)
+    return Array.from(Array(columns).keys()).map(i => <LoadingCard key={i} gridSize={gridSize} />)
   }
   const renderNFTs = () => {
     if (isLoading) {
       return renderLoadingCards()
     }
-    return nftsData?.map((i, idx) => <NFTCard key={idx} data={i} isFetched={isFetched} />)
+    return nftsData?.map((i, idx) => <NFTCard key={idx} data={i} isFetched={isFetched} gridSize={gridSize} />)
   }
 
   return (
@@ -52,34 +64,37 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
       <Flex pos="fixed" top="4rem" left={0} zIndex={1} flexDir="column">
         <Box pt={8} px={8} w="full">
           <Button
-            _hover={{ bg: "white" }}
             onClick={() => router.push("/portfolio")}
             pl={2}
             bg="white"
             rounded="full"
+            colorScheme="neutral"
+            role="group"
+            _hover={{ color: "white", bg: "neutral.600" }}
+            variant="secondary"
             alignItems="center"
           >
-            <Box color="neutral.500">
+            <Box _groupHover={{ color: "white" }} color="neutral.500">
               <BiChevronLeft size="1.4rem" />
             </Box>
-            <Text color="neutral.500">Back</Text>
+            <Text _groupHover={{ color: "white" }} color="neutral.500">
+              Back
+            </Text>
           </Button>
         </Box>
       </Flex>
       <Skeleton isLoaded={isFetched} flexDir="column" w="full" justify="center" position="relative">
-        <Image
-          layout="responsive"
-          quality={100}
-          width={1440}
-          height={212}
+        <Img
           src={collectionData?.bannerImage ?? "/images/spaceship/banner.png"}
+          maxH="20rem"
+          w="full"
           objectFit="cover"
           alt={"banner"}
         />
       </Skeleton>
       <Flex flex={1} flexDir="column" w="full" align="center">
         <Flex flexDir="column" px={[4, 4, 4, 0, 0]} w="full" maxW="1200px">
-          <Stack mb={4} flexDir="column" align="center" pos="relative">
+          <Stack mb={4} flexDir="column" align="center" pos="relative" w="full">
             <Skeleton pos="absolute" transform="translateY(-50%)" isLoaded={isFetched} rounded="full">
               <Avatar src={collectionData?.logoImage} size="xl" />
             </Skeleton>
@@ -102,7 +117,7 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
               </Text>
             </Skeleton>
           </Stack>
-          <Flex mb={4} align="center" justify="space-between">
+          <Flex mb={4} align="center" justify="space-between" w="full">
             <Skeleton isLoaded={isFetched}>
               <Text color="neutral.300" fontWeight={600}>
                 TOTAL: {total} {total > 0 ? "NFTs" : "NFT"}
@@ -121,7 +136,7 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
               </Button>
             )}
           </Flex>
-          <Box py={8} flex={1}>
+          <Box py={8} flex={1} w="full">
             <InfiniteScroll
               dataLength={data ? total : 0}
               next={fetchNextPage}

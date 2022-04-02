@@ -1,7 +1,6 @@
 import React from "react"
 import { format } from "date-fns"
-import Image from "next/image"
-import { Box, Button, chakra, Flex, Text, Wrap, WrapItem } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Flex, Img, Text, Wrap, WrapItem } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
 import NoItemUI from "@components/shared/NoItemUI"
@@ -55,7 +54,7 @@ export const PendingContainer = () => {
                               placement="top"
                               icon={
                                 <Flex align="center">
-                                  <Image src={i.image} alt={`Box ${i.tokenId.toString()}`} width={50} height={30} />
+                                  <Img src={i.image} alt={`Box ${i.tokenId.toString()}`} h="2rem" />
                                   <Text>x{i.quantity}</Text>
                                 </Flex>
                               }

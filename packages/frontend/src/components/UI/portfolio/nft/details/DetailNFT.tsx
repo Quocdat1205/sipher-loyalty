@@ -25,17 +25,22 @@ const DetailNFT = () => {
         <Flex pos="fixed" top="4rem" left={0} zIndex={1} flexDir="column">
           <Box pt={8} px={8} w="full">
             <Button
-              _hover={{ bg: "white" }}
+              colorScheme="neutral"
+              variant="secondary"
               onClick={() => router.push(`/portfolio/${tokenDetails?.collection.id}`)}
               pl={2}
               bg="white"
               rounded="full"
+              role="group"
+              _hover={{ color: "white", bg: "neutral.600" }}
               alignItems="center"
             >
-              <Box color="neutral.500">
+              <Box _groupHover={{ color: "white" }} color="neutral.500">
                 <BiChevronLeft size="1.4rem" />
               </Box>
-              <Text color="neutral.500">Back</Text>
+              <Text _groupHover={{ color: "white" }} color="neutral.500">
+                Back
+              </Text>
             </Button>
           </Box>
         </Flex>

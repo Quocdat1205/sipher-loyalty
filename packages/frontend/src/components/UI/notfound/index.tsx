@@ -1,28 +1,35 @@
 import { BiArrowBack } from "react-icons/bi"
-import Image from "next/image"
 import { useRouter } from "next/router"
-import { Box, Button, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, Flex, Heading, Img, Text } from "@sipher.dev/sipher-ui"
 
 const NotFoundUI = () => {
   const router = useRouter()
   return (
-    <Box h="100vh">
-      <Image src="/images/404/404bg.png" alt="Not Found Background" layout="fill" />
+    <Box pos="relative" h="100vh">
+      <Img
+        zIndex={1}
+        pos="absolute"
+        w="full"
+        h="full"
+        src="/images/404/404bg.png"
+        alt="Not Found Background"
+        objectFit="fill"
+      />
       <Flex
         w="full"
         h="full"
         align="center"
         justify="center"
         p={4}
-        bgGradient={"radial(rgba(18, 19, 30, 0.9), black)"}
+        bgGradient={"radial(rgba(18, 19, 30, 0.6), black)"}
         pos="relative"
-        zIndex={"docked"}
+        zIndex={2}
       >
         <Flex direction="column" align="center" maxW="56rem">
           <Box pos="relative" textAlign="center" mb={32}>
-            <Image src="/images/404/404.gif" alt="Not Found" width={600} height={300} />
+            <Img src="/images/404/404.gif" alt="Not Found" maxH="26rem" />
             <Box pos="absolute" top="50%" left="50%" transform="translate(-50%,-20%)">
-              <Image src="/images/404/404model.png" alt="Not Found" width={219} height={298} />
+              <Img src="/images/404/404model.png" alt="Not Found" maxH="26rem" />
             </Box>
           </Box>
           <Heading mb={4} fontSize="7xl" fontWeight={900}>
