@@ -668,6 +668,8 @@ export class LootBoxService {
     } catch (err) {
       return err;
     }
+    LoggerService.log("Done distribute lootbox");
+    return true;
   };
 
   async getDataLootboxTableForAdmin(from: number, take: number) {
