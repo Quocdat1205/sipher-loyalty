@@ -1,7 +1,7 @@
 import React from "react"
 import { BiArrowBack } from "react-icons/bi"
 import InfiniteScroll from "react-infinite-scroll-component"
-import { useInfiniteQuery, useQuery } from "react-query"
+import { useInfiniteQuery } from "react-query"
 import { AspectRatio, Box, Flex, Heading, Image, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
 import { Avatar, getAvailableAvatars } from "@api"

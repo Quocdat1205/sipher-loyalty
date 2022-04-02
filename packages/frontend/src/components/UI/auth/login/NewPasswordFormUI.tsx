@@ -1,17 +1,13 @@
-import { useState } from "react"
-import { FieldValue, FieldValues, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
-import AtherIdAuth, { ChallengeType, CognitoUser, SocialProvider } from "@sipher.dev/ather-id"
-import { Box, Button, Divider, Flex, Heading, Link, Stack, Text } from "@sipher.dev/sipher-ui"
-import { useWalletContext } from "@web3"
+import AtherIdAuth, { CognitoUser } from "@sipher.dev/ather-id"
+import { Box, Button, Divider, Heading, Text } from "@sipher.dev/sipher-ui"
 
-import { Form, SocialAccountSignIn, StyledInput, WalletSignIn } from "@components/shared"
+import { Form, StyledInput } from "@components/shared"
 import { useChakraToast } from "@hooks"
 import { useAuth } from "src/providers/auth"
-
-import { LoginStep } from "./LoginUI"
 
 const validationSchema = Yup.object().shape({
   password: Yup.string()
