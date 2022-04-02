@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import { Box, Button, Flex, Heading, Img, Text } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
+import { videos } from "@components/UI/portfolio/nft/NFTCard"
 
 import { spaceshipTabs } from ".."
 
@@ -57,13 +58,27 @@ export const SpaceshipContainer = () => {
                 CLAIM LOOTBOX
               </Button>
             </Box>
-            <Flex blendMode="lighten" pos="relative" flexDir="column" align="flex-end" ml={8} p={4} flex={3}>
-              <Img
-                objectFit="contain"
-                src={activeData.image ?? "/images/spaceship/ship/1.png"}
-                alt={activeData.title}
-                maxH="26rem"
-              />
+            <Flex
+              sx={{ video: { maxH: "20rem" } }}
+              maxH="26rem"
+              blendMode="lighten"
+              pos="relative"
+              flexDir="column"
+              align="flex-end"
+              ml={8}
+              p={4}
+              flex={3}
+            >
+              {videos.includes(activeData.image.split(".")[1]) ? (
+                <video src={activeData.image} autoPlay loop muted datatype="video/mp4"></video>
+              ) : (
+                <Img
+                  objectFit="contain"
+                  h="full"
+                  src={activeData.image ?? "/images/spaceship/ship/1.png"}
+                  alt={activeData.title}
+                />
+              )}
             </Flex>
           </Flex>
           <Box>

@@ -24,6 +24,16 @@ export const useAirdrops = () => {
   const [claimId, setClaimId] = useState<number | null>(null)
   const qc = useQueryClient()
   const toast = useChakraToast()
+  const [dataToken, setDataToken] = useState<{ totalAmount?: string; proof?: string[] } | null>(null)
+
+  const { data: claimableAmount, refetch } = useQuery(
+    ["token-claimable-amount", dataToken],
+    () => scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(dataToken!.totalAmount!, dataToken!.proof!),
+    {
+      enabled: !!dataToken?.totalAmount && !!dataToken?.proof,
+      initialData: 0,
+    },
+  )
 
   const { data: airdropsData, isFetched } = useQuery(
     ["airdrops", account, currentTab],
@@ -33,29 +43,25 @@ export const useAirdrops = () => {
         .then(res => res.data),
     {
       enabled: !!bearerToken && !!account,
+      onSuccess: data => {
+        if (data.token?.length > 0 && chainId === ETHEREUM_NETWORK) {
+          const item = data.token.find(
+            item => item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase(),
+          )
+
+          setDataToken({
+            totalAmount: item?.totalAmount,
+            proof: item?.proof,
+          })
+          refetch()
+        }
+      },
       initialData: {
         nft: [],
         token: [],
         other: [],
         merchandise: [],
       },
-    },
-  )
-
-  const { data: claimableAmount } = useQuery(
-    ["token-claimable-amount", airdropsData],
-    () =>
-      scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(
-        airdropsData!.token.find(
-          item => item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase(),
-        )!.totalAmount,
-        airdropsData!.token.find(
-          item => item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase(),
-        )!.proof,
-      ),
-    {
-      enabled: !!scCaller.current && !!account && airdropsData!.token?.length > 0 && chainId === ETHEREUM_NETWORK,
-      initialData: 0,
     },
   )
 
