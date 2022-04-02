@@ -1,6 +1,5 @@
 import React from "react"
-import Image from "next/image"
-import { Box, Flex, Heading, HStack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Flex, Heading, HStack, Img, Text } from "@sipher.dev/sipher-ui"
 
 import { padZero } from "@utils"
 
@@ -48,11 +47,11 @@ export const TutorialSpaceship = () => {
                 <Text mb={4} fontWeight={600} w="full">
                   {item.id}
                 </Text>
-                <Text w="full" color="neutral.100">
+                <Text mb={8} w="full" color="neutral.100">
                   {item.description}
                 </Text>
-                <Box pos="relative" h="14rem" w="full">
-                  <Image quality={100} src={item.image} alt={item.id} objectFit="contain" layout="fill" />
+                <Box pos="relative" w="full">
+                  <Img quality={100} src={item.image} alt={item.id} objectFit="contain" maxH="14rem" />
                 </Box>
               </Flex>
             </Box>

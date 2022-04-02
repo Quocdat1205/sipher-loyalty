@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from "react"
-import Image from "next/image"
 import { Box, Button, Flex, HStack, Img, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
+import { currency } from "@utils"
 
 import { videos } from "../portfolio/nft/NFTCard"
 
 import { useDetailAirdrop } from "./useDetailAirdrop"
 
 export function DetailsAirdrop() {
-  const { isOpen, onClose, isFetched, detailAirdrop } = useDetailAirdrop()
+  const {
+    isOpen,
+    onClose,
+    isFetched,
+    detailAirdrop,
+    handleClaim,
+    isLoadingClaim,
+    isDisabled,
+    tokenClaimed,
+    claimableAmount,
+    buttonText,
+  } = useDetailAirdrop()
   const defaultImage = "/images/airdrops/sipher.png"
   const [imageState, setImageState] = useState({
     front: defaultImage,
@@ -116,7 +127,7 @@ export function DetailsAirdrop() {
                   bg="white"
                   pos="absolute"
                   bottom="1rem"
-                  left="0.5rem"
+                  left={4}
                 >
                   <SpLayer />
                   <Text ml={1} fontSize="xs" color="neutral.900" fontWeight={600}>
@@ -125,12 +136,10 @@ export function DetailsAirdrop() {
                 </Flex>
               </>
             ) : (
-              <Image
-                quality={100}
+              <Img
                 src={imageState.front}
                 alt="airdrop"
-                width={300}
-                height={300}
+                maxH="26rem"
                 objectFit="contain"
                 onLoad={() => setImageLoad(true)}
               />
@@ -151,19 +160,31 @@ export function DetailsAirdrop() {
                 </Text>
               </Skeleton>
             </Box>
-            <Skeleton isLoaded={isFetched}>
-              {detailAirdrop?.type === "TOKEN"
-                ? detailAirdrop?.description?.slice(1, detailAirdrop?.description?.length).map(item => (
-                    <Text mb={2} key={item} color="neutral.400">
-                      {item}
-                    </Text>
-                  ))
-                : detailAirdrop?.description?.map(item => (
-                    <Text mb={2} key={item} color="neutral.400">
-                      {item}
-                    </Text>
-                  ))}
-            </Skeleton>
+            {detailAirdrop?.type === "TOKEN" && (
+              <Skeleton isLoaded={isFetched}>
+                {detailAirdrop?.description?.slice(1, detailAirdrop?.description?.length).map(item => (
+                  <Text mb={2} key={item} color="neutral.400">
+                    {item}
+                  </Text>
+                ))}
+                <Text mb={2} color="neutral.400">
+                  Your current claimable amount is {currency(claimableAmount!)} $SIPHER. You can claim every period or
+                  claim all at the end of the airdrops (00:00 UTC TUE JUL 19 2022)
+                </Text>
+                <Text mb={2} color="neutral.400">
+                  Your claimed amount: {currency(tokenClaimed ?? 0)} $SIPHER
+                </Text>
+              </Skeleton>
+            )}
+            {detailAirdrop?.type !== "TOKEN" && (
+              <Skeleton isLoaded={isFetched}>
+                {detailAirdrop?.description?.map(item => (
+                  <Text mb={2} key={item} color="neutral.400">
+                    {item}
+                  </Text>
+                ))}
+              </Skeleton>
+            )}
             {detailAirdrop?.size && detailAirdrop.size.length > 0 && (
               <Skeleton isLoaded={isFetched}>
                 <Flex align="center">
@@ -217,8 +238,15 @@ export function DetailsAirdrop() {
           </Stack>
           <HStack borderTop="1px" borderColor="whiteAlpha.300" pt={4}>
             <Skeleton isLoaded={isFetched} flex={1}>
-              <Button isDisabled w="full" py={5} fontSize="md">
-                Claim
+              <Button
+                onClick={handleClaim}
+                isLoading={isLoadingClaim}
+                isDisabled={isDisabled}
+                w="full"
+                py={5}
+                fontSize="md"
+              >
+                {buttonText}
               </Button>
             </Skeleton>
             <Skeleton isLoaded={isFetched} flex={1}></Skeleton>

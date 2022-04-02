@@ -1,6 +1,5 @@
 import React from "react"
-import Image from "next/image"
-import { Box, Flex, Text } from "@sipher.dev/sipher-ui"
+import { Box, Flex, Img, Text } from "@sipher.dev/sipher-ui"
 
 import GeneralContainer from "@components/UI/home/GeneralContainer"
 
@@ -8,8 +7,8 @@ import usePortFolioHome from "./portfolio/usePortFolioHome"
 import { Slide1 } from "./slide/Slide1"
 import { Slide2 } from "./slide/Slide2"
 import { Slide3 } from "./slide/Slide3"
+import SlideComponent from "./slide/SlideComponent"
 import PortfolioHome from "./portfolio"
-import SlideComponent from "./slide"
 
 import "react-multi-carousel/lib/styles.css"
 
@@ -27,7 +26,9 @@ const ContentHome = () => {
 
   return (
     <Flex flexDir="column" align="center" flex={1}>
-      <SlideComponent isAuto slideData={slideCompo} />
+      <SlideComponent isAuto infiniteLoop show={1}>
+        {slideCompo.map(item => item)}
+      </SlideComponent>
       <Box px={[4, 4, 4, 0, 0]} py={8} flex={1} w="full" maxW="1200px">
         <GeneralContainer totalPortfolioPrice={totalPortfolioPrice} />
         <PortfolioHome
@@ -37,7 +38,7 @@ const ContentHome = () => {
           totalToken={totalToken}
         />
         <Box sx={{ img: { rounded: "lg" } }} pos="relative">
-          <Image src="/images/home/banner-home.png" alt="banner" width={1200} height={360} />
+          <Img src="/images/home/banner-home.png" alt="banner" maxH="26rem" objectFit="cover" />
           <Box pos="absolute" top="50%" left="0" transform="translate(25%,-50%)">
             <Text mb={2} fontSize="xl">
               Coming Soon!

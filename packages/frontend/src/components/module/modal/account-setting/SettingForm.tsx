@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { BiChevronRight } from "react-icons/bi"
 import { useMutation, useQuery, useQueryClient } from "react-query"
-import { Avatar, Box, Button, Divider, Flex, HStack, Image, Text } from "@sipher.dev/sipher-ui"
+import { Avatar, Box, Button, Divider, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 
 import { getProfile, updateProfile } from "@api"
 import { ChakraModal, StyledInput, StyledTextArea } from "@components/shared"

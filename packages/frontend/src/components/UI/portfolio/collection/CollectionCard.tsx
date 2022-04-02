@@ -1,6 +1,5 @@
 import React, { useState } from "react"
-import Image from "next/image"
-import { Avatar, Box, BoxProps, Flex, Skeleton, Text } from "@sipher.dev/sipher-ui"
+import { Avatar, Box, BoxProps, Flex, Img, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import { EthereumIcon } from "@components/shared"
 import { SpLayer, SpVerified } from "@components/shared/icons"
@@ -27,18 +26,17 @@ const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
       {...rest}
     >
       <Skeleton pos="relative" display="flex" isLoaded={imageLoad && isFetched}>
-        <Image
-          blurDataURL="https://via.placeholder.com/150"
+        <Img
           src={data.bannerImage ?? "https://via.placeholder.com/150"}
           alt={data.name}
           loading="lazy"
-          height={200}
-          width={500}
+          h="10rem"
+          w="full"
           objectFit="cover"
           quality={100}
           onLoad={() => setImageLoad(true)}
         />
-        <Flex align="center" py={0.5} px={2} rounded="full" bg="white" pos="absolute" bottom="0.5rem" left="0.5rem">
+        <Flex align="center" py={0.5} px={2} rounded="full" bg="white" pos="absolute" bottom={4} left={4}>
           <SpLayer />
           <Text ml={1} color="neutral.900" fontWeight={600}>
             {data.total ?? 0}
@@ -55,7 +53,7 @@ const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
               <Text fontWeight={600} mr={1} fontSize="lg">
                 {data.name}
               </Text>
-              <Box pt="2px">{data.isVerified && <SpVerified />}</Box>
+              <Box pt="2px">{data.isVerified && <SpVerified viewBox="-2 0 20 18" size="1.4rem" />}</Box>
             </Flex>
           </Skeleton>
           <Flex align="center">

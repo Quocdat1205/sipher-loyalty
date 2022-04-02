@@ -46,8 +46,12 @@ export const useAirdrops = () => {
     ["token-claimable-amount", airdropsData],
     () =>
       scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(
-        airdropsData!.token.find(item => item.addressContract === SipherAirdropsAddress)!.totalAmount,
-        airdropsData!.token.find(item => item.addressContract === SipherAirdropsAddress)!.proof,
+        airdropsData!.token.find(
+          item => item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase(),
+        )!.totalAmount,
+        airdropsData!.token.find(
+          item => item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase(),
+        )!.proof,
       ),
     {
       enabled: !!scCaller.current && !!account && airdropsData!.token?.length > 0 && chainId === ETHEREUM_NETWORK,
@@ -97,19 +101,21 @@ export const useAirdrops = () => {
           },
           onClaim: (e: MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation()
-            claim({ id: item.id, totalAmount: item.totalAmount, proof: item.proof })
           },
         })),
         ...airdropsData!.token?.map(item => ({
           ...item,
           isClaiming: claimId === item.id,
-          isDisabled: item.totalAmount > "0" ? chainId !== ETHEREUM_NETWORK && claimableAmount === 0 : true,
+          isDisabled: item?.totalAmount === "0" || chainId !== ETHEREUM_NETWORK || claimableAmount === 0,
           buttonText: "Claim",
           onView: () => {
             router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
           },
           onClaim: (e: MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation()
+            if (item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase()) {
+              claim({ id: item.id, totalAmount: item.totalAmount, proof: item.proof })
+            }
           },
         })),
         ...airdropsData!.merchandise?.map(item => ({

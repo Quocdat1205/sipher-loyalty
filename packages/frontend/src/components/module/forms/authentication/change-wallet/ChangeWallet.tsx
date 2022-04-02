@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
-import { Box, Button, chakra, Divider, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, Divider, Text } from "@sipher.dev/sipher-ui"
 import { useAuthFlowStore } from "@store"
 import { useWalletContext } from "@web3"
 
