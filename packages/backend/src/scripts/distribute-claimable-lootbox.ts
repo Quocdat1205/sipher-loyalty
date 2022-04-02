@@ -13,7 +13,7 @@ export class AppModule implements OnApplicationBootstrap {
   constructor(private readonly distributeService: DistributeService) {}
 
   async onApplicationBootstrap(): Promise<void> {
-    await this.distributeService.transferAll();
+    await this.distributeService.distributeForUsers();
   }
 }
 async function bootstrap() {

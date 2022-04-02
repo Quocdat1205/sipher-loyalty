@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     // base
-    "strict": false /* Enable all strict type-checking options. */ ,
-    "strictFunctionTypes": true /* Enable strict checking of function types. */ ,
-    "strictBindCallApply": true /* Enable strict 'bind', 'call', and 'apply' methods on functions. */ ,
-    "alwaysStrict": true /* Parse in strict mode and emit "use strict" for each source file. */ ,
+    "strict": false /* Enable all strict type-checking options. */,
+    "strictFunctionTypes": true /* Enable strict checking of function types. */,
+    "strictBindCallApply": true /* Enable strict 'bind', 'call', and 'apply' methods on functions. */,
+    "alwaysStrict": true /* Parse in strict mode and emit "use strict" for each source file. */,
 
     /* Additional Checks */
-    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */ ,
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */ ,
+    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
     // options
     "module": "commonjs",
     "target": "es6",

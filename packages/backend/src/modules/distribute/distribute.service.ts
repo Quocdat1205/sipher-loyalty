@@ -11,17 +11,29 @@ import { getContract, getProvider } from "@setting/blockchain/ethers";
 import constant, { Chain } from "@setting/constant";
 
 import { LoggerService } from "@modules/logger/logger.service";
+import { getNow } from "@utils/utils";
 
 @Injectable()
-export class DistributeSculptureService {
-  private src = path.resolve(
+export class DistributeService {
+  private srcSculpture = path.resolve(
     __dirname,
     `../../../src/data/DISTRIBUTE/SCULPTURE/data${
       constant.isProduction ? "" : "_test"
     }.json`
   );
 
-  private sculptureHolder = JSON.parse(fs.readFileSync(this.src).toString());
+  private sculptureHolder = JSON.parse(
+    fs.readFileSync(this.srcSculpture).toString()
+  );
+
+  private srcLootbox = path.resolve(
+    __dirname,
+    `../../../src/data/DISTRIBUTE/LOOTBOX/data.json`
+  );
+
+  private lootboxHolder = JSON.parse(
+    fs.readFileSync(this.srcLootbox).toString()
+  );
 
   private provider: providers.Provider;
 
@@ -154,7 +166,10 @@ export class DistributeSculptureService {
     } catch (err) {
       LoggerService.error(err);
     } finally {
-      fs.writeFileSync(`./src/data/Result.json`, JSON.stringify(dataResult));
+      fs.writeFileSync(
+        `./src/data/RESULT/SCULPTURE/${getNow()}.json`,
+        JSON.stringify(dataResult)
+      );
     }
   }
 
@@ -220,18 +235,30 @@ export class DistributeSculptureService {
     };
   }
 
-  // async distributeForUser(claimableLootbox: {
-  //   publicAddress: string;
-  //   tokenId: number;
-  //   quantity: number;
-  //   expiredDate: number;
-  // }) {
-  //   const claimableLootbox = {};
-  //   const { data } = await axios.post(`${constant.URL}`, {
-  //     headers: {
-  //       Authorization: constant.TOKEN,
-  //     },
-  //     claimableLootbox,
-  //   });
-  // }
+  async distributeForUser(claimableLootbox: {
+    publicAddress: string;
+    tokenId: number;
+    quantity: number;
+    expiredDate: number;
+  }) {
+    return axios({
+      method: "POST",
+      url: constant.URL,
+      headers: {
+        Authorization: constant.TOKEN,
+        "Content-Type": "application/json",
+      },
+      data: claimableLootbox,
+    });
+  }
+
+  async distributeForUsers() {
+    const result = [];
+    await this.lootboxHolder.reduce(async (promise, data) => {
+      await promise;
+      data.publicAddress = data.publicAddress.toLowerCase();
+      result.push(await this.distributeForUser(data));
+    }, Promise.resolve());
+    fs.writeFileSync(`../../../${getNow()}.json`, JSON.stringify(result));
+  }
 }

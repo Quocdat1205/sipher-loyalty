@@ -127,7 +127,7 @@ export class AdminController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @Put("distributes")
+  @Post("distributes")
   async distributesLootbox(
     @Body() body: DistributeLootboxs,
     @Req() req: Request
@@ -141,7 +141,7 @@ export class AdminController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @Put("distribute")
+  @Post("distribute")
   async distributeLootbox(
     @Body() body: DistributeLootbox,
     @Req() req: Request
