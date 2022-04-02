@@ -46,8 +46,12 @@ export const useAirdrops = () => {
     ["token-claimable-amount", airdropsData],
     () =>
       scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(
-        airdropsData!.token.find(item => item.addressContract === SipherAirdropsAddress)!.totalAmount,
-        airdropsData!.token.find(item => item.addressContract === SipherAirdropsAddress)!.proof,
+        airdropsData!.token.find(
+          item => item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase(),
+        )!.totalAmount,
+        airdropsData!.token.find(
+          item => item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase(),
+        )!.proof,
       ),
     {
       enabled: !!scCaller.current && !!account && airdropsData!.token?.length > 0 && chainId === ETHEREUM_NETWORK,
@@ -109,7 +113,7 @@ export const useAirdrops = () => {
           },
           onClaim: (e: MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation()
-            if (item.addressContract === SipherAirdropsAddress) {
+            if (item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase()) {
               claim({ id: item.id, totalAmount: item.totalAmount, proof: item.proof })
             }
           },

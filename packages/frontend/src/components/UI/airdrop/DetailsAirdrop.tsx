@@ -20,6 +20,7 @@ export function DetailsAirdrop() {
     isDisabled,
     tokenClaimed,
     claimableAmount,
+    buttonText,
   } = useDetailAirdrop()
   const defaultImage = "/images/airdrops/sipher.png"
   const [imageState, setImageState] = useState({
@@ -245,7 +246,7 @@ export function DetailsAirdrop() {
                 py={5}
                 fontSize="md"
               >
-                Claim
+                {buttonText}
               </Button>
             </Skeleton>
             <Skeleton isLoaded={isFetched} flex={1}></Skeleton>

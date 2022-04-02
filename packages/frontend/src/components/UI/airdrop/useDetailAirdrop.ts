@@ -72,19 +72,21 @@ export const useDetailAirdrop = () => {
   })
 
   const handleClaim = () => {
-    if (detailAirdrop?.addressContract === SipherAirdropsAddress) {
+    if (detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase()) {
       claim({ totalAmount: detailAirdrop.totalAmount, proof: detailAirdrop.proof })
     }
   }
 
   const isDisabled =
-    detailAirdrop?.totalAmount === "0" ||
-    chainId !== ETHEREUM_NETWORK ||
-    initClaimableAmount === 0 ||
-    detailAirdrop?.type !== "TOKEN"
-
-  const tokenClaimed = detailAirdrop?.addressContract === SipherAirdropsAddress ? claimedInit : 0
-  const claimableAmount = detailAirdrop?.addressContract === SipherAirdropsAddress ? initClaimableAmount : 0
+    detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase()
+      ? detailAirdrop?.totalAmount === "0" || chainId !== ETHEREUM_NETWORK || initClaimableAmount === 0
+      : true
+  const buttonText =
+    detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase() ? "CLAIM" : "COMING SOON"
+  const tokenClaimed =
+    detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase() ? claimedInit : 0
+  const claimableAmount =
+    detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase() ? initClaimableAmount : 0
 
   return {
     detailAirdrop,
@@ -97,5 +99,6 @@ export const useDetailAirdrop = () => {
     isDisabled,
     tokenClaimed,
     claimableAmount,
+    buttonText,
   }
 }
