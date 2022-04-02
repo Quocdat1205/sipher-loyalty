@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { BsClockFill } from "react-icons/bs"
 import { MdInfo } from "react-icons/md"
-// import Image from "next/image"
 import { Box, Flex, Img, Link, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
@@ -20,13 +19,7 @@ const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
-    <Flex
-      bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 35%)"
-      rounded="lg"
-      align="center"
-      justify="center"
-      pos="relative"
-    >
+    <Flex rounded="lg" align="center" justify="center" pos="relative">
       <Skeleton
         blendMode="lighten"
         sx={{ span: { rounded: "lg" } }}
@@ -39,8 +32,7 @@ const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
           alt={propertyLootbox?.name}
           loading="lazy"
           objectFit="contain"
-          width={500}
-          height={300}
+          maxH="22rem"
           onLoad={() => setImageLoaded(true)}
         />
       </Skeleton>

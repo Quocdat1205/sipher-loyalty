@@ -1,5 +1,6 @@
 import { Request } from "express";
 import { catchError } from "rxjs";
+import { CollectionCategory } from "@entity";
 import {
   Controller,
   Get,
@@ -22,7 +23,6 @@ import { AtherGuard } from "@modules/auth/auth.guard";
 import { AuthService } from "@modules/auth/auth.service";
 import { LoggerService } from "@modules/logger/logger.service";
 import { NftItem } from "@modules/nft/nft-item.dto";
-import { CollectionCategory } from "src/entity/sipher-collection.entity";
 
 import {
   Portfolio,
@@ -65,7 +65,7 @@ export class CollectionController {
     @Param("userAddress") userAddress: string,
     @Req() req: Request
   ) {
-    await this.authService.verifyAddress(userAddress, req.userData);
+    await this.authService.verifyAddress(userAddress, req);
     return this.collectionService.getPortfolio(
       userAddress.toLowerCase(),
       query
@@ -93,7 +93,7 @@ export class CollectionController {
     @Query("from") from = 0,
     @Query("size") size = 20
   ) {
-    await this.authService.verifyAddress(userAddress, req.userData);
+    await this.authService.verifyAddress(userAddress, req);
     return this.collectionService.getPortfolioByCollection({
       userAddress: userAddress.toLowerCase(),
       collectionId: collectionId.toLowerCase(),
@@ -113,7 +113,7 @@ export class CollectionController {
     @Param("itemId") itemId: string,
     @Req() req: Request
   ) {
-    await this.authService.verifyAddress(userAddress, req.userData);
+    await this.authService.verifyAddress(userAddress, req);
     // Best Practice 🤡
     const result = await this.collectionService.getItemById(
       itemId,

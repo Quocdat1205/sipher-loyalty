@@ -22,7 +22,7 @@ const useNFTs = collectionId => {
   const { bearerToken } = useAuth()
   const { account, scCaller, switchNetwork, chainId } = useWalletContext()
   const gridSize = useStore(state => state.gridSize)
-  const columns = gridSize === "small" ? [2, 3, 4, 5, 5] : [1, 2, 3, 4, 4]
+  const columns = gridSize === "small" ? [2, 3, 5, 5, 6] : [1, 2, 4, 4, 4]
   const [data, setData] = useState<NFTItemProp[]>()
   const [modal, setModal] = useState("")
   const [dataMinted, setDataMinted] = useState<NFTItemProp[]>([])
@@ -140,6 +140,7 @@ const useNFTs = collectionId => {
   }
 
   return {
+    gridSize,
     handleBring,
     isLoadingBurn,
     dataMinted,

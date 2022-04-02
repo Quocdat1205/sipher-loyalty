@@ -55,5 +55,20 @@ describe("Sculpture unit test", () => {
       await sculptureService.saveRedeemTransaction(txDto);
       expect(sculptureFindOneMock).toHaveBeenCalled();
     });
+    it("should save transaction", async () => {
+      const sculptureFindOneMock = jest
+        .spyOn(sculptureTxRepo, "findOne")
+        .mockImplementation(async () => {
+          return undefined;
+        });
+      const sculptureSaveMock = jest
+        .spyOn(sculptureTxRepo, "save")
+        .mockImplementation(async () => {
+          return tx;
+        });
+      await sculptureService.saveRedeemTransaction(txDto);
+      expect(sculptureFindOneMock).toHaveBeenCalled();
+      expect(sculptureSaveMock).toHaveBeenCalled();
+    });
   });
 });

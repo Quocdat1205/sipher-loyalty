@@ -16,6 +16,7 @@ sipher-chart:
   deploys:
     - name: backend
       replicasCount: 1
+      seriviceAccoutName: loyalty-sa
       resources: {}
       command: ["/bin/sh"]
       args:

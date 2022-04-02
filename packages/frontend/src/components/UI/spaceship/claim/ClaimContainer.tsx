@@ -1,6 +1,10 @@
 import React from "react"
 import { Box, Button, chakra, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 
+import TabPage from "@components/module/TabPage"
+
+import { spaceshipTabs } from ".."
+
 import ClaimCard from "./ClaimCard"
 import ClaimStatusModal from "./ClaimStatusModal"
 import { useClaim } from "./useClaim"
@@ -19,8 +23,25 @@ const ClaimContainer = () => {
 
   return (
     <Flex flex={1} pos="relative" flexDir="column" align="center">
-      <Flex flexDir="column" justify="space-between" zIndex={2} maxW="1200px" flex={1} w="full" pb={8}>
-        <Flex mb={4} justify="center">
+      <Flex
+        bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 40%)"
+        flexDir="column"
+        justify="space-between"
+        align="center"
+        zIndex={2}
+        flex={1}
+        w="full"
+        pb={8}
+      >
+        <Box pt={12} w="full" maxW="1200px">
+          <TabPage tabs={spaceshipTabs} />
+        </Box>
+        <Flex
+          bgGradient="linear(270deg, rgba(0, 0, 0, 0) 20%, rgba(112, 0, 255, 0.5) 50%, rgba(0, 0, 0, 0) 80%)"
+          w="full"
+          mb={4}
+          justify="center"
+        >
           <Box w="full" py={4} px={6} textAlign="center" borderRadius="0px 0px 16px 16px">
             <Text color="neutral.400">
               You have{" "}
@@ -30,7 +51,7 @@ const ClaimContainer = () => {
             </Text>
           </Box>
         </Flex>
-        <HStack blendMode="lighten" spacing={4} mb={4} justify={claimData.length > 1 ? "space-between" : "center"}>
+        <HStack maxW="1200px" w="full" spacing={4} mb={4} justify={claimData.length > 1 ? "space-between" : "center"}>
           {claimData.map(item => (
             <ClaimCard key={item.id} isPopover={false} data={item} />
           ))}

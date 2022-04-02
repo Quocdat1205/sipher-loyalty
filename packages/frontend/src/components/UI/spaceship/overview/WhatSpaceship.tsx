@@ -1,5 +1,4 @@
 import React from "react"
-import Image from "next/image"
 import { Avatar, Box, Flex, Heading, Text, Wrap, WrapItem } from "@sipher.dev/sipher-ui"
 
 const contentWhatSpaceships = [
@@ -78,17 +77,6 @@ export const WhatSpaceship = () => {
             </WrapItem>
           ))}
         </Wrap>
-        <Box sx={{ img: { rounded: "lg" } }} pos="relative">
-          <Image src="/images/home/banner-home.png" alt="banner" width={1200} height={360} />
-          <Box pos="absolute" top="75%" left="50%" w="full" transform="translate(-50%,-50%)">
-            <Text textAlign="center" lineHeight={1.2} fontWeight={600} fontSize="2xl">
-              Enjoy lucrative benefits by minting Lootboxes, Parts &
-            </Text>
-            <Text textAlign="center" lineHeight={1.2} fontWeight={600} fontSize="2xl">
-              Ships to NFTs and trading on Marketplace
-            </Text>
-          </Box>
-        </Box>
       </Flex>
     </Flex>
   )

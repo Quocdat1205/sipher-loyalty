@@ -1,7 +1,6 @@
 import { Api } from "./sdk"
 
-const baseURL = "https://api-loyalty.sipher.gg/"
-// const baseURL = "http://localhost:5500"
+const baseURL = process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "https://api-loyalty.sipher.gg/"
 
 const client = new Api({
   format: "json",

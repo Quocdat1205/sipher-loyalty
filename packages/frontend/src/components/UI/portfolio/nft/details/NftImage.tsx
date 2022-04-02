@@ -1,11 +1,11 @@
 import { useRef, useState } from "react"
 import { BiFullscreen } from "react-icons/bi"
-import Image from "next/image"
 import {
   Box,
   BoxProps,
   Flex,
   IconButton,
+  Img,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -49,12 +49,12 @@ export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest
           {videos.includes(extension) ? (
             <video src={src} autoPlay loop muted datatype="video/mp4"></video>
           ) : (
-            <Image
+            <Img
               src={src || "/"}
               alt={alt}
               objectFit="contain"
-              width={windowHeight ? ((windowHeight - 200) * 644) / 722 : 500}
-              height={windowHeight ? windowHeight - 200 : 574}
+              width={`${windowHeight ? ((windowHeight - 200) * 644) / 722 : 500}px`}
+              height={`${windowHeight ? windowHeight - 200 : 574}px`}
             />
           )}
           <Box pos="absolute" bottom="0" left="0" transform="translate(1rem, -2rem)">
@@ -89,7 +89,7 @@ export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest
                 {videos.includes(extension) ? (
                   <video src={src} autoPlay loop muted datatype="video/mp4"></video>
                 ) : (
-                  <Image objectFit="contain" src={src || "/"} alt={alt} width={550} height={640} />
+                  <Img objectFit="contain" src={src || "/"} alt={alt} maxH="40rem" />
                 )}
               </Box>
             </Flex>

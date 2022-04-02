@@ -1,7 +1,6 @@
 import React from "react"
-import Image from "next/image"
 import { useRouter } from "next/router"
-import { Box, Button, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, Flex, Heading, Img, Text } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
 
@@ -19,17 +18,20 @@ export const SpaceshipContainer = () => {
     <Flex flexDir="column" w="full">
       <Flex
         px={[4, 4, 4, 0, 0]}
-        bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 35%)"
+        bgImage="url(/images/spaceship/bg-overview.jpg)"
+        bgSize="100%"
+        bgRepeat="no-repeat"
         flexDir="column"
         align="center"
         w="full"
+        pos="relative"
       >
         <Box pt={12} w="full" maxW="1200px">
           <TabPage tabs={spaceshipTabs} />
         </Box>
         <Box maxW="1200px" w="full">
-          <Flex py={28} justify="space-between" align="center">
-            <Box flex={2}>
+          <Flex justify="space-between" align="center">
+            <Box py={28} flex={2}>
               <Flex>
                 <Text
                   borderBottom="4px"
@@ -56,16 +58,17 @@ export const SpaceshipContainer = () => {
               </Button>
             </Box>
             <Flex blendMode="lighten" pos="relative" flexDir="column" align="flex-end" ml={8} p={4} flex={3}>
-              <Image
+              <Img
                 objectFit="contain"
-                src={activeData.image || ""}
+                src={activeData.image ?? "/images/spaceship/ship/1.png"}
                 alt={activeData.title}
-                width={869}
-                height={448}
-                quality={100}
+                maxH="26rem"
               />
             </Flex>
           </Flex>
+          <Box>
+            <Timeline mappedData={mappedData} />
+          </Box>
         </Box>
       </Flex>
       <Flex px={[4, 4, 4, 0, 0]} flexDir="column" align="center" w="full" pos="relative">
@@ -79,7 +82,6 @@ export const SpaceshipContainer = () => {
           transform="matrix(1, 0, 0, -1, 0, 0)"
         />
         <Box zIndex={2} maxW="1200px" w="full">
-          <Timeline mappedData={mappedData} />
           <TutorialSpaceship />
         </Box>
       </Flex>

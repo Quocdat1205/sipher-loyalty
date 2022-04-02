@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { BiChevronRight } from "react-icons/bi"
-import Image from "next/image"
-import { Box, Button, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, Flex, Img, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomCheckbox } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
@@ -12,12 +11,13 @@ import useNFTs from "./useNFTs"
 interface CardProps {
   data: ReturnType<typeof useNFTs>["nftsData"][number]
   isFetched: boolean
+  gridSize: string
 }
 
 export const images = ["jpg", "gif", "png"]
 export const videos = ["mp4", "3gp", "ogg"]
 
-const NFTCard = ({ data, isFetched }: CardProps) => {
+const NFTCard = ({ data, isFetched, gridSize }: CardProps) => {
   const collectionName = NftContracts.find(
     property => property.address.toUpperCase() === data?.collectionId.toUpperCase(),
   )?.name
@@ -70,25 +70,21 @@ const NFTCard = ({ data, isFetched }: CardProps) => {
             </Button>
           </Flex>
         )}
-
         {videos.includes(extension) ? (
           <video src={data.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
         ) : (
-          <Image
-            blurDataURL="https://via.placeholder.com/150"
+          <Img
+            minH={gridSize === "small" ? "12rem" : "20rem"}
+            w="full"
             src={data.imageUrl ?? "https://via.placeholder.com/150"}
             alt={data.tokenId}
-            layout="responsive"
             loading="lazy"
-            height={480}
-            width={425}
-            quality={100}
             objectFit="contain"
             onLoad={() => setImageLoad(true)}
           />
         )}
         {data.type === "ERC1155" && (
-          <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white" pos="absolute" bottom="1rem" left="0.5rem">
+          <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white" pos="absolute" bottom="1rem" left={4}>
             <SpLayer />
             <Text ml={1} fontSize="xs" color="neutral.900" fontWeight={600}>
               {data.value}

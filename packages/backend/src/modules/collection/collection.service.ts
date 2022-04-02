@@ -12,12 +12,9 @@ import { LoggerService } from "@modules/logger/logger.service";
 import { TokenType } from "@modules/nft/nft.dto";
 import { NftItemService } from "@modules/nft/nftItem.service";
 import { URIService } from "@modules/uri/uri.service";
-import { isLooboxContract, isSculptureContract } from "@utils/utils";
-import marketplaceClient from "src/api/marketplaceClient";
-import {
-  CollectionType,
-  SipherCollection,
-} from "src/entity/sipher-collection.entity";
+import { isLootboxContract, isSculptureContract } from "@utils/utils";
+import marketplaceClient from "../../api/marketplaceClient";
+import { CollectionType, SipherCollection } from "@entity";
 
 import {
   CollectionStats,
@@ -175,12 +172,19 @@ export class CollectionService {
       item = result?.body?._source ? result?.body?._source : undefined;
     } else {
       LoggerService.debug(`Getting ERC721 from item ${itemId}`);
-      const response =
-        await marketplaceClient.api.nftItemControllerGetDetailsById(itemId);
-      item = {
-        ...response.data.item,
-        attributes: response.data.attributes,
-      } as any;
+      try {
+        const response =
+          await marketplaceClient.api.nftItemControllerGetDetailsById(itemId);
+        item = {
+          ...response.data.item,
+          attributes: response.data.attributes,
+        } as any;
+      } catch (err) {
+        LoggerService.error(
+          err,
+          `Failed to get ERC721 ${itemId} from marketplace API`
+        );
+      }
     }
 
     if (!item) {
@@ -194,7 +198,7 @@ export class CollectionService {
     });
     if (itemCollection) {
       item.collection = itemCollection;
-      if (item.collection.collectionType === "ERC1155") {
+      if (item.collection.collectionType === CollectionType.ERC1155) {
         const totalMintedItems = await this.getTotalErc1155Minted(
           item.collectionId,
           item.tokenId
@@ -353,13 +357,14 @@ export class CollectionService {
 
   // Best practice? Never heard of him 💀
   private async addUriToSculptureOrLootbox(item: any) {
-    const newItem = { ...item, type: TokenType.ERC1155 };
-    if (isLooboxContract(item.collectionId)) {
+    const newItem = { ...item };
+    if (isLootboxContract(item.collectionId)) {
       LoggerService.debug("Is lootbox contract");
       const uriInfo = await this.uriService.getDataERC1155Lootbox(item.tokenId);
       if (uriInfo) {
         newItem.name = uriInfo.name;
         newItem.imageUrl = uriInfo.image;
+        newItem.type = TokenType.ERC1155;
       }
     }
     if (isSculptureContract(item.collectionId)) {
@@ -370,11 +375,8 @@ export class CollectionService {
       if (uriInfo) {
         newItem.name = uriInfo.name;
         newItem.imageUrl = uriInfo.image;
+        newItem.type = TokenType.ERC1155;
       }
-    }
-    if (newItem.uri) {
-      delete newItem.uri.id;
-      delete newItem.uri.tokenId;
     }
     return newItem;
   }

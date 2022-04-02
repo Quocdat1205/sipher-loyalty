@@ -1,7 +1,6 @@
 import React, { Fragment } from "react"
-import Image from "next/image"
 import { useRouter } from "next/router"
-import { Box, Button, chakra, Divider, Flex, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Divider, Flex, HStack, Img, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
 import QuantitySelector from "@components/UI/spaceship/inventory/details/QuantitySelector"
@@ -58,7 +57,7 @@ export const BringModal = ({
                   <chakra.tr borderTop="1px" borderColor="whiteAlpha.100" key={item.id}>
                     <chakra.td py={2}>
                       <Flex align="center">
-                        <Image src={item.imageUrl ?? ""} alt={item.name} width={50} height={30} />
+                        <Img src={item.imageUrl ?? ""} alt={item.name} h="2rem" />
                         <Text ml={4}>{item.name}</Text>
                       </Flex>
                     </chakra.td>

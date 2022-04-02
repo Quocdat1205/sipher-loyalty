@@ -1,7 +1,6 @@
 import React, { Fragment } from "react"
-import Image from "next/image"
 import { useRouter } from "next/router"
-import { Box, Button, chakra, Divider, Flex, HStack, Link, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Divider, Flex, HStack, Img, Link, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
 import { SipherLootBoxAddress } from "@constant"
@@ -46,7 +45,7 @@ export const MintModal = ({
       }
       isOpen={isOpen}
       onClose={onClose}
-      size="xl"
+      size="2xl"
     >
       <Box px={6}>
         {status === "MINT" ? (
@@ -66,11 +65,10 @@ export const MintModal = ({
                 <chakra.tr borderTop="1px" borderColor="whiteAlpha.100">
                   <chakra.td py={2}>
                     <Flex align="center">
-                      <Image
+                      <Img
                         src={details?.propertyLootbox.image ?? "/image/airdrops/sipher.png"}
                         alt={details?.propertyLootbox.name}
-                        width={50}
-                        height={30}
+                        h="2rem"
                       />
                       <Text ml={4}>{details?.propertyLootbox.name}</Text>
                     </Flex>

@@ -1,6 +1,5 @@
 import React, { useState } from "react"
-import Image from "next/image"
-import { Button, chakra, Flex, HStack, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Button, chakra, Flex, HStack, Img, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
@@ -54,15 +53,12 @@ export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
                 {tokenDetails?.value}
               </Text>
             </Flex>
-            <Image
-              blurDataURL="https://via.placeholder.com/150"
-              quality={100}
+            <Img
               src={tokenDetails?.imageUrl ?? "https://via.placeholder.com/150"}
               alt="airdrop"
-              width={300}
-              height={300}
               objectFit="contain"
               onLoad={() => setImageLoad(true)}
+              maxH="26rem"
             />
           </Flex>
         </Skeleton>

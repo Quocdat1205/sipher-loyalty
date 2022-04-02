@@ -35,7 +35,7 @@ export class LootBoxController {
     @Param("id") id: string,
     @Req() req: Request
   ) {
-    await this.authService.verifyAddress(publicAddress, req.userData);
+    await this.authService.verifyAddress(publicAddress, req);
     return this.lootBoxService.getLootboxById(id);
   }
 
@@ -47,10 +47,7 @@ export class LootBoxController {
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Req() req: Request
   ) {
-    const userData = await this.authService.verifyAddress(
-      publicAddress,
-      req.userData
-    );
+    const userData = await this.authService.verifyAddress(publicAddress, req);
     return this.lootBoxService.getLootboxFromWallet(
       userData.currentpublicAddress
     );
@@ -64,10 +61,7 @@ export class LootBoxController {
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Req() req: Request
   ) {
-    const userData = await this.authService.verifyAddress(
-      publicAddress,
-      req.userData
-    );
+    const userData = await this.authService.verifyAddress(publicAddress, req);
     return this.lootBoxService.getClaimableLootboxFromWallet(
       userData.currentpublicAddress
     );
@@ -97,7 +91,7 @@ export class LootBoxController {
     @Body() body: MintBatchLootboxInputDto,
     @Req() req: Request
   ) {
-    await this.authService.verifyAddress(body.publicAddress, req.userData);
+    await this.authService.verifyAddress(body.publicAddress, req);
     return this.lootBoxService.mintBatchLootbox(body);
   }
 
@@ -106,7 +100,7 @@ export class LootBoxController {
   @ApiOkResponse({ type: PendingMint })
   @Put("mint")
   async mintLootbox(@Body() body: MintLootboxInputDto, @Req() req: Request) {
-    await this.authService.verifyAddress(body.publicAddress, req.userData);
+    await this.authService.verifyAddress(body.publicAddress, req);
     return this.lootBoxService.mintLootbox(body);
   }
 
@@ -118,7 +112,7 @@ export class LootBoxController {
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Req() req: Request
   ) {
-    await this.authService.verifyAddress(publicAddress, req.userData);
+    await this.authService.verifyAddress(publicAddress, req);
     return this.lootBoxService.claimLootbox(publicAddress);
   }
 }

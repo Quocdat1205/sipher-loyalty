@@ -1,47 +1,74 @@
 import React, { useEffect, useRef, useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import { wrap } from "popmotion"
-import { Box, HStack } from "@sipher.dev/sipher-ui"
+import { Box, Flex, HStack } from "@sipher.dev/sipher-ui"
 
-interface SlideshowProps {
+interface CarouselProps {
+  children: React.ReactNode[]
+  show: number
+  infiniteLoop?: boolean
   isAuto?: boolean
-  deplay?: number
-  slideData: React.ReactNode[]
 }
 
-const variants = {
-  enter: (direction: number) => {
-    return {
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0,
-    }
-  },
-  center: {
-    zIndex: 1,
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction: number) => {
-    return {
-      zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0,
-    }
-  },
-}
-
-const swipeConfidenceThreshold = 10000
-const swipePower = (offset: number, velocity: number) => {
-  return Math.abs(offset) * velocity
-}
-
-const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: SlideshowProps) => {
-  const [[page, direction], setPage] = useState([0, 0])
-  const index = wrap(0, slideData.length, page)
+const SlideComponent = ({ children, show, infiniteLoop, isAuto = false }: CarouselProps) => {
+  const [currentIndex, setCurrentIndex] = useState(infiniteLoop ? show : 0)
+  const [length, setLength] = useState(children.length)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const paginate = (newDirection: number) => {
-    setPage([page + newDirection, newDirection])
+  const [isRepeating, setIsRepeating] = useState(infiniteLoop && children.length > show)
+  const [transitionEnabled, setTransitionEnabled] = useState(true)
+
+  // Set the length to match current children from props
+  useEffect(() => {
+    setLength(children.length)
+    setIsRepeating(infiniteLoop && children.length > show)
+  }, [children, infiniteLoop, show])
+
+  useEffect(() => {
+    if (isRepeating) {
+      if (currentIndex === show || currentIndex === length) {
+        setTransitionEnabled(true)
+      }
+    }
+  }, [currentIndex, isRepeating, show, length])
+
+  const next = () => {
+    if (isRepeating || currentIndex < length - show) {
+      setCurrentIndex(prevState => prevState + 1)
+    }
+  }
+
+  // const prev = () => {
+  //   if (isRepeating || currentIndex > 0) {
+  //     setCurrentIndex(prevState => prevState - 1)
+  //   }
+  // }
+
+  const handleTransitionEnd = () => {
+    if (isRepeating) {
+      if (currentIndex === 0) {
+        setTransitionEnabled(false)
+        setCurrentIndex(length)
+      } else if (currentIndex === length + show) {
+        setTransitionEnabled(false)
+        setCurrentIndex(show)
+      }
+    }
+  }
+
+  const renderExtraPrev = () => {
+    const output: any = []
+    for (let index = 0; index < show; index++) {
+      output.push(children[length - 1 - index])
+    }
+    output.reverse()
+    return output
+  }
+
+  const renderExtraNext = () => {
+    const output: any = []
+    for (let index = 0; index < show; index++) {
+      output.push(children[index])
+    }
+    return output
   }
 
   const resetTimeout = () => {
@@ -56,60 +83,52 @@ const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: SlideshowP
       resetTimeout()
       timeoutRef.current = setTimeout(() => {
         if (!isUnmounted) {
-          paginate(1)
+          next()
         }
-      }, deplay)
+      }, 5000)
 
       return () => {
         isUnmounted = true
         resetTimeout()
       }
     }
-  }, [index])
+  }, [currentIndex])
 
   const handleClick = (idx: number) => {
-    paginate(idx < index ? idx - index + slideData.length : idx - index)
+    setCurrentIndex(idx + 1)
   }
 
   return (
-    <Box pos="relative" w="full" overflow="hidden" bg="#151515" h={["6rem", "16rem", "17.5rem", "19rem", "20rem"]}>
-      <AnimatePresence initial={false} custom={direction}>
-        <motion.div
-          key={page}
-          custom={direction}
-          variants={variants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
-            opacity: { duration: 0.2 },
-          }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={1}
-          onDragEnd={(_, { offset, velocity }) => {
-            const swipe = swipePower(offset.x, velocity.x)
-
-            if (swipe < -swipeConfidenceThreshold) {
-              paginate(1)
-            } else if (swipe > swipeConfidenceThreshold) {
-              paginate(-1)
-            }
-          }}
-        >
-          <Box pos="absolute" w="full" h="full" top={0} left={0}>
-            {slideData[index]}
+    <Box overflow="hidden" pos="relative">
+      <Flex w="full" flexDir="column" className="carousel-container">
+        <Flex pos="relative" w="full" className="carousel-wrapper">
+          <Box maxH="35rem" w="full" h="full" overflow="hidden" className="carousel-content-wrapper">
+            <Flex
+              transition="all 250ms linear"
+              className={`carousel-content show-${show}`}
+              style={{
+                width: "full",
+                msOverflowStyle: "none",
+                transform: `translateX(-${currentIndex * (100 / show)}%)`,
+                transition: !transitionEnabled ? "none" : undefined,
+              }}
+              onTransitionEnd={() => handleTransitionEnd()}
+              sx={{ "> *": { width: "full", flexShrink: 0, flexGrow: 1 } }}
+            >
+              {length > show && isRepeating && renderExtraPrev()}
+              {children}
+              {length > show && isRepeating && renderExtraNext()}
+            </Flex>
           </Box>
-        </motion.div>
-      </AnimatePresence>
+        </Flex>
+      </Flex>
       <HStack spacing={4} pos="absolute" bottom={0} left="50%" transform="translate(-50%, -1rem)" align="center">
-        {slideData.map((_, idx) => (
+        {children.map((_, idx) => (
           <Box
             cursor="pointer"
             onClick={() => handleClick(idx)}
             key={idx}
-            bg={index === idx ? "white" : "whiteAlpha.500"}
+            bg={currentIndex === idx + 1 ? "white" : "whiteAlpha.500"}
             w="88px"
             h={"8px"}
           />
@@ -118,4 +137,5 @@ const SlideComponent = ({ deplay = 5000, slideData, isAuto = false }: SlideshowP
     </Box>
   )
 }
+
 export default SlideComponent
