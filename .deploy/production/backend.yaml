@@ -16,6 +16,7 @@ sipher-chart:
   deploys:
     - name: backend
       replicasCount: 2
+      seriviceAccoutName: loyalty-sa
       autoScale:
         min: 2
         max: 5
