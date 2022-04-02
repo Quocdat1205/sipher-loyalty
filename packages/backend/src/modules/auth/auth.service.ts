@@ -33,7 +33,6 @@ export class AuthService {
 
   fetchUserData = async (req: Request) => {
     try {
-
       const token = req.headers.authorization.trim().split(" ").pop();
       const dataAWSUser = await this.verifier.verify(token);
       const roles = dataAWSUser["cognito:groups"];
