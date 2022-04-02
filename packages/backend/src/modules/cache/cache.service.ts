@@ -9,22 +9,19 @@ export class CacheService {
   constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {}
 
   get = async (token: string) => {
-    console.log(token);
     try {
       const result = await this.cacheManager.get<UserData>(token);
-      console.log(result);
       return result;
     } catch (err) {
-      console.log("get", err);
+      LoggerService.error(err);
     }
   };
 
   set = async (token: string, userData: UserData) => {
-    console.log(token, userData);
     try {
       await this.cacheManager.set<UserData>(token, userData, { ttl: 3600 });
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      LoggerService.error(err);
     }
   };
 

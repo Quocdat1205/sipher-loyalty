@@ -31,4 +31,15 @@ export class CancelService {
     LoggerService.log(`create canceled : ${JSON.stringify(canceled)}`);
     return this.canceledRepo.save(canceled);
   }
+
+  async getDataCancelTableForAdmin(
+    from: number,
+    take: number
+  ): Promise<Array<Canceled>> {
+    const data = await this.canceledRepo.find({
+      skip: from,
+      take,
+    });
+    return data;
+  }
 }

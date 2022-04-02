@@ -42,6 +42,18 @@ export class MerchService {
     await this.merchRepo.save(merch);
   }
 
+  async getDataMerchTableForAdmin(
+    from: number,
+    take: number
+  ): Promise<Array<Merchandise>> {
+    const data = await this.merchRepo.find({
+      relations: ["item", "item.imageUrls"],
+      skip: from,
+      take,
+    });
+    return data;
+  }
+
   async getAllMerchByPublicAddress(
     publicAddress: string
   ): Promise<Array<Merchandise> | undefined> {

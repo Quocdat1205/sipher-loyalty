@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { from, lastValueFrom, map, Observable } from "rxjs";
 import { Repository } from "typeorm";
+import { CollectionType, SipherCollection } from "@entity";
 import { HttpService } from "@nestjs/axios";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { ElasticsearchService } from "@nestjs/elasticsearch";
@@ -13,8 +14,8 @@ import { TokenType } from "@modules/nft/nft.dto";
 import { NftItemService } from "@modules/nft/nftItem.service";
 import { URIService } from "@modules/uri/uri.service";
 import { isLootboxContract, isSculptureContract } from "@utils/utils";
+
 import marketplaceClient from "../../api/marketplaceClient";
-import { CollectionType, SipherCollection } from "@entity";
 
 import {
   CollectionStats,
@@ -379,5 +380,16 @@ export class CollectionService {
       }
     }
     return newItem;
+  }
+
+  async getDataCollectionTableForAdmin(
+    skip: number,
+    take: number
+  ): Promise<Array<SipherCollection>> {
+    const data = await this.sipherCollectionRepo.find({
+      skip,
+      take,
+    });
+    return data;
   }
 }

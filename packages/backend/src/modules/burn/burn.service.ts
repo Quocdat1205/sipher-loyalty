@@ -57,4 +57,15 @@ export class BurnService {
     LoggerService.log(`create burned : ${JSON.stringify(burned)}`);
     return this.burnedRepo.save(burned);
   }
+
+  async getDataBurnTableForAdmin(
+    from: number,
+    take: number
+  ): Promise<Array<Burned>> {
+    const data = await this.burnedRepo.find({
+      skip: from,
+      take,
+    });
+    return data;
+  }
 }

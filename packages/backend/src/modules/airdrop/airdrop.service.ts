@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { LessThan, MoreThanOrEqual, Repository } from "typeorm";
 import { ImageUrl } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -25,6 +25,18 @@ export class AirdropService {
     const merchandise = await this.getMerchAirdrops(publicAddress);
     const other = await this.getOtherAirdrops(publicAddress);
     return { token, nft, merchandise, other };
+  }
+
+  async getDataAirdropTableForAdmin(
+    from: number,
+    take: number
+  ): Promise<Array<Airdrop>> {
+    const data = await this.airdropRepo.find({
+      relations: ["imageUrls"],
+      skip: from,
+      take,
+    });
+    return data;
   }
 
   private async getTokenAirdrops(

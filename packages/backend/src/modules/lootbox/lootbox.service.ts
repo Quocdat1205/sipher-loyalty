@@ -661,4 +661,28 @@ export class LootBoxService {
       return err;
     }
   };
+
+  async getDataLootboxTableForAdmin(
+    from: number,
+    take: number
+  ): Promise<Array<Lootbox>> {
+    const data = await this.lootboxRepo.find({
+      relations: ["propertyLootbox"],
+      skip: from,
+      take,
+    });
+    return data;
+  }
+
+  async getDataClaimableLootboxTableForAdmin(
+    from: number,
+    take: number
+  ): Promise<Array<ClaimableLootbox>> {
+    const data = await this.claimableLootboxRepo.find({
+      relations: ["propertyLootbox"],
+      skip: from,
+      take,
+    });
+    return data;
+  }
 }
