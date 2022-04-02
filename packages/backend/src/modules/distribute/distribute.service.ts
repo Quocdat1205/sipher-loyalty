@@ -241,15 +241,17 @@ export class DistributeService {
     quantity: number;
     expiredDate: number;
   }) {
-    return axios({
-      method: "POST",
-      url: constant.URL,
-      headers: {
-        Authorization: constant.TOKEN,
-        "Content-Type": "application/json",
-      },
-      data: claimableLootbox,
-    });
+    return (
+      await axios({
+        method: "POST",
+        url: constant.URL,
+        headers: {
+          Authorization: constant.TOKEN,
+          "Content-Type": "application/json",
+        },
+        data: claimableLootbox,
+      })
+    ).data;
   }
 
   async distributeForUsers() {
@@ -259,6 +261,11 @@ export class DistributeService {
       data.publicAddress = data.publicAddress.toLowerCase();
       result.push(await this.distributeForUser(data));
     }, Promise.resolve());
-    fs.writeFileSync(`../../../${getNow()}.json`, JSON.stringify(result));
+    // console.log(result);
+
+    fs.writeFileSync(
+      `./src/data/RESULT/SCULPTURE/${getNow()}.json`,
+      JSON.stringify(result)
+    );
   }
 }
