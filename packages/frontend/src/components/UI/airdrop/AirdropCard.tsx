@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import Image from "next/image"
 import { Box, Button, Flex, Img, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import { SpLayer } from "@components/shared/icons"
@@ -80,7 +79,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
             bg="white"
             pos="absolute"
             bottom="1rem"
-            left="0.5rem"
+            left={4}
           >
             <SpLayer />
             <Text ml={1} fontSize="xs" color="neutral.900" fontWeight={600}>
@@ -102,12 +101,10 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
           {videos.includes(extension) ? (
             <video src={data.imageUrls[0]?.default} autoPlay loop muted datatype="video/mp4"></video>
           ) : (
-            <Image
+            <Img
               src={(data.imageUrls?.length > 0 && data.imageUrls[0].default) || "/images/airdrops/sipher.png"}
               objectFit="contain"
-              quality={100}
-              width={212 * 1.5}
-              height={188 * 1.5}
+              maxH="18rem"
             />
           )}
         </Skeleton>

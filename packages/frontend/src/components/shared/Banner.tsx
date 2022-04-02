@@ -1,6 +1,5 @@
 import React from "react"
-import Image from "next/image"
-import { Box, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
+import { Box, Flex, Heading, Img, Text } from "@sipher.dev/sipher-ui"
 
 interface BannerProps {
   title: string
@@ -11,12 +10,10 @@ interface BannerProps {
 export const Banner = ({ srcBg, title, description }: BannerProps) => {
   return (
     <Flex flexDir="column" w="full" justify="center" position="relative">
-      <Image
-        blurDataURL="https://via.placeholder.com/728x90.png?text=Visit+WhoIsHostingThis.com+Buyers+Guide%20C/O%20https://placeholder.com/"
-        layout="responsive"
-        quality={100}
-        width={2880}
-        height={424}
+      <Img
+        maxH="20rem"
+        objectFit="cover"
+        w="full"
         src={
           srcBg ||
           "https://via.placeholder.com/728x90.png?text=Visit+WhoIsHostingThis.com+Buyers+Guide%20C/O%20https://placeholder.com/"

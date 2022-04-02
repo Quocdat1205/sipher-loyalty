@@ -18,7 +18,7 @@ const initData: SpaceshipDataProps[] = [
     id: "THE WANDERING ALICE",
     y: 330,
     title: "The Wandering Alice",
-    image: "/images/spaceship/ship/gif1.gif",
+    image: "/images/spaceship/ship/ship.gif",
     mainDescription: "On every adventure, THE WANDERING ALICE grows more and more curious.",
     additionalDescription:
       "The WANDERING ALICE has a knack for discovering the unknown. Benefits are tied to exploration and bringing treasures or loot back to the player.",
