@@ -42,7 +42,7 @@ export const useDetailAirdrop = () => {
     },
   )
 
-  const { data: claimed } = useQuery(["token-claimed", account], () => scCaller.current!.SipherAirdrops.claimed(), {
+  const { data: claimedInit } = useQuery(["token-claimed", account], () => scCaller.current!.SipherAirdrops.claimed(), {
     enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK && detailAirdrop!.totalAmount !== "0",
     initialData: 0,
   })
@@ -83,7 +83,7 @@ export const useDetailAirdrop = () => {
     claimableAmount === 0 ||
     detailAirdrop?.type !== "TOKEN"
 
-  const claimedData = detailAirdrop?.addressContract === SipherAirdropsAddress ? claimed : 0
+  const tokenClaimed = detailAirdrop?.addressContract === SipherAirdropsAddress ? claimedInit : 0
 
-  return { detailAirdrop, router, isOpen, onClose, isFetched, handleClaim, isLoadingClaim, isDisabled, claimedData }
+  return { detailAirdrop, router, isOpen, onClose, isFetched, handleClaim, isLoadingClaim, isDisabled, tokenClaimed }
 }

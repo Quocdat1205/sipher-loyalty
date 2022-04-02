@@ -3,13 +3,14 @@ import { Box, Button, Flex, HStack, Img, Skeleton, Stack, Text } from "@sipher.d
 
 import { ChakraModal } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
+import { currency } from "@utils"
 
 import { videos } from "../portfolio/nft/NFTCard"
 
 import { useDetailAirdrop } from "./useDetailAirdrop"
 
 export function DetailsAirdrop() {
-  const { isOpen, onClose, isFetched, detailAirdrop, handleClaim, isLoadingClaim, isDisabled, claimedData } =
+  const { isOpen, onClose, isFetched, detailAirdrop, handleClaim, isLoadingClaim, isDisabled, tokenClaimed } =
     useDetailAirdrop()
   const defaultImage = "/images/airdrops/sipher.png"
   const [imageState, setImageState] = useState({
@@ -157,7 +158,7 @@ export function DetailsAirdrop() {
                   </Text>
                 ))}
                 <Text mb={2} color="neutral.400">
-                  Your claimed amount: {claimedData && claimedData} $SIPHER
+                  Your claimed amount: {currency(tokenClaimed ?? 0)} $SIPHER
                 </Text>
               </Skeleton>
             )}
