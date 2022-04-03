@@ -19,7 +19,12 @@ interface ChangePasswordModal {
 
 const validationSchema = Yup.object().shape({
   currentPassword: Yup.string().required("Current password is required"),
-  newPassword: Yup.string().required("New password is required"),
+  newPassword: Yup.string()
+    .required("New password is required")
+    .matches(
+      /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/,
+      "Must contain at least 8 characters, one uppercase, one number and one special character",
+    ),
 })
 
 const ChangePasswordModal = ({ isOpen, onClose, onBack }: ChangePasswordModal) => {
@@ -71,9 +76,9 @@ const ChangePasswordModal = ({ isOpen, onClose, onBack }: ChangePasswordModal) =
       onClose={onClose}
       size="lg"
     >
-      <Box px={6}>
+      <Box px={6} mt={2}>
         <Form onSubmit={handleSubmit(d => mutateChangePassword(d))}>
-          <Stack spacing={4}>
+          <Stack spacing={6} mb={4}>
             <StyledInput
               error={errors.currentPassword?.message}
               label="Current password"
@@ -85,7 +90,6 @@ const ChangePasswordModal = ({ isOpen, onClose, onBack }: ChangePasswordModal) =
               label="New password"
               type="password"
               {...register("newPassword")}
-              mb={4}
             />
           </Stack>
           <Divider my={6} />
