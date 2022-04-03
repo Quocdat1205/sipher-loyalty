@@ -13,7 +13,11 @@ import { LoggerService } from "@modules/logger/logger.service";
 import { TokenType } from "@modules/nft/nft.dto";
 import { NftItemService } from "@modules/nft/nftItem.service";
 import { URIService } from "@modules/uri/uri.service";
-import { isLootboxContract, isSculptureContract } from "@utils/utils";
+import {
+  isLootboxContract,
+  isSculptureContract,
+  toTokenId,
+} from "@utils/utils";
 
 import marketplaceClient from "../../api/marketplaceClient";
 
@@ -361,7 +365,9 @@ export class CollectionService {
     const newItem = { ...item };
     if (isLootboxContract(item.collectionId)) {
       LoggerService.debug("Is lootbox contract");
-      const uriInfo = await this.uriService.getDataERC1155Lootbox(item.tokenId);
+      const uriInfo = await this.uriService.getDataERC1155Lootbox(
+        parseInt(toTokenId(item.tokenId))
+      );
       if (uriInfo) {
         newItem.name = uriInfo.name;
         newItem.imageUrl = uriInfo.image;
@@ -371,7 +377,7 @@ export class CollectionService {
     if (isSculptureContract(item.collectionId)) {
       LoggerService.debug("Is sculpture contract");
       const uriInfo = await this.uriService.getDataERC1155Sculpture(
-        item.tokenId
+        parseInt(toTokenId(item.tokenId))
       );
       if (uriInfo) {
         newItem.name = uriInfo.name;
