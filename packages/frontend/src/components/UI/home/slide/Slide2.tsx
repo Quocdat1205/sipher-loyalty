@@ -7,10 +7,10 @@ export const Slide2 = () => {
 
   return (
     <Flex maxH="35rem" flexDir="column" align="center" justify="center" pos="relative" w="full">
-      <Img objectFit="cover" src="/images/home/banner_home2.png" alt="slide2" w="full" h="full" />
-      <Box pos="absolute" w="full" h="full" maxW="1200px" display={["none", "block"]}>
+      <Img objectFit="cover" src="/images/home/banner_home2.png" alt="slide2" w="full" h="full" minH="14rem" />
+      <Box pos="absolute" w="full" h="full" maxW="1200px">
         <Box px={[4, 4, 4, 0, 0]} textAlign="center" pos="absolute" top="50%" left="0%" transform="translateY(-50%)">
-          <Heading mb={8} fontSize="4xl" fontWeight={600}>
+          <Heading mb={[2, 2, 6]} fontSize="4xl" fontWeight={600}>
             EXCLUSIVE SCULPTURES
           </Heading>
           <Button

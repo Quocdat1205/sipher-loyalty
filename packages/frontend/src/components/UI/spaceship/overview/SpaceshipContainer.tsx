@@ -20,7 +20,7 @@ export const SpaceshipContainer = () => {
       <Flex
         px={[4, 4, 4, 0, 0]}
         bgImage="url(/images/spaceship/bg-overview.jpg)"
-        bgSize="100%"
+        bgSize="cover"
         bgRepeat="no-repeat"
         flexDir="column"
         align="center"
@@ -31,8 +31,8 @@ export const SpaceshipContainer = () => {
           <TabPage tabs={spaceshipTabs} />
         </Box>
         <Box maxW="1200px" w="full">
-          <Flex justify="space-between" align="center">
-            <Box py={28} flex={2}>
+          <Flex flexDir={["column", "column", "row"]} justify="space-between" align="center">
+            <Box py={[8, 8, 12, 12, 28]} flex={2}>
               <Flex>
                 <Text
                   borderBottom="4px"
@@ -93,7 +93,7 @@ export const SpaceshipContainer = () => {
           left={0}
           w="full"
           h="full"
-          bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 35%)"
+          bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 40%)"
           transform="matrix(1, 0, 0, -1, 0, 0)"
         />
         <Box zIndex={2} maxW="1200px" w="full">

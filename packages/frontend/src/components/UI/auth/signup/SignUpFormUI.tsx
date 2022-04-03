@@ -93,7 +93,7 @@ const SignUpFormUI = ({ setStep, onChangeEmail, onChangePassword }: SignUpFormUI
         />
         <Text color="neutral.400" textAlign="center" mt={6}>
           Already have an account?{" "}
-          <Link href="/signup" fontWeight={600} color="cyan.600">
+          <Link href="/signin" fontWeight={600} color="cyan.600">
             Sign In
           </Link>
         </Text>
