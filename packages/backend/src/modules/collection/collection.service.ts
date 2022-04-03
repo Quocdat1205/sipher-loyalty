@@ -365,19 +365,21 @@ export class CollectionService {
     const newItem = { ...item };
     if (isLootboxContract(item.collectionId)) {
       LoggerService.debug("Is lootbox contract");
+      newItem.tokenId = parseInt(toTokenId(item.tokenId));
       const uriInfo = await this.uriService.getDataERC1155Lootbox(
-        parseInt(toTokenId(item.tokenId))
+        newItem.tokenId
       );
       if (uriInfo) {
-        newItem.name = uriInfo.name;
+        newItem.tokenId = newItem.name = uriInfo.name;
         newItem.imageUrl = uriInfo.image;
         newItem.type = TokenType.ERC1155;
       }
     }
     if (isSculptureContract(item.collectionId)) {
       LoggerService.debug("Is sculpture contract");
+      newItem.tokenId = parseInt(toTokenId(item.tokenId));
       const uriInfo = await this.uriService.getDataERC1155Sculpture(
-        parseInt(toTokenId(item.tokenId))
+        newItem.tokenId
       );
       if (uriInfo) {
         newItem.name = uriInfo.name;
