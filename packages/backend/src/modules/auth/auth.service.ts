@@ -36,6 +36,7 @@ export class AuthService {
       const token = req.headers.authorization.trim().split(" ").pop();
       const dataAWSUser = await this.verifier.verify(token);
       const roles = dataAWSUser["cognito:groups"];
+
       const { data } = await axios.get(
         `${constant.ATHER_ID_URL}/api/wallets/owned`,
         {
@@ -52,6 +53,7 @@ export class AuthService {
       };
       await this.cacheService.set(req.headers.authorization, userData);
       req.userData = userData;
+
       return userData;
     } catch (err) {
       LoggerService.error(err);
@@ -78,6 +80,7 @@ export class AuthService {
 
   verifyAddress = async (publicAddress: string, req: Request) => {
     if (
+      !req.userData ||
       req.userData.publicAddress.findIndex(
         (wAddress) => wAddress.toLowerCase() === publicAddress.toLowerCase()
       ) === -1
@@ -92,7 +95,10 @@ export class AuthService {
   };
 
   verifyAdmin = async (req: Request, userRole: UserRole) => {
-    if (req.userData.roles.findIndex((role) => role === userRole) === -1) {
+    if (
+      !req.userData ||
+      req.userData.roles.findIndex((role) => role === userRole) === -1
+    ) {
       LoggerService.warn(
         `not permisson, user data ${JSON.stringify(req.userData)}`
       );

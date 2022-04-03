@@ -2,20 +2,18 @@ import { Module, OnApplicationBootstrap } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 
-import { DistributeSculptureModule } from "@modules/distribute/distributeSculpture.module";
-import { DistributeSculptureService } from "@modules/distribute/distributeSculpture.service";
+import { DistributeModule } from "@modules/distribute/distribute.module";
+import { DistributeService } from "@modules/distribute/distribute.service";
 
 @Module({
-  imports: [DistributeSculptureModule, ConfigModule.forRoot()],
+  imports: [DistributeModule, ConfigModule.forRoot()],
   providers: [],
 })
 export class AppModule implements OnApplicationBootstrap {
-  constructor(
-    private readonly distributeSculptureService: DistributeSculptureService
-  ) {}
+  constructor(private readonly distributeService: DistributeService) {}
 
   async onApplicationBootstrap(): Promise<void> {
-    await this.distributeSculptureService.transferAll();
+    await this.distributeService.transferAll();
   }
 }
 async function bootstrap() {

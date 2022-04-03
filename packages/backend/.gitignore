@@ -404,3 +404,4 @@ docker/redis
 
 # Mac
 .DS_Store
+src/data/RESULT/

@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Flex, Heading, HStack, Img, Text } from "@sipher.dev/sipher-ui"
+import { Box, Flex, Heading, Img, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { padZero } from "@utils"
 
@@ -37,7 +37,7 @@ export const TutorialSpaceship = () => {
             the random ship parts and build up a Spaceship for using in Sipher game.
           </Text>
         </Flex>
-        <HStack spacing={8}>
+        <Stack direction={["column", "column", "row"]} spacing={8}>
           {tutorialData.map((item, index) => (
             <Box key={index} flex={item.flex}>
               <Text borderBottom="1px" borderColor="whiteAlpha.200" pb={2} mb={2} fontWeight={600}>
@@ -50,13 +50,13 @@ export const TutorialSpaceship = () => {
                 <Text mb={8} w="full" color="neutral.100">
                   {item.description}
                 </Text>
-                <Box pos="relative" w="full">
+                <Flex justify={["center", "center", "flex-start"]} pos="relative" w="full">
                   <Img quality={100} src={item.image} alt={item.id} objectFit="contain" maxH="14rem" />
-                </Box>
+                </Flex>
               </Flex>
             </Box>
           ))}
-        </HStack>
+        </Stack>
       </Flex>
     </Flex>
   )

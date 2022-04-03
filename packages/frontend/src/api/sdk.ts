@@ -1171,13 +1171,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags admin
      * @name AdminControllerDistributesLootbox
-     * @request PUT:/api/sipher/loyalty/admin/distributes
+     * @request POST:/api/sipher/loyalty/admin/distributes
      * @secure
      */
     adminControllerDistributesLootbox: (data: DistributeLootboxs, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/admin/distributes`,
-        method: 'PUT',
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
@@ -1189,13 +1189,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags admin
      * @name AdminControllerDistributeLootbox
-     * @request PUT:/api/sipher/loyalty/admin/distribute
+     * @request POST:/api/sipher/loyalty/admin/distribute
      * @secure
      */
     adminControllerDistributeLootbox: (data: DistributeLootbox, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/admin/distribute`,
-        method: 'PUT',
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,

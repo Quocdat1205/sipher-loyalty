@@ -24,7 +24,7 @@ const ClaimContainer = () => {
   return (
     <Flex flex={1} pos="relative" flexDir="column" align="center">
       <Flex
-        bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 40%)"
+        bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 60%)"
         flexDir="column"
         justify="space-between"
         align="center"
@@ -32,6 +32,7 @@ const ClaimContainer = () => {
         flex={1}
         w="full"
         pb={8}
+        px={[4, 4, 4, 0, 0]}
       >
         <Box pt={12} w="full" maxW="1200px">
           <TabPage tabs={spaceshipTabs} />

@@ -18,5 +18,5 @@
     },
     "typeRoots": ["node_modules/@types", "../../node_modules/@types"]
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "src/*.json", "src/**/*.json", "src/seed/insert-erc1155-sculpturets"]
+  "include": ["src/**/*.ts", "test/**/*.ts", "src/*.json", "src/**/*.json"]
 }

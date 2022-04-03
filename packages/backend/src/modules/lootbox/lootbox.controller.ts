@@ -16,7 +16,11 @@ import { AuthService } from "@modules/auth/auth.service";
 import { ParseEthereumAddress } from "src/pipes/ethereum-address..pipe";
 
 import { LootBoxService } from "./lootbox.service";
-import { MintBatchLootboxInputDto, MintLootboxInputDto } from "./lootbox.type";
+import {
+  DistributeLootboxs,
+  MintBatchLootboxInputDto,
+  MintLootboxInputDto,
+} from "./lootbox.type";
 
 @ApiTags("lootbox")
 @Controller("lootbox")

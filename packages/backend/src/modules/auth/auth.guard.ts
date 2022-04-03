@@ -21,6 +21,7 @@ export class AtherGuard implements CanActivate {
     context: ExecutionContext
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
+
     return this.authService.validateRequest(request);
   }
 }

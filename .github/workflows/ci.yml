@@ -115,6 +115,7 @@ jobs:
       - name: Build packages
         run: cd packages/frontend && yarn build:tf
         env:
+          NEXT_PUBLIC_DASHBOARD_FE_URL: https://loyalty.sipher.gg/signin
           NEXT_PUBLIC_DASHBOARD_URL: https://api-loyalty.sipher.gg/
           NEXT_PUBLIC_ATHER_ID_URL: https://api-atherid.sipher.gg
           NEXT_PUBLIC_ATHER_SOCIAL_URL: https://api-ather-social.sipher.gg/api
@@ -283,6 +284,7 @@ jobs:
       - name: Build packages
         run: cd packages/frontend && yarn build:tf
         env:
+          NEXT_PUBLIC_DASHBOARD_FE_URL: https://dashboard.sipher.gg/signin
           NEXT_PUBLIC_DASHBOARD_URL: https://api-dashboard.atherlabs.xyz/
           NEXT_PUBLIC_ATHER_ID_URL: https://api-atherid.atherlabs.xyz
           NEXT_PUBLIC_ATHER_SOCIAL_URL: https://api-ather-social.atherlabs.xyz/api
