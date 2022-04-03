@@ -282,10 +282,9 @@ export class DistributeService {
           "Content-Type": "application/json",
         },
       });
-
-      console.log(data);
+      LoggerService.log(data);
     } catch (err) {
-      console.log(err);
+      LoggerService.error(err);
     }
   }
 }
