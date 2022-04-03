@@ -1,6 +1,6 @@
 import React from "react"
 import { format } from "date-fns"
-import { Box, Button, chakra, Flex, Img, Text, Wrap, WrapItem } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Flex, Img, Stack, Text, Wrap, WrapItem } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
 import NoItemUI from "@components/shared/NoItemUI"
@@ -12,7 +12,7 @@ export const PendingContainer = () => {
 
   return (
     <Flex pos="relative" bgRepeat="no-repeat" bgSize="cover" flexDir="column" align="center">
-      <Box py={6} zIndex={2} maxW="1200px" w="full" pb={8}>
+      <Box px={[4, 4, 4, 0, 0]} py={6} zIndex={2} maxW="1200px" w="full" pb={8}>
         <Text fontSize="sm" mb={4} color="neutral.400">
           Pending Lootboxes have been marked for minting or canceling minting. This request will take 3 days to process.
           You can initiate either request by clicking the STOP button and it will require an on-chain transaction to
@@ -74,27 +74,28 @@ export const PendingContainer = () => {
                       {format(new Date(item.deadline * 1000), "HH:mm - dd/MM/yyyy")}
                     </chakra.td>
                     <chakra.td w="20%" textAlign="right" py={4}>
-                      <Button
-                        isLoading={item.status === "Minting" || item.isMinting}
-                        isDisabled={item.status !== "Minting" || item.isDisabled}
-                        onClick={() => {
-                          item.batchIDs && item.batchIDs.length > 0 ? item.onMintBatch() : item.onMint()
-                        }}
-                      >
-                        RE-MINT
-                      </Button>
-                      <Button
-                        onClick={item.onCancel}
-                        isLoading={item.status === "Minting" || item.isCancel}
-                        isDisabled={item.status !== "Minting" || !item.isCancel || item.isMinting}
-                        ml={4}
-                        colorScheme="neutral"
-                        border="1px"
-                        borderColor="whiteAlpha.100"
-                        variant="secondary"
-                      >
-                        CANCEL
-                      </Button>
+                      <Stack direction={["column", "column", "row"]} align="center">
+                        <Button
+                          isLoading={item.status === "Minting" || item.isMinting}
+                          isDisabled={item.status !== "Minting" || item.isDisabled}
+                          onClick={() => {
+                            item.batchIDs && item.batchIDs.length > 0 ? item.onMintBatch() : item.onMint()
+                          }}
+                        >
+                          RE-MINT
+                        </Button>
+                        <Button
+                          onClick={item.onCancel}
+                          isLoading={item.status === "Minting" || item.isCancel}
+                          isDisabled={item.status !== "Minting" || !item.isCancel || item.isMinting}
+                          colorScheme="neutral"
+                          border="1px"
+                          borderColor="whiteAlpha.100"
+                          variant="secondary"
+                        >
+                          CANCEL
+                        </Button>
+                      </Stack>
                     </chakra.td>
                   </chakra.tr>
                 ))}

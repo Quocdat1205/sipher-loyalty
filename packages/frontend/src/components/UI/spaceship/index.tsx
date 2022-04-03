@@ -53,7 +53,7 @@ const ContentSpaceship = () => {
         bgGradient={
           currentTab === "overview" || currentTab === "claim"
             ? "transparent"
-            : "linear(150deg, #8A31E2 -125%, #0F041A 40%)"
+            : "linear(150deg, #8A31E2 -125%, #0F041A 60%)"
         }
         w="full"
       >

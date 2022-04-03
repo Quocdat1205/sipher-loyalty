@@ -9,8 +9,9 @@ interface BannerProps {
 
 export const Banner = ({ srcBg, title, description }: BannerProps) => {
   return (
-    <Flex flexDir="column" w="full" justify="center" position="relative">
+    <Flex minH="10rem" flexDir="column" w="full" justify="center" position="relative">
       <Img
+        minH="10rem"
         maxH="20rem"
         objectFit="cover"
         w="full"
