@@ -40,6 +40,7 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
           status: "success",
           title: "Update profile successfully",
         })
+        onClose()
       },
       onError: (e: any) => {
         toast({
