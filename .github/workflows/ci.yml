@@ -123,6 +123,7 @@ jobs:
           NEXT_PUBLIC_SC_LOOTBOX: "0x3E445D426c8FdE12F5F0C223019CA9158f7Da93B"
           NEXT_PUBLIC_SC_INU: "0x4d91fa57abfead5fbc8445e45b906b85bbd9744c"
           NEXT_PUBLIC_SC_NEKO: "0x97c8480d593b93ae90f8613a5b2ac02e7a3dd0ed"
+          NEXT_PUBLIC_POLYGON_CHAIN: "80001"
 
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v1
@@ -296,6 +297,7 @@ jobs:
           NEXT_PUBLIC_SC_LOOTBOX: "0x105c1fDa04c7406D4106C96bc5b674f7d6B1A617"
           NEXT_PUBLIC_SC_INU: "0x9c57D0278199c931Cf149cc769f37Bb7847091e7"
           NEXT_PUBLIC_SC_NEKO: "0x09E0dF4aE51111CA27d6B85708CFB3f1F7cAE982"
+          NEXT_PUBLIC_POLYGON_CHAIN: "137"
 
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v1

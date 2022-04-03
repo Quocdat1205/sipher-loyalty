@@ -225,4 +225,11 @@ export class AdminController {
     await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     return this.adminService.updateDataTableByType(body);
   }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @Put("refresh")
+  async refresh(@Req() req: Request) {
+    return this.authService.fetchUserData(req);
+  }
 }
