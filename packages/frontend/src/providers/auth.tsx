@@ -91,7 +91,6 @@ const useAuthState = () => {
     const client = getClient()
     client.instance.interceptors.request.use(async config => {
       const session = await getSession()
-      // console.log('session', session, session?.getIdToken()?.getJwtToken());
       const authorization = `Bearer ${session?.getIdToken()?.getJwtToken()}`
       config.headers = {
         ...config.headers,

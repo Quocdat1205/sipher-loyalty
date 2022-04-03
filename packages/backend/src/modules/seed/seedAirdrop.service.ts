@@ -136,7 +136,6 @@ export class SeedAirdropService {
     }));
 
     const imageUrl = await this.seedImageUrls(this.airdropDataHolder.imageUrls);
-    console.log(imageUrl);
 
     const promises = [];
     for (let i = 0; i < tokenData.length; i++) {

@@ -14,7 +14,9 @@ const recoverOrderSignature = async (
   signature: string,
   config: { chainId: number; verifyingContract: string }
 ) => {
-  const signer = new ethers.Wallet(await constant.getPRIVATE_KEY_LOYALTY());
+  const signer = new ethers.Wallet(
+    await constant.getPRIVATE_KEY_LOYALTY_SPACESHIP()
+  );
   const expectedSignerAddress = signer.address;
   const domain = createEIP712_LOOTBOX_Domain(
     config.chainId,
@@ -35,7 +37,9 @@ const recoverBatchOrderSignature = async (
   signature: string,
   config: { chainId: number; verifyingContract: string }
 ) => {
-  const signer = new ethers.Wallet(await constant.getPRIVATE_KEY_LOYALTY());
+  const signer = new ethers.Wallet(
+    await constant.getPRIVATE_KEY_LOYALTY_SPACESHIP()
+  );
   const expectedSignerAddress = signer.address;
   const domain = createEIP712_LOOTBOX_Domain(
     config.chainId,

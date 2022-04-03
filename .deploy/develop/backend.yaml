@@ -52,7 +52,7 @@ sipher-chart:
     RPC_URL_POLYGON_MAINNET: ssm:/atherlabs/dashboard/dev/RPC_URL_POLYGON_MAINNET
     ELASTICSEARCH_ENDPOINT: "https://search-dev-marketplace-j3etkzos2pedv2c2q6jl2wy5d4.us-west-2.es.amazonaws.com"
     ELASTICSEARCH_INDEX: "dev-marketplace"
-    PRIVATE_KEY_LOYALTY: ssm:/atherlabs/dashboard/dev/PRIVATE_KEY_LOYALTY
+    PRIVATE_KEY_LOYALTY_SPACESHIP: ssm:/atherlabs/dashboard/dev/PRIVATE_KEY_LOYALTY_SPACESHIP
     ATHER_ID_URL: "http://backend-ather-id-api.ather-id:3001"
     ATHER_SOCIAL_URL: "http://ather-social-backend-api.ather-social:3001"
     MARKETPLACE_SDK_URL: "http://marketplace-backend-api.marketplace:3001"

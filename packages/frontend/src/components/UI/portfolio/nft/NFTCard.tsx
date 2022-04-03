@@ -24,7 +24,6 @@ const NFTCard = ({ data, isFetched, gridSize }: CardProps) => {
   const extension = data?.imageUrl?.split(".")[5]
   const [imageLoad, setImageLoad] = useState(false)
 
-  console.log(data)
 
   return (
     <Box

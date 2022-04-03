@@ -438,28 +438,23 @@ export class LootBoxService {
         publicAddress,
         batchID
       );
-      console.log(lootbox);
 
       if (!lootbox) {
         throw new HttpException("not have tokenId ", HttpStatus.BAD_REQUEST);
       }
-      console.log(1);
 
       // verify blocked lootbox
       await this.verifyBlockingLootbox(lootbox);
-      console.log(2);
 
       await this.setBlockingLootbox(lootbox, true);
-      console.log(3);
 
       if (lootbox.mintable < amount)
         throw new HttpException("not enough balance", HttpStatus.BAD_REQUEST);
       lootbox.mintable -= amount;
 
       // update lootbox
-      const test = await this.lootboxRepo.save(lootbox);
+      await this.lootboxRepo.save(lootbox);
       this.setBlockingLootbox(lootbox, false); // no need wait set false
-      console.log(test);
 
       // sign messages and save pending mint
       const pendingMint = await this.mintService.mint(mintLootboxInput);

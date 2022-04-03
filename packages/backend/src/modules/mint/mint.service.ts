@@ -190,15 +190,11 @@ export class MintService {
         status: MintStatus.Minting,
         deadline,
       };
-      console.log("order", order);
 
       const signature = await signOrder(this.config, order);
-      console.log("sign", signature);
 
       order.signature = signature;
-      console.log("order2", order);
       const pendingMint = this.PendingMintRepo.create(order);
-      console.log(pendingMint);
 
       LoggerService.log(`save pending mint to ${publicAddress}`);
       await this.PendingMintRepo.save(pendingMint);

@@ -27,16 +27,14 @@ const signOrder = async (
     config.chainId,
     config.verifyingContract
   );
-  console.log("a", config);
 
-  const signer = new ethers.Wallet(await constant.getPRIVATE_KEY_LOYALTY());
-  console.log("b");
+  const signer = new ethers.Wallet(
+    await constant.getPRIVATE_KEY_LOYALTY_SPACESHIP()
+  );
 
   const types = EIP712_LOOTBOX_ORDER_TYPES;
-  console.log("c");
 
   const signature = await signer._signTypedData(domain, types, order);
-  console.log("d");
 
   return signature;
 };
@@ -60,7 +58,9 @@ const signBatchOrder = async (
 
   const types = EIP712_LOOTBOX_BATCH_ORDER_TYPES;
 
-  const signer = new ethers.Wallet(await constant.getPRIVATE_KEY_LOYALTY());
+  const signer = new ethers.Wallet(
+    await constant.getPRIVATE_KEY_LOYALTY_SPACESHIP()
+  );
   const signature = await signer._signTypedData(
     domain,
     types,

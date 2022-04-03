@@ -50,7 +50,7 @@ export class DistributeService {
   private async start() {
     this.provider = await getProvider(this.chain);
     this.wallet = new ethers.Wallet(
-      await constant.getPRIVATE_KEY_LOYALTY(),
+      await constant.getPRIVATE_KEY_LOYALTY_SPACESHIP(),
       this.provider
     );
     this.contract = getContract(

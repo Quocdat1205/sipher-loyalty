@@ -68,12 +68,8 @@ export class SystemConfigProvider {
     return this.get("SESSION_URL");
   }
 
-  public async getKEY_INFURA() {
-    return this.get("KEY_INFURA");
-  }
-
-  public async getPRIVATE_KEY_LOYALTY() {
-    return this.get("PRIVATE_KEY_LOYALTY");
+  public async getPRIVATE_KEY_LOYALTY_SPACESHIP() {
+    return this.get("PRIVATE_KEY_LOYALTY_SPACESHIP");
   }
 
   public get isDebugging() {
