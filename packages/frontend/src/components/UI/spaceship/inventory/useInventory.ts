@@ -34,7 +34,7 @@ export const useInventory = () => {
     {
       enabled: !!bearerToken && !isFetched,
       onSuccess: data => {
-        setData(data.map(item => ({ ...item, slot: item.mintable, isChecked: false }))), setIsFetched(true)
+        setData(data.map(item => ({ ...item, slot: item?.mintable > 1 ? 1 : 0, isChecked: false }))), setIsFetched(true)
       },
       initialData: [],
     },
