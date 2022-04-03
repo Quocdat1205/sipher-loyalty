@@ -23,7 +23,7 @@ const isSculptureContract = (contractAddress: string) => {
     contractRegistry.erc1155Sculpture[Chain.Mumbai].address.toLowerCase() ===
     contractAddress;
   const isPolygonSculpture =
-    contractRegistry.erc1155Sculpture[Chain.Mainnet].address.toLowerCase() ===
+    contractRegistry.erc1155Sculpture[Chain.Polygon].address.toLowerCase() ===
     contractAddress;
   return isMumbaiSculpture || isPolygonSculpture;
 };
@@ -34,7 +34,7 @@ const isLootboxContract = (contractAddress: string) => {
     contractRegistry.erc1155LootBox[Chain.Mumbai].address.toLowerCase() ===
     contractAddress;
   const isPolygonSpaceship =
-    contractRegistry.erc1155LootBox[Chain.Mainnet].address.toLowerCase() ===
+    contractRegistry.erc1155LootBox[Chain.Polygon].address.toLowerCase() ===
     contractAddress;
   return isMumbaiSpaceship || isPolygonSpaceship;
 };
