@@ -28,16 +28,16 @@ export const TutorialSpaceship = () => {
   return (
     <Flex py={8} pos="relative" flexDir="column" align="center" w="full">
       <Flex flexDir="column" justify="center" maxW="1200px" w="full">
-        <Flex mb={12} flexDir="column" align="flex-start">
-          <Heading mb={4} fontWeight={600} fontSize="3xl">
+        <Flex mb={12} align="flex-start">
+          <Heading fontWeight={600} fontSize="5xl">
             SPACESHIP TUTORIAL
           </Heading>
-          <Text color="neutral.100">
+          <Text color="neutral.100" ml={28} fontSize="lg">
             You can mint LootBoxes to NFTs on Polygon for trading on secondary Marketplaces or just open the box to get
             the random ship parts and build up a Spaceship for using in Sipher game.
           </Text>
         </Flex>
-        <Stack direction={["column", "column", "row"]} spacing={8}>
+        <Stack direction={["column", "column", "row"]} spacing={12}>
           {tutorialData.map((item, index) => (
             <Box key={index} flex={item.flex}>
               <Text borderBottom="1px" borderColor="whiteAlpha.200" pb={2} mb={2} fontWeight={600}>

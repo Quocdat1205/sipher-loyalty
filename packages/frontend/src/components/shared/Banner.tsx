@@ -33,7 +33,7 @@ export const Banner = ({ srcBg, title, description }: BannerProps) => {
         <Heading fontSize="5xl" textTransform="uppercase" color="white" mb={2} fontWeight={600}>
           {title}
         </Heading>
-        <Text color="neutral.100" fontSize={"lg"} maxW="28rem">
+        <Text color="whiteAlpha.800" fontWeight={600} fontSize="lg" maxW="28rem">
           {description}
         </Text>
       </Box>
