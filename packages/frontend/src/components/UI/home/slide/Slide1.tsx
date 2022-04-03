@@ -7,8 +7,8 @@ export const Slide1 = () => {
 
   return (
     <Flex maxH="35rem" flexDir="column" align="center" justify="center" pos="relative" w="full">
-      <Img objectFit="cover" src="/images/home/banner_home1.png" alt="slide1" w="full" h="full" />
-      <Box pos="absolute" w="full" h="full" maxW="1200px" display={["none", "block"]}>
+      <Img objectFit="cover" src="/images/home/banner_home1.png" alt="slide1" w="full" h="full" minH="14rem" />
+      <Box pos="absolute" w="full" h="full" maxW="1200px">
         <Box px={[4, 4, 4, 0, 0]} textAlign="center" pos="absolute" top="50%" left="0%" transform="translateY(-50%)">
           <Heading fontSize="4xl" fontWeight={600}>
             SPACESHIP ASTERO
@@ -16,7 +16,7 @@ export const Slide1 = () => {
           <Text lineHeight={1.2} color="whiteAlpha.700" fontSize="xl">
             LOOTBOXES ARE READY TO BE
           </Text>
-          <Text lineHeight={1.2} color="whiteAlpha.700" fontSize="xl" mb={6}>
+          <Text lineHeight={1.2} color="whiteAlpha.700" fontSize="xl" mb={[2, 2, 6]}>
             MINTED AND TRADEABLE
           </Text>
           <Button
