@@ -1,3 +1,6 @@
+import "swiper/css"
+import "swiper/css/pagination"
+
 import React from "react"
 import { Box, Flex, Img, Text } from "@sipher.dev/sipher-ui"
 
@@ -5,7 +8,6 @@ import GeneralContainer from "@components/UI/home/GeneralContainer"
 
 import usePortFolioHome from "./portfolio/usePortFolioHome"
 import SlideComponent from "./slide/SlideComponent"
-import SlideFrame from "./slide/SlideFrame"
 import PortfolioHome from "./portfolio"
 
 import "react-multi-carousel/lib/styles.css"
@@ -45,12 +47,8 @@ const ContentHome = () => {
   const { collectionData, tokensData, totalNFTs, totalToken, totalPortfolioPrice } = usePortFolioHome()
 
   return (
-    <Flex flexDir="column" align="center" flex={1}>
-      <SlideComponent isAuto infiniteLoop show={1}>
-        {slideData.map(item => (
-          <SlideFrame key={item.title} {...item} />
-        ))}
-      </SlideComponent>
+    <Flex overflow="hidden" flexDir="column" align="center" flex={1}>
+      <SlideComponent data={slideData} />
       <Box px={[4, 4, 4, 0, 0]} py={8} flex={1} w="full" maxW="1200px">
         <GeneralContainer totalPortfolioPrice={totalPortfolioPrice} />
         <PortfolioHome

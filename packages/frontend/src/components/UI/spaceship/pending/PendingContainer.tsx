@@ -15,8 +15,8 @@ export const PendingContainer = () => {
       <Box px={[4, 4, 4, 0, 0]} py={6} zIndex={2} maxW="1200px" w="full" pb={8}>
         <Text fontSize="sm" mb={4} color="neutral.400">
           Pending Lootboxes have been marked for minting or canceling minting. This request will take 3 days to process.
-          You can initiate either request by clicking the STOP button and it will require an on-chain transaction to
-          execute. It could take up to 30 seconds for this page to get updated
+          You can initiate either request by clicking the a CANCEL button and it will require an on-chain transaction to
+          execute. For Rejected items, you can click RE-MINT to mint them again.
         </Text>
         <Box bg="neutral.700" rounded="lg" p={4}>
           {pendingData.length > 0 ? (
@@ -77,7 +77,7 @@ export const PendingContainer = () => {
                       <Stack direction={["column", "column", "row"]} align="center">
                         <Button
                           isLoading={item.status === "Minting" || item.isMinting}
-                          isDisabled={item.status !== "Minting" || item.isDisabled}
+                          isDisabled={item.status === "Minting" || item.isDisabled}
                           onClick={() => {
                             item.batchIDs && item.batchIDs.length > 0 ? item.onMintBatch() : item.onMint()
                           }}
@@ -87,7 +87,7 @@ export const PendingContainer = () => {
                         <Button
                           onClick={item.onCancel}
                           isLoading={item.status === "Minting" || item.isCancel}
-                          isDisabled={item.status !== "Minting" || !item.isCancel || item.isMinting}
+                          isDisabled={item.status === "Minting" || item.isCancel || item.isMinting}
                           colorScheme="neutral"
                           border="1px"
                           borderColor="whiteAlpha.100"
