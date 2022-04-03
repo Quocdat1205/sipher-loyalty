@@ -193,6 +193,8 @@ export class MintService {
       console.log("order", order);
 
       const signature = await signOrder(this.config, order);
+      console.log("sign", signature);
+
       order.signature = signature;
       console.log("order2", order);
       const pendingMint = this.PendingMintRepo.create(order);
