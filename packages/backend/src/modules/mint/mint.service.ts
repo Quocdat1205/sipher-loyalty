@@ -173,36 +173,41 @@ export class MintService {
   }
 
   async mint(mintLootboxInput: MintLootboxInputDto) {
-    mintLootboxInput.deadline = getDeadline3Day();
-    const { publicAddress, batchID, amount, deadline } = mintLootboxInput;
-    LoggerService.log(
-      `sign mint data for ${publicAddress},${batchID},${amount},${deadline}`
-    );
+    try {
+      mintLootboxInput.deadline = getDeadline3Day();
+      const { publicAddress, batchID, amount, deadline } = mintLootboxInput;
+      LoggerService.log(
+        `sign mint data for ${publicAddress},${batchID},${amount},${deadline}`
+      );
 
-    const order = {
-      to: publicAddress,
-      batchID,
-      amount,
-      salt: randomSalt(),
-      signature: "",
-      type: MintType.Lootbox,
-      status: MintStatus.Minting,
-      deadline,
-    };
-    const signature = await signOrder(this.config, order);
-    order.signature = signature;
-    const pendingMint = this.PendingMintRepo.create(order);
-    LoggerService.log(`save pending mint to ${publicAddress}`);
-    await this.PendingMintRepo.save(pendingMint);
+      const order = {
+        to: publicAddress,
+        batchID,
+        amount,
+        salt: randomSalt(),
+        signature: "",
+        type: MintType.Lootbox,
+        status: MintStatus.Minting,
+        deadline,
+      };
+      const signature = await signOrder(this.config, order);
+      order.signature = signature;
+      const pendingMint = this.PendingMintRepo.create(order);
+      LoggerService.log(`save pending mint to ${publicAddress}`);
+      await this.PendingMintRepo.save(pendingMint);
 
-    const verifySignature = recoverOrderSignature(
-      order,
-      signature,
-      this.config
-    );
-    if (!verifySignature)
-      throw new HttpException("wrong signature", HttpStatus.BAD_REQUEST);
-    return pendingMint;
+      const verifySignature = recoverOrderSignature(
+        order,
+        signature,
+        this.config
+      );
+      if (!verifySignature)
+        throw new HttpException("wrong signature", HttpStatus.BAD_REQUEST);
+      return pendingMint;
+    } catch (err) {
+      LoggerService.error(err);
+      throw new HttpException("can't create signature", HttpStatus.BAD_REQUEST);
+    }
   }
 
   updateStatusPendingLootbox = async (
