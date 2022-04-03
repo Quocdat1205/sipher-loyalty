@@ -7,7 +7,23 @@ import SlideFrame from "./SlideFrame"
 
 const SlideComponent = ({ data }) => {
   return (
-    <Box overflow="hidden" pos="relative" sx={{ ".mySwiper": { width: "100vw", h: "100%" } }}>
+    <Box
+      overflow="hidden"
+      pos="relative"
+      sx={{
+        ".mySwiper": { width: "100vw", h: "100%" },
+        ".swiper-pagination-bullet": {
+          mx: "8px!important",
+          bg: "whiteAlpha.500",
+          w: ["44px", "44px", "88px"],
+          h: ["4px", "4px", "8px"],
+          rounded: "none",
+        },
+        ".swiper-pagination-bullet-active": {
+          bg: "white",
+        },
+      }}
+    >
       <Swiper
         spaceBetween={30}
         slidesPerView={1}

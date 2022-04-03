@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { BiChevronRight } from "react-icons/bi"
 import { Box, Button, Flex, Img, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
@@ -22,7 +22,6 @@ const NFTCard = ({ data, isFetched, gridSize }: CardProps) => {
     property => property.address.toUpperCase() === data?.collectionId.toUpperCase(),
   )?.name
   const extension = data?.imageUrl?.split(".")[5]
-  const [imageLoad, setImageLoad] = useState(false)
 
   return (
     <Box
@@ -35,7 +34,7 @@ const NFTCard = ({ data, isFetched, gridSize }: CardProps) => {
       bg="neutral.700"
       pos="relative"
     >
-      <Skeleton bg="black" isLoaded={imageLoad && isFetched} pos="relative" w="full">
+      <Skeleton bg="black" isLoaded={isFetched} pos="relative" w="full">
         <Flex
           justify={data?.type === "ERC1155" ? "space-between" : "flex-end"}
           align="center"
@@ -70,7 +69,6 @@ const NFTCard = ({ data, isFetched, gridSize }: CardProps) => {
             </Flex>
           </Button>
         </Flex>
-
         {videos.includes(extension) ? (
           <video src={data.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
         ) : (
@@ -81,7 +79,6 @@ const NFTCard = ({ data, isFetched, gridSize }: CardProps) => {
             alt={data.tokenId}
             loading="lazy"
             objectFit="contain"
-            onLoad={() => setImageLoad(true)}
           />
         )}
         {data.type === "ERC1155" && (
