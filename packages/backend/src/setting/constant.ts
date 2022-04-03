@@ -54,7 +54,9 @@ export class SystemConfigProvider {
 
   MARKETPLACE_SDK_URL = this.getSync("MARKETPLACE_SDK_URL");
 
-  URL = this.getSync("URL");
+  URL_DISTRIBUTE = this.getSync("URL_DISTRIBUTE");
+
+  URL_FETCH = this.getSync("URL_FETCH");
 
   TOKEN = this.getSync("TOKEN");
 
