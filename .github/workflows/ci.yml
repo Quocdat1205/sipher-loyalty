@@ -119,6 +119,10 @@ jobs:
           NEXT_PUBLIC_DASHBOARD_URL: https://api-loyalty.sipher.gg/
           NEXT_PUBLIC_ATHER_ID_URL: https://api-atherid.sipher.gg
           NEXT_PUBLIC_ATHER_SOCIAL_URL: https://api-ather-social.sipher.gg/api
+          NEXT_SC_SCULPTURE: 0x3EdB954303D0A13ee347C6989189294B0422E7D6
+          NEXT_SC_LOOTBOX: 0x3E445D426c8FdE12F5F0C223019CA9158f7Da93B
+          NEXT_SC_INU: 0x4d91fa57abfead5fbc8445e45b906b85bbd9744c
+          NEXT_SC_NEKO: 0x97c8480d593b93ae90f8613a5b2ac02e7a3dd0ed
 
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v1
@@ -288,6 +292,10 @@ jobs:
           NEXT_PUBLIC_DASHBOARD_URL: https://api-dashboard.atherlabs.xyz/
           NEXT_PUBLIC_ATHER_ID_URL: https://api-atherid.atherlabs.xyz
           NEXT_PUBLIC_ATHER_SOCIAL_URL: https://api-ather-social.atherlabs.xyz/api
+          NEXT_SC_SCULPTURE: 0x25499E32B77e9869DC9ab5a2B07c4B9111f5089B
+          NEXT_SC_LOOTBOX: 0x105c1fDa04c7406D4106C96bc5b674f7d6B1A617
+          NEXT_SC_INU: 0x9c57D0278199c931Cf149cc769f37Bb7847091e7
+          NEXT_SC_NEKO: 0x09E0dF4aE51111CA27d6B85708CFB3f1F7cAE982
 
       - name: Terraform Setup
         uses: hashicorp/setup-terraform@v1
