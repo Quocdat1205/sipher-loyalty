@@ -9,7 +9,7 @@ import { NextPageWithLayout } from "./_app"
 const AirdropPage: NextPageWithLayout = () => {
   return (
     <>
-      <Metadata title="Airdrops" description="All" />
+      <Metadata title="Airdrops | " description="All" />
       <AirdropUI />
     </>
   )

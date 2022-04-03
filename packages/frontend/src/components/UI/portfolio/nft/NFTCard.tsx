@@ -24,6 +24,8 @@ const NFTCard = ({ data, isFetched, gridSize }: CardProps) => {
   const extension = data?.imageUrl?.split(".")[5]
   const [imageLoad, setImageLoad] = useState(false)
 
+  console.log(data)
+
   return (
     <Box
       onClick={() => data.onSelect(!data.isChecked)}
@@ -36,40 +38,41 @@ const NFTCard = ({ data, isFetched, gridSize }: CardProps) => {
       pos="relative"
     >
       <Skeleton bg="black" isLoaded={imageLoad && isFetched} pos="relative" w="full">
-        {data?.type === "ERC1155" && (
-          <Flex
-            justify="space-between"
-            align="center"
-            px={4}
-            _groupHover={{ opacity: 1 }}
-            transition=".35s opacity"
-            pos="absolute"
-            w="full"
-            left={0}
-            right={0}
-            top={3}
-            zIndex={1}
-            opacity={data.isChecked ? 1 : 0}
-          >
+        <Flex
+          justify={data?.type === "ERC1155" ? "space-between" : "flex-end"}
+          align="center"
+          px={4}
+          _groupHover={{ opacity: 1 }}
+          transition=".35s opacity"
+          pos="absolute"
+          w="full"
+          left={0}
+          right={0}
+          top={3}
+          zIndex={1}
+          opacity={data.isChecked ? 1 : 0}
+        >
+          {data?.type === "ERC1155" && collectionName === "Sipher Lootbox" && (
             <CustomCheckbox onChange={e => data.onSelect(!e.target.checked)} isChecked={data.isChecked} />
-            <Button
-              onClick={e => {
-                e.stopPropagation()
-                data.onView()
-              }}
-              size="sm"
-              rounded="full"
-              bg="white"
-            >
-              <Flex align="center">
-                <Text fontSize="sm">{"View"}</Text>
-                <Box>
-                  <BiChevronRight size="1.2rem" />
-                </Box>
-              </Flex>
-            </Button>
-          </Flex>
-        )}
+          )}
+          <Button
+            onClick={e => {
+              e.stopPropagation()
+              data.onView()
+            }}
+            size="sm"
+            rounded="full"
+            bg="white"
+          >
+            <Flex align="center">
+              <Text fontSize="sm">{"View"}</Text>
+              <Box>
+                <BiChevronRight size="1.2rem" />
+              </Box>
+            </Flex>
+          </Button>
+        </Flex>
+
         {videos.includes(extension) ? (
           <video src={data.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
         ) : (

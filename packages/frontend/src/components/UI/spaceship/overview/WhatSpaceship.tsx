@@ -41,10 +41,10 @@ export const WhatSpaceship = () => {
       flexDir="column"
       align="center"
       w="full"
-      bg="url(/images/spaceship/bg-galaxy2.png)"
       bgRepeat="no-repeat"
       bgSize="cover"
       px={[4, 4, 4, 0, 0]}
+      bg="black"
     >
       <Box
         pos="absolute"
@@ -55,20 +55,20 @@ export const WhatSpaceship = () => {
         bgGradient="linear(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 100%)"
       />
       <Flex flexDir="column" zIndex={2} py={24} maxW="1200px" w="full">
-        <Heading textTransform="uppercase" mb={4} fontWeight={600} fontSize="3xl">
+        <Heading textTransform="uppercase" mb={4} fontWeight={600} fontSize="5xl">
           What are Spaceships?
         </Heading>
-        <Text color="neutral.100">
+        <Text color="neutral.100" fontSize={"lg"}>
           Spaceships are your very own travel vehicle that will allow you to transport yourself
         </Text>
-        <Text mb={12} color="neutral.100">
+        <Text mb={16} color="neutral.100" fontSize={"lg"}>
           throughout the various dungeons and the World of Sipheria.
         </Text>
         <Wrap mb={[16, 16, 24, 24, 24]} spacing={16}>
           {contentWhatSpaceships.map(item => (
             <WrapItem flex="1 1 20rem" key={item.title}>
               <Flex w="full" align={["center", "center", "flex-start"]} flexDir="column">
-                <Avatar src={`/images/spaceship/${item.img}`} bg="whiteAlpha.50" />
+                <Avatar src={`/images/spaceship/${item.img}`} bg="whiteAlpha.50" size="lg" />
                 <Text fontSize="lg" fontWeight={600} py={4}>
                   {item.title}
                 </Text>

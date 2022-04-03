@@ -45,13 +45,13 @@ export const SpaceshipContainer = () => {
                   WEEK {activeData.week}
                 </Text>
               </Flex>
-              <Heading fontWeight={600} mb={4} fontSize="4xl" textTransform={"uppercase"}>
+              <Heading fontWeight={600} mb={4} fontSize="5xl" textTransform={"uppercase"}>
                 {activeData.title}
               </Heading>
-              <Text color="neutral.100" mb={4} fontSize="lg">
+              <Text color="neutral.100" mb={4} fontSize="lg" maxW={"36rem"}>
                 {activeData.mainDescription}
               </Text>
-              <Text color="neutral.100" mb={16} fontSize="lg">
+              <Text color="neutral.100" mb={16} fontSize="lg" maxW={"36rem"}>
                 {activeData.additionalDescription}
               </Text>
               <Button onClick={() => router.push({ query: { tab: "claim" } })} size="lg" letterSpacing="1px">
@@ -59,15 +59,14 @@ export const SpaceshipContainer = () => {
               </Button>
             </Box>
             <Flex
-              sx={{ video: { maxH: "20rem" } }}
+              sx={{ video: { maxH: "24rem" } }}
               maxH="26rem"
               blendMode="lighten"
               pos="relative"
               flexDir="column"
               align="flex-end"
-              ml={8}
               p={4}
-              flex={3}
+              flex={2}
             >
               {videos.includes(activeData.image.split(".")[1]) ? (
                 <video src={activeData.image} autoPlay loop muted datatype="video/mp4"></video>
@@ -81,7 +80,7 @@ export const SpaceshipContainer = () => {
               )}
             </Flex>
           </Flex>
-          <Box>
+          <Box mt={16}>
             <Timeline mappedData={mappedData} />
           </Box>
         </Box>
