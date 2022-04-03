@@ -7,7 +7,7 @@ import constant from "@setting/constant";
 import { CacheService } from "@modules/cache/cache.service";
 import { LoggerService } from "@modules/logger/logger.service";
 
-import { UserData, UserRole } from "./auth.types";
+import { UserRole } from "./auth.types";
 
 @Injectable()
 export class AuthService {
@@ -34,8 +34,11 @@ export class AuthService {
   fetchUserData = async (req: Request) => {
     try {
       const token = req.headers.authorization.trim().split(" ").pop();
+      console.log("token", token);
+
       const dataAWSUser = await this.verifier.verify(token);
       const roles = dataAWSUser["cognito:groups"];
+      console.log("roles", roles);
 
       const { data } = await axios.get(
         `${constant.ATHER_ID_URL}/api/wallets/owned`,
@@ -51,8 +54,12 @@ export class AuthService {
         publicAddress: data.map((el: any) => el.address.toLowerCase()),
         roles,
       };
+      console.log("user data", userData);
+
       await this.cacheService.set(req.headers.authorization, userData);
+
       req.userData = userData;
+      console.log("req", req.userData);
 
       return userData;
     } catch (err) {
