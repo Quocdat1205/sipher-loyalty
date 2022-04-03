@@ -18,8 +18,8 @@ const CustomDot = ({ onClick, active }: DotProps) => {
       }}
       cursor="pointer"
       bg={active ? "white" : "whiteAlpha.500"}
-      w="88px"
-      h={"8px"}
+      w={["44px", "44px", "88px"]}
+      h={["4px", "4px", "8px"]}
     />
   )
 }

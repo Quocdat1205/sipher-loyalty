@@ -6,7 +6,7 @@ export const theme = extendTheme({
   styles: {
     global: {
       html: {
-        fontSize: ["14px", "14px", "14px", "14px", "16px"],
+        fontSize: ["12px", "12px", "14px", "14px", "16px"],
       },
       "*::-webkit-scrollbar": {
         width: "0.5rem",

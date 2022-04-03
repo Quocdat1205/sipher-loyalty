@@ -67,12 +67,14 @@ export const WhatSpaceship = () => {
         <Wrap mb={[16, 16, 24, 24, 24]} spacing={16}>
           {contentWhatSpaceships.map(item => (
             <WrapItem flex="1 1 20rem" key={item.title}>
-              <Flex flexDir="column">
+              <Flex w="full" align={["center", "center", "flex-start"]} flexDir="column">
                 <Avatar src={`/images/spaceship/${item.img}`} bg="whiteAlpha.50" />
                 <Text fontSize="lg" fontWeight={600} py={4}>
                   {item.title}
                 </Text>
-                <Text color="neutral.200">{item.text}</Text>
+                <Text textAlign={["center", "center", "left"]} color="neutral.200">
+                  {item.text}
+                </Text>
               </Flex>
             </WrapItem>
           ))}
