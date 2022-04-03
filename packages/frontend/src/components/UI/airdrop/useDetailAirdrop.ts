@@ -37,13 +37,13 @@ export const useDetailAirdrop = () => {
     () =>
       scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(detailAirdrop!.totalAmount, detailAirdrop!.proof),
     {
-      enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK && detailAirdrop!.totalAmount !== "0",
+      enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK && detailAirdrop?.totalAmount !== "0",
       initialData: 0,
     },
   )
 
   const { data: claimedInit } = useQuery(["token-claimed", account], () => scCaller.current!.SipherAirdrops.claimed(), {
-    enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK && detailAirdrop!.totalAmount !== "0",
+    enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK && detailAirdrop?.totalAmount !== "0",
     initialData: 0,
   })
 
