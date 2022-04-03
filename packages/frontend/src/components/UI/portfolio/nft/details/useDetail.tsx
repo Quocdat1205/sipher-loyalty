@@ -33,11 +33,11 @@ const useDetail = () => {
         .collectionControllerGetItemById(wallet.account!, id as string, setBearerToken(bearerToken))
         .then(res => res.data),
     {
-      enabled: !isFetch && router.isReady && !!bearerToken,
+      enabled: !isFetch && router.isReady && !!bearerToken && !!wallet.account,
       retry: false,
       onSuccess: data => {
         setIsFetch(true)
-        setSlot(data.value)
+        setSlot(data?.value > 1 ? 1 : 0)
       },
     },
   )
