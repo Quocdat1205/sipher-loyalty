@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { from, lastValueFrom, map, Observable } from "rxjs";
+import { lastValueFrom, map, Observable } from "rxjs";
 import { Repository } from "typeorm";
 import { CollectionType, SipherCollection } from "@entity";
 import { HttpService } from "@nestjs/axios";
@@ -366,7 +366,7 @@ export class CollectionService {
     if (isLootboxContract(item.collectionId)) {
       LoggerService.debug("Is lootbox contract");
       const uriInfo = await this.uriService.getDataERC1155Lootbox(
-        parseInt(toTokenId(item.tokenId))
+        parseInt(toTokenId(item.tokenId), 10)
       );
       if (uriInfo) {
         newItem.name = uriInfo.name;
@@ -377,7 +377,7 @@ export class CollectionService {
     if (isSculptureContract(item.collectionId)) {
       LoggerService.debug("Is sculpture contract");
       const uriInfo = await this.uriService.getDataERC1155Sculpture(
-        parseInt(toTokenId(item.tokenId))
+        parseInt(toTokenId(item.tokenId), 10)
       );
       if (uriInfo) {
         newItem.name = uriInfo.name;

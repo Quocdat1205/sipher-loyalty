@@ -70,6 +70,6 @@ export {
   isLootboxContract,
   isSculptureContract,
   randomSalt,
-  weiToEther,
   toTokenId,
+  weiToEther,
 };
