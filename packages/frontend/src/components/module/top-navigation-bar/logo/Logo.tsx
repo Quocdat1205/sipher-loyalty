@@ -8,7 +8,7 @@ import SIPHER from "./SIPHER.svg"
 
 const Logo = () => {
   return (
-    <HStack align="center" spacing={6}>
+    <HStack align="center" spacing={[2, 4, 6]}>
       <Link href="/" passHref>
         <HStack spacing={2} align="center" cursor={"pointer"}>
           <Box>
