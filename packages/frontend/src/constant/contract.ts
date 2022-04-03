@@ -1,6 +1,6 @@
-export const INU_ADDRESS = "0x4d91fa57abfead5fbc8445e45b906b85bbd9744c" //test
+export const INU_ADDRESS = process.env.NEXT_SC_INU || "0x4d91fa57abfead5fbc8445e45b906b85bbd9744c" //test
 
-export const NEKO_ADDRESS = "0x97c8480d593b93ae90f8613a5b2ac02e7a3dd0ed" //test
+export const NEKO_ADDRESS = process.env.NEXT_SC_NEKO || "0x97c8480d593b93ae90f8613a5b2ac02e7a3dd0ed" //test
 
 export const EXCHANGE_V2_ADDRESS = "0x21E77f475E8B4eA1500A083905CD642044C4eF7A" //test
 
@@ -28,9 +28,9 @@ export const StakingLPSipherWethKyberAddress = "0xEB3CadDe330a4AA3D627F666aEcdD6
 
 export const SipherAirdropsAddress = "0x0b761403fdc1E7CD8763cCd89D0b269AcFDc4926" //main
 
-export const SipherLootBoxAddress = "0x3E445D426c8FdE12F5F0C223019CA9158f7Da93B" //test
+export const SipherLootBoxAddress = process.env.NEXT_SC_LOOTBOX || "0x3E445D426c8FdE12F5F0C223019CA9158f7Da93B" //test
 
-export const SipherSculptureAddress = "0X3EDB954303D0A13EE347C6989189294B0422E7D6" // test
+export const SipherSculptureAddress = process.env.NEXT_SC_SCULPTURE || "0X3EDB954303D0A13EE347C6989189294B0422E7D6" // test
 
 export const PRICE_TYPE = [
   { id: "ETH", contract: ZERO_ADDRESS },
