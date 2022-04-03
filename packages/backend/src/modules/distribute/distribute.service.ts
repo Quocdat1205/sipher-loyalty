@@ -244,7 +244,7 @@ export class DistributeService {
     try {
       const { data } = await axios({
         method: "POST",
-        url: constant.URL,
+        url: constant.URL_DISTRIBUTE,
         headers: {
           Authorization: constant.TOKEN,
           "Content-Type": "application/json",
@@ -276,7 +276,7 @@ export class DistributeService {
     try {
       const { data } = await axios({
         method: "PUT",
-        url: constant.URL,
+        url: constant.URL_FETCH,
         headers: {
           Authorization: constant.TOKEN,
           "Content-Type": "application/json",

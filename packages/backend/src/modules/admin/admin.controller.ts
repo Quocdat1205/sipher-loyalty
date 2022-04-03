@@ -212,6 +212,6 @@ export class AdminController {
   @ApiBearerAuth("JWT-auth")
   @Put("refresh")
   async refresh(@Req() req: Request) {
-    return this.authService.refresh(req);
+    return this.authService.fetchUserData(req);
   }
 }
