@@ -1308,5 +1308,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         type: ContentType.Json,
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @tags admin
+     * @name AdminControllerRefresh
+     * @request PUT:/api/sipher/loyalty/admin/refresh
+     * @secure
+     */
+    adminControllerRefresh: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/refresh`,
+        method: 'PUT',
+        secure: true,
+        ...params,
+      }),
   };
 }
