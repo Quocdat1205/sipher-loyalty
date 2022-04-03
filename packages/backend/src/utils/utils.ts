@@ -54,6 +54,14 @@ const currency = (
   }
 ) => prefix + amount.toLocaleString(undefined, { ...options });
 
+const toTokenId = (id: string) => {
+  const splitIdStr = id.split(":");
+  if (splitIdStr.length === 3) {
+    return splitIdStr[1];
+  }
+  return splitIdStr[0];
+};
+
 export {
   currency,
   getDeadline3Day,
@@ -63,4 +71,5 @@ export {
   isSculptureContract,
   randomSalt,
   weiToEther,
+  toTokenId,
 };

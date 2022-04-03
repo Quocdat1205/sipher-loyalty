@@ -143,6 +143,7 @@ describe("Collection unit test", () => {
   };
   const item2 = {
     id: "2:0x2:1",
+    tokenId: "1:2",
     collectionId: lootboxCol.id,
     value: 5,
     owner: "0x2",
@@ -150,6 +151,7 @@ describe("Collection unit test", () => {
   };
   const item3 = {
     id: "3:0x3:1",
+    tokenId: "3:1",
     collectionId: sculptureCol.id,
     value: 2,
     owner: "0x3",
@@ -259,14 +261,14 @@ describe("Collection unit test", () => {
         .mockResolvedValueOnce(lootboxCol);
       jest.spyOn(nftService, "search").mockResolvedValueOnce([item2]);
       jest.spyOn(nftService, "count").mockResolvedValueOnce(item2.value);
-      jest.spyOn(utils, "isLootboxContract").mockReturnValue(true);
+      jest.spyOn(utils, "isLootboxContract").mockReturnValueOnce(true);
       const uri = new ERC1155Lootbox();
       uri.name = "yeet";
       uri.image = "yeeeeeet";
       jest
         .spyOn(uriService, "getDataERC1155Lootbox")
         .mockResolvedValueOnce(uri);
-      jest.spyOn(utils, "isSculptureContract").mockReturnValue(false);
+      jest.spyOn(utils, "isSculptureContract").mockReturnValueOnce(false);
       expect(
         await collectionService.getPortfolioByCollection({
           collectionId: "0x",
@@ -291,8 +293,8 @@ describe("Collection unit test", () => {
         .mockResolvedValueOnce(sculptureCol);
       jest.spyOn(nftService, "search").mockResolvedValueOnce([item3]);
       jest.spyOn(nftService, "count").mockResolvedValueOnce(item3.value);
-      jest.spyOn(utils, "isLootboxContract").mockReturnValue(false);
-      jest.spyOn(utils, "isSculptureContract").mockReturnValue(true);
+      jest.spyOn(utils, "isLootboxContract").mockReturnValueOnce(false);
+      jest.spyOn(utils, "isSculptureContract").mockReturnValueOnce(true);
       const uri = new ERC1155Sculpture();
       uri.name = "yeet";
       uri.image = "yeeeeeet";
