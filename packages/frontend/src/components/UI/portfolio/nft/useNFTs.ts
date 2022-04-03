@@ -73,7 +73,7 @@ const useNFTs = collectionId => {
       ...item,
       onView: () => router.push(`/portfolio/${collectionId}/${item.id}`),
       onSelect: (isChecked = false) => {
-        if (collectionData?.collectionType === "ERC1155") {
+        if (collectionData?.collectionType === "ERC1155" && collectionData?.category === "lootbox") {
           const oldState = data
           oldState.find(i => i.id === item.id)!.isChecked = isChecked
           setData([...oldState])
