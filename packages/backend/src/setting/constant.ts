@@ -54,7 +54,9 @@ export class SystemConfigProvider {
 
   MARKETPLACE_SDK_URL = this.getSync("MARKETPLACE_SDK_URL");
 
-  URL = this.getSync("URL");
+  URL_DISTRIBUTE = this.getSync("URL_DISTRIBUTE");
+
+  URL_FETCH = this.getSync("URL_FETCH");
 
   TOKEN = this.getSync("TOKEN");
 
@@ -112,7 +114,7 @@ export class SystemConfigProvider {
       },
 
       [Chain.Polygon]: {
-        address: "0xD95006adFd42E582367Ea5Da3e0A875d68a97308",
+        address: "0x105c1fDa04c7406D4106C96bc5b674f7d6B1A617",
       },
     };
 
@@ -128,7 +130,7 @@ export class SystemConfigProvider {
       },
 
       [Chain.Polygon]: {
-        address: "0x315Bc085A14E251f129A361afa37205E3313bF15",
+        address: "0x25499E32B77e9869DC9ab5a2B07c4B9111f5089B",
       },
     };
 

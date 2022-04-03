@@ -1,4 +1,4 @@
-export const EIP712_LOOTBOX_NAME = "Sipher Loot Box";
+export const EIP712_LOOTBOX_NAME = "Sipher Spaceship Lootbox";
 
 export const EIP712_LOOTBOX_VERSION = "1.0";
 
