@@ -54,7 +54,7 @@ export class AdminController {
   @ApiBearerAuth("JWT-auth")
   @Put("updateTokenList/:smartContract")
   async updateAirdropTokens(@Body() body: AirdropTokens, @Req() req: Request) {
-    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN_AIRDROP);
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     return this.airdropService.updateAirdropTokens(body.data);
   }
 
@@ -65,7 +65,7 @@ export class AdminController {
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN_AIRDROP);
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     return this.merchService.getAllMerchByPublicAddress(publicAddress);
   }
 
@@ -77,7 +77,7 @@ export class AdminController {
     @Body() merchUpdateDto: MerchUpdateDto,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN_AIRDROP);
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     await this.merchService.updateMerch(merchId, merchUpdateDto);
     return {
       updated: true,
@@ -96,7 +96,7 @@ export class AdminController {
     @Body() updateItemDto: UpdateItemDto,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN_AIRDROP);
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     await this.adminService.updateItemById(params.itemId, updateItemDto);
     return {
       updated: true,
@@ -115,7 +115,7 @@ export class AdminController {
     @Body() updateImageUrlDto: UpdateImageUrlDto,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN_AIRDROP);
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     await this.adminService.updateImageUrlById(
       params.imageUrlId,
       updateImageUrlDto
@@ -132,10 +132,7 @@ export class AdminController {
     @Body() body: DistributeLootboxs,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(
-      req,
-      UserRole.LOYALTY_ADMIN_LOOTBOX_SPACESHIP
-    );
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     return this.lootBoxService.distributesLootbox(body.data);
   }
 
@@ -146,10 +143,7 @@ export class AdminController {
     @Body() body: DistributeLootbox,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(
-      req,
-      UserRole.LOYALTY_ADMIN_LOOTBOX_SPACESHIP
-    );
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     return this.lootBoxService.distributeLootbox(body);
   }
 
@@ -160,10 +154,7 @@ export class AdminController {
     @Body() body: ERC1155Sculpture,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(
-      req,
-      UserRole.LOYALTY_ADMIN_SMARTCONTRACT
-    );
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     return this.uriService.updateERC1155Sculpture(body);
   }
 
@@ -174,10 +165,7 @@ export class AdminController {
     @Body() body: ERC1155Lootbox,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(
-      req,
-      UserRole.LOYALTY_ADMIN_SMARTCONTRACT
-    );
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     return this.uriService.updateERC1155Lootbox(body);
   }
 
@@ -188,10 +176,7 @@ export class AdminController {
     @Body() body: ERC1155Sculpture,
     @Req() req: Request
   ) {
-    await this.authService.verifyAdmin(
-      req,
-      UserRole.LOYALTY_ADMIN_SMARTCONTRACT
-    );
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     return this.uriService.addERC1155Sculpture(body);
   }
 
@@ -199,10 +184,7 @@ export class AdminController {
   @ApiBearerAuth("JWT-auth")
   @Post("erc1155-lootbox")
   async addERC1155Lootbox(@Body() body: ERC1155Lootbox, @Req() req: Request) {
-    await this.authService.verifyAdmin(
-      req,
-      UserRole.LOYALTY_ADMIN_SMARTCONTRACT
-    );
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     return this.uriService.addERC1155Lootbox(body);
   }
 
@@ -230,6 +212,6 @@ export class AdminController {
   @ApiBearerAuth("JWT-auth")
   @Put("refresh")
   async refresh(@Req() req: Request) {
-    return this.authService.fetchUserData(req);
+    return this.authService.refresh(req);
   }
 }

@@ -271,4 +271,21 @@ export class DistributeService {
       JSON.stringify(result)
     );
   }
+
+  async getUserData() {
+    try {
+      const { data } = await axios({
+        method: "PUT",
+        url: constant.URL,
+        headers: {
+          Authorization: constant.TOKEN,
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
