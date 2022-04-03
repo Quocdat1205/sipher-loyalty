@@ -102,7 +102,7 @@ const SlideComponent = ({ children, show, infiniteLoop, isAuto = false }: Carous
     <Box overflow="hidden" pos="relative">
       <Flex w="full" flexDir="column" className="carousel-container">
         <Flex pos="relative" w="full" className="carousel-wrapper">
-          <Box maxH="35rem" w="full" h="full" overflow="hidden" className="carousel-content-wrapper">
+          <Box maxH="35rem" minH="14rem" w="full" h="full" overflow="hidden" className="carousel-content-wrapper">
             <Flex
               transition="all 250ms linear"
               className={`carousel-content show-${show}`}
@@ -129,8 +129,8 @@ const SlideComponent = ({ children, show, infiniteLoop, isAuto = false }: Carous
             onClick={() => handleClick(idx)}
             key={idx}
             bg={currentIndex === idx + 1 ? "white" : "whiteAlpha.500"}
-            w="88px"
-            h={"8px"}
+            w={["44px", "44px", "88px"]}
+            h={["4px", "4px", "8px"]}
           />
         ))}
       </HStack>

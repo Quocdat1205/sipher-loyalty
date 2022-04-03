@@ -37,7 +37,6 @@ const ChangePasswordModal = ({ isOpen, onClose, onBack }: ChangePasswordModal) =
   const toast = useChakraToast()
 
   const { cognitoUser } = useAuth()
-
   const { mutate: mutateChangePassword, isLoading } = useMutation<unknown, unknown, FieldValues>(
     d => AtherIdAuth.changePassword(cognitoUser!, d.currentPassword, d.newPassword),
     {

@@ -15,8 +15,10 @@ import { getProfile } from "@api"
 const configPromise = configure({
   environment: (process.env.NEXT_PUBLIC_ATHER_ID_URL as any) ?? AtherIdEnviromment.Dev,
   oauth: {
-    redirectSignIn: `${process.env.NEXT_PUBLIC_DASHBOARD_FE_URL}` ?? "http://localhost:3000",
-    redirectSignOut: `${process.env.NEXT_PUBLIC_DASHBOARD_FE_URL}` ?? "http://localhost:3000",
+    redirectSignIn:
+      process.env.NODE_ENV === "production" ? `${process.env.NEXT_PUBLIC_DASHBOARD_FE_URL}` : "http://localhost:3000/",
+    redirectSignOut:
+      process.env.NODE_ENV === "production" ? `${process.env.NEXT_PUBLIC_DASHBOARD_FE_URL}` : "http://localhost:3000/",
   },
 })
 
@@ -158,7 +160,7 @@ export const AuthProvider: FC = ({ children }) => {
   const { authenticated } = auth
 
   useEffect(() => {
-    const currentRoute = window.location.pathname
+    const currentRoute = router.asPath.split("?")[0]
     const isAuthRoute = ["/signin", "/signup", "/forgot-password"].includes(currentRoute)
     console.log("ROUTE", window.location.pathname)
     // move user inside after authenticated
@@ -172,7 +174,7 @@ export const AuthProvider: FC = ({ children }) => {
       const next = encodeURIComponent(currentRoute)
       router.push(`${"/signin"}?next=${next}`)
     }
-  }, [authenticated, router.pathname])
+  }, [authenticated, router.asPath])
 
   return <Provider value={auth}>{children}</Provider>
 }

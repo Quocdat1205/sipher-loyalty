@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { Box, Flex, Img, Text } from "@sipher.dev/sipher-ui"
 
 import GeneralContainer from "@components/UI/home/GeneralContainer"
@@ -27,7 +27,9 @@ const ContentHome = () => {
   return (
     <Flex flexDir="column" align="center" flex={1}>
       <SlideComponent isAuto infiniteLoop show={1}>
-        {slideCompo.map(item => item)}
+        {slideCompo.map((item, index) => (
+          <Fragment key={index}>{item}</Fragment>
+        ))}
       </SlideComponent>
       <Box px={[4, 4, 4, 0, 0]} py={8} flex={1} w="full" maxW="1200px">
         <GeneralContainer totalPortfolioPrice={totalPortfolioPrice} />

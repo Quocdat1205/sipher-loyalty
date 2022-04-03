@@ -24,7 +24,7 @@ export const InventoryContainer = () => {
 
   return (
     <Flex flexDir="column" align="center">
-      <Box py={6} maxW="1200px" w="full">
+      <Box px={[4, 4, 4, 0, 0]} py={6} maxW="1200px" w="full">
         {inventoryDataCheck?.length !== 0 && (
           <Button onClick={() => setIsStatusModal("MINT")} mb={4}>
             MINT NFT({inventoryDataCheck?.length})
