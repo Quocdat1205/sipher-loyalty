@@ -2,7 +2,7 @@ import React, { Fragment } from "react"
 import { MdInfo } from "react-icons/md"
 import { Box, Flex, HStack, Link, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
-import { ClipboardCopy, CustomPopover } from "@components/shared"
+import { ClipboardCopy, CustomPopover, Metadata } from "@components/shared"
 import { capitalize } from "@utils"
 
 import HeartAndView from "./HeartAndView"
@@ -17,6 +17,10 @@ interface HeaderDetailsProps {
 const HeaderDetails = ({ tokenDetails, isFetched }: HeaderDetailsProps) => {
   return (
     <>
+      <Metadata
+        title={isFetched ? `${tokenDetails!.name} | Sipher Dashboard` : "Loading... | Sipher Porfolio"}
+        description=""
+      />
       <Flex pr={2} w="full" align="center" justify={"space-between"} mb={2}>
         <Skeleton isLoaded={isFetched}>
           <Text fontWeight={600} letterSpacing="1px" fontSize={"4xl"}>
