@@ -97,12 +97,19 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
           overflow="hidden"
           h="14rem"
           w="full"
-          isLoaded={isFetched}
+          isLoaded={true}
         >
           {videos.includes(extension) ? (
             <video src={data.imageUrls[0]?.default} autoPlay loop muted datatype="video/mp4"></video>
           ) : (
-            <Img src={data.imageUrls[0].default ?? "/images/airdrops/sipher.png"} objectFit="contain" maxH="18rem" />
+            <Img
+              src={
+                data.imageUrls[0].default ||
+                "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_token.png"
+              }
+              objectFit="contain"
+              maxH="18rem"
+            />
           )}
         </Skeleton>
       )}
