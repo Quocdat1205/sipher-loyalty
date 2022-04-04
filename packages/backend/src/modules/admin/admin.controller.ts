@@ -214,20 +214,6 @@ export class AdminController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
-  @Put("add-image-token")
-  async updateImageUrlForToken(
-    @Body() body: BodyAdminImageUrl,
-    @Req() req: Request
-  ) {
-    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
-    return this.adminService.updateImageUrlForToken(
-      body.imageUrl,
-      body.addressContract
-    );
-  }
-
-  @UseGuards(AtherGuard)
-  @ApiBearerAuth("JWT-auth")
   @Put("refresh")
   async refresh(@Req() req: Request) {
     return this.authService.fetchUserData(req);

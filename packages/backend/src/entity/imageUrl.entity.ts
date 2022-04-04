@@ -15,7 +15,7 @@ export class ImageUrl {
   @ApiProperty({ type: Number })
   @IsNumber()
   @PrimaryGeneratedColumn("increment")
-  id: number;
+  id?: number;
 
   @ApiProperty({ type: String })
   @IsString()
@@ -59,11 +59,11 @@ export class ImageUrl {
 
   @ApiProperty({ type: () => Airdrop })
   @ManyToOne(() => Airdrop, (air) => air.imageUrls)
-  airdrop: Airdrop;
+  airdrop?: Airdrop;
 
   @ApiProperty({ type: () => Item })
   @ManyToOne(() => Item, (item) => item.imageUrls)
-  item: Item;
+  item?: Item;
 
   @ApiProperty()
   @CreateDateColumn({ type: "timestamptz" })
