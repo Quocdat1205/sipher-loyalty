@@ -157,16 +157,4 @@ export class AdminService {
 
     await this.imageUrlRepo.save(imageUrl);
   }
-
-  async updateImageUrlForToken(imageUrl: ImageUrl, addressContract: string) {
-    const _imageUrl = this.imageUrlRepo.create(imageUrl);
-    const result = await this.imageUrlRepo.save(_imageUrl);
-    const tokens = await this.airdropRepo.find({ addressContract });
-    const promises = [];
-    for (let i = 0; i < tokens.length; i++) {
-      tokens[i].imageUrls = [result];
-      promises.push(this.airdropRepo.save(tokens[i]));
-    }
-    return Promise.all(promises);
-  }
 }

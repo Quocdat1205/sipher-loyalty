@@ -73,6 +73,15 @@ export class AirdropService {
       where: { id },
       relations: ["imageUrls"],
     });
+    // imgurl with airdrop will be many to many => will update at phase 2
+    data.imageUrls = [
+      {
+        color: "black",
+        default:
+          "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_token.png",
+      },
+    ];
+
     return data;
   }
 
