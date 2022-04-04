@@ -24,14 +24,20 @@ export const useAirdrops = () => {
   const [claimId, setClaimId] = useState<number | null>(null)
   const qc = useQueryClient()
   const toast = useChakraToast()
-  const [dataToken, setDataToken] = useState<{ totalAmount?: string; proof?: string[] } | null>(null)
+  const [dataToken, setDataToken] = useState<{ totalAmount?: string; proof?: string[] } | undefined>()
   const [isLoadingAirdrops, setIsLoadingAirdrops] = useState(true)
 
   const { data: claimableAmount, refetch } = useQuery(
-    ["token-claimable-amount", dataToken],
+    ["token-claimable-amount", dataToken, account],
     () => scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(dataToken!.totalAmount!, dataToken!.proof!),
     {
-      enabled: !!dataToken && !!dataToken?.totalAmount && !!dataToken?.proof && !!account,
+      enabled:
+        !!scCaller.current &&
+        !!dataToken &&
+        !!dataToken?.totalAmount &&
+        !!dataToken?.proof &&
+        !!account &&
+        chainId === ETHEREUM_NETWORK,
       initialData: 0,
     },
   )
@@ -54,6 +60,8 @@ export const useAirdrops = () => {
             proof: item?.proof,
           })
           refetch()
+        } else {
+          setDataToken(undefined)
         }
         setIsLoadingAirdrops(false)
       },
