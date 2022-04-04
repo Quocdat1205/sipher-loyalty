@@ -96,7 +96,7 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
               />
             </Box>
             <Box maxWidth={`${widthContainer}px`} flex={1}>
-              <HeaderDetails details={details} isFetching={isFetched} />
+              <HeaderDetails details={details} isFetched={isFetched} />
               <ContentDetails isFetching={isFetched} />
             </Box>
           </Box>

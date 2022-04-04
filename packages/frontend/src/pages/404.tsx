@@ -1,13 +1,10 @@
-import Head from "next/head"
-
+import { Metadata } from "@components/shared"
 import NotFoundUI from "@components/UI/notfound"
 
 const NotfoundPage = () => {
   return (
     <>
-      <Head>
-        <title>Not Found | Sipher Marketplace</title>
-      </Head>
+      <Metadata title="Not Found | Sipher Dashboard" description="" />
       <NotFoundUI />
     </>
   )

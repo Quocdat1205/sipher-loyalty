@@ -9,7 +9,10 @@ import { NextPageWithLayout } from "../_app"
 const SpaceshipPage: NextPageWithLayout = () => {
   return (
     <>
-      <Metadata title="Spaceship" description="Overview" />
+      <Metadata
+        title="Spaceship | Sipher Dashboard"
+        description="Transport yourself throughout the various dungeons and the World of Sipheria"
+      />
       <ContentSpaceship />
     </>
   )
