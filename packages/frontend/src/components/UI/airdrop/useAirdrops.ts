@@ -25,21 +25,18 @@ export const useAirdrops = () => {
   const qc = useQueryClient()
   const toast = useChakraToast()
   const [dataToken, setDataToken] = useState<{ totalAmount?: string; proof?: string[] } | null>(null)
+  const [isLoadingAirdrops, setIsLoadingAirdrops] = useState(true)
 
   const { data: claimableAmount, refetch } = useQuery(
     ["token-claimable-amount", dataToken],
     () => scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(dataToken!.totalAmount!, dataToken!.proof!),
     {
-      enabled: !!dataToken?.totalAmount && !!dataToken?.proof,
+      enabled: !!dataToken && !!dataToken?.totalAmount && !!dataToken?.proof && !!account,
       initialData: 0,
     },
   )
 
-  const {
-    data: airdropsData,
-    isFetched,
-    isLoading,
-  } = useQuery(
+  const { data: airdropsData, isFetched } = useQuery(
     ["airdrops", account],
     () =>
       client.api
@@ -52,13 +49,13 @@ export const useAirdrops = () => {
           const item = data.token.find(
             item => item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase(),
           )
-
           setDataToken({
             totalAmount: item?.totalAmount,
             proof: item?.proof,
           })
           refetch()
         }
+        setIsLoadingAirdrops(false)
       },
       initialData: {
         nft: [],
@@ -155,5 +152,5 @@ export const useAirdrops = () => {
       ]
     : []
 
-  return { currentTab, allAirdrops, isFetched, isLoading }
+  return { isLoadingAirdrops, currentTab, allAirdrops, isFetched }
 }

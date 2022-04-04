@@ -24,6 +24,7 @@ const usePortfolio = () => {
   const { account, chainId } = useWalletContext()
   const { dataPrice, balance, totalETHPrice, totalUsdPrice } = useBalanceContext()
   const [filter, setFilter] = useState("")
+  const [isLoadingCollection, setIsLoadingCollection] = useState(true)
 
   const currentTab = router.query.tab || "nfts"
 
@@ -42,6 +43,9 @@ const usePortfolio = () => {
     {
       enabled: !!bearerToken && !!account,
       initialData: [],
+      onSuccess: () => {
+        setIsLoadingCollection(false)
+      },
     },
   )
 
@@ -92,6 +96,7 @@ const usePortfolio = () => {
     collectionData,
     filter,
     setFilter,
+    isLoadingCollection,
     currentTab,
     router,
     isFetched,

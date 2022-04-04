@@ -19,7 +19,7 @@ const tabs = [
 ]
 
 const AirdropUI = () => {
-  const { allAirdrops, currentTab, isFetched, isLoading } = useAirdrops()
+  const { allAirdrops, currentTab, isFetched, isLoadingAirdrops } = useAirdrops()
 
   const handleSendMail = () => {
     window.open("mailto:hello@sipher.xyz")
@@ -30,7 +30,7 @@ const AirdropUI = () => {
   }
 
   const renderNFTs = () => {
-    if (isLoading) {
+    if (isLoadingAirdrops) {
       return renderLoading()
     }
     if (currentTab === "all") {
