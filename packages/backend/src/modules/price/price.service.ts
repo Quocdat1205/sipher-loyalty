@@ -12,16 +12,22 @@ export class PriceService {
       usd: 3100.0,
       eth: 1,
       change: 0.0,
+      marketcap: 0.0,
+      marketcapChange: 0.0,
     },
     sipher: {
       usd: 0.6,
       eth: 0.000001,
       change: 0.0,
+      marketcap: 0.0,
+      marketcapChange: 0.0,
     },
     matic: {
       usd: 0.6,
       eth: 0.000001,
       change: 0.0,
+      marketcap: 0.0,
+      marketcapChange: 0.0,
     },
   };
 
@@ -30,10 +36,17 @@ export class PriceService {
       const dataPrice = await this.coingeckoClient.simple.price({
         ids: ["ethereum", "sipher", "matic-network"],
         vs_currencies: ["usd"],
+        include_market_cap: true,
       });
       this.currentPrice.ethereum.usd = dataPrice.data.ethereum.usd;
       this.currentPrice.sipher.usd = dataPrice.data.sipher.usd;
       this.currentPrice.matic.usd = dataPrice.data["matic-network"].usd;
+
+      this.currentPrice.ethereum.marketcap =
+        dataPrice.data.ethereum.usd_market_cap;
+      this.currentPrice.sipher.marketcap = dataPrice.data.sipher.usd_market_cap;
+      this.currentPrice.matic.marketcap =
+        dataPrice.data["matic-network"].usd_market_cap;
 
       this.currentPrice.sipher.eth =
         dataPrice.data.sipher.usd / dataPrice.data.ethereum.usd;
@@ -54,6 +67,10 @@ export class PriceService {
         dataPrice.data.sipher.usd /
           dataHistorySipher.data.market_data.current_price.usd -
         1;
+      this.currentPrice.sipher.marketcapChange =
+        dataPrice.data.sipher.marketcap /
+          dataHistorySipher.data.market_data.market_cap.usd -
+        1;
 
       const dataHistoryEthereum = await this.coingeckoClient.coins.fetchHistory(
         "ethereum",
@@ -64,6 +81,10 @@ export class PriceService {
       this.currentPrice.ethereum.change =
         dataPrice.data.ethereum.usd /
           dataHistoryEthereum.data.market_data.current_price.usd -
+        1;
+      this.currentPrice.ethereum.marketcapChange =
+        dataPrice.data.sipher.marketcap /
+          dataHistoryEthereum.data.market_data.market_cap.usd -
         1;
 
       const dataHistoryMatic = await this.coingeckoClient.coins.fetchHistory(
@@ -76,6 +97,11 @@ export class PriceService {
       this.currentPrice.matic.change =
         dataPrice.data["matic-network"].usd /
           dataHistoryMatic.data.market_data.current_price.usd -
+        1;
+
+      this.currentPrice.matic.marketcapChange =
+        dataPrice.data["matic-network"].marketcap /
+          dataHistoryMatic.data.market_data.market_cap.usd -
         1;
     }
 

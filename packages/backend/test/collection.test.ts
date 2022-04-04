@@ -279,6 +279,7 @@ describe("Collection unit test", () => {
         items: [
           {
             ...item2,
+            tokenId: utils.toTokenId(item2.tokenId),
             name: uri.name,
             imageUrl: uri.image,
             type: TokenType.ERC1155,
@@ -312,6 +313,7 @@ describe("Collection unit test", () => {
           {
             ...item3,
             name: uri.name,
+            tokenId: utils.toTokenId(item3.tokenId),
             imageUrl: uri.image,
             type: TokenType.ERC1155,
           },

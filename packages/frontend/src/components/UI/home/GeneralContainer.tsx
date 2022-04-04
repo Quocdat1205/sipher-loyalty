@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Button, Flex, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
-import { EthereumIcon, SipherIcon } from "@components/shared"
+import { EthereumIcon, EthereumIcon2, SipherIcon } from "@components/shared"
 import { useBalanceContext } from "@hooks"
 import { currency } from "@utils"
 
@@ -24,16 +24,16 @@ const GeneralContainer = ({ totalPortfolioPrice }: GeneralContainerProps) => {
       <SimpleGrid mb={8} columns={[2, 2, 4]} spacing={6}>
         <CardGeneral
           value={`${currency(totalPortfolioPrice)} ETH`}
-          name={"Portfolio value"}
-          icon={<EthereumIcon size="1.5rem" />}
+          name={"Portfolio Value"}
+          icon={<EthereumIcon2 size="1.5rem" />}
           bottomChildren={
             <Text color="neutral.100">${currency(totalPortfolioPrice * (dataPrice?.ethereumPrice?.usd || 0))}</Text>
           }
         />
         <CardGeneral
           value={currency(sipher ?? 0)}
-          name="sipher token"
-          icon={<SipherIcon />}
+          name="SIPHER Token"
+          icon={<SipherIcon size="1.5rem" />}
           // popoverProps={{ label: "SIPHER TOKEN", content: "Description" }}
           bottomChildren={
             <Flex justify="flex-end">
@@ -42,6 +42,9 @@ const GeneralContainer = ({ totalPortfolioPrice }: GeneralContainerProps) => {
                 _hover={{ bg: "accent.500", color: "neutral.900" }}
                 bg="whiteAlpha.100"
                 color="accent.500"
+                rounded="md"
+                px={3}
+                py={1}
               >
                 STAKE NOW
               </Button>
