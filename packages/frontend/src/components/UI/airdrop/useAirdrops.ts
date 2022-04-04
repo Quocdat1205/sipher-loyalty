@@ -35,8 +35,12 @@ export const useAirdrops = () => {
     },
   )
 
-  const { data: airdropsData, isFetched } = useQuery(
-    ["airdrops", account, currentTab],
+  const {
+    data: airdropsData,
+    isFetched,
+    isLoading,
+  } = useQuery(
+    ["airdrops", account],
     () =>
       client.api
         .airdropControllerGetAirdropsByType(account!, AirdropType.ALL, setBearerToken(bearerToken))
@@ -120,7 +124,7 @@ export const useAirdrops = () => {
           onClaim: (e: MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation()
             if (item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase()) {
-              claim({ id: item.id, totalAmount: item.totalAmount, proof: item.proof })
+              claim(item)
             }
           },
         })),
@@ -151,5 +155,5 @@ export const useAirdrops = () => {
       ]
     : []
 
-  return { currentTab, allAirdrops, isFetched }
+  return { currentTab, allAirdrops, isFetched, isLoading }
 }

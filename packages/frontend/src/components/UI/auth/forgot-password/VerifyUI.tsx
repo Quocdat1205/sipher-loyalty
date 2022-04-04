@@ -9,8 +9,11 @@ import { Box, Button, chakra, Divider, Heading, Spinner, Stack, Text } from "@si
 import { Form, StyledInput } from "@components/shared"
 import { useChakraToast } from "@hooks"
 
+import { ForgotPasswordStep } from "./ForgotPasswordUI"
+
 interface VerifyFormProps {
   email: string
+  setStep: (step: ForgotPasswordStep) => void
 }
 
 const validationSchema = Yup.object().shape({
@@ -23,7 +26,7 @@ const validationSchema = Yup.object().shape({
   code: Yup.string().required("Code is required"),
 })
 
-const VerifyUI = ({ email }: VerifyFormProps) => {
+const VerifyUI = ({ email, setStep }: VerifyFormProps) => {
   const toast = useChakraToast()
 
   const {
@@ -32,18 +35,11 @@ const VerifyUI = ({ email }: VerifyFormProps) => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) })
 
-  const router = useRouter()
-
   const { mutate: mutateForgetPasswordSubmit, isLoading } = useMutation<unknown, unknown, FieldValues>(
     d => AtherIdAuth.forgotPasswordSubmit(email, d.code, d.password),
     {
       onSuccess: () => {
-        toast({
-          title: "Reset password successfully!",
-          message: "Please login to continue.",
-          status: "success",
-        })
-        router.push("/signin")
+        setStep(ForgotPasswordStep.Verify)
       },
       onError: (e: any) => {
         toast({
