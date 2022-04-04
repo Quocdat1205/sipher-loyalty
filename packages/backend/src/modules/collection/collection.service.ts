@@ -146,20 +146,19 @@ export class CollectionService {
         owner: query.userAddress,
         collections: [collection.id],
       },
-      query.from,
-      query.size
+      0,
+      1000
     );
     inventory.forEach((item) => delete item._relation);
-    const total = await this.nftService.count({
-      owner: query.userAddress,
-      collections: [collection.id],
-    });
+    const newItems = (await this.addUriToItem(inventory)).filter(
+      (item) => item.value > 0 || item.type !== TokenType.ERC1155
+    );
+    const from = query.from ? query.from : 0;
+    const to = query.from + query.size ? query.from + query.size : 20;
     return {
       collection,
-      total,
-      items: (await this.addUriToItem(inventory)).filter(
-        (item) => item.value > 0 || item.type !== TokenType.ERC1155
-      ),
+      total: newItems.length,
+      items: newItems.slice(from, to),
     };
   }
 
