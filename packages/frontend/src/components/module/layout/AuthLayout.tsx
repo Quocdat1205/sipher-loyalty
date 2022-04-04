@@ -72,7 +72,7 @@ export const AuthLayout: FC = ({ children }) => {
           </Box>
         </Flex>
       </Flex>
-      <MobileUI isLogin />
+      <MobileUI />
     </Flex>
   )
 }
