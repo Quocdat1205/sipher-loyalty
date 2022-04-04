@@ -95,7 +95,6 @@ export class AdminService {
     const collection = await this.sipherCollectionRepo.findOne({
       id: id.toLowerCase(),
     });
-    console.log(collection);
 
     if (collection) {
       this.sipherCollectionRepo.remove(collection);
