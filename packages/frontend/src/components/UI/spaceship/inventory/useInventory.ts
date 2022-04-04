@@ -22,21 +22,23 @@ export const useInventory = () => {
   const query = useQueryClient()
   const { account, scCaller, chainId, switchNetwork } = useWalletContext()
   const router = useRouter()
-  const [isFetched, setIsFetched] = useState(false)
   const [dataMinted, setDataMinted] = useState<InventoryProps[]>([])
   const [data, setData] = useState<InventoryProps[]>([])
   const toast = useChakraToast()
   const idError = useRef<number | null>()
+  const [isLoadingLootBox, setIsLoadingLootBox] = useState(true)
 
-  const { refetch, isFetched: isFetchedLootBox } = useQuery(
+  const { refetch, isFetched } = useQuery(
     "lootBoxs",
     () => client.api.lootBoxControllerGetLootboxFromUserId(setBearerToken(bearerToken)).then(res => res.data),
     {
-      enabled: !!bearerToken && !isFetched,
+      enabled: !!bearerToken,
       onSuccess: data => {
-        setData(data.map(item => ({ ...item, slot: item?.mintable > 0 ? 1 : 0, isChecked: false }))), setIsFetched(true)
+        setData(data.map(item => ({ ...item, slot: item?.mintable > 0 ? 1 : 0, isChecked: false })))
+        setIsLoadingLootBox(false)
       },
       initialData: [],
+      refetchOnWindowFocus: false,
     },
   )
 
@@ -160,7 +162,8 @@ export const useInventory = () => {
   }
 
   return {
-    isFetchedLootBox,
+    isFetchedLootBox: isFetched,
+    isLoadingLootBox,
     dataMinted,
     isLoading,
     isStatusModal,

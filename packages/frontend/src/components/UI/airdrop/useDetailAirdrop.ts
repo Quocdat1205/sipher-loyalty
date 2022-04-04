@@ -37,7 +37,12 @@ export const useDetailAirdrop = () => {
     () =>
       scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(detailAirdrop!.totalAmount, detailAirdrop!.proof),
     {
-      enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK && detailAirdrop?.totalAmount !== "0",
+      enabled:
+        !!scCaller.current &&
+        !!account &&
+        chainId === ETHEREUM_NETWORK &&
+        !!detailAirdrop &&
+        !!detailAirdrop?.totalAmount,
       initialData: 0,
     },
   )
