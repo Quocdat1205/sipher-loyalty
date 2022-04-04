@@ -409,6 +409,12 @@ export interface PriceData {
   usd: number;
   eth: number;
   change: number;
+  marketcap: number;
+  marketcapChange: number;
+  circulatingSupply: number;
+  maxSupply: number | null;
+  totalSupply: number | null;
+  fullyDilutedValuation: number;
 }
 
 export interface PriceDatas {
