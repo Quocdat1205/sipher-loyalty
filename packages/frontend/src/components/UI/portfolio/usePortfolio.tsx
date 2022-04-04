@@ -55,7 +55,7 @@ const usePortfolio = () => {
           currency: "ETH",
           balance: chainId === ETHEREUM_NETWORK ? balance.chainPrice : 0,
           value: chainId === ETHEREUM_NETWORK ? balance.chainPrice * dataPrice!.ethereumPrice.usd : 0,
-          change: dataPrice!.ethereumPrice.change * 100,
+          change: dataPrice!.ethereumPrice.change,
           icon: <EthereumIcon size="1.4rem" />,
         },
         // {
@@ -69,7 +69,7 @@ const usePortfolio = () => {
           currency: "SIPHER",
           balance: balance.sipher,
           value: balance.sipher * dataPrice!.sipherPrice.usd,
-          change: dataPrice!.sipherPrice.change * 100,
+          change: dataPrice!.sipherPrice.change,
           icon: <SipherIcon size="1.4rem" />,
         },
       ]
