@@ -8,7 +8,7 @@ import { NextPageWithLayout } from "src/pages/_app"
 const LoginPage: NextPageWithLayout = () => {
   return (
     <>
-      <Metadata title="Sign In | Sipher Loyalty" description="" />
+      <Metadata title="Sign In | Sipher Dashboard" description="" />
       <LoginUI />
     </>
   )

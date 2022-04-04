@@ -17,3 +17,11 @@ export const EthereumIcon = ({ isWETH = false, size = "1.2rem", ...rest }: Ether
     </Box>
   )
 }
+
+export const EthereumIcon2 = ({ size = "1.2rem" }: { size: string }) => {
+  return (
+    <Box>
+      <Image h={size} src={`/images/icons/eth2.svg`} alt={"eth-icon"} />
+    </Box>
+  )
+}

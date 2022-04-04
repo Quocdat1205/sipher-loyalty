@@ -15,7 +15,7 @@ const SlideFrame = ({ title, description, srcBg, buttonText, destination }: Slid
   return (
     <Flex maxH="35rem" flexDir="column" align="center" justify="center" pos="relative" w="full">
       <Img objectFit="cover" src={srcBg} alt="slide1" w="full" h="full" minH="14rem" />
-      <Box pos="absolute" w="full" h="full" maxW="1200px">
+      <Box pos="absolute" w="full" h="full" maxW="1440px">
         <Flex
           direction={"column"}
           align="center"

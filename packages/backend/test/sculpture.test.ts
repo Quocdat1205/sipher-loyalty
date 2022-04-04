@@ -1,9 +1,10 @@
+import { Repository } from "typeorm";
 import { SculptureTransaction } from "@entity";
-import { RedeemTxDto } from "@modules/sculpture/sculpture.dto";
-import { SculptureService } from "@modules/sculpture/sculpture.service";
 import { Test } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+
+import { RedeemTxDto } from "@modules/sculpture/sculpture.dto";
+import { SculptureService } from "@modules/sculpture/sculpture.service";
 
 describe("Sculpture unit test", () => {
   let sculptureService: SculptureService;
@@ -29,16 +30,12 @@ describe("Sculpture unit test", () => {
     const tx = new SculptureTransaction();
     tx.id = "1";
     it("should return tx", async () => {
-      jest.spyOn(sculptureTxRepo, "find").mockImplementation(async () => {
-        return [tx];
-      });
+      jest.spyOn(sculptureTxRepo, "find").mockImplementation(async () => [tx]);
       expect(await sculptureService.getAddressTx("0x")).toEqual([tx]);
     });
 
     it("should return empty array", async () => {
-      jest.spyOn(sculptureTxRepo, "find").mockImplementation(async () => {
-        return [];
-      });
+      jest.spyOn(sculptureTxRepo, "find").mockImplementation(async () => []);
       expect(await sculptureService.getAddressTx("0x")).toEqual([]);
     });
   });
@@ -49,23 +46,17 @@ describe("Sculpture unit test", () => {
     it("should do nothing since tx is saved already", async () => {
       const sculptureFindOneMock = jest
         .spyOn(sculptureTxRepo, "findOne")
-        .mockImplementation(async () => {
-          return tx;
-        });
+        .mockImplementation(async () => tx);
       await sculptureService.saveRedeemTransaction(txDto);
       expect(sculptureFindOneMock).toHaveBeenCalled();
     });
     it("should save transaction", async () => {
       const sculptureFindOneMock = jest
         .spyOn(sculptureTxRepo, "findOne")
-        .mockImplementation(async () => {
-          return undefined;
-        });
+        .mockImplementation(async () => undefined);
       const sculptureSaveMock = jest
         .spyOn(sculptureTxRepo, "save")
-        .mockImplementation(async () => {
-          return tx;
-        });
+        .mockImplementation(async () => tx);
       await sculptureService.saveRedeemTransaction(txDto);
       expect(sculptureFindOneMock).toHaveBeenCalled();
       expect(sculptureSaveMock).toHaveBeenCalled();

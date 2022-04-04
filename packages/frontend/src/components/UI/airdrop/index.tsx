@@ -20,6 +20,44 @@ const tabs = [
 const AirdropUI = () => {
   const { allAirdrops, currentTab, isFetched } = useAirdrops()
 
+  const renderTabContent = () => {
+    if (currentTab === "all") {
+      return allAirdrops.length > 0 ? (
+        <SimpleGrid spacing={4} columns={[1, 2, 4, 5, 5]}>
+          {allAirdrops.map((item, index) => (
+            <AirdropCard key={index} data={item} isFetched={isFetched} />
+          ))}
+        </SimpleGrid>
+      ) : (
+        <NoItemUI text="No available Airdrops" />
+      )
+    } else {
+      const airdrops = allAirdrops.filter(airdrop => airdrop.type === currentTab.toString().toUpperCase())
+      return airdrops.length > 0 ? (
+        <>
+          <SimpleGrid spacing={4} columns={[1, 2, 4, 5, 5]}>
+            {allAirdrops
+              .filter(airdrop => airdrop.type === currentTab.toString().toUpperCase())
+              .map(item => (
+                <AirdropCard key={item.id} data={item} isFetched={isFetched} />
+              ))}
+          </SimpleGrid>
+          {currentTab === "merch" && (
+            <Text pt={4} color="neutral.300">
+              * If you want to change to another item (equal or lesser than your current tier), please{" "}
+              <Link color="cyan.600" textDecor="underline">
+                contact us
+              </Link>{" "}
+              before 15th April.{" "}
+            </Text>
+          )}
+        </>
+      ) : (
+        <NoItemUI text="No available Airdrops" />
+      )
+    }
+  }
+
   return (
     <Flex pos="relative" flexDir="column" align="center" flex={1}>
       <NotifyNetwork chainId={ETHEREUM_NETWORK} />
@@ -31,36 +69,7 @@ const AirdropUI = () => {
       <Flex flexDir="column" px={[4, 4, 4, 0, 0]} py={12} flex={1} w="full" maxW="1200px">
         <TabPage tabs={tabs} />
         <Box py={4} flex={1}>
-          {currentTab === "all" ? (
-            allAirdrops.length > 0 ? (
-              <SimpleGrid spacing={4} columns={[1, 2, 4, 5, 5]}>
-                {allAirdrops.map((item, index) => (
-                  <AirdropCard key={index} data={item} isFetched={isFetched} />
-                ))}
-              </SimpleGrid>
-            ) : (
-              <NoItemUI />
-            )
-          ) : allAirdrops.filter(airdrop => airdrop.type === currentTab.toString().toUpperCase()).length > 0 ? (
-            <SimpleGrid spacing={4} columns={[1, 2, 4, 5, 5]}>
-              {allAirdrops
-                .filter(airdrop => airdrop.type === currentTab.toString().toUpperCase())
-                .map(item => (
-                  <AirdropCard key={item.id} data={item} isFetched={isFetched} />
-                ))}
-            </SimpleGrid>
-          ) : (
-            <NoItemUI />
-          )}
-          {currentTab === "merch" && (
-            <Text pt={4} color="neutral.300">
-              * If you want to change to another item (equal or lesser than your current tier), please{" "}
-              <Link color="cyan.600" textDecor="underline">
-                contact us
-              </Link>{" "}
-              before 15th April.{" "}
-            </Text>
-          )}
+          {renderTabContent()}
         </Box>
       </Flex>
       <DetailsAirdrop />

@@ -7,11 +7,13 @@ interface InputProps extends Omit<ChakraInputProps, "size"> {
   label?: string
   required?: boolean
   error?: string
+  helperText?: string
 }
 
 export const StyledInput = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, required = false, error, isReadOnly, ...rest }: InputProps, ref) => {
+  ({ label, required = false, error, helperText, isReadOnly, ...rest }: InputProps, ref) => {
     const [isShow, setIsShow] = useState(false)
+
     return (
       <Box pos="relative">
         <Box h="3rem" pos="relative">
@@ -40,6 +42,7 @@ export const StyledInput = forwardRef<HTMLInputElement, InputProps>(
             }}
             isReadOnly={isReadOnly}
             {...rest}
+            pointerEvents={rest.isReadOnly ? "none" : "all"}
             type={rest.type === "password" ? (isShow ? "text" : "password") : rest.type}
             border={!isReadOnly ? (error ? "1px" : "0px") : "1px"}
             borderColor={!isReadOnly ? (error ? "red.500" : "neutral.500") : "neutral.600"}
@@ -86,6 +89,11 @@ export const StyledInput = forwardRef<HTMLInputElement, InputProps>(
             </Box>
           )}
         </Box>
+        {helperText && !error && (
+          <Text fontSize={"xs"} mt={1} color="neutral.500">
+            {helperText}
+          </Text>
+        )}
         {error && (
           <Flex color="red.500" fontSize={"xs"} mt={1}>
             <Box mr="1">

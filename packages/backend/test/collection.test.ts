@@ -1,3 +1,7 @@
+import { AxiosResponse } from "axios";
+import * as rxjs from "rxjs";
+import { Observable } from "rxjs";
+import { Repository } from "typeorm";
 import {
   CollectionCategory,
   CollectionType,
@@ -5,24 +9,22 @@ import {
   ERC1155Sculpture,
   SipherCollection,
 } from "@entity";
-import { CollectionService } from "@modules/collection/collection.service";
-import { TokenType } from "@modules/nft/nft.dto";
-import { NftItemService } from "@modules/nft/nftItem.service";
-import { URIService } from "@modules/uri/uri.service";
 import { HttpService } from "@nestjs/axios";
 import {
   ElasticsearchModule,
   ElasticsearchService,
 } from "@nestjs/elasticsearch";
-import * as rxjs from "rxjs";
 import { Test } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
+
+import { CollectionService } from "@modules/collection/collection.service";
+import { TokenType } from "@modules/nft/nft.dto";
+import { NftItemService } from "@modules/nft/nftItem.service";
+import { URIService } from "@modules/uri/uri.service";
 import * as utils from "@utils/utils";
-import { AxiosResponse } from "axios";
-import { Observable } from "rxjs";
+
 import marketplaceClient from "../src/api/marketplaceClient";
 import { NftItem, NftItemDetailsRespDto } from "../src/api/marketplaceSdk";
-import { Repository } from "typeorm";
 
 describe("Collection unit test", () => {
   let collectionService: CollectionService;
@@ -75,9 +77,9 @@ describe("Collection unit test", () => {
     const col = new SipherCollection();
     col.id = "1";
     it("should return collection array", async () => {
-      jest.spyOn(sipherCollectionRepo, "find").mockImplementation(async () => {
-        return [col];
-      });
+      jest
+        .spyOn(sipherCollectionRepo, "find")
+        .mockImplementation(async () => [col]);
       expect(await collectionService.getAllCollection()).toEqual([col]);
     });
   });
@@ -88,9 +90,7 @@ describe("Collection unit test", () => {
     it("should call os mainnet", async () => {
       const httpGetMock = jest
         .spyOn(httpService, "get")
-        .mockImplementation(() => {
-          return new Observable();
-        });
+        .mockImplementation(() => new Observable());
       collectionService.getCollectionStats("x");
       expect(httpGetMock).toHaveBeenCalledWith(
         `${openseaApiBaseUrl}/collection/x/stats`,
@@ -100,9 +100,7 @@ describe("Collection unit test", () => {
     it("should call os testnet", async () => {
       const httpGetMock = jest
         .spyOn(httpService, "get")
-        .mockImplementation(() => {
-          return new Observable();
-        });
+        .mockImplementation(() => new Observable());
       collectionService.getCollectionStats("x", false);
       expect(httpGetMock).toHaveBeenCalledWith(
         `${openseaApiTestBaseUrl}/collection/x/stats`,
@@ -279,6 +277,7 @@ describe("Collection unit test", () => {
         items: [
           {
             ...item2,
+            tokenId: utils.toTokenId(item2.tokenId),
             name: uri.name,
             imageUrl: uri.image,
             type: TokenType.ERC1155,
@@ -312,6 +311,7 @@ describe("Collection unit test", () => {
           {
             ...item3,
             name: uri.name,
+            tokenId: utils.toTokenId(item3.tokenId),
             imageUrl: uri.image,
             type: TokenType.ERC1155,
           },

@@ -14,12 +14,10 @@ interface CardGeneralProps {
 
 const CardGeneral = ({ value, name, icon, popoverProps, bottomChildren }: CardGeneralProps) => {
   return (
-    <Flex flexDir="column" bg="blackAlpha.800" rounded="lg" w="full" p={6}>
-      <Flex mb={2} align="center" justify="space-between">
+    <Flex flexDir="column" bg="blackAlpha.800" rounded="lg" w="full" p={3}>
+      <Flex mb={0} align="center" justify="space-between" px={1}>
         <Flex align="center">
-          <Text color="neutral.300" textTransform="capitalize">
-            {name}
-          </Text>
+          <Text color="neutral.300">{name}</Text>
           {popoverProps && (
             <CustomPopover
               label={popoverProps.label}
@@ -33,12 +31,12 @@ const CardGeneral = ({ value, name, icon, popoverProps, bottomChildren }: CardGe
             </CustomPopover>
           )}
         </Flex>
-        <Flex align="center" justify="center" minW="2rem" h="2rem" bg="neutral.700" rounded="full">
+        <Flex align="center" justify="center" boxSize="2.25rem" bg="neutral.700" rounded="full">
           {icon}
         </Flex>
       </Flex>
-      <Flex w="full" flexDir="column">
-        <Text mb={2} fontSize="3xl" color="text.primary" fontWeight={600}>
+      <Flex w="full" flexDir="column" pl={1}>
+        <Text mb={0} fontSize="3xl" color="text.primary" fontWeight={600}>
           {value}
         </Text>
         <Box>{bottomChildren}</Box>
