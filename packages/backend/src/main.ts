@@ -20,7 +20,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix("api/sipher/loyalty");
 
-  if (true) {
+  if (constant.enableSwagger) {
     const config = new DocumentBuilder()
       .setTitle("Sipher Loyalty")
       .setDescription("Sipher loyalty API documents")

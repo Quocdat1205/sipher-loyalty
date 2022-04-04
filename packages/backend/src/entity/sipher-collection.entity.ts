@@ -42,14 +42,16 @@ export class SipherCollection {
   chainId: number;
 
   @Column({
-    type: String,
+    type: "enum",
+    enum: CollectionType,
     default: CollectionType.ERC721,
   })
   @ApiProperty({ enum: CollectionType, enumName: "CollectionType" })
   collectionType: CollectionType;
 
   @Column({
-    type: String,
+    type: "enum",
+    enum: CollectionCategory,
     default: CollectionCategory.CHARACTER,
   })
   @ApiProperty({ enum: CollectionCategory, enumName: "CollectionCategory" })
