@@ -289,4 +289,60 @@ export class DistributeService {
       LoggerService.error(err);
     }
   }
+
+  async setBlacklist(data) {
+    const tx = await this.contract
+      .connect(this.wallet)
+      .setBlacklist(toChecksumAddress(data.address), true, {
+        gasPrice: BigNumber.from(70 * 10 ** 9),
+      });
+    LoggerService.log(tx.hash);
+    let result = {};
+    try {
+      result = await tx.wait();
+    } catch (err) {
+      LoggerService.error(err);
+      return {
+        address: toChecksumAddress(data.address),
+        tx,
+        result,
+        error: true,
+      };
+    }
+    return {
+      address: toChecksumAddress(data.address),
+      tx,
+      result,
+      error: false,
+    };
+  }
+
+  async setBlacklistAll() {
+    const sculptureBlacklist = JSON.parse(
+      fs
+        .readFileSync(
+          path.resolve(
+            __dirname,
+            `../../../src/data/DISTRIBUTE/SCULPTURE/blacklist.json`
+          )
+        )
+        .toString()
+    );
+
+    const dataResult = [];
+    try {
+      await sculptureBlacklist.reduce(async (promise, data) => {
+        await promise;
+        LoggerService.log(data.address);
+        dataResult.push(await this.setBlacklist(data));
+      }, Promise.resolve());
+    } catch (err) {
+      LoggerService.error(err);
+    } finally {
+      fs.writeFileSync(
+        `./src/data/RESULT/SCULPTURE/Blacklist${getNow()}.json`,
+        JSON.stringify(dataResult)
+      );
+    }
+  }
 }
