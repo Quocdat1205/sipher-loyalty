@@ -148,7 +148,7 @@ export class DistributeService {
     );
     const dataResult = [];
     try {
-      await onlyNekoHolder.reduce(async (promise, data) => {
+      await onlyInuHolder.reduce(async (promise, data) => {
         await promise;
         LoggerService.log(data);
         dataResult.push(await this.safeTransferFrom(data));
