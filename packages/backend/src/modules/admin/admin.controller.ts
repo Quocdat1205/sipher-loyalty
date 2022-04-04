@@ -36,11 +36,7 @@ import {
   UpdateItemDto,
 } from "./admin.dto";
 import { AdminService } from "./admin.service";
-import {
-  BodyAdminImageUrl,
-  BodyAdminUpdate,
-  QueryAdminGetAll,
-} from "./admin.type";
+import { BodyAdminUpdate, QueryAdminGetAll } from "./admin.type";
 
 @ApiTags("admin")
 @Controller("admin")
