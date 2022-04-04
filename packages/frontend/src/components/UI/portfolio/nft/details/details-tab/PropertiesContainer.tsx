@@ -47,7 +47,7 @@ const PropertiesContainer = () => {
         </Flex>
         <Wrap w="full" py={4} spacing={4}>
           {tokenDetails?.attributes
-            .filter(i => soulBoundData.includes(i.trait_type))
+            ?.filter(i => soulBoundData.includes(i.trait_type))
             .map(data => (
               <WrapItem key={data.trait_type}>
                 <PropertyTag {...data} />
@@ -73,7 +73,7 @@ const PropertiesContainer = () => {
         </Flex>
         <Wrap w="full" py={4} spacing={4}>
           {tokenDetails?.attributes
-            .filter(i => !soulBoundData.includes(i.trait_type))
+            ?.filter(i => !soulBoundData.includes(i.trait_type))
             .map(data => (
               <WrapItem key={data.trait_type}>
                 <PropertyTag {...data} />

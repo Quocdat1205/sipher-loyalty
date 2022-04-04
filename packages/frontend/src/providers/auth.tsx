@@ -157,23 +157,23 @@ export const AuthProvider: FC = ({ children }) => {
   const router = useRouter()
 
   const { authenticated } = auth
-
   useEffect(() => {
-    const currentRoute = router.asPath.split("?")[0]
-    const isAuthRoute = ["/signin", "/signup", "/forgot-password"].includes(currentRoute)
-    console.log("ROUTE", window.location.pathname)
-    // move user inside after authenticated
-    if (authenticated && ["/signin", "/forgot-password"].includes(currentRoute)) {
-      const next = decodeURIComponent((router.query["next"] as string) || "/")
-      const [pathname, search] = next.split("?")
-      router.push({ pathname, search })
-    }
+    if (router.isReady) {
+      const currentRoute = router.asPath.split("?")[0]
+      const isAuthRoute = ["/signin", "/signup", "/forgot-password"].includes(currentRoute)
+      // move user inside after authenticated
+      if (authenticated && ["/signin", "/forgot-password"].includes(currentRoute)) {
+        const next = decodeURIComponent((router.query["next"] as string) || "/")
+        const [pathname, search] = next.split("?")
+        router.push({ pathname, search })
+      }
 
-    if (!authenticated && !isAuthRoute) {
-      const next = encodeURIComponent(currentRoute)
-      router.push(`${"/signin"}?next=${next}`)
+      if (!authenticated && !isAuthRoute) {
+        const next = encodeURIComponent(currentRoute)
+        router.push(`${"/signin"}?next=${next}`)
+      }
     }
-  }, [authenticated, router.asPath])
+  }, [authenticated, router.asPath, router.isReady])
 
   return <Provider value={auth}>{children}</Provider>
 }

@@ -23,7 +23,7 @@ const DetailNFT = () => {
   return (
     <Flex flex={1} flexDir="column" align="center">
       <Flex pos="relative" w="full" flex={1} flexDir={["column", "column", "row"]}>
-        <Flex pos="fixed" top="4rem" left={0} zIndex={1} flexDir="column">
+        <Flex pos="fixed" top="4.5rem" left={0} zIndex={1} flexDir="column">
           <Box pt={8} px={8} w="full">
             <Button
               colorScheme="neutral"
@@ -63,14 +63,13 @@ const DetailNFT = () => {
             pt={8}
             isFetching={isFetched}
             mintable={tokenDetails?.value ?? 0}
-            windowHeight={windowWidth.height}
             src={tokenDetails?.imageUrl ?? ""}
             alt={"Image NFT"}
           />
         </Box>
         <Flex
           flex={1}
-          pl={[0, 0, `${boxWidth - 8}px`]}
+          pl={[0, 0, `${boxWidth + 8}px`]}
           flexDir="column"
           sx={{
             "@media (max-width: 1199px)": {

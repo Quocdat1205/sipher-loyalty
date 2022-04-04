@@ -1,6 +1,6 @@
 import React, { Fragment } from "react"
 import { useRouter } from "next/router"
-import { Box, Button, chakra, Divider, Flex, HStack, Img, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Divider, Flex, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
 import QuantitySelector from "@components/UI/spaceship/inventory/details/QuantitySelector"
@@ -56,8 +56,8 @@ export const BringModal = ({
                 {dataMint.map(item => (
                   <chakra.tr borderTop="1px" borderColor="whiteAlpha.100" key={item.id}>
                     <chakra.td py={2}>
-                      <Flex align="center">
-                        <Img src={item.imageUrl ?? ""} alt={item.name} h="2rem" />
+                      <Flex blendMode="lighten" align="center" sx={{ video: { h: "2rem" } }}>
+                        <video src={item.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
                         <Text ml={4}>{item.name}</Text>
                       </Flex>
                     </chakra.td>

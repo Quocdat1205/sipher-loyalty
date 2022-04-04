@@ -1,6 +1,6 @@
 import React, { Fragment } from "react"
 import { useRouter } from "next/router"
-import { Box, Button, chakra, Divider, Flex, Img, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Divider, Flex, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared/ChakraModal"
 
@@ -22,11 +22,15 @@ const ClaimStatusModal = ({ isOpen, onClose, status }: ClaimStatusModalProp) => 
       size="md"
     >
       <Flex flexDir="column" align="center" px={6}>
-        <Box blendMode="lighten">
-          <Img
-            src="https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/Lootbox_1.gif"
-            alt="box"
-            maxH="26rem"
+        <Box sx={{ video: { maxH: "20rem" } }} blendMode="lighten">
+          <video
+            autoPlay
+            loop
+            muted
+            datatype="video/mp4"
+            src={
+              "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/spaceship_lootbox_tokeID_0.mp4"
+            }
           />
         </Box>
         <Text textAlign="center" py={4} color="grey.400">

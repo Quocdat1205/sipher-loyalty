@@ -11,6 +11,7 @@ import { useClaim } from "./useClaim"
 
 const ClaimContainer = () => {
   const {
+    isFetched,
     account,
     claimData,
     mutateOnClaim,
@@ -24,7 +25,7 @@ const ClaimContainer = () => {
   return (
     <Flex flex={1} pos="relative" flexDir="column" align="center">
       <Flex
-        bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 60%)"
+        bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 50%)"
         flexDir="column"
         align="center"
         zIndex={2}
@@ -36,11 +37,10 @@ const ClaimContainer = () => {
         <Box pt={12} w="full" maxW="1200px">
           <TabPage tabs={spaceshipTabs} />
         </Box>
-        <Flex flexDir="column" w="full" justify="space-between">
+        <Flex flexDir="column" w="full" align="center" justify="space-between">
           <Flex
             bgGradient="linear(270deg, rgba(0, 0, 0, 0) 20%, rgba(112, 0, 255, 0.5) 50%, rgba(0, 0, 0, 0) 80%)"
             w="full"
-            mb={4}
             justify="center"
           >
             <Box w="full" py={4} px={6} textAlign="center" borderRadius="0px 0px 16px 16px">
@@ -52,9 +52,16 @@ const ClaimContainer = () => {
               </Text>
             </Box>
           </Flex>
-          <HStack maxW="1200px" w="full" spacing={4} mb={4} justify={claimData.length > 1 ? "space-between" : "center"}>
+          <HStack
+            py={4}
+            maxW="1200px"
+            w="full"
+            spacing={4}
+            mb={4}
+            justify={claimData.length > 1 ? "space-between" : "center"}
+          >
             {claimData.map(item => (
-              <ClaimCard key={item.id} isPopover={false} data={item} />
+              <ClaimCard key={item.id} isPopover={false} data={item} isFetched={isFetched} />
             ))}
           </HStack>
           <Flex w="full" justify="center">

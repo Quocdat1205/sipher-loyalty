@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React from "react"
 import { BiChevronRight } from "react-icons/bi"
-import { Box, Button, Flex, Img, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, Flex, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomCheckbox } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
@@ -15,7 +15,6 @@ interface CardProps {
 
 export const BoxCard = ({ data, isFetched }: CardProps) => {
   const { isChecked, onSelect, isDisabled, onView, propertyLootbox, mintable, publicAddress } = data
-  const [imageLoad, setImageLoad] = useState(false)
 
   return (
     <Box
@@ -64,7 +63,7 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
           </Button>
         </Flex>
       )}
-      <Skeleton bg="black" pos="relative" isLoaded={imageLoad && isFetched}>
+      <Skeleton sx={{ video: { minH: "18rem" } }} bg="black" pos="relative" isLoaded={isFetched}>
         {isDisabled && (
           <Box
             transition=".35s opacity"
@@ -88,14 +87,18 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
             </Text>
           </Box>
         )}
-        <Img
-          minH="16rem"
-          objectFit="contain"
-          src={propertyLootbox?.image ?? "https://via.placeholder.com/150"}
-          alt={propertyLootbox?.name}
-          loading="lazy"
-          onLoad={() => setImageLoad(true)}
-        />
+        <Box _groupHover={{ opacity: 0.6 }}>
+          <video
+            autoPlay
+            loop
+            muted
+            datatype="video/mp4"
+            src={
+              propertyLootbox?.image ??
+              "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/spaceship_lootbox_tokeID_0.mp4"
+            }
+          />
+        </Box>
         <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white" pos="absolute" bottom="1rem" left={4}>
           <SpLayer />
           <Text ml={1} fontSize="xs" color="neutral.900" fontWeight={600}>
@@ -103,7 +106,7 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
           </Text>
         </Flex>
       </Skeleton>
-      <Stack spacing={2} px={4} pt={2} pb={4}>
+      <Stack spacing={2} p={4}>
         <Skeleton isLoaded={isFetched}>
           <Text fontWeight={600}>{propertyLootbox?.name}</Text>
         </Skeleton>

@@ -208,9 +208,10 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
             w="full"
             color="white"
             colorScheme={"red"}
+            bg="red.400"
             rounded="base"
           >
-            SIGN OUT
+            DISCONNECT
           </Button>
         </Flex>
       </ScaleFade>

@@ -148,7 +148,7 @@ export const useInventory = () => {
     },
   )
   useEffect(() => {
-    setData(data.map(item => ({ ...item, slot: item.mintable })))
+    setData(data.map(item => ({ ...item, slot: item?.mintable > 1 ? 1 : 0 })))
   }, [isStatusModal])
 
   const handleMint = () => {

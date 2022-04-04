@@ -40,7 +40,7 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
   return (
     <Flex flex={1} flexDir="column" align="center">
       <Flex pos="relative" w="full" flex={1} flexDir={["column", "row"]}>
-        <Flex pos="fixed" top="4rem" left={0} zIndex={1} flexDir="column">
+        <Flex pos="fixed" top="4.5rem" left={0} zIndex={1} flexDir="column">
           <Box pt={8} px={8} w="full">
             <Button
               role="group"
@@ -69,6 +69,11 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
           right={`${widthContainer}px`}
           display={["none", "none", "block"]}
           textAlign="center"
+          sx={{
+            "@media (max-width: 1199px)": {
+              display: "none",
+            },
+          }}
         >
           <NftImage
             pt={8}
@@ -85,9 +90,27 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
             <CountDown fontWeight={600} deadline={1650024000000} />
           </Box>
         </Box>
-        <Flex flex={1} pl={[0, `${boxWidth - 8}px`]} flexDir="column">
+        <Flex
+          flex={1}
+          pl={[0, 0, `${boxWidth + 8}px`]}
+          flexDir="column"
+          sx={{
+            "@media (max-width: 1199px)": {
+              px: 4,
+            },
+          }}
+        >
           <Box flex={1} py={8} px={[4, 0]}>
-            <Box mb={4} display={["block", "block", "none"]} textAlign="center">
+            <Box
+              mb={4}
+              display={["block", "block", "none"]}
+              textAlign="center"
+              sx={{
+                "@media (max-width: 1199px)": {
+                  display: "block",
+                },
+              }}
+            >
               <NftImage
                 mintable={details?.mintable ?? 0}
                 isFetching={isFetched}
@@ -95,7 +118,15 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
                 alt={"box"}
               />
             </Box>
-            <Box maxWidth={`${widthContainer}px`} flex={1}>
+            <Box
+              maxWidth={`${widthContainer}px`}
+              flex={1}
+              sx={{
+                "@media (max-width: 1199px)": {
+                  maxWidth: "unset",
+                },
+              }}
+            >
               <HeaderDetails details={details} isFetching={isFetched} />
               <ContentDetails isFetching={isFetched} />
             </Box>

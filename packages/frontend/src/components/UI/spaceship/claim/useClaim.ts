@@ -12,7 +12,7 @@ export const useClaim = () => {
   const query = useQueryClient()
   const { account } = useWalletContext()
 
-  const { data } = useQuery(
+  const { data, isFetched } = useQuery(
     ["claimableLootBox", account],
     () =>
       client.api
@@ -50,6 +50,7 @@ export const useClaim = () => {
   )
 
   return {
+    isFetched,
     account,
     claimData,
     isLoading,

@@ -1,7 +1,9 @@
 import { ReactNode } from "react"
-import { Box, Flex, Text } from "@sipher.dev/sipher-ui"
+import { Flex } from "@sipher.dev/sipher-ui"
 
 import { TopNavigationBar } from "../top-navigation-bar"
+
+import MobileUI from "./MobileUI"
 
 export const CommonLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -12,16 +14,7 @@ export const CommonLayout = ({ children }: { children: ReactNode }) => {
           {children}
         </Flex>
       </Flex>
-      <Flex display={["flex", "flex", "none"]} flexDir="column" flex={1} w="full">
-        <TopNavigationBar isSticky />
-        <Flex align="center" justify="center" flex={1}>
-          <Box bg="accent.500" rounded="lg" p={4}>
-            <Text fontSize="xl" textAlign="center" color="neutral.900" fontWeight={600} maxW="20rem">
-              Join Loyalty Dashboard on your desktop. Mobile version is on the way.
-            </Text>
-          </Box>
-        </Flex>
-      </Flex>
+      <MobileUI />
     </Flex>
   )
 }

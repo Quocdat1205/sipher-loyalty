@@ -53,7 +53,7 @@ const useNFTs = collectionId => {
           ?.reduce((acc: NftItem[], cur) => [...acc, ...cur.items], [])
           .map(item => ({
             ...item,
-            slot: item.value,
+            slot: item?.value > 1 ? 1 : 0,
             isChecked: false,
           })),
       ),
@@ -73,12 +73,12 @@ const useNFTs = collectionId => {
       ...item,
       onView: () => router.push(`/portfolio/${collectionId}/${item.id}`),
       onSelect: (isChecked = false) => {
-        if (collectionData?.collectionType === "ERC1155" && collectionData?.category === "lootbox") {
+        if (item.type === "ERC1155" && collectionData?.category === "lootbox") {
           const oldState = data
           oldState.find(i => i.id === item.id)!.isChecked = isChecked
           setData([...oldState])
         } else {
-          return
+          router.push(`/portfolio/${collectionId}/${item.id}`)
         }
       },
     })) ?? []

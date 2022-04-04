@@ -1,6 +1,6 @@
 import React, { Fragment } from "react"
 import { useRouter } from "next/router"
-import { Box, Button, chakra, Divider, Flex, HStack, Img, Link, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Divider, Flex, HStack, Link, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
 import { SipherLootBoxAddress } from "@constant"
@@ -57,8 +57,8 @@ export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handl
                 {dataMint.map(item => (
                   <chakra.tr borderTop="1px" borderColor="whiteAlpha.100" key={item.id}>
                     <chakra.td py={2}>
-                      <Flex align="center">
-                        <Img src={item.propertyLootbox.image ?? ""} alt={item.propertyLootbox.name} h="2rem" />
+                      <Flex blendMode="lighten" align="center" sx={{ video: { h: "2rem" } }}>
+                        <video src={item.propertyLootbox.image} autoPlay loop muted datatype="video/mp4"></video>
                         <Text ml={4}>{item.propertyLootbox.name}</Text>
                       </Flex>
                     </chakra.td>
@@ -86,9 +86,9 @@ export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handl
               </Link>
             </Text>
             <Text color="neutral.400">
-              After "Confirm", your items will be moved to the "Pending" section. It will require an on-chain
-              transaction to cancel pending items, otherwise, you have to wait 3 days for the pending order to be
-              automatically canceled.
+              Please be aware, once you “Confirm” below, your item(s) will be moved to the “Pending” section. If you
+              decide to cancel, it will require an on-chain transaction and you will have to wait 3 days for the pending
+              order to be canceled.
             </Text>
           </Fragment>
         ) : status === "SUCCESS" ? (

@@ -96,16 +96,14 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
         />
 
         <Divider mt={4} orientation="horizontal" />
-        <Flex py={4} role="group" cursor="pointer" justify="space-between" align="center" onClick={onChangePassword}>
+        <Flex py={4} cursor="pointer" justify="space-between" align="center" onClick={onChangePassword}>
           <Box>
-            <Text _groupHover={{ color: "accent.500" }} mb={1}>
-              Change Password
-            </Text>
-            <Text _groupHover={{ color: "accent.500" }} maxW="18rem" fontSize="sm" color="neutral.300">
+            <Text mb={1}>Change Password</Text>
+            <Text maxW="18rem" fontSize="sm" color="neutral.300">
               {`It’s good idea to use a strong password that you’re not using elsewhere`}
             </Text>
           </Box>
-          <Box _groupHover={{ color: "accent.500" }} color="neutral.300">
+          <Box color="neutral.300">
             <BiChevronRight size="1.6rem" />
           </Box>
         </Flex>

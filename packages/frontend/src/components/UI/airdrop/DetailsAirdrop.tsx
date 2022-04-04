@@ -74,8 +74,7 @@ export function DetailsAirdrop() {
           <Flex
             sx={{
               video: {
-                width: 300,
-                height: 300,
+                minH: "26rem",
               },
             }}
             overflow="hidden"

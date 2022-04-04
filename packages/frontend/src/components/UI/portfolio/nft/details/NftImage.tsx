@@ -22,12 +22,11 @@ import { videos } from "@components/UI/portfolio/nft/NFTCard"
 interface NftImageProps extends BoxProps {
   mintable: number
   isFetching: boolean
-  windowHeight?: number
   src: string
   alt?: string
 }
 
-export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest }: NftImageProps) => {
+export const NftImage = ({ mintable, isFetching, src, alt, ...rest }: NftImageProps) => {
   const [isOpen, setIsOpen] = useState("")
   const boxRef = useRef(null)
   const extension = src ? src.split(".")[5] : ""
@@ -43,29 +42,24 @@ export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest
         <Skeleton
           sx={{ img: { rounded: "lg", overflow: "hidden" }, video: { rounded: "lg", overflow: "hidden" } }}
           isLoaded={isFetching}
-          maxW="45rem"
           pos="relative"
+          w="full"
+          maxW="40rem"
         >
           {videos.includes(extension) ? (
             <video src={src} autoPlay loop muted datatype="video/mp4"></video>
           ) : (
-            <Img
-              src={src || "/"}
-              alt={alt}
-              objectFit="contain"
-              width={`${windowHeight ? ((windowHeight - 200) * 644) / 722 : 500}px`}
-              height={`${windowHeight ? windowHeight - 200 : 574}px`}
-            />
+            <Img src={src || "/"} alt={alt} objectFit="contain" maxH="46rem" w="full" />
           )}
-          <Box pos="absolute" bottom="0" left="0" transform="translate(1rem, -2rem)">
+          <Box pos="absolute" bottom="0" left="0" transform="translate(1rem, -1.5rem)">
             <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white">
               <SpLayer />
-              <Text fontSize="xs" color="neutral.900" fontWeight={600}>
+              <Text ml={1} fontSize="xs" color="neutral.900" fontWeight={600}>
                 {mintable}
               </Text>
             </Flex>
           </Box>
-          <Box pos="absolute" bottom="0" right="0" transform="translate(-1rem, -1.5rem)">
+          <Box pos="absolute" bottom="0" right="0" transform="translate(-1rem, -1rem)">
             <IconButton
               onClick={() => setIsOpen("FULL_SCREEN")}
               size="lg"

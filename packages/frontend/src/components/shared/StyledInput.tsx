@@ -10,14 +10,14 @@ interface InputProps extends Omit<ChakraInputProps, "size"> {
 }
 
 export const StyledInput = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, required = false, error, ...rest }: InputProps, ref) => {
+  ({ label, required = false, error, isReadOnly, ...rest }: InputProps, ref) => {
     const [isShow, setIsShow] = useState(false)
     return (
       <Box pos="relative">
         <Box h="3rem" pos="relative">
           <chakra.input
             px={4}
-            bg="neutral.600"
+            bg={isReadOnly ? "neutral.700" : "neutral.600"}
             _hover={{ bg: "neutral.500" }}
             color="white"
             h="full"
@@ -38,10 +38,11 @@ export const StyledInput = forwardRef<HTMLInputElement, InputProps>(
                 display: "none",
               },
             }}
+            isReadOnly={isReadOnly}
             {...rest}
             type={rest.type === "password" ? (isShow ? "text" : "password") : rest.type}
-            border={error ? "1px" : "0px"}
-            borderColor={error ? "red.500" : "neutral.500"}
+            border={!isReadOnly ? (error ? "1px" : "0px") : "1px"}
+            borderColor={!isReadOnly ? (error ? "red.500" : "neutral.500") : "neutral.600"}
           />
           <chakra.label
             color="neutral.400"

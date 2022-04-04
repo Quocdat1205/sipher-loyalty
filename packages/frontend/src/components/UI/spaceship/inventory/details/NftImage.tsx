@@ -92,20 +92,26 @@ export const NftImage = ({ mintable, isFetching, windowHeight, src, alt, ...rest
           </Box>
         </Skeleton>
       </Flex>
-      <Modal isOpen={isOpen === "FULL_SCREEN"} onClose={() => setIsOpen("")} isCentered size="3xl">
-        <ModalOverlay />
+      <Modal isOpen={isOpen === "FULL_SCREEN"} onClose={() => setIsOpen("")} isCentered size="full">
+        <ModalOverlay bg="blackAlpha.700" />
         <ModalContent boxShadow="none" p={0} background="transparent">
-          <ModalBody p={0} display="flex" justifyContent="center">
-            <Flex direction="column" align={"flex-end"}>
-              <ModalCloseButton pos="static" mb={2} _focus={{ shadow: "none" }} rounded="full" />
-              <Box sx={{ span: { rounded: "md" }, video: { rounded: "md" } }}>
-                {videos.includes(extension) ? (
-                  <video src={src} autoPlay loop muted datatype="video/mp4"></video>
-                ) : (
-                  <Img h="40rem" objectFit="contain" src={src || "/"} alt={alt} />
-                )}
-              </Box>
-            </Flex>
+          <ModalBody pos="relative" w="full" h="full" p={0} display="flex">
+            <ModalCloseButton _focus={{ shadow: "none" }} rounded="full" />
+            <Box
+              maxW="45rem"
+              w="full"
+              pos="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%,-50%)"
+              sx={{ video: { rounded: "lg" } }}
+            >
+              {videos.includes(extension) ? (
+                <video src={src} autoPlay loop muted datatype="video/mp4"></video>
+              ) : (
+                <Img objectFit="contain" src={src || "/"} alt={alt} rounded="lg" w="full" />
+              )}
+            </Box>
           </ModalBody>
         </ModalContent>
       </Modal>
