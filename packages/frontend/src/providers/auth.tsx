@@ -76,7 +76,7 @@ const useAuthState = () => {
   const bearerToken = session?.getIdToken().getJwtToken() ?? ""
 
   const { data: userProfile } = useQuery("profile", () => getProfile(bearerToken), {
-    enabled: !!bearerToken,
+    enabled: !!bearerToken && authenticated,
   })
 
   const { data: ownedWallets, refetch: refetchOwnedWallets } = useQuery(

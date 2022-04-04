@@ -22,14 +22,16 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
   const qc = useQueryClient()
   const toast = useChakraToast()
 
-  const { data: userProfile, refetch } = useQuery(["profile", bearerToken], () => getProfile(bearerToken), {
-    enabled: isOpen && !!bearerToken,
+  const { data: userProfile, refetch } = useQuery("profile", () => getProfile(bearerToken), {
+    enabled: false,
     onSuccess: data => initForm({ name: data.user.name, bio: data.user.bio }),
   })
 
   useEffect(() => {
-    refetch()
-  }, [])
+    if (!!bearerToken && isOpen) {
+      refetch()
+    }
+  }, [bearerToken])
 
   const { mutate: mutateUpdateProfile, isLoading } = useMutation(
     () => updateProfile({ name: values.name, bio: values.bio }, bearerToken),
