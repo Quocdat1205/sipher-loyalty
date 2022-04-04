@@ -136,7 +136,10 @@ export function DetailsAirdrop() {
               </>
             ) : (
               <Img
-                src={imageState.front}
+                src={
+                  imageState.front ||
+                  "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_token.png"
+                }
                 alt="airdrop"
                 maxH="26rem"
                 objectFit="contain"
