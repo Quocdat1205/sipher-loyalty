@@ -14,6 +14,7 @@ import { useAuth } from "src/providers/auth"
 export interface NFTItemProp extends NftItem {
   isChecked: boolean
   slot: number
+  minable: number
 }
 
 const useNFTs = collectionId => {
@@ -53,6 +54,7 @@ const useNFTs = collectionId => {
           ?.reduce((acc: NftItem[], cur) => [...acc, ...cur.items], [])
           .map(item => ({
             ...item,
+            minable: item?.value ?? 0,
             slot: item?.value > 1 ? 1 : 0,
             isChecked: false,
           })),
@@ -116,6 +118,7 @@ const useNFTs = collectionId => {
       },
       onSuccess: () => {
         setModal("SUCCESS")
+        setData(data?.map(item => ({ ...item, minable: item.minable - item.slot })))
       },
       onSettled: () => {
         revalidate()

@@ -14,7 +14,7 @@ interface DetailLootboxProps {
 }
 
 export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
-  const { tokenDetails, isFetched, isLoadingBurn, slot, setSlot, router, handleMint } = useDetailContext()
+  const { tokenDetails, isFetched, isLoadingBurn, slot, setSlot, router, handleMint, minable } = useDetailContext()
   const [imageLoad, setImageLoad] = useState(false)
 
   return (
@@ -100,7 +100,7 @@ export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
           </Stack>
           <HStack borderTop="1px" borderColor="whiteAlpha.300" pt={4}>
             <Skeleton isLoaded={isFetched} flex={1}>
-              <QuantitySelector value={slot} onChange={v => setSlot(v)} maxValue={tokenDetails?.value ?? 0} />
+              <QuantitySelector value={slot} onChange={v => setSlot(v)} maxValue={minable ?? 0} />
             </Skeleton>
             <Skeleton isLoaded={isFetched} flex={1}>
               <Button

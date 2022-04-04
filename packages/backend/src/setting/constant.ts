@@ -126,7 +126,7 @@ export class SystemConfigProvider {
       },
 
       [Chain.Polygon]: {
-        address: "0x25499E32B77e9869DC9ab5a2B07c4B9111f5089B",
+        address: "0x04c20C117F7F470620F45a1c685f50ef1516a958",
       },
     };
 
