@@ -64,8 +64,9 @@ export class SeedAirdropService {
     );
   }
 
-  private seedToken = async (token: Airdrop) => {
+  private seedToken = async (token: Airdrop, imagesUrl: ImageUrl[]) => {
     try {
+      token.imageUrls = imagesUrl;
       token.claimer = token.claimer.toLowerCase();
       const _token = this.airdropRepo.create(token);
       await this.airdropRepo.save(_token);
@@ -135,12 +136,13 @@ export class SeedAirdropService {
       type: "TOKEN",
     }));
 
-    const imageUrl = await this.seedImageUrls(this.airdropDataHolder.imageUrls);
+    const imageUrls = await this.seedImageUrls(
+      this.airdropDataHolder.imageUrls
+    );
 
     const promises = [];
     for (let i = 0; i < tokenData.length; i++) {
-      tokenData[i].imageUrls = imageUrl;
-      promises.push(this.seedToken(tokenData[i]));
+      promises.push(this.seedToken(tokenData[i], imageUrls));
     }
     await Promise.all(promises);
 

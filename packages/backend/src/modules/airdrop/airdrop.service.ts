@@ -81,6 +81,7 @@ export class AirdropService {
     return {
       id: merch.id,
       name: merch.item.name,
+      shortDescription: merch.item.shortDescription,
       description: merch.item.description,
       imageUrls: merch.item.imageUrls,
       type: merch.item.type,
@@ -99,6 +100,7 @@ export class AirdropService {
       id: merch.id,
       name: merch.item.name,
       description: merch.item.description,
+      shortDescription: merch.item.shortDescription,
       imageUrls: merch.item.imageUrls,
       type: merch.item.type,
       quantity: merch.quantity,

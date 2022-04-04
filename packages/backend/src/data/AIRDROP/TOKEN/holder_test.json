@@ -6,13 +6,12 @@
   "numberOfVestingPoint": "6",
   "imageUrls": [
     {
-      "color": "none",
+      "color": "black",
       "default": "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_token.png"
     }
   ],
-  "name": "Holder Airdrop",
-
-  "shortDescription": "This Airdrop is limited and applied for Gold & Diamonđ tiers",
+  "name": "$SIPHER Token",
+  "shortDescription": "This Retroactive Airdrop is for Genesis Sipher NFT holders",
   "description": [],
   "data": [
     {
