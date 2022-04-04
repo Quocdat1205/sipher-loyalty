@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Button, chakra, Flex, HStack, Img, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Button, chakra, Flex, HStack, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"

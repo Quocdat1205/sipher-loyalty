@@ -70,7 +70,7 @@ export const BringModal = ({
             </chakra.table>
             <Divider borderColor="whiteAlpha.100" mb={2} />
             <Flex mb={6} align="center" justify="flex-end">
-              <Flex w="40%">
+              <Flex justify="space-between" w="40%">
                 <Text fontWeight={600}>TOTAL QUANTITY: </Text>
                 <Text fontWeight={600}>{dataMint.reduce((acc, val) => acc + val.slot, 0)}</Text>
               </Flex>
