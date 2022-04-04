@@ -42,7 +42,7 @@ export const StyledInput = forwardRef<HTMLInputElement, InputProps>(
             }}
             isReadOnly={isReadOnly}
             {...rest}
-            pointerEvents={rest.isReadOnly ? "none" : "all"}
+            pointerEvents={isReadOnly ? "none" : "all"}
             type={rest.type === "password" ? (isShow ? "text" : "password") : rest.type}
             border={!isReadOnly ? (error ? "1px" : "0px") : "1px"}
             borderColor={!isReadOnly ? (error ? "red.500" : "neutral.500") : "neutral.600"}

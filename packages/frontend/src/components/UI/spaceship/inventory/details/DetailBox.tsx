@@ -127,7 +127,7 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
                 },
               }}
             >
-              <HeaderDetails details={details} isFetching={isFetched} />
+              <HeaderDetails details={details} isFetched={isFetched} />
               <ContentDetails isFetching={isFetched} />
             </Box>
           </Box>

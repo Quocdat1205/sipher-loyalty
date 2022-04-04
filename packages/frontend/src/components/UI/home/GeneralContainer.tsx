@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Button, Flex, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
-import { EthereumIcon, EthereumIcon2, SipherIcon } from "@components/shared"
+import { EthereumIcon2, SipherIcon } from "@components/shared"
 import { useBalanceContext } from "@hooks"
 import { currency } from "@utils"
 
