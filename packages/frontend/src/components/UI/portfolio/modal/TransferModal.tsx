@@ -86,7 +86,10 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
           </FormControl>
         </Form>
         <Text color="neutral.400" mb="6">
-          By clicking Transfer, I agree Sipher‘s <Link color="cyan.500">Term of Service</Link>
+          By clicking Transfer, I agree Sipher‘s{" "}
+          <Link color="cyan.500" href="https://atherlabs.xyz/terms-conditions" isExternal>
+            Term of Service
+          </Link>
         </Text>
         <HStack justify="center">
           <Button isLoading={isLoadingTranfer} onClick={handleClick} py={5} fontSize="md">
