@@ -17,21 +17,18 @@ const slideData = [
     title: "Spaceship Lootbox",
     description: "Lootboxes are ready to be minted and tradeable",
     srcBg: "/images/home/banner_home1.png",
-    buttonText: "EXPLORE",
     destination: "/spaceship",
   },
   {
     title: "Exclusive Sculptures",
     description: "From virtuality to reality, embrace an authentic look and feel of our digital characters",
     srcBg: "/images/home/banner_home2.png",
-    buttonText: "CHECK IT OUT",
     destination: "/portfolio",
   },
   {
     title: "Sipher Airdrops",
     description: "Where to find our latest airdrops with the most exciting gifts to claim",
     srcBg: "/images/home/banner_home3.png",
-    buttonText: "CHECK IT OUT",
     destination: "/airdrop",
   },
 ]

@@ -4,8 +4,6 @@ import { Box, Button, Flex, Text } from "@sipher.dev/sipher-ui"
 
 import { useWidth } from "@hooks"
 
-import CountDown from "../../CountDown"
-
 import { ContentDetails } from "./ContentDetails"
 import { HeaderDetails } from "./HeaderDetails"
 import { useDetailBox } from "./useDetailBox"
@@ -77,18 +75,11 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
         >
           <NftImage
             pt={8}
-            mintable={details?.mintable ?? 0}
+            minable={details?.mintable ?? 0}
             isFetching={isFetched}
-            windowHeight={windowWidth.height}
             src={details?.propertyLootbox.image || ""}
             alt={"box"}
           />
-          <Box pos="absolute" bottom="1rem" left="50%" zIndex={1} transform="translate(-50% ,-50%)">
-            <Text fontSize="sm" color="neutral.400" fontWeight={600}>
-              Reveal Date
-            </Text>
-            <CountDown fontWeight={600} deadline={1650024000000} />
-          </Box>
         </Box>
         <Flex
           flex={1}
@@ -112,13 +103,14 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
               }}
             >
               <NftImage
-                mintable={details?.mintable ?? 0}
+                minable={details?.mintable ?? 0}
                 isFetching={isFetched}
                 src={details?.propertyLootbox.image || ""}
                 alt={"box"}
               />
             </Box>
             <Box
+              pt={10}
               maxWidth={`${widthContainer}px`}
               flex={1}
               sx={{

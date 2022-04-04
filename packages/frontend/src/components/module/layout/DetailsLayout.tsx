@@ -20,9 +20,11 @@ export const DetailsLayout = ({ children }: StoreFrontLayoutProps) => {
       color="whiteAlpha.900"
       bg="neutral.900"
     >
-      <TopNavigationBar isSticky />
-      <Flex display={["none", "none", "flex"]} flexDir="column" zIndex={2} overflow="auto" flex={1}>
-        {children}
+      <Flex display={["none", "none", "flex"]} flexDir="column" flex={1} w="full">
+        <TopNavigationBar isSticky />
+        <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
+          {children}
+        </Flex>
       </Flex>
       <MobileUI />
     </Flex>
