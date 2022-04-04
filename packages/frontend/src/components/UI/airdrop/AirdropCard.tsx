@@ -104,7 +104,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
           ) : (
             <Img
               src={
-                data.imageUrls[0].default ||
+                data.imageUrls[0]?.default ||
                 "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/airdrop/sipher_token.png"
               }
               objectFit="contain"
