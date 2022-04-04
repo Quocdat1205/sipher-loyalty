@@ -71,7 +71,10 @@ export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handl
             </chakra.table>
             <Divider borderColor="whiteAlpha.100" mb={2} />
             <Flex mb={6} align="center" justify="flex-end">
-              <Text fontWeight={600}>TOTAL QUANTITY: {dataMint.reduce((acc, val) => acc + val.slot, 0)}</Text>
+              <Flex w="40%">
+                <Text fontWeight={600}>TOTAL QUANTITY: </Text>
+                <Text fontWeight={600}>{dataMint.reduce((acc, val) => acc + val.slot, 0)}</Text>
+              </Flex>
             </Flex>
             <Text mb={4} color="neutral.400">
               Minting Lootbox(es) to NFT(s) will be processed on Polygon and require you to change Blockchain network.
