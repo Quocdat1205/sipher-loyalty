@@ -55,7 +55,7 @@ const useNFTs = collectionId => {
           .map(item => ({
             ...item,
             minable: item?.value ?? 0,
-            slot: item?.value > 1 ? 1 : 0,
+            slot: item?.value > 0 ? 1 : 0,
             isChecked: false,
           })),
       ),
