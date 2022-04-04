@@ -20,13 +20,13 @@ import { SpLayer } from "@components/shared/icons"
 import { videos } from "@components/UI/portfolio/nft/NFTCard"
 
 interface NftImageProps extends BoxProps {
-  mintable: number
+  minable: number
   isFetching: boolean
   src: string
   alt?: string
 }
 
-export const NftImage = ({ mintable, isFetching, src, alt, ...rest }: NftImageProps) => {
+export const NftImage = ({ minable, isFetching, src, alt, ...rest }: NftImageProps) => {
   const [isOpen, setIsOpen] = useState("")
   const boxRef = useRef(null)
   const extension = src ? src.split(".")[5] : ""
@@ -55,7 +55,7 @@ export const NftImage = ({ mintable, isFetching, src, alt, ...rest }: NftImagePr
             <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white">
               <SpLayer />
               <Text ml={1} fontSize="xs" color="neutral.900" fontWeight={600}>
-                {mintable}
+                {minable}
               </Text>
             </Flex>
           </Box>

@@ -20,6 +20,7 @@ const useDetail = () => {
   const [modal, setModal] = useState("")
   const [slot, setSlot] = useState(0)
   const [isFetch, setIsFetch] = useState(false)
+  const [minable, setMinable] = useState(0)
 
   const {
     data: tokenDetails,
@@ -35,8 +36,10 @@ const useDetail = () => {
     {
       enabled: !isFetch && router.isReady && !!bearerToken && !!wallet.account,
       retry: false,
+      refetchOnWindowFocus: false,
       onSuccess: data => {
         setIsFetch(true)
+        setMinable(data.value)
         setSlot(data?.value > 0 ? 1 : 0)
       },
     },
@@ -95,7 +98,8 @@ const useDetail = () => {
           message: "Please review your wallet notifications.",
           duration: 10000,
         })
-        revalidate()
+        setMinable(minable - slot)
+        setModal("")
       },
     },
   )
@@ -112,6 +116,7 @@ const useDetail = () => {
   }
 
   return {
+    minable,
     slot,
     setSlot,
     modal,

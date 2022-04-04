@@ -50,7 +50,7 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
   const { data, hasNextPage, fetchNextPage, isLoading } = query
 
   const renderLoadingCards = () => {
-    return Array.from(Array(columns).keys()).map(i => <LoadingCard key={i} gridSize={gridSize} />)
+    return Array.from(Array(8).keys()).map(i => <LoadingCard key={i} gridSize={gridSize} />)
   }
   const renderNFTs = () => {
     if (isLoading) {

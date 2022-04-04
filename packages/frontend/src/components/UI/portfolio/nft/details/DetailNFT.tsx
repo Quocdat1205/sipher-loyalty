@@ -12,7 +12,7 @@ import { useDetailContext } from "./useDetail"
 
 const DetailNFT = () => {
   const [boxWidth, setBoxWidth] = useState(0)
-  const { tokenDetails, isFetched, router } = useDetailContext()
+  const { tokenDetails, isFetched, router, minable } = useDetailContext()
   const windowWidth = useWidth()
   // right UI info details
   const widthContainer = 800
@@ -62,7 +62,7 @@ const DetailNFT = () => {
           <NftImage
             pt={8}
             isFetching={isFetched}
-            mintable={tokenDetails?.value ?? 0}
+            minable={minable}
             src={tokenDetails?.imageUrl ?? ""}
             alt={"Image NFT"}
           />
@@ -88,12 +88,7 @@ const DetailNFT = () => {
                 },
               }}
             >
-              <NftImage
-                mintable={tokenDetails?.value ?? 0}
-                isFetching={isFetched}
-                src={tokenDetails?.imageUrl ?? ""}
-                alt={"Image NFT"}
-              />
+              <NftImage minable={minable} isFetching={isFetched} src={tokenDetails?.imageUrl ?? ""} alt={"Image NFT"} />
             </Box>
             <Box
               maxWidth={`${widthContainer}px`}

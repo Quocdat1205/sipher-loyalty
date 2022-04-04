@@ -7,6 +7,7 @@ import { ETHEREUM_NETWORK } from "@constant"
 
 import AirdropCard from "./AirdropCard"
 import { DetailsAirdrop } from "./DetailsAirdrop"
+import LoadingAirdropCard from "./LoadingAirdropCard"
 import { useAirdrops } from "./useAirdrops"
 
 const tabs = [
@@ -18,19 +19,34 @@ const tabs = [
 ]
 
 const AirdropUI = () => {
-  const { allAirdrops, currentTab, isFetched } = useAirdrops()
+  const { allAirdrops, currentTab, isFetched, isLoading } = useAirdrops()
 
   const handleSendMail = () => {
     window.open("mailto:hello@sipher.xyz")
+  }
+
+  const renderLoading = () => {
+    return Array.from(Array(8).keys()).map(i => <LoadingAirdropCard key={i} />)
+  }
+
+  const renderNFTs = () => {
+    if (isLoading) {
+      return renderLoading()
+    }
+    if (currentTab === "all") {
+      return allAirdrops.map((item, index) => <AirdropCard key={index} data={item} isFetched={isFetched} />)
+    } else {
+      return allAirdrops
+        .filter(airdrop => airdrop.type === currentTab.toString().toUpperCase())
+        .map(item => <AirdropCard key={item.id} data={item} isFetched={isFetched} />)
+    }
   }
 
   const renderTabContent = () => {
     if (currentTab === "all") {
       return allAirdrops.length > 0 ? (
         <SimpleGrid spacing={4} columns={[1, 2, 4, 5, 5]}>
-          {allAirdrops.map((item, index) => (
-            <AirdropCard key={index} data={item} isFetched={isFetched} />
-          ))}
+          {renderNFTs()}
         </SimpleGrid>
       ) : (
         <NoItemUI text="No available Airdrops" />
@@ -40,11 +56,7 @@ const AirdropUI = () => {
       return airdrops.length > 0 ? (
         <>
           <SimpleGrid spacing={4} columns={[1, 2, 4, 5, 5]}>
-            {allAirdrops
-              .filter(airdrop => airdrop.type === currentTab.toString().toUpperCase())
-              .map(item => (
-                <AirdropCard key={item.id} data={item} isFetched={isFetched} />
-              ))}
+            {renderNFTs()}
           </SimpleGrid>
           {currentTab === "merch" && (
             <Text pt={4} color="neutral.300">
