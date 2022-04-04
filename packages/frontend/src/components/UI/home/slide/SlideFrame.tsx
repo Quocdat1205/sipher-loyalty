@@ -1,19 +1,26 @@
 import { useRouter } from "next/router"
-import { Box, Button, Flex, Heading, Img, Text } from "@sipher.dev/sipher-ui"
+import { Box, Flex, Heading, Img, Text } from "@sipher.dev/sipher-ui"
 
 interface SlideFrameProps {
   title: string
   description: string
   srcBg: string
-  buttonText: string
   destination: string
 }
 
-const SlideFrame = ({ title, description, srcBg, buttonText, destination }: SlideFrameProps) => {
+const SlideFrame = ({ title, description, srcBg, destination }: SlideFrameProps) => {
   const router = useRouter()
 
   return (
-    <Flex maxH="35rem" flexDir="column" align="center" justify="center" pos="relative" w="full">
+    <Flex
+      onClick={() => router.push(destination)}
+      maxH="35rem"
+      flexDir="column"
+      align="center"
+      justify="center"
+      pos="relative"
+      w="full"
+    >
       <Img objectFit="cover" src={srcBg} alt="slide1" w="full" h="full" minH="14rem" />
       <Box pos="absolute" w="full" h="full" maxW="1440px">
         <Flex
@@ -39,22 +46,6 @@ const SlideFrame = ({ title, description, srcBg, buttonText, destination }: Slid
           >
             {description}
           </Text>
-          <Button
-            mt={12}
-            onClick={() => router.push(destination)}
-            bg="transparent"
-            border="1px"
-            borderColor="white"
-            size="lg"
-            fontSize={"xl"}
-            py={8}
-            px={16}
-            variant="secondary"
-            _hover={{ bg: "none" }}
-            _active={{ bg: "none" }}
-          >
-            {buttonText}
-          </Button>
         </Flex>
       </Box>
     </Flex>

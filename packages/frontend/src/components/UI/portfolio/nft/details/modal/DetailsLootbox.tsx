@@ -53,13 +53,19 @@ export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
                 {tokenDetails?.value}
               </Text>
             </Flex>
-            <Img
-              src={tokenDetails?.imageUrl ?? "https://via.placeholder.com/150"}
-              alt="airdrop"
-              objectFit="contain"
-              onLoad={() => setImageLoad(true)}
-              maxH="26rem"
-            />
+            <Skeleton
+              bg="black"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              pos="relative"
+              overflow="hidden"
+              h="14rem"
+              w="full"
+              isLoaded={isFetched}
+            >
+              <video src={tokenDetails?.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
+            </Skeleton>
           </Flex>
         </Skeleton>
         <Flex minH="26rem" flexDir="column" justify="space-between" flex={3} ml={6}>

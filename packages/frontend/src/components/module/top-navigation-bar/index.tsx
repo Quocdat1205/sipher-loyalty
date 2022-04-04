@@ -19,7 +19,8 @@ export const TopNavigationBar = ({ isSticky = false }: TopNavigationBarProps) =>
   return (
     <Flex
       flexDir="column"
-      backdropFilter="blur(30px)"
+      backdropFilter="blur(10px)"
+      bg="blackAlpha.800"
       pos={isSticky ? "sticky" : "relative"}
       top={0}
       left={0}

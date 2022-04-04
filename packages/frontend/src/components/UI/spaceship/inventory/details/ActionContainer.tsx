@@ -35,12 +35,12 @@ export const ActionContainer = ({
 }: ActionContainerProps) => {
   return (
     <Box
-      px={4}
+      px={6}
       pos="sticky"
       bottom={0}
       bg="linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(51, 52, 74, 0) 100%)"
       backdropFilter="blur(10px)"
-      py={4}
+      py={6}
       borderTop="1px"
       borderColor="neutral.600"
     >
@@ -53,7 +53,8 @@ export const ActionContainer = ({
             isDisabled={slot === 0}
             onClick={handleClick}
             isLoading={isLoading}
-            py={5}
+            py={4}
+            h="40px"
             colorScheme="accent"
             w="full"
             leftIcon={
