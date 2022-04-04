@@ -7,6 +7,7 @@ import { currency } from "@utils"
 
 import CardGeneral from "./CardGeneral"
 import { StakeModal } from "./modal"
+import SipherPriceStatistics from "./SipherPriceStatistics"
 
 interface GeneralContainerProps {
   totalPortfolioPrice: number
@@ -19,8 +20,11 @@ const GeneralContainer = ({ totalPortfolioPrice }: GeneralContainerProps) => {
     balance: { sipher },
   } = useBalanceContext()
 
+  const [isViewSipherInfo, setIsViewSipherInfo] = useState(false)
+
   return (
     <>
+      <SipherPriceStatistics isOpen={isViewSipherInfo} onClose={() => setIsViewSipherInfo(false)} />
       <SimpleGrid mb={8} columns={[2, 2, 4]} spacing={6}>
         <CardGeneral
           value={`${currency(totalPortfolioPrice)} ETH`}
@@ -34,6 +38,7 @@ const GeneralContainer = ({ totalPortfolioPrice }: GeneralContainerProps) => {
           value={currency(sipher ?? 0)}
           name="SIPHER Token"
           icon={<SipherIcon size="1.5rem" />}
+          onInfoClick={() => setIsViewSipherInfo(true)}
           // popoverProps={{ label: "SIPHER TOKEN", content: "Description" }}
           bottomChildren={
             <Flex justify="flex-end">

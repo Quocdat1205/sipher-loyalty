@@ -2,33 +2,24 @@ import React from "react"
 import { MdInfo } from "react-icons/md"
 import { Box, Flex, Text } from "@chakra-ui/react"
 
-import { CustomPopover } from "@components/shared"
-
 interface CardGeneralProps {
   value: string
   name: string
   icon: React.ReactNode
-  popoverProps?: { label: string; content: string }
+  onInfoClick?: () => void
   bottomChildren?: React.ReactNode
 }
 
-const CardGeneral = ({ value, name, icon, popoverProps, bottomChildren }: CardGeneralProps) => {
+const CardGeneral = ({ value, name, icon, onInfoClick, bottomChildren }: CardGeneralProps) => {
   return (
     <Flex flexDir="column" bg="blackAlpha.800" rounded="lg" w="full" p={3}>
       <Flex mb={0} align="center" justify="space-between" px={1}>
         <Flex align="center">
           <Text color="neutral.300">{name}</Text>
-          {popoverProps && (
-            <CustomPopover
-              label={popoverProps.label}
-              icon={
-                <Box ml={2} color="neutral.400">
-                  <MdInfo size="1.2rem" />
-                </Box>
-              }
-            >
-              <Text color="neutral.900">{popoverProps.content}</Text>
-            </CustomPopover>
+          {onInfoClick && (
+            <Box ml={2} color="neutral.400" cursor={"pointer"} onClick={onInfoClick}>
+              <MdInfo size="1.2rem" />
+            </Box>
           )}
         </Flex>
         <Flex align="center" justify="center" boxSize="2.25rem" bg="neutral.700" rounded="full">
