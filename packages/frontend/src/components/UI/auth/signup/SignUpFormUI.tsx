@@ -72,7 +72,7 @@ const SignUpFormUI = ({ setStep, onChangeEmail, onChangePassword }: SignUpFormUI
 
           <Text fontSize="sm" color="neutral.400">
             I have read and agree to the{" "}
-            <Link fontWeight={600} color="cyan.600" isExternal>
+            <Link href="https://atherlabs.xyz/privacy-policy" fontWeight={600} color="cyan.600" isExternal>
               Ather Labs Privacy Policy
             </Link>
           </Text>
