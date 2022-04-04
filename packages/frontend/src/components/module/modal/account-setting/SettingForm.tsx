@@ -68,7 +68,7 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
           <Box ml={8}>
             <Text mb={4}>Change your Profile picture</Text>
             <Button size="md" border="none" onClick={onSetAvatar} px={4} colorScheme="neutral" color="neutral.50">
-              Choose Avatar
+              CHOOSE AVATAR
             </Button>
           </Box>
         </Flex>
@@ -119,7 +119,7 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
             isDisabled={values.name === userProfile?.user.name && values.bio === userProfile?.user.bio}
             isLoading={isLoading}
           >
-            Save
+            SAVE
           </Button>
           <Button
             border="1px"
@@ -132,7 +132,7 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
             colorScheme={"neutral"}
             variant="secondary"
           >
-            Cancel
+            CANCEL
           </Button>
         </HStack>
       </Box>

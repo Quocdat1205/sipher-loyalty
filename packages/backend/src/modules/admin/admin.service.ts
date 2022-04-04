@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { Airdrop, ImageUrl, Item } from "@entity";
+import { Airdrop, ImageUrl, Item, SipherCollection } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -20,7 +20,9 @@ export class AdminService {
   constructor(
     @InjectRepository(Item) private itemRepo: Repository<Item>,
     @InjectRepository(ImageUrl) private imageUrlRepo: Repository<ImageUrl>,
-    @InjectRepository(Airdrop) private airDropRepo: Repository<Airdrop>,
+    @InjectRepository(Airdrop) private airdropRepo: Repository<Airdrop>,
+    @InjectRepository(SipherCollection)
+    private sipherCollectionRepo: Repository<SipherCollection>,
     private merchService: MerchService,
     private airdropService: AirdropService,
     private pendingMintService: MintService,
@@ -89,6 +91,19 @@ export class AdminService {
     }
   }
 
+  async deleteCollection(id: string) {
+    const collection = await this.sipherCollectionRepo.findOne({
+      id: id.toLowerCase(),
+    });
+    console.log(collection);
+
+    if (collection) {
+      this.sipherCollectionRepo.remove(collection);
+    } else {
+      throw new HttpException("collection not found", HttpStatus.BAD_REQUEST);
+    }
+  }
+
   async updateDataTableByType(body: BodyAdminUpdate) {
     switch (body.type) {
       case TableType.AIRDROP:
@@ -131,7 +146,7 @@ export class AdminService {
       throw new HttpException("Image not found", HttpStatus.NOT_FOUND);
     }
     if (!updateImageUrlDto.airdropId !== undefined) {
-      const airDrop = await this.airDropRepo.findOne(
+      const airDrop = await this.airdropRepo.findOne(
         updateImageUrlDto.airdropId
       );
       if (!airDrop) {

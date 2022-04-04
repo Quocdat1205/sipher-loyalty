@@ -55,7 +55,7 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
                 <BiChevronLeft size="1.4rem" />
               </Box>
               <Text _groupHover={{ color: "white" }} color="neutral.500">
-                Back
+                BACK
               </Text>
             </Button>
           </Box>
