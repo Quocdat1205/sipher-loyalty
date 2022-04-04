@@ -1,6 +1,5 @@
 import { FieldValues, useForm } from "react-hook-form"
 import { useMutation } from "react-query"
-import { useRouter } from "next/router"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
@@ -39,7 +38,7 @@ const VerifyUI = ({ email, setStep }: VerifyFormProps) => {
     d => AtherIdAuth.forgotPasswordSubmit(email, d.code, d.password),
     {
       onSuccess: () => {
-        setStep(ForgotPasswordStep.Verify)
+        setStep(ForgotPasswordStep.Success)
       },
       onError: (e: any) => {
         toast({

@@ -6,6 +6,7 @@ import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, Button, Divider, Flex, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
+import { useAuthFlowStore } from "@store"
 
 import { ChakraModal, Form, StyledInput } from "@components/shared"
 import { useChakraToast } from "@hooks"
@@ -41,6 +42,8 @@ const ChangePasswordModal = ({ isOpen, onClose, onBack }: ChangePasswordModal) =
 
   const toast = useChakraToast()
 
+  const setAuthFlow = useAuthFlowStore(s => s.setState)
+
   const { cognitoUser } = useAuth()
   const { mutate: mutateChangePassword, isLoading } = useMutation<unknown, unknown, FieldValues>(
     d => AtherIdAuth.changePassword(cognitoUser!, d.currentPassword, d.newPassword),
@@ -52,11 +55,11 @@ const ChangePasswordModal = ({ isOpen, onClose, onBack }: ChangePasswordModal) =
         })
         onClose()
       },
-      onError: () => {
+      onError: (e: any) => {
         toast({
           status: "error",
           title: "Change password failed!",
-          message: "Pleases try again later",
+          message: e.message ?? "Pleases try again later",
         })
       },
     },
@@ -93,6 +96,17 @@ const ChangePasswordModal = ({ isOpen, onClose, onBack }: ChangePasswordModal) =
               {...register("newPassword")}
             />
           </Stack>
+          <Text
+            cursor="pointer"
+            color="cyan.600"
+            fontWeight={600}
+            onClick={() => {
+              onClose()
+              setAuthFlow("forgotPassword")
+            }}
+          >
+            Forgot password?
+          </Text>
           <Divider my={6} />
           <HStack spacing={4} justify="center">
             <Button type="submit" fontSize="md" py={6} fontWeight={600} isLoading={isLoading}>

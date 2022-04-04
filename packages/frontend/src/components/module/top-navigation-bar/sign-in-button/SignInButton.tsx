@@ -5,6 +5,7 @@ import { useWalletContext } from "@web3"
 
 import ChangeWallet from "@components/module/forms/authentication/change-wallet"
 import ConnectToWallet from "@components/module/forms/authentication/connect-wallet"
+import ForgotPassword from "@components/module/forms/authentication/forgot-password"
 import { AccountModal, BuySipherModal } from "@components/module/modal"
 import { shortenAddress } from "@utils"
 import { useAuth } from "src/providers/auth"
@@ -86,6 +87,7 @@ const SignInButton = () => {
       <BuySipherModal isOpen={modal === "BUY"} onClose={() => setModal("")} />
       <ConnectToWallet />
       <ChangeWallet />
+      <ForgotPassword />
     </Fragment>
   )
 }

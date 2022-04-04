@@ -1,8 +1,10 @@
 import create from "zustand"
 
+type AuthFlow = "changeWallet" | "connectWallet" | "forgotPassword" | "verifyForgotPassword"
+
 interface AuthFlowState {
-  state: "changeWallet" | "connectWallet" | null
-  setState: (state: "changeWallet" | "connectWallet" | null) => void
+  state: AuthFlow | null
+  setState: (state: AuthFlow | null) => void
 }
 
 export const useAuthFlowStore = create<AuthFlowState>(set => ({

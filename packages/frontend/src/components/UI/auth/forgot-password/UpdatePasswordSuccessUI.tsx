@@ -7,7 +7,7 @@ const UpdatePasswordSuccessUI = () => {
   return (
     <Box>
       <Heading fontSize={"lg"} fontWeight={600} mb={8} color="white" textAlign={"center"}>
-        PASSWORD UPDATEDs!
+        PASSWORD UPDATED!
       </Heading>
       <Text color="neutral.300" mb={4}>
         You have successfully updated your account password.

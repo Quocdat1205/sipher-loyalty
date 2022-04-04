@@ -43,10 +43,10 @@ export const AuthLayout: FC = ({ children }) => {
         </Box>
         <Image layout="fill" src="/images/auth/background.png" alt="background" />
         <Flex flex={1} py={24} px={[8, 16, 24]} pos="relative" justify="center">
-          <Box pos="absolute" bottom={0} right={0} w="44rem" h="50rem">
+          <Box pos="absolute" bottom={0} right={0} w="44rem" h="44rem">
             <Image src="/images/auth/neko_figure.svg" alt="neko" layout="fill" />
           </Box>
-          <Box w="full" maxW="960px" zIndex={2}>
+          <Box w="full" maxW="760px" zIndex={2}>
             <Box w="full" maxW="440px" zIndex={2}>
               <Text fontSize={"3xl"} mb={6} fontWeight={600}>
                 {`Get your Ather Account & Start earning rewards`}
