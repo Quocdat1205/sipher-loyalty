@@ -76,7 +76,7 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
         </Flex>
         <HStack spacing={4} align="flex-start" mb={4}>
           <Box flex={1}>
-            <StyledInput label="Email" value={user?.email} isReadOnly={true} flex={1} />
+            <StyledInput label="Email" defaultValue={user?.email} isReadOnly={true} flex={1} />
           </Box>
           <Box flex={1}>
             <StyledInput
