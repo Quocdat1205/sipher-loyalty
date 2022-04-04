@@ -133,7 +133,7 @@ export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handl
                 borderColor="neutral.600"
                 variant="secondary"
               >
-                Cancel
+                CANCEL
               </Button>
             </>
           ) : status === "SUCCESS" ? (

@@ -131,7 +131,7 @@ export const MintModal = ({
                 borderColor="neutral.600"
                 variant="secondary"
               >
-                Cancel
+                CANCEL
               </Button>
             </>
           ) : status === "SUCCESS" ? (

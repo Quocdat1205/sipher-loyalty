@@ -90,7 +90,7 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
         </Text>
         <HStack justify="center">
           <Button isLoading={isLoadingTranfer} onClick={handleClick} py={5} fontSize="md">
-            Transfer
+            TRANSFER
           </Button>
           <Button
             onClick={onClose}
@@ -101,7 +101,7 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
             border="1px"
             borderColor="neutral.600"
           >
-            Cancel
+            CANCEL
           </Button>
         </HStack>
       </Box>

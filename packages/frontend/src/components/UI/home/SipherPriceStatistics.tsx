@@ -40,7 +40,7 @@ const SipherPriceStatistics = ({ isOpen, onClose }: SipherPriceStatisticsProps) 
     dataPrice: { sipherPrice },
   } = useBalanceContext()
   return (
-    <ChakraModal title="Sipher Price Statistics" isOpen={isOpen} onClose={onClose}>
+    <ChakraModal title="SIPHER PRICE STATISTICS" isOpen={isOpen} onClose={onClose}>
       <Box px={6}>
         <StatisticRow
           name="SIPHER Price"
