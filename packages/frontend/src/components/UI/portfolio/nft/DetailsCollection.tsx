@@ -15,6 +15,7 @@ import {
   Text,
 } from "@sipher.dev/sipher-ui"
 
+import { Metadata } from "@components/shared"
 import { SpVerified } from "@components/shared/icons"
 import { capitalize } from "@utils"
 
@@ -61,6 +62,14 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
 
   return (
     <Flex flexDir="column" flex={1} w="full" pos="relative">
+      <Metadata
+        title={
+          isFetched
+            ? `${capitalize(collectionData?.name?.toLowerCase() ?? "")} | Sipher Portfolio`
+            : "Loading... | Sipher Dashboard"
+        }
+        description=""
+      />
       <Flex pos="fixed" top="4.5rem" left={0} zIndex={1} flexDir="column">
         <Box pt={8} px={8} w="full">
           <Button

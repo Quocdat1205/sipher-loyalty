@@ -30,7 +30,7 @@ export const SpaceshipContainer = () => {
         </Box>
         <Box maxW="1200px" w="full">
           <Flex flexDir={["column", "column", "row"]} justify="space-between" align="center">
-            <Box py={[8, 8, 12, 12, 28]} flex={2}>
+            <Box py={[28]} flex={2}>
               <Flex>
                 <Text
                   borderBottom="4px"
