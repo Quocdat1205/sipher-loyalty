@@ -62,7 +62,7 @@ export const BringModal = ({
                       </Flex>
                     </chakra.td>
                     <chakra.td py={2} w="40%">
-                      <QuantitySelector onChange={item.onChange} maxValue={item.value} value={item.slot} />
+                      <QuantitySelector onChange={item.onChange} maxValue={item.minable} value={item.slot} />
                     </chakra.td>
                   </chakra.tr>
                 ))}
