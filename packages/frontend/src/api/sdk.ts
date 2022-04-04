@@ -1319,6 +1319,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags admin
+     * @name AdminControllerDeleteCollection
+     * @request DELETE:/api/sipher/loyalty/admin/delete-collection-by-id/{id}
+     * @secure
+     */
+    adminControllerDeleteCollection: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/delete-collection-by-id/${id}`,
+        method: 'DELETE',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
      * @name AdminControllerRefresh
      * @request PUT:/api/sipher/loyalty/admin/refresh
      * @secure
