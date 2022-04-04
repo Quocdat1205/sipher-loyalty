@@ -1,5 +1,6 @@
 import { BigNumber, ethers } from "ethers";
 import constant, { Chain } from "@setting/constant";
+import _ from "lodash";
 
 const randomSalt = () =>
   ethers.utils.formatBytes32String(
@@ -62,6 +63,14 @@ const toTokenId = (id: string) => {
   return splitIdStr[0];
 };
 
+const toCamcelCase = (data: Object) => {
+  const camelCaseStats = {};
+  Object.entries(data).forEach((entry) => {
+    camelCaseStats[_.camelCase(entry[0])] = entry[1];
+  });
+  return camelCaseStats;
+};
+
 export {
   currency,
   getDeadline3Day,
@@ -72,4 +81,5 @@ export {
   randomSalt,
   toTokenId,
   weiToEther,
+  toCamcelCase,
 };
