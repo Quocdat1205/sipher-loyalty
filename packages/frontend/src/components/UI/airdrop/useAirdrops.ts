@@ -73,7 +73,6 @@ export const useAirdrops = () => {
       },
     },
   )
-  console.log(dataToken)
 
   const { mutate: claim } = useMutation<unknown, unknown, InputAirdrops>(
     ({ totalAmount, proof }) => scCaller.current!.SipherAirdrops.claim(totalAmount, proof),
