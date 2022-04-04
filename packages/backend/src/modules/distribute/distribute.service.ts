@@ -4,7 +4,7 @@ import path from "path";
 
 import axios from "axios";
 import { toChecksumAddress } from "ethereumjs-util";
-import { Contract, ethers, providers, Wallet } from "ethers";
+import { BigNumber, Contract, ethers, providers, Wallet } from "ethers";
 import { Injectable } from "@nestjs/common";
 import { erc1155Abi } from "@setting/blockchain/abis";
 import { getContract, getProvider } from "@setting/blockchain/ethers";
@@ -181,7 +181,8 @@ export class DistributeService {
         toChecksumAddress(data.address),
         data.id,
         data.amount,
-        "0x"
+        "0x",
+        { gasPrice: BigNumber.from(70 * 10 ** 9) }
       );
     LoggerService.log(tx.hash);
     let result = {};
@@ -212,7 +213,8 @@ export class DistributeService {
         data.address,
         data.ids,
         data.amounts,
-        "0x"
+        "0x",
+        { gasPrice: BigNumber.from(70 * 10 ** 9) }
       );
     LoggerService.log(tx.hash);
     let result = {};
