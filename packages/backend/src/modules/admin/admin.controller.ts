@@ -36,7 +36,11 @@ import {
   UpdateItemDto,
 } from "./admin.dto";
 import { AdminService } from "./admin.service";
-import { BodyAdminUpdate, QueryAdminGetAll } from "./admin.type";
+import {
+  BodyAdminImageUrl,
+  BodyAdminUpdate,
+  QueryAdminGetAll,
+} from "./admin.type";
 
 @ApiTags("admin")
 @Controller("admin")
@@ -206,6 +210,20 @@ export class AdminController {
   async updateAll(@Body() body: BodyAdminUpdate, @Req() req: Request) {
     await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     return this.adminService.updateDataTableByType(body);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @Put("add-image-token")
+  async updateImageUrlForToken(
+    @Body() body: BodyAdminImageUrl,
+    @Req() req: Request
+  ) {
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
+    return this.adminService.updateImageUrlForToken(
+      body.imageUrl,
+      body.addressContract
+    );
   }
 
   @UseGuards(AtherGuard)
