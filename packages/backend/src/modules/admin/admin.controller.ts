@@ -3,6 +3,7 @@ import { ERC1155Lootbox, ERC1155Sculpture } from "@entity";
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -206,6 +207,14 @@ export class AdminController {
   async updateAll(@Body() body: BodyAdminUpdate, @Req() req: Request) {
     await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
     return this.adminService.updateDataTableByType(body);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @Delete("delete-collection-by-id/:id")
+  async deleteCollection(@Param("id") id: string, @Req() req: Request) {
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
+    return this.adminService.deleteCollection(id);
   }
 
   @UseGuards(AtherGuard)

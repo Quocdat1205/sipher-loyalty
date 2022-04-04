@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { Airdrop, ImageUrl, Item } from "@entity";
+import { Airdrop, ImageUrl, Item, SipherCollection } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -21,6 +21,8 @@ export class AdminService {
     @InjectRepository(Item) private itemRepo: Repository<Item>,
     @InjectRepository(ImageUrl) private imageUrlRepo: Repository<ImageUrl>,
     @InjectRepository(Airdrop) private airdropRepo: Repository<Airdrop>,
+    @InjectRepository(SipherCollection)
+    private sipherCollectionRepo: Repository<SipherCollection>,
     private merchService: MerchService,
     private airdropService: AirdropService,
     private pendingMintService: MintService,
@@ -86,6 +88,17 @@ export class AdminService {
 
       default:
         throw new HttpException("invalid type", HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async deleteCollection(id: string) {
+    const collection = await this.sipherCollectionRepo.findOne({
+      id: id.toLowerCase(),
+    });
+    if (collection) {
+      this.sipherCollectionRepo.delete(collection);
+    } else {
+      throw new HttpException("collection not found", HttpStatus.BAD_REQUEST);
     }
   }
 
