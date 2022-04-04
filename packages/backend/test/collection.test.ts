@@ -261,7 +261,7 @@ describe("Collection unit test", () => {
         .spyOn(sipherCollectionRepo, "findOne")
         .mockResolvedValueOnce(lootboxCol);
       jest.spyOn(nftService, "search").mockResolvedValueOnce([item2]);
-      jest.spyOn(nftService, "count").mockResolvedValueOnce(item2.value);
+      jest.spyOn(nftService, "count").mockResolvedValueOnce(1);
       jest.spyOn(utils, "isLootboxContract").mockReturnValueOnce(true);
       const uri = new ERC1155Lootbox();
       uri.name = "yeet";
@@ -294,7 +294,7 @@ describe("Collection unit test", () => {
         .spyOn(sipherCollectionRepo, "findOne")
         .mockResolvedValueOnce(sculptureCol);
       jest.spyOn(nftService, "search").mockResolvedValueOnce([item3]);
-      jest.spyOn(nftService, "count").mockResolvedValueOnce(item3.value);
+      jest.spyOn(nftService, "count").mockResolvedValueOnce(1);
       jest.spyOn(utils, "isLootboxContract").mockReturnValueOnce(false);
       jest.spyOn(utils, "isSculptureContract").mockReturnValueOnce(true);
       const uri = new ERC1155Sculpture();
