@@ -38,6 +38,7 @@ const ConnectToWallet = () => {
     {
       onSuccess: () => {
         qc.invalidateQueries("owned-wallets")
+        setFlowState(null)
       },
       onError: async (e: any) => {
         reset()
