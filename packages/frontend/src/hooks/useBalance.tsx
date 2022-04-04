@@ -4,6 +4,7 @@ import client from "@client"
 import { useWalletContext } from "@web3"
 
 import { ETHEREUM_NETWORK } from "@constant"
+import { PriceDatas } from "@sdk"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
@@ -36,16 +37,34 @@ const useBalance = () => {
           eth: 0,
           usd: 0,
           change: 0,
+          circulatingSupply: 0,
+          fullyDilutedValuation: 0,
+          marketcap: 0,
+          marketcapChange: 0,
+          maxSupply: 0,
+          totalSupply: 0,
         },
         ethereumPrice: {
           eth: 0,
           usd: 0,
           change: 0,
+          circulatingSupply: 0,
+          fullyDilutedValuation: 0,
+          marketcap: 0,
+          marketcapChange: 0,
+          maxSupply: 0,
+          totalSupply: 0,
         },
         maticPrice: {
           eth: 0,
           usd: 0,
           change: 0,
+          circulatingSupply: 0,
+          fullyDilutedValuation: 0,
+          marketcap: 0,
+          marketcapChange: 0,
+          maxSupply: 0,
+          totalSupply: 0,
         },
       },
       onSuccess: () => {
@@ -67,7 +86,7 @@ const useBalance = () => {
   const totalUsdPrice = totalETHPrice * dataPrice!.ethereumPrice.usd ?? 0
 
   return {
-    dataPrice,
+    dataPrice: dataPrice as PriceDatas,
     totalETHPrice,
     totalUsdPrice,
     balance: {

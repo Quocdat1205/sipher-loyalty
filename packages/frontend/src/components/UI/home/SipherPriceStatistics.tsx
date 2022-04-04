@@ -3,6 +3,8 @@ import { BsFillTriangleFill } from "react-icons/bs"
 import { Box, Divider, Flex, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
+import { useBalanceContext } from "@hooks"
+import { currency } from "@utils"
 
 interface StatisticRowProps {
   name: string
@@ -34,17 +36,25 @@ interface SipherPriceStatisticsProps {
 }
 
 const SipherPriceStatistics = ({ isOpen, onClose }: SipherPriceStatisticsProps) => {
+  const {
+    dataPrice: { sipherPrice },
+  } = useBalanceContext()
   return (
     <ChakraModal title="Sipher Price Statistics" isOpen={isOpen} onClose={onClose}>
       <Box px={6}>
         <StatisticRow
           name="SIPHER Price"
-          value="0.001 ETH (0.98$)"
+          value={`${currency(sipherPrice.eth, "", { minimumFractionDigits: 5 })} ETH (${currency(
+            sipherPrice.usd,
+            "$",
+          )})`}
           additionalValue={
-            <Flex color="teal.400" align="center" justify={"flex-end"}>
-              <BsFillTriangleFill size="0.65rem" />
+            <Flex color={sipherPrice.change < 0 ? "red.400" : "cyan.400"} align="center" justify={"flex-end"}>
+              <Box transform="auto" rotate={sipherPrice.change < 0 ? "180deg" : "0deg"}>
+                <BsFillTriangleFill size="0.65rem" />
+              </Box>
               <Text fontWeight={600} ml={2}>
-                0.89%
+                {currency(Math.abs(sipherPrice.change))}%
               </Text>
               <Text color="neutral.300" ml={2}>
                 24 HR
@@ -54,10 +64,12 @@ const SipherPriceStatistics = ({ isOpen, onClose }: SipherPriceStatisticsProps) 
         />
         <StatisticRow
           name="Market Cap"
-          value="$26,771,586.94"
+          value={currency(sipherPrice.marketcap, "$")}
           additionalValue={
             <Flex color="red.400" align="center" justify={"flex-end"}>
-              <BsFillTriangleFill size="0.65rem" />
+              <Box transform="auto" rotate={sipherPrice.change < 0 ? "180deg" : "0deg"}>
+                <BsFillTriangleFill size="0.65rem" />
+              </Box>
               <Text fontWeight={600} ml={2}>
                 0.89%
               </Text>
