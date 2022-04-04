@@ -151,9 +151,9 @@ export const ShippingModal = ({ isOpen, onClose }: SettingAccountModalProps) => 
       </Box>
       <Divider orientation="horizontal" />
       <HStack pt={6} pb={2} justify="center">
-        <Button>Save</Button>
+        <Button>SAVE</Button>
         <Button border="1px" borderColor="neutral.600" colorScheme="neutral" variant="secondary" onClick={onClose}>
-          Cancel
+          CANCEL
         </Button>
       </HStack>
     </ChakraModal>

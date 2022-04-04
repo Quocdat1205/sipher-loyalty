@@ -53,7 +53,7 @@ const ClaimStatusModal = ({ isOpen, onClose, status }: ClaimStatusModalProp) => 
         </Text>
         <Divider mb={4} borderColor="whiteAlpha.100" />
         <Button w="10rem" onClick={onClose}>
-          Done
+          DONE
         </Button>
       </Flex>
     </ChakraModal>
