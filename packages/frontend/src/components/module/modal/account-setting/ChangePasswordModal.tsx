@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
     .required("New password is required")
     .matches(
       /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/,
-      "Must contain at least 8 characters, one uppercase, one number and one special character",
+      "Password must contain 8 or more characters with a combination of uppercase, lowercase, numbers, and symbols.",
     ),
 })
 
@@ -89,6 +89,7 @@ const ChangePasswordModal = ({ isOpen, onClose, onBack }: ChangePasswordModal) =
               error={errors.newPassword?.message}
               label="New password"
               type="password"
+              helperText="Password must contain 8 or more characters with a combination of uppercase, lowercase, numbers, and symbols."
               {...register("newPassword")}
             />
           </Stack>

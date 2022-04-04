@@ -9,7 +9,7 @@ import { NextPageWithLayout } from "../_app"
 const PortfolioPage: NextPageWithLayout = () => {
   return (
     <>
-      <Metadata title="Portfolio" description="" />
+      <Metadata title="Portfolio | Sipher Dashboard" description="" />
       <ContentPortfolio />
     </>
   )
