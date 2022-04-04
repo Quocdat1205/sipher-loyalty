@@ -20,7 +20,7 @@ export class AdminService {
   constructor(
     @InjectRepository(Item) private itemRepo: Repository<Item>,
     @InjectRepository(ImageUrl) private imageUrlRepo: Repository<ImageUrl>,
-    @InjectRepository(Airdrop) private airDropRepo: Repository<Airdrop>,
+    @InjectRepository(Airdrop) private airdropRepo: Repository<Airdrop>,
     private merchService: MerchService,
     private airdropService: AirdropService,
     private pendingMintService: MintService,
@@ -131,7 +131,7 @@ export class AdminService {
       throw new HttpException("Image not found", HttpStatus.NOT_FOUND);
     }
     if (!updateImageUrlDto.airdropId !== undefined) {
-      const airDrop = await this.airDropRepo.findOne(
+      const airDrop = await this.airdropRepo.findOne(
         updateImageUrlDto.airdropId
       );
       if (!airDrop) {
@@ -156,5 +156,17 @@ export class AdminService {
     imageUrl.color = updateImageUrlDto.color;
 
     await this.imageUrlRepo.save(imageUrl);
+  }
+
+  async updateImageUrlForToken(imageUrl: ImageUrl, addressContract: string) {
+    const _imageUrl = this.imageUrlRepo.create(imageUrl);
+    const result = await this.imageUrlRepo.save(_imageUrl);
+    const tokens = await this.airdropRepo.find({ addressContract });
+    const promises = [];
+    for (let i = 0; i < tokens.length; i++) {
+      tokens[i].imageUrls = [result];
+      promises.push(this.airdropRepo.save(tokens[i]));
+    }
+    return Promise.all(promises);
   }
 }

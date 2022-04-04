@@ -79,3 +79,11 @@ export class BodyAdminUpdate {
   @ApiProperty({ type: ClaimableLootbox })
   claimableLootbox?: ClaimableLootbox;
 }
+
+export class BodyAdminImageUrl {
+  @ApiProperty({ type: ImageUrl })
+  imageUrl?: ImageUrl;
+
+  @ApiProperty({ type: String })
+  addressContract?: string;
+}
