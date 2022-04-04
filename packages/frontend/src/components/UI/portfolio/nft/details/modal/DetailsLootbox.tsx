@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { Button, chakra, Flex, HStack, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
@@ -15,12 +15,11 @@ interface DetailLootboxProps {
 
 export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
   const { tokenDetails, isFetched, isLoadingBurn, slot, setSlot, router, handleMint, minable } = useDetailContext()
-  const [imageLoad, setImageLoad] = useState(false)
 
   return (
     <ChakraModal scrollBehavior="inside" title={""} isOpen={isOpen} onClose={onClose} size="5xl">
       <Flex pt={6} px={8} minH="28rem" h="full" align="flex-start">
-        <Skeleton flex={2} isLoaded={imageLoad && isFetched}>
+        <Skeleton flex={2} isLoaded={isFetched}>
           <Flex
             sx={{
               video: {
