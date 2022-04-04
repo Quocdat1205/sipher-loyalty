@@ -76,7 +76,7 @@
   },
   {
     "address": "0x2115180d4b3416679baf296def4f300faab2b5dd",
-    "INU": 1,
+    "INU": 2,
     "NEKO": 1
   },
   {
@@ -96,7 +96,7 @@
   },
   {
     "address": "0xb4cb9a1cd5dc64f88e87c26c54993f49b965796c",
-    "INU": 1,
+    "INU": 2,
     "NEKO": 1
   },
   {
@@ -266,7 +266,7 @@
   },
   {
     "address": "0xc29657285e42f99265ff26c8ece2716cf2b34e6d",
-    "INU": 1,
+    "INU": 2,
     "NEKO": 2
   },
   {
@@ -611,7 +611,78 @@
   },
   {
     "address": "0x129cca387eacfe191d8edde1d8d9723b6b891a8b",
-    "INU": 0,
+    "INU": 1,
     "NEKO": 1
+  },
+  {
+    "address": "0xfd75d70a385dd971ac2500795c34c70ea775c7ff",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xf2722335446bccd8a0c00a6c89d3888e53e2229d",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x2ecf9b5f8ad7cfc88bb215caf2694a75cfcdd953",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xb2e5867a09c5e0c899ba7787622bebf6bf89027f",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xce97afc97c0670d8fa07692a17212007b39459c0",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xaa9f8fcfa5995a459d65895e4b7a6fdf1a6b131c",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x4669416015a1a79280765f3d1366b1e5fec524ba",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x90ce26b4a461071273799a2368ce0226ff70920e",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xd9f77817d630e1209faabc0b15ac0f2d02ac5d93",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x3afee4d44ff4c005ae6f448af578f63cfbde6cd2",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x4f8382f3d38108128e98b621f7370179dd99e1b6",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xff3e3567f91b7afc291e696986acefe93fc147af",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0xf77d6bd2d46b9bf4d1fdddd16da8bfb575e5a0ed",
+    "INU": 1,
+    "NEKO": 0
+  },
+  {
+    "address": "0x1f5a3dde3f9359057de10a157820c607e2ee6aa6",
+    "INU": 1,
+    "NEKO": 0
   }
 ]
+
