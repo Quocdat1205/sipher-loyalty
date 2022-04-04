@@ -67,11 +67,11 @@ const SipherPriceStatistics = ({ isOpen, onClose }: SipherPriceStatisticsProps) 
           value={currency(sipherPrice.marketcap, "$")}
           additionalValue={
             <Flex color="red.400" align="center" justify={"flex-end"}>
-              <Box transform="auto" rotate={sipherPrice.change < 0 ? "180deg" : "0deg"}>
+              <Box transform="auto" rotate={sipherPrice.marketcapChange < 0 ? "180deg" : "0deg"}>
                 <BsFillTriangleFill size="0.65rem" />
               </Box>
               <Text fontWeight={600} ml={2}>
-                0.89%
+                {currency(Math.abs(sipherPrice.marketcapChange))}%
               </Text>
               <Text color="neutral.300" ml={2}>
                 24 HR
@@ -79,9 +79,13 @@ const SipherPriceStatistics = ({ isOpen, onClose }: SipherPriceStatisticsProps) 
             </Flex>
           }
         />
-        <StatisticRow name="Fully Diluted Valuation" value="$669,289,673.50" />
-        <StatisticRow name="Circulating Supply" value="40,000,000" />
-        <StatisticRow name="Max Supply" value="1,000,000,000" haveDivider={false} />
+        <StatisticRow name="Fully Diluted Valuation" value={currency(sipherPrice.fullyDilutedValuation, "$")} />
+        <StatisticRow name="Circulating Supply" value={currency(sipherPrice.circulatingSupply)} />
+        <StatisticRow
+          name="Max Supply"
+          value={currency(sipherPrice.maxSupply!, "", { maximumFractionDigits: 0 })}
+          haveDivider={false}
+        />
       </Box>
     </ChakraModal>
   )
