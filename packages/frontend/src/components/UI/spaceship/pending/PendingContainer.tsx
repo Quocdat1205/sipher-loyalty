@@ -1,6 +1,6 @@
 import React from "react"
 import { format } from "date-fns"
-import { Box, Button, chakra, Flex, Img, Stack, Text, Wrap, WrapItem } from "@sipher.dev/sipher-ui"
+import { Box, Button, chakra, Flex, Stack, Text, Wrap, WrapItem } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
 import NoItemUI from "@components/shared/NoItemUI"
@@ -53,8 +53,8 @@ export const PendingContainer = () => {
                               bg="neutral.600"
                               placement="top"
                               icon={
-                                <Flex align="center">
-                                  <Img src={i.image} alt={`Box ${i.tokenId.toString()}`} h="2rem" />
+                                <Flex blendMode="lighten" sx={{ video: { h: "2rem" } }} align="center">
+                                  <video src={i.image} autoPlay loop muted datatype="video/mp4"></video>
                                   <Text>x{i.quantity}</Text>
                                 </Flex>
                               }

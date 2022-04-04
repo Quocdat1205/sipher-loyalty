@@ -71,7 +71,7 @@ export class CollectionService {
     return data.pipe(
       map((res) => {
         const camelCaseStats = {};
-        Object.entries(res.data.stats).map((entry) => {
+        Object.entries(res.data.stats).forEach((entry) => {
           camelCaseStats[_.camelCase(entry[0])] = entry[1];
         });
         return camelCaseStats;
@@ -259,6 +259,7 @@ export class CollectionService {
         await this.updateCollectionStats(collections[i].id, stats);
       } catch (err) {
         if (err.response && err.response.status === 404) {
+          LoggerService.debug("Collection stats not found");
         } else {
           LoggerService.error(err);
         }
@@ -368,14 +369,14 @@ export class CollectionService {
       LoggerService.debug("Is lootbox contract");
       newItem.tokenId = toTokenId(item.tokenId);
       uriInfo = await this.uriService.getDataERC1155Lootbox(
-        parseInt(newItem.tokenId)
+        parseInt(newItem.tokenId, 10)
       );
     }
     if (isSculptureContract(item.collectionId)) {
       LoggerService.debug("Is sculpture contract");
       newItem.tokenId = toTokenId(item.tokenId);
       uriInfo = await this.uriService.getDataERC1155Sculpture(
-        parseInt(newItem.tokenId)
+        parseInt(newItem.tokenId, 10)
       );
     }
     if (uriInfo) {

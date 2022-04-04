@@ -1,7 +1,7 @@
-import React, { useState } from "react"
+import React from "react"
 import { BsClockFill } from "react-icons/bs"
 import { MdInfo } from "react-icons/md"
-import { Box, Flex, Img, Link, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Box, Flex, Link, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomPopover } from "@components/shared"
 
@@ -12,28 +12,29 @@ import { useClaim } from "./useClaim"
 interface CardProps {
   isPopover?: boolean
   data: ReturnType<typeof useClaim>["claimData"][number]
+  isFetched: boolean
 }
 
-const ClaimCard = React.memo(({ data, isPopover }: CardProps) => {
+const ClaimCard = React.memo(({ data, isPopover, isFetched }: CardProps) => {
   const { propertyLootbox, expiredDate, quantity } = data
-  const [imageLoaded, setImageLoaded] = useState(false)
 
   return (
     <Flex rounded="lg" align="center" justify="center" pos="relative">
       <Skeleton
         blendMode="lighten"
-        sx={{ span: { rounded: "lg" } }}
         overflow="hidden"
         display="flex"
-        isLoaded={imageLoaded}
+        isLoaded={isFetched}
+        sx={{ video: { maxH: "20rem", rounded: "lg" } }}
       >
-        <Img
-          src={"https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/Lootbox_1.gif"}
-          alt={propertyLootbox?.name}
-          loading="lazy"
-          objectFit="contain"
-          maxH="22rem"
-          onLoad={() => setImageLoaded(true)}
+        <video
+          autoPlay
+          loop
+          muted
+          datatype="video/mp4"
+          src={
+            "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/spaceship_lootbox_tokeID_0.mp4"
+          }
         />
       </Skeleton>
       <Stack p={4}>

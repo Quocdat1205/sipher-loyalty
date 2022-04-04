@@ -2,6 +2,8 @@ import { FC } from "react"
 import Image from "next/image"
 import { Box, Flex, Img, Stack, Text } from "@sipher.dev/sipher-ui"
 
+import MobileUI from "./MobileUI"
+
 const content = [
   {
     iconPath: "/images/auth/phone.svg",
@@ -70,15 +72,7 @@ export const AuthLayout: FC = ({ children }) => {
           </Box>
         </Flex>
       </Flex>
-      <Flex display={["flex", "flex", "none"]} flexDir="column" flex={1} w="full">
-        <Flex align="center" justify="center" flex={1}>
-          <Box bg="accent.500" rounded="lg" p={4}>
-            <Text fontSize="xl" textAlign="center" color="neutral.900" fontWeight={600} maxW="20rem">
-              Join Loyalty Dashboard on your desktop. Mobile version is on the way.
-            </Text>
-          </Box>
-        </Flex>
-      </Flex>
+      <MobileUI isLogin />
     </Flex>
   )
 }

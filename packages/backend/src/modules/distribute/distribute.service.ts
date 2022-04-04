@@ -4,7 +4,7 @@ import path from "path";
 
 import axios from "axios";
 import { toChecksumAddress } from "ethereumjs-util";
-import { Contract, ethers, providers, Wallet } from "ethers";
+import { BigNumber, Contract, ethers, providers, Wallet } from "ethers";
 import { Injectable } from "@nestjs/common";
 import { erc1155Abi } from "@setting/blockchain/abis";
 import { getContract, getProvider } from "@setting/blockchain/ethers";
@@ -148,7 +148,7 @@ export class DistributeService {
     );
     const dataResult = [];
     try {
-      await onlyNekoHolder.reduce(async (promise, data) => {
+      await onlyInuHolder.reduce(async (promise, data) => {
         await promise;
         LoggerService.log(data);
         dataResult.push(await this.safeTransferFrom(data));
@@ -181,7 +181,8 @@ export class DistributeService {
         toChecksumAddress(data.address),
         data.id,
         data.amount,
-        "0x"
+        "0x",
+        { gasPrice: BigNumber.from(70 * 10 ** 9) }
       );
     LoggerService.log(tx.hash);
     let result = {};
@@ -212,7 +213,8 @@ export class DistributeService {
         data.address,
         data.ids,
         data.amounts,
-        "0x"
+        "0x",
+        { gasPrice: BigNumber.from(70 * 10 ** 9) }
       );
     LoggerService.log(tx.hash);
     let result = {};
@@ -285,6 +287,62 @@ export class DistributeService {
       LoggerService.log(data);
     } catch (err) {
       LoggerService.error(err);
+    }
+  }
+
+  async setBlacklist(data) {
+    const tx = await this.contract
+      .connect(this.wallet)
+      .setBlacklist(toChecksumAddress(data.address), true, {
+        gasPrice: BigNumber.from(70 * 10 ** 9),
+      });
+    LoggerService.log(tx.hash);
+    let result = {};
+    try {
+      result = await tx.wait();
+    } catch (err) {
+      LoggerService.error(err);
+      return {
+        address: toChecksumAddress(data.address),
+        tx,
+        result,
+        error: true,
+      };
+    }
+    return {
+      address: toChecksumAddress(data.address),
+      tx,
+      result,
+      error: false,
+    };
+  }
+
+  async setBlacklistAll() {
+    const sculptureBlacklist = JSON.parse(
+      fs
+        .readFileSync(
+          path.resolve(
+            __dirname,
+            `../../../src/data/DISTRIBUTE/SCULPTURE/blacklist.json`
+          )
+        )
+        .toString()
+    );
+
+    const dataResult = [];
+    try {
+      await sculptureBlacklist.reduce(async (promise, data) => {
+        await promise;
+        LoggerService.log(data.address);
+        dataResult.push(await this.setBlacklist(data));
+      }, Promise.resolve());
+    } catch (err) {
+      LoggerService.error(err);
+    } finally {
+      fs.writeFileSync(
+        `./src/data/RESULT/SCULPTURE/Blacklist${getNow()}.json`,
+        JSON.stringify(dataResult)
+      );
     }
   }
 }

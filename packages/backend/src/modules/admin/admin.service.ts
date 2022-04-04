@@ -1,16 +1,9 @@
 import { Repository } from "typeorm";
-import {
-  Airdrop,
-  ERC1155Lootbox,
-  ERC1155Sculpture,
-  ImageUrl,
-  Item,
-} from "@entity";
+import { Airdrop, ImageUrl, Item } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { AirdropService } from "@modules/airdrop/airdrop.service";
-import { AuthService } from "@modules/auth/auth.service";
 import { BurnService } from "@modules/burn/burn.service";
 import { CancelService } from "@modules/cancel/cancel.service";
 import { CollectionService } from "@modules/collection/collection.service";

@@ -2,7 +2,9 @@ import { Repository } from "typeorm";
 import { SculptureTransaction } from "@entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+
 import { LoggerService } from "@modules/logger/logger.service";
+
 import { RedeemTxDto } from "./sculpture.dto";
 
 @Injectable()

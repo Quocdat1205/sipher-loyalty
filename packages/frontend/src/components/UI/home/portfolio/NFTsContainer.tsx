@@ -32,6 +32,7 @@ const responsive = {
 const NFTsContainer = ({ collectionData }: NFTsContainerProps) => {
   return (
     <Box
+      overflow="hidden"
       ml={-6}
       sx={{
         ".carousel-item-padding-40-px": { pl: 6 },

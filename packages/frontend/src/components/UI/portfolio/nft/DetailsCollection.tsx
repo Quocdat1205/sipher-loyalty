@@ -61,7 +61,7 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
 
   return (
     <Flex flexDir="column" flex={1} w="full" pos="relative">
-      <Flex pos="fixed" top="4rem" left={0} zIndex={1} flexDir="column">
+      <Flex pos="fixed" top="4.5rem" left={0} zIndex={1} flexDir="column">
         <Box pt={8} px={8} w="full">
           <Button
             onClick={() => router.push("/portfolio")}
@@ -126,14 +126,10 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
             <GridSelector />
           </Flex>
           <Flex>
-            {nftsDataCheck.length > 0 && (
-              <Button onClick={handleClick}>
-                {collectionData?.category === "lootbox"
-                  ? `BRING TO OFF-CHAIN (${nftsDataCheck?.length})`
-                  : collectionData?.category === "sculpture"
-                  ? `REDEEM SCULPTURE (${nftsDataCheck?.length})`
-                  : ""}
-              </Button>
+            {collectionData?.category === "lootbox" && nftsDataCheck.length > 0 ? (
+              <Button onClick={handleClick}>{`BRING TO OFF-CHAIN (${nftsDataCheck?.length})`}</Button>
+            ) : (
+              ""
             )}
           </Flex>
           <Box py={8} flex={1} w="full">

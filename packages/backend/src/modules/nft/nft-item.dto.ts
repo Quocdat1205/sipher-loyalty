@@ -1,8 +1,7 @@
 import { Transform } from "class-transformer";
 import { IsEnum, IsNumber, IsOptional, IsString, Min } from "class-validator";
-import { ApiProperty, OmitType } from "@nestjs/swagger";
-
 import { SipherCollection } from "@entity";
+import { ApiProperty, OmitType } from "@nestjs/swagger";
 
 export class NftItemAttributeFilterDto {
   @IsString()

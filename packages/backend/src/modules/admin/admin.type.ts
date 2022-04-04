@@ -1,4 +1,4 @@
-import { IsEnum, IsNumber, IsOptional } from "class-validator";
+import { IsEnum } from "class-validator";
 import {
   Airdrop,
   Burned,

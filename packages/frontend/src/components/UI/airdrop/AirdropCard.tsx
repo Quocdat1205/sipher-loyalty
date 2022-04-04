@@ -89,6 +89,7 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
         </Skeleton>
       ) : (
         <Skeleton
+          bg="black"
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -96,16 +97,12 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
           overflow="hidden"
           h="14rem"
           w="full"
-          isLoaded={isFetched && data.imageUrls?.length > 0}
+          isLoaded={isFetched}
         >
           {videos.includes(extension) ? (
             <video src={data.imageUrls[0]?.default} autoPlay loop muted datatype="video/mp4"></video>
           ) : (
-            <Img
-              src={(data.imageUrls?.length > 0 && data.imageUrls[0].default) || "/images/airdrops/sipher.png"}
-              objectFit="contain"
-              maxH="18rem"
-            />
+            <Img src={data.imageUrls[0].default ?? "/images/airdrops/sipher.png"} objectFit="contain" maxH="18rem" />
           )}
         </Skeleton>
       )}

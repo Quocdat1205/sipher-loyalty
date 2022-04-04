@@ -37,7 +37,7 @@ const useDetail = () => {
       retry: false,
       onSuccess: data => {
         setIsFetch(true)
-        setSlot(data?.value > 1 ? 1 : 0)
+        setSlot(data?.value > 0 ? 1 : 0)
       },
     },
   )

@@ -19,9 +19,7 @@ export const SpaceshipContainer = () => {
     <Flex flexDir="column" w="full">
       <Flex
         px={[4, 4, 4, 0, 0]}
-        bgImage="url(/images/spaceship/bg-overview.jpg)"
-        bgSize="cover"
-        bgRepeat="no-repeat"
+        bgGradient="linear(150deg, #8A31E2 -125%, #0F041A 45%)"
         flexDir="column"
         align="center"
         w="full"

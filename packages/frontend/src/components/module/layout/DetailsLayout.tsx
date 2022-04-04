@@ -3,6 +3,8 @@ import { Flex } from "@sipher.dev/sipher-ui"
 
 import { TopNavigationBar } from "../top-navigation-bar"
 
+import MobileUI from "./MobileUI"
+
 interface StoreFrontLayoutProps {
   children: ReactNode
 }
@@ -19,9 +21,10 @@ export const DetailsLayout = ({ children }: StoreFrontLayoutProps) => {
       bg="neutral.900"
     >
       <TopNavigationBar isSticky />
-      <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
+      <Flex display={["none", "none", "flex"]} flexDir="column" zIndex={2} overflow="auto" flex={1}>
         {children}
       </Flex>
+      <MobileUI />
     </Flex>
   )
 }

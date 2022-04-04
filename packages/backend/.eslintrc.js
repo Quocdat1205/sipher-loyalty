@@ -7,6 +7,9 @@ module.exports = {
     "class-methods-use-this": "off",
     "no-unused-vars": "warn",
     "eslint-disable-next-line": "off",
+    "no-await-in-loop": "off",
+    "prefer-destructuring": "off",
+    "no-restricted-syntax": ["error", "ForInStatement"],
   },
   // "eslint.validate": ["json", { language: "typescript", autoFix: true }],
 };

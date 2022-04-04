@@ -36,7 +36,17 @@ const CollectionCard = ({ data, isFetched, ...rest }: CardProps) => {
           quality={100}
           onLoad={() => setImageLoad(true)}
         />
-        <Flex align="center" py={0.5} px={2} rounded="full" bg="white" pos="absolute" bottom={4} left={4}>
+        <Flex
+          boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+          align="center"
+          py={0.5}
+          px={2}
+          rounded="full"
+          bg="white"
+          pos="absolute"
+          bottom={4}
+          left={4}
+        >
           <SpLayer />
           <Text ml={1} color="neutral.900" fontWeight={600}>
             {data.total ?? 0}

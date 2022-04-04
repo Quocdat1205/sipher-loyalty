@@ -157,12 +157,10 @@ export const AuthProvider: FC = ({ children }) => {
   const router = useRouter()
 
   const { authenticated } = auth
-
   useEffect(() => {
     if (router.isReady) {
       const currentRoute = router.asPath.split("?")[0]
       const isAuthRoute = ["/signin", "/signup", "/forgot-password"].includes(currentRoute)
-      console.log("ROUTE", window.location.pathname)
       // move user inside after authenticated
       if (authenticated && ["/signin", "/forgot-password"].includes(currentRoute)) {
         const next = decodeURIComponent((router.query["next"] as string) || "/")

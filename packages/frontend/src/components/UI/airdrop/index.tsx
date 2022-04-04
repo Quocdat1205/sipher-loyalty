@@ -20,6 +20,10 @@ const tabs = [
 const AirdropUI = () => {
   const { allAirdrops, currentTab, isFetched } = useAirdrops()
 
+  const handleSendMail = () => {
+    window.open("mailto:hello@sipher.xyz")
+  }
+
   const renderTabContent = () => {
     if (currentTab === "all") {
       return allAirdrops.length > 0 ? (
@@ -45,7 +49,7 @@ const AirdropUI = () => {
           {currentTab === "merch" && (
             <Text pt={4} color="neutral.300">
               * If you want to change to another item (equal or lesser than your current tier), please{" "}
-              <Link color="cyan.600" textDecor="underline">
+              <Link isExternal onClick={handleSendMail} color="cyan.600" textDecor="underline">
                 contact us
               </Link>{" "}
               before 15th April.{" "}

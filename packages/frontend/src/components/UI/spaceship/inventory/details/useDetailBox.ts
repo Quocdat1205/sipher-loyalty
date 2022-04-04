@@ -35,7 +35,7 @@ export const useDetailBox = id => {
       enabled: !!bearerToken && !isFetch,
       onSuccess: data => {
         setIsFetch(true)
-        setSlot(data.mintable)
+        setSlot(data?.mintable > 0 ? 1 : 0)
       },
     },
   )

@@ -68,13 +68,13 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
             </FormLabel>
             <InputGroup rounded="base" border={!!error ? "1px" : "none"} borderColor="red.500" size="md">
               <CustomInput
-                pr="4.5rem"
+                pr="4rem"
                 value={addressTo}
                 onChange={e => {
                   setError(""), setAddressTo(e.target.value)
                 }}
               />
-              <InputRightElement color="neutral.400" width="4.5rem">
+              <InputRightElement color="neutral.400" width="4rem">
                 <MdAccountBalanceWallet />
               </InputRightElement>
             </InputGroup>
