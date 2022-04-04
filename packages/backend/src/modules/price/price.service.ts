@@ -1,5 +1,4 @@
 import CoinGecko from "coingecko-api";
-import { format } from "date-fns";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
@@ -14,6 +13,10 @@ export class PriceService {
       change: 0.0,
       marketcap: 0.0,
       marketcapChange: 0.0,
+      circulatingSupply: 0.0,
+      maxSupply: 0.0,
+      totalSupply: 0.0,
+      fullyDilutedValuation: 0.0,
     },
     sipher: {
       usd: 0.6,
@@ -21,6 +24,10 @@ export class PriceService {
       change: 0.0,
       marketcap: 0.0,
       marketcapChange: 0.0,
+      circulatingSupply: 0.0,
+      maxSupply: 0.0,
+      totalSupply: 0.0,
+      fullyDilutedValuation: 0.0,
     },
     matic: {
       usd: 0.6,
@@ -28,81 +35,110 @@ export class PriceService {
       change: 0.0,
       marketcap: 0.0,
       marketcapChange: 0.0,
+      circulatingSupply: 0.0,
+      maxSupply: 0.0,
+      totalSupply: 0.0,
+      fullyDilutedValuation: 0.0,
     },
   };
 
   private async getCryptoPrice() {
     if (this.currentPrice.timestamp + 5000 < new Date().getTime()) {
-      const dataPrice = await this.coingeckoClient.simple.price({
-        ids: ["ethereum", "sipher", "matic-network"],
-        vs_currencies: ["usd"],
-        include_market_cap: true,
-      });
-      this.currentPrice.ethereum.usd = dataPrice.data.ethereum.usd;
-      this.currentPrice.sipher.usd = dataPrice.data.sipher.usd;
-      this.currentPrice.matic.usd = dataPrice.data["matic-network"].usd;
-
-      this.currentPrice.ethereum.marketcap =
-        dataPrice.data.ethereum.usd_market_cap;
-      this.currentPrice.sipher.marketcap = dataPrice.data.sipher.usd_market_cap;
-      this.currentPrice.matic.marketcap =
-        dataPrice.data["matic-network"].usd_market_cap;
-
-      this.currentPrice.sipher.eth =
-        dataPrice.data.sipher.usd / dataPrice.data.ethereum.usd;
-      this.currentPrice.matic.eth =
-        dataPrice.data["matic-network"].usd / dataPrice.data.ethereum.usd;
-
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
       this.currentPrice.timestamp = new Date().getTime();
 
-      const dataHistorySipher = await this.coingeckoClient.coins.fetchHistory(
-        "sipher",
-        {
-          date: format(yesterday, "dd-MM-yyyy"),
-        }
-      );
-      this.currentPrice.sipher.change =
-        dataPrice.data.sipher.usd /
-          dataHistorySipher.data.market_data.current_price.usd -
-        1;
-      this.currentPrice.sipher.marketcapChange =
-        dataPrice.data.sipher.marketcap /
-          dataHistorySipher.data.market_data.market_cap.usd -
-        1;
+      const dataCoinSipher = await this.coingeckoClient.coins.fetch("sipher", {
+        community_data: false,
+        developer_data: false,
+        localization: false,
+        sparkline: false,
+        tickers: false,
+      });
+      this.currentPrice.sipher.usd =
+        dataCoinSipher.data.market_data.current_price.usd;
+      this.currentPrice.sipher.eth =
+        dataCoinSipher.data.market_data.current_price.eth;
+      this.currentPrice.sipher.marketcap =
+        dataCoinSipher.data.market_data.market_cap.usd;
+      this.currentPrice.sipher.change = (
+        dataCoinSipher.data.market_data as any
+      ).price_change_percentage_24h_in_currency.usd;
+      this.currentPrice.sipher.marketcapChange = (
+        dataCoinSipher.data.market_data as any
+      ).market_cap_change_percentage_24h_in_currency.usd;
+      this.currentPrice.sipher.fullyDilutedValuation =
+        dataCoinSipher.data.market_data.fully_diluted_valuation.usd;
+      this.currentPrice.sipher.circulatingSupply =
+        dataCoinSipher.data.market_data.circulating_supply;
+      this.currentPrice.sipher.totalSupply =
+        dataCoinSipher.data.market_data.total_supply;
+      this.currentPrice.sipher.maxSupply =
+        dataCoinSipher.data.market_data.max_supply;
 
-      const dataHistoryEthereum = await this.coingeckoClient.coins.fetchHistory(
+      const dataCoinEthereum = await this.coingeckoClient.coins.fetch(
         "ethereum",
         {
-          date: format(yesterday, "dd-MM-yyyy"),
+          community_data: false,
+          developer_data: false,
+          localization: false,
+          sparkline: false,
+          tickers: false,
         }
       );
-      this.currentPrice.ethereum.change =
-        dataPrice.data.ethereum.usd /
-          dataHistoryEthereum.data.market_data.current_price.usd -
-        1;
-      this.currentPrice.ethereum.marketcapChange =
-        dataPrice.data.sipher.marketcap /
-          dataHistoryEthereum.data.market_data.market_cap.usd -
-        1;
+      this.currentPrice.ethereum.usd =
+        dataCoinEthereum.data.market_data.current_price.usd;
+      this.currentPrice.ethereum.eth =
+        dataCoinEthereum.data.market_data.current_price.eth;
+      this.currentPrice.ethereum.marketcap =
+        dataCoinEthereum.data.market_data.market_cap.usd;
+      this.currentPrice.ethereum.change = (
+        dataCoinEthereum.data.market_data as any
+      ).price_change_percentage_24h_in_currency.usd;
+      this.currentPrice.ethereum.marketcapChange = (
+        dataCoinEthereum.data.market_data as any
+      ).market_cap_change_percentage_24h_in_currency.usd;
+      this.currentPrice.ethereum.fullyDilutedValuation =
+        dataCoinEthereum.data.market_data.fully_diluted_valuation.usd;
+      this.currentPrice.ethereum.circulatingSupply =
+        dataCoinEthereum.data.market_data.circulating_supply;
+      this.currentPrice.ethereum.totalSupply =
+        dataCoinEthereum.data.market_data.total_supply;
+      this.currentPrice.ethereum.maxSupply =
+        dataCoinEthereum.data.market_data.max_supply;
 
-      const dataHistoryMatic = await this.coingeckoClient.coins.fetchHistory(
+      const dataCoinMatic = await this.coingeckoClient.coins.fetch(
         "matic-network",
         {
-          date: format(yesterday, "dd-MM-yyyy"),
+          community_data: false,
+          developer_data: false,
+          localization: false,
+          sparkline: false,
+          tickers: false,
         }
       );
 
-      this.currentPrice.matic.change =
-        dataPrice.data["matic-network"].usd /
-          dataHistoryMatic.data.market_data.current_price.usd -
-        1;
+      this.currentPrice.matic.usd =
+        dataCoinMatic.data.market_data.current_price.usd;
+      this.currentPrice.matic.eth =
+        dataCoinMatic.data.market_data.current_price.eth;
+      this.currentPrice.matic.marketcap =
+        dataCoinMatic.data.market_data.market_cap.usd;
+      this.currentPrice.matic.change = (
+        dataCoinMatic.data.market_data as any
+      ).price_change_percentage_24h_in_currency.usd;
 
-      this.currentPrice.matic.marketcapChange =
-        dataPrice.data["matic-network"].marketcap /
-          dataHistoryMatic.data.market_data.market_cap.usd -
-        1;
+      this.currentPrice.matic.marketcapChange = (
+        dataCoinMatic.data.market_data as any
+      ).market_cap_change_percentage_24h_in_currency.usd;
+      this.currentPrice.matic.fullyDilutedValuation =
+        dataCoinMatic.data.market_data.fully_diluted_valuation.usd;
+      this.currentPrice.matic.circulatingSupply =
+        dataCoinMatic.data.market_data.circulating_supply;
+      this.currentPrice.matic.totalSupply =
+        dataCoinMatic.data.market_data.total_supply;
+      this.currentPrice.matic.maxSupply =
+        dataCoinMatic.data.market_data.max_supply;
     }
 
     return this.currentPrice;
