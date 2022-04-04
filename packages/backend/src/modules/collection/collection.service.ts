@@ -16,6 +16,7 @@ import { URIService } from "@modules/uri/uri.service";
 import {
   isLootboxContract,
   isSculptureContract,
+  toCamcelCase,
   toTokenId,
 } from "@utils/utils";
 
@@ -70,11 +71,7 @@ export class CollectionService {
     );
     return data.pipe(
       map((res) => {
-        const camelCaseStats = {};
-        Object.entries(res.data.stats).forEach((entry) => {
-          camelCaseStats[_.camelCase(entry[0])] = entry[1];
-        });
-        return camelCaseStats;
+        return toCamcelCase(res.data.stats);
       })
     );
   }
