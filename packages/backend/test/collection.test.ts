@@ -138,6 +138,7 @@ describe("Collection unit test", () => {
     collectionId: characterCol.id,
     owner: "0x1",
     creator,
+    type: TokenType.ERC721,
   };
   const item2 = {
     id: "2:0x2:1",
@@ -146,6 +147,7 @@ describe("Collection unit test", () => {
     value: 5,
     owner: "0x2",
     creator,
+    type: TokenType.ERC1155,
   };
   const item3 = {
     id: "3:0x3:1",
@@ -154,6 +156,7 @@ describe("Collection unit test", () => {
     value: 2,
     owner: "0x3",
     creator,
+    type: TokenType.ERC1155,
   };
   describe("getPortfolio()", () => {
     beforeEach(() => {
@@ -258,7 +261,7 @@ describe("Collection unit test", () => {
         .spyOn(sipherCollectionRepo, "findOne")
         .mockResolvedValueOnce(lootboxCol);
       jest.spyOn(nftService, "search").mockResolvedValueOnce([item2]);
-      jest.spyOn(nftService, "count").mockResolvedValueOnce(item2.value);
+      jest.spyOn(nftService, "count").mockResolvedValueOnce(1);
       jest.spyOn(utils, "isLootboxContract").mockReturnValueOnce(true);
       const uri = new ERC1155Lootbox();
       uri.name = "yeet";
@@ -283,7 +286,7 @@ describe("Collection unit test", () => {
             type: TokenType.ERC1155,
           },
         ],
-        total: item2.value,
+        total: 1,
       });
     });
     it("should return sculpture collection and its items", async () => {
@@ -291,7 +294,7 @@ describe("Collection unit test", () => {
         .spyOn(sipherCollectionRepo, "findOne")
         .mockResolvedValueOnce(sculptureCol);
       jest.spyOn(nftService, "search").mockResolvedValueOnce([item3]);
-      jest.spyOn(nftService, "count").mockResolvedValueOnce(item3.value);
+      jest.spyOn(nftService, "count").mockResolvedValueOnce(1);
       jest.spyOn(utils, "isLootboxContract").mockReturnValueOnce(false);
       jest.spyOn(utils, "isSculptureContract").mockReturnValueOnce(true);
       const uri = new ERC1155Sculpture();
@@ -316,7 +319,7 @@ describe("Collection unit test", () => {
             type: TokenType.ERC1155,
           },
         ],
-        total: item3.value,
+        total: 1,
       });
     });
   });
@@ -346,7 +349,7 @@ describe("Collection unit test", () => {
         .spyOn(marketplaceClient.api, "nftItemControllerGetDetailsById")
         .mockResolvedValueOnce({
           data: {
-            item: item1 as NftItem,
+            item: item1 as any,
             attributes: [],
           },
         } as AxiosResponse<NftItemDetailsRespDto, any>);

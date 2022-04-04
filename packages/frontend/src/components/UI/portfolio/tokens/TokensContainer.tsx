@@ -1,5 +1,5 @@
 import React from "react"
-import { BsFillCaretDownFill, BsFillTriangleFill } from "react-icons/bs"
+import { BsFillCaretDownFill, BsFillTriangleFill, BsTriangleFill } from "react-icons/bs"
 import { Box, chakra, Flex, Text } from "@sipher.dev/sipher-ui"
 
 import { currency } from "@utils"
@@ -67,10 +67,10 @@ const TokensContainer = ({ tokensData }: TokensContainerProps) => {
                   <Box
                     mr={2}
                     transform="auto"
-                    rotate={item.change > 0 ? "180deg" : "0"}
+                    rotate={item.change < 0 ? "180deg" : "0"}
                     color={item.change > 0 ? "teal.400" : "red.400"}
                   >
-                    <BsFillCaretDownFill size="1.2rem" />
+                    <BsTriangleFill size="0.65rem" />
                   </Box>
                   <Text color={item.change > 0 ? "teal.400" : "red.400"}>{currency(Math.abs(item.change))}%</Text>
                 </Flex>
