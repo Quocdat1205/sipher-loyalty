@@ -160,7 +160,9 @@ export class CollectionService {
     return {
       collection,
       total,
-      items: await this.addUriToItem(inventory),
+      items: (await this.addUriToItem(inventory)).filter(
+        (item) => item.value > 0 || item.type !== TokenType.ERC1155
+      ),
     };
   }
 
