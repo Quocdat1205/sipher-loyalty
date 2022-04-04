@@ -63,12 +63,7 @@ export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handl
                       </Flex>
                     </chakra.td>
                     <chakra.td w="40%" py={2}>
-                      <QuantitySelector
-                        onChange={item.onChange}
-                        minValue={1}
-                        maxValue={item.mintable}
-                        value={item.slot}
-                      />
+                      <QuantitySelector onChange={item.onChange} maxValue={item.mintable} value={item.slot} />
                     </chakra.td>
                   </chakra.tr>
                 ))}

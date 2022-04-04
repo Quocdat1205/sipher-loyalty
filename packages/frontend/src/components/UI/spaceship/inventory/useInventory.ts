@@ -34,7 +34,7 @@ export const useInventory = () => {
     {
       enabled: !!bearerToken && !isFetched,
       onSuccess: data => {
-        setData(data.map(item => ({ ...item, slot: item?.mintable > 1 ? 1 : 0, isChecked: false }))), setIsFetched(true)
+        setData(data.map(item => ({ ...item, slot: item?.mintable > 0 ? 1 : 0, isChecked: false }))), setIsFetched(true)
       },
       initialData: [],
     },
@@ -148,7 +148,7 @@ export const useInventory = () => {
     },
   )
   useEffect(() => {
-    setData(data.map(item => ({ ...item, slot: item?.mintable > 1 ? 1 : 0 })))
+    setData(data.map(item => ({ ...item, slot: item?.mintable > 0 ? 1 : 0 })))
   }, [isStatusModal])
 
   const handleMint = () => {

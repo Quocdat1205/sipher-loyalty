@@ -49,7 +49,9 @@ const TabContainer = ({ collectionData, tokensData, totalNFTs, totalToken }: Por
           </Flex>
         ))}
       </HStack>
-      <Box flex={1}>{renderTabs()}</Box>
+      <Box flex={1} overflow="hidden">
+        {renderTabs()}
+      </Box>
     </Flex>
   )
 }

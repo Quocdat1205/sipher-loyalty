@@ -10,7 +10,7 @@ interface QuantitySelectorProps {
   isDisabled?: boolean
 }
 
-const QuantitySelector = ({ onChange, value, maxValue, minValue = 0, isDisabled }: QuantitySelectorProps) => {
+const QuantitySelector = ({ onChange, value, maxValue, minValue = 1, isDisabled }: QuantitySelectorProps) => {
   return (
     <Flex
       justify="space-between"
