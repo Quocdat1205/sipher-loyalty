@@ -1,5 +1,7 @@
 import React, { Fragment } from "react"
-import { Box, Button, HStack, Skeleton } from "@sipher.dev/sipher-ui"
+import { Box, Button, Flex, HStack, Skeleton } from "@sipher.dev/sipher-ui"
+
+import { SpOpensea } from "@components/shared/icons"
 
 import { DetailLootbox } from "./modal"
 import { useDetailContext } from "./useDetail"
@@ -38,6 +40,10 @@ const ActionContainer = ({ isFetched }: ActionContainerProps) => {
             <Skeleton isLoaded={isFetched} flex={1}>
               <Button onClick={handleLinkOpenSea} py={5} variant="secondary" colorScheme="cyan" w="full">
                 VIEW ON MARKETPLACE
+                <Box ml={1}>
+                  <SpOpensea size="1.2rem" viewBox="0 2.5 25 20" />
+                </Box>
+                <SpOpensea />
               </Button>
             </Skeleton>
           </Fragment>
@@ -45,7 +51,12 @@ const ActionContainer = ({ isFetched }: ActionContainerProps) => {
           <Fragment>
             <Skeleton isLoaded={isFetched} flex={1}>
               <Button onClick={handleLinkOpenSea} py={5} variant="secondary" colorScheme="cyan" w="full">
-                VIEW ON MARKETPLACE
+                <Flex alignItems="center">
+                  VIEW ON MARKETPLACE
+                  <Box ml={1}>
+                    <SpOpensea size="1.2rem" viewBox="0 2.5 25 20" />
+                  </Box>
+                </Flex>
               </Button>
             </Skeleton>
             <Skeleton isLoaded={isFetched} flex={1}></Skeleton>

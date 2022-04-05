@@ -79,7 +79,7 @@ export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
                 <Text color="neutral.400" fontWeight={600}>
                   You are having{" "}
                   <chakra.span color="white">
-                    {tokenDetails?.quantity ?? 0} {capitalize(tokenDetails?.name.toLowerCase() ?? "")} NFTs
+                    {minable} {capitalize(tokenDetails?.name.toLowerCase() ?? "")} NFTs
                   </chakra.span>
                 </Text>
                 <Text color="neutral.400">

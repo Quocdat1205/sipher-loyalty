@@ -56,7 +56,6 @@ export class SipherSpaceshipLootBox {
     const tx = await this.contract
       .connect(signer)
       .mint(deadline, batchID, amount, salt, signature, { gasPrice: await this.x2GasPrice() })
-    console.log(tx)
     await tx.wait()
   }
 

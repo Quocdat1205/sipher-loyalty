@@ -20,7 +20,7 @@ export const DetailsLayout = ({ children }: StoreFrontLayoutProps) => {
       color="whiteAlpha.900"
       bg="neutral.900"
     >
-      <Flex display={["none", "none", "flex"]} flexDir="column" flex={1} w="full">
+      <Flex overflow="hidden" display={["none", "none", "flex"]} flexDir="column" flex={1} w="full">
         <TopNavigationBar isSticky />
         <Flex flexDir="column" zIndex={2} overflow="auto" flex={1}>
           {children}
