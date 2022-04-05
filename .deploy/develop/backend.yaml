@@ -14,7 +14,13 @@ sipher-chart:
     - name: backend
       replicasCount: 1
       seriviceAccoutName: loyalty-sa
-      resources: {}
+      resources:
+        requests:
+          memory: 150Mi
+          cpu: 50m
+        limits:
+          memory: 200Mi
+          cpu: 100m
       command: ["/bin/sh"]
       args:
         - "-c"
@@ -26,7 +32,13 @@ sipher-chart:
     - name: lootbox-tracker
       seriviceAccoutName: loyalty-sa
       replicasCount: 1
-      resources: {}
+      resources:
+        requests:
+          memory: 100Mi
+          cpu: 50m
+        limits:
+          memory: 100Mi
+          cpu: 15m
       command: ["/bin/sh"]
       args:
         - "-c"
@@ -34,7 +46,13 @@ sipher-chart:
     - name: sculpture-tracker
       replicasCount: 1
       seriviceAccoutName: loyalty-sa
-      resources: {}
+      resources:
+        requests:
+          memory: 100Mi
+          cpu: 50m
+        limits:
+          memory: 100Mi
+          cpu: 15m
       command: ["/bin/sh"]
       args:
         - "-c"
