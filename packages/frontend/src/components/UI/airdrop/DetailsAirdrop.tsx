@@ -160,7 +160,9 @@ export function DetailsAirdrop() {
               </Skeleton>
               <Skeleton isLoaded={isFetched}>
                 <Text fontWeight={600} fontSize="2xl">
-                  {detailAirdrop?.type === "TOKEN" ? detailAirdrop?.description[0] : detailAirdrop?.name}
+                  {detailAirdrop?.type === "TOKEN"
+                    ? detailAirdrop?.description[0].replace("(s)", "")
+                    : detailAirdrop?.name}
                 </Text>
               </Skeleton>
             </Box>
