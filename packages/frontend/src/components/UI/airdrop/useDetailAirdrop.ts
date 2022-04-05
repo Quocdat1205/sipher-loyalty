@@ -14,9 +14,10 @@ export const useDetailAirdrop = () => {
   const { account, scCaller, chainId } = useWalletContext()
   const toast = useChakraToast()
   const qc = useQueryClient()
-  const { type, id: queryId } = router.query
+  const { tab, type, id: queryId } = router.query
+
   const onClose = () => {
-    router.push("/airdrop", undefined, { scroll: false })
+    router.push({ query: { tab: tab } }, undefined, { scroll: false })
   }
 
   const isOpen = !!type && !!queryId && !!account && !!bearerToken

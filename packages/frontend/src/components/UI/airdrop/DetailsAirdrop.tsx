@@ -238,21 +238,23 @@ export function DetailsAirdrop() {
               </Skeleton>
             )}
           </Stack>
-          <HStack borderTop="1px" borderColor="whiteAlpha.300" pt={4}>
-            <Skeleton isLoaded={isFetched} flex={1}>
-              <Button
-                onClick={handleClaim}
-                isLoading={isLoadingClaim}
-                isDisabled={isDisabled}
-                w="full"
-                py={5}
-                fontSize="md"
-              >
-                {buttonText}
-              </Button>
-            </Skeleton>
-            <Skeleton isLoaded={isFetched} flex={1}></Skeleton>
-          </HStack>
+          {detailAirdrop?.type !== "OTHER" && (
+            <HStack borderTop="1px" borderColor="whiteAlpha.300" pt={4}>
+              <Skeleton isLoaded={isFetched} flex={1}>
+                <Button
+                  onClick={handleClaim}
+                  isLoading={isLoadingClaim}
+                  isDisabled={isDisabled}
+                  w="full"
+                  py={5}
+                  fontSize="md"
+                >
+                  {buttonText}
+                </Button>
+              </Skeleton>
+              <Skeleton isLoaded={isFetched} flex={1}></Skeleton>
+            </HStack>
+          )}
         </Flex>
       </Flex>
     </ChakraModal>
