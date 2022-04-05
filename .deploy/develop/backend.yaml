@@ -2,10 +2,7 @@ sipher-chart:
   ingress:
     enabled: true
     annotations:
-      alb.ingress.kubernetes.io/scheme: internet-facing
-      alb.ingress.kubernetes.io/target-type: ip
-      kubernetes.io/ingress.class: alb
-      service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+      kubernetes.io/ingress.class: nginx
     rules:
       - host: api-loyalty.sipher.gg
         paths:
@@ -27,6 +24,7 @@ sipher-chart:
           containerPort:
             api: 5500
     - name: lootbox-tracker
+      seriviceAccoutName: loyalty-sa
       replicasCount: 1
       resources: {}
       command: ["/bin/sh"]
@@ -35,6 +33,7 @@ sipher-chart:
         - "node ./dist/scripts/lootbox-tracker.js"
     - name: sculpture-tracker
       replicasCount: 1
+      seriviceAccoutName: loyalty-sa
       resources: {}
       command: ["/bin/sh"]
       args:
