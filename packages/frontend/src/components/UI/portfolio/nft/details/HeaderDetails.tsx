@@ -18,7 +18,11 @@ const HeaderDetails = ({ tokenDetails, isFetched }: HeaderDetailsProps) => {
   return (
     <>
       <Metadata
-        title={isFetched ? `${tokenDetails!.name} | Sipher Dashboard` : "Loading... | Sipher Porfolio"}
+        title={
+          isFetched
+            ? `${capitalize(tokenDetails?.name.toLocaleLowerCase() || "")} | Loyalty Dashboard`
+            : "Loading... | Sipher Porfolio"
+        }
         description=""
       />
       <Flex pr={2} w="full" align="center" justify={"space-between"} mb={2}>

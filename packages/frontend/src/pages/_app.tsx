@@ -3,6 +3,7 @@ import { Hydrate, QueryClient, QueryClientProvider } from "react-query"
 import { NextPage } from "next"
 import type { AppProps } from "next/app"
 import Head from "next/head"
+import Script from "next/script"
 import { SipherProvider } from "@sipher.dev/sipher-ui"
 import { UseWalletProvider } from "@web3"
 import { Web3ReactProvider } from "@web3-react/core"
@@ -44,15 +45,24 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
                 <BalanceProvider>
                   <Head>
                     <meta charSet="utf-8" />
-                    <link rel="icon" href="/favicon.ico" />
+                    <link rel="icon" href="/favicon.svg" />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
                     <meta name="theme-color" content="#000000" />
-                    <link rel="apple-touch-icon" href="/favicon.ico" />
+                    <link rel="apple-touch-icon" href="/favicon.svg" />
                     <meta
                       name="description"
                       content="Sipher is a blockchain PvP PvE MOBA game for all age group. All players assets and achievements are NFTs. Exclusive characters launch coming soon!"
                     />
                     <title>Sipher Loyalty</title>
+                    <Script src="https://www.googletagmanager.com/gtag/js?id=G-3RDSG9HN4G" async />
+                    <Script
+                      dangerouslySetInnerHTML={{
+                        __html: `window.dataLayer = window.dataLayer || [];
+                          function gtag(){ console.log('tag tag'); dataLayer.push(arguments); }
+                          gtag('js', new Date());
+                          gtag('config', 'G-3RDSG9HN4G');`,
+                      }}
+                    ></Script>
                   </Head>
                   {getLayout(<Component {...pageProps} />)}
                 </BalanceProvider>

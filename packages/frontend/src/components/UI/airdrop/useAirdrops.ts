@@ -112,7 +112,7 @@ export const useAirdrops = () => {
           isClaiming: claimId === item.id,
           isDisabled: true,
           onView: () => {
-            router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
+            router.push({ query: { tab: currentTab, type: item.type, id: item.id } }, undefined, { scroll: false })
           },
           onClaim: (e: MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation()
@@ -124,7 +124,7 @@ export const useAirdrops = () => {
           isDisabled: item?.totalAmount === "0" || chainId !== ETHEREUM_NETWORK || claimableAmount === 0,
           buttonText: "Claim",
           onView: () => {
-            router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
+            router.push({ query: { tab: currentTab, type: item.type, id: item.id } }, undefined, { scroll: false })
           },
           onClaim: (e: MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation()
@@ -139,7 +139,7 @@ export const useAirdrops = () => {
           isDisabled: true,
           buttonText: "Coming soon",
           onView: () => {
-            router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
+            router.push({ query: { tab: currentTab, type: item.type, id: item.id } }, undefined, { scroll: false })
           },
           onClaim: (e: MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation()
@@ -151,7 +151,7 @@ export const useAirdrops = () => {
           isClaiming: claimId === item.id,
           isDisabled: true,
           onView: () => {
-            router.push(`?type=${item.type}&id=${item.id}`, undefined, { scroll: false })
+            router.push({ query: { tab: currentTab, type: item.type, id: item.id } }, undefined, { scroll: false })
           },
           onClaim: (e: MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation()
@@ -159,6 +159,6 @@ export const useAirdrops = () => {
         })),
       ]
     : []
-
+  console.log(currentTab)
   return { isLoadingAirdrops, currentTab, allAirdrops, isFetched }
 }

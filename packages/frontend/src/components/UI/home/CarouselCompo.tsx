@@ -35,9 +35,8 @@ const CarouselCompo = ({ children, responsive }: NFTsContainerProps) => {
         showDots={true}
         responsive={responsive}
         ssr={true} // means to render carousel on server-side.
-        infinite={true}
-        autoPlay={true}
-        autoPlaySpeed={5000}
+        infinite={false}
+        autoPlay={false}
         keyBoardControl={true}
         containerClass="carousel-container"
         dotListClass="custom-dot-list-style"

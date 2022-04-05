@@ -45,25 +45,90 @@ export const AuthLayout: FC = ({ children }) => {
         </Box>
         <Image layout="fill" src="/images/auth/background.png" alt="background" />
         <Flex flex={1} py={24} px={[8, 16, 24]} pos="relative" justify="center">
-          <Box pos="absolute" bottom={0} right={0} w="44rem" h="44rem">
+          <Box
+            sx={{
+              "@media (min-width: 2560px)": {
+                boxSize: "60rem",
+              },
+            }}
+            pos="absolute"
+            bottom={0}
+            right={0}
+            w="44rem"
+            h="44rem"
+          >
             <Image src="/images/auth/neko_figure.svg" alt="neko" layout="fill" />
           </Box>
-          <Box w="full" maxW="760px" zIndex={2}>
-            <Box w="full" maxW="440px" zIndex={2}>
-              <Text fontSize={"3xl"} mb={6} fontWeight={600}>
+          <Box
+            w="full"
+            maxW="1200px"
+            sx={{
+              "@media (min-width: 2560px)": {
+                maxW: "1400px",
+              },
+            }}
+            zIndex={2}
+          >
+            <Box
+              sx={{
+                "@media (min-width: 2560px)": {
+                  maxW: "600px",
+                },
+              }}
+              w="full"
+              maxW="440px"
+              zIndex={2}
+            >
+              <Text
+                sx={{
+                  "@media (min-width: 2560px)": {
+                    fontSize: "5xl",
+                  },
+                }}
+                fontSize={"3xl"}
+                mb={6}
+                fontWeight={600}
+              >
                 {`Get your Ather Account & Start earning rewards`}
               </Text>
               <Stack spacing={4}>
                 {content.map(item => (
                   <Flex key={item.title} mb={1.5}>
-                    <Flex justify="center" w="2rem" color="rgba(255, 255, 255, 0.7)" pt={1}>
+                    <Flex
+                      justify="center"
+                      sx={{
+                        "@media (min-width: 2560px)": {
+                          pt: 2,
+                        },
+                      }}
+                      w="2rem"
+                      color="rgba(255, 255, 255, 0.7)"
+                      pt={1}
+                    >
                       <Img src={item.iconPath} mr={4} h={item.h} />
                     </Flex>
                     <Box>
-                      <Text fontSize={"lg"} fontWeight={600}>
+                      <Text
+                        sx={{
+                          "@media (min-width: 2560px)": {
+                            fontSize: "2xl",
+                          },
+                        }}
+                        fontSize={"lg"}
+                        fontWeight={600}
+                      >
                         {item.title}
                       </Text>
-                      <Text color="rgba(255, 255, 255, 0.7)">{item.description}</Text>
+                      <Text
+                        sx={{
+                          "@media (min-width: 2560px)": {
+                            fontSize: "xl",
+                          },
+                        }}
+                        color="rgba(255, 255, 255, 0.7)"
+                      >
+                        {item.description}
+                      </Text>
                     </Box>
                   </Flex>
                 ))}

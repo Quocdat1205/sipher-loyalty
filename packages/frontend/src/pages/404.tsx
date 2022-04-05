@@ -4,7 +4,7 @@ import NotFoundUI from "@components/UI/notfound"
 const NotfoundPage = () => {
   return (
     <>
-      <Metadata title="Not Found | Sipher Dashboard" description="" />
+      <Metadata title="Not Found | Loyalty Dashboard" description="" />
       <NotFoundUI />
     </>
   )
