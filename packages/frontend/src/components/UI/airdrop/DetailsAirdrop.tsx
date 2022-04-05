@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { Box, Button, Flex, HStack, Img, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
+import { ETHEREUM_NETWORK } from "@constant"
 import { currency } from "@utils"
 
 import { videos } from "../portfolio/nft/NFTCard"
@@ -21,6 +22,7 @@ export function DetailsAirdrop() {
     tokenClaimed,
     claimableAmount,
     buttonText,
+    chainId,
   } = useDetailAirdrop()
   const defaultImage = "/images/airdrops/sipher.png"
   const [imageState, setImageState] = useState({
@@ -169,13 +171,21 @@ export function DetailsAirdrop() {
                     {item}
                   </Text>
                 ))}
-                <Text mb={2} color="neutral.400">
-                  Your current claimable amount is {currency(claimableAmount!)} $SIPHER. You can claim every period or
-                  claim all at the end of the airdrops (00:00 UTC TUE JUL 19 2022)
-                </Text>
-                <Text mb={2} color="neutral.400">
-                  Your claimed amount: {currency(tokenClaimed ?? 0)} $SIPHER
-                </Text>
+                {chainId === ETHEREUM_NETWORK ? (
+                  <Fragment>
+                    <Text mb={2} color="neutral.400">
+                      Your current claimable amount is {currency(claimableAmount!)} $SIPHER. You can claim every period
+                      or claim all at the end of the airdrops (00:00 UTC TUE JUL 19 2022)
+                    </Text>
+                    <Text mb={2} color="neutral.400">
+                      Your claimed amount: {currency(tokenClaimed ?? 0)} $SIPHER
+                    </Text>
+                  </Fragment>
+                ) : (
+                  <Text mb={2} color="neutral.400">
+                    Please switch to Ethereum network to view the exact claimed and unclaimed token amount
+                  </Text>
+                )}
               </Skeleton>
             )}
             {detailAirdrop?.type !== "TOKEN" && (

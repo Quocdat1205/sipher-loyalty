@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
@@ -98,7 +99,12 @@ export const useDetailAirdrop = () => {
   const claimableAmount =
     detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase() ? initClaimableAmount : 0
 
+  useEffect(() => {
+    onClose()
+  }, [account])
+
   return {
+    chainId,
     detailAirdrop,
     router,
     isOpen,
