@@ -151,12 +151,27 @@ const authContext = createContext<ReturnType<typeof useAuthState> | null>(null)
 
 const { Provider } = authContext
 
+declare global {
+  interface Window {
+    gtag: any
+  }
+}
+
 export const AuthProvider: FC = ({ children }) => {
   const auth = useAuthState()
 
   const router = useRouter()
 
-  const { authenticated } = auth
+  const { authenticated, cognitoUser } = auth
+
+  useEffect(() => {
+    if (typeof window.gtag !== "undefined" && cognitoUser) {
+      const user_id = cognitoUser.getSignInUserSession()?.getIdToken()?.payload?.["custom:user_id"]
+      window.gtag("config", "G-3RDSG9HN4G", { user_id })
+      window.gtag("set", "user_properties", { ather_id: user_id })
+    }
+  }, [cognitoUser])
+
   useEffect(() => {
     if (router.isReady) {
       const currentRoute = router.asPath.split("?")[0]
