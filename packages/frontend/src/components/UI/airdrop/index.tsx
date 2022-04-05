@@ -76,7 +76,7 @@ const AirdropUI = () => {
 
   return (
     <Flex pos="relative" flexDir="column" align="center" flex={1}>
-      <NotifyNetwork chainId={ETHEREUM_NETWORK} />
+      {allAirdrops.filter(item => item.type === "TOKEN").length > 0 && <NotifyNetwork chainId={ETHEREUM_NETWORK} />}
       <Banner
         srcBg="/images/airdrops/banner.png"
         title="Airdrops"
