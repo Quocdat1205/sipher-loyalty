@@ -100,7 +100,7 @@ const useAuthState = () => {
       return config
     })
 
-    const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {
+    const unsubscribe = Hub.listen("auth", async ({ payload: { event, data } }) => {
       switch (event) {
         case "signIn":
         case "cognitoHostedUI":

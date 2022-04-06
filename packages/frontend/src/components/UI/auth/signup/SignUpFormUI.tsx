@@ -55,7 +55,7 @@ const SignUpFormUI = ({ setStep, onChangeEmail, onChangePassword }: SignUpFormUI
       <Heading fontSize={"lg"} fontWeight={600} mb={8} color="white" textAlign={"center"}>
         CREATE ATHER ACCOUNT
       </Heading>
-      <Form onSubmit={handleSubmit(d => mutateSignUp({ email: d.email, password: d.password }))}>
+      <Form onSubmit={handleSubmit(d => mutateSignUp({ email: d.email, password: d.password }))} noValidate>
         <Stack spacing={4}>
           <StyledInput
             label="Email"
