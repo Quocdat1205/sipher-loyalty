@@ -36,7 +36,7 @@ export const InventoryContainer = () => {
     }
     return (
       <SimpleGrid spacing={6} columns={[1, 3, 4, 4, 4]}>
-        {inventoryData!.map(i => (
+        {inventoryData?.map(i => (
           <BoxCard key={i.id} data={i} isFetched={isFetchedLootBox} />
         ))}
       </SimpleGrid>
