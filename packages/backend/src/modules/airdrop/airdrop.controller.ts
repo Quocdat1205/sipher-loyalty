@@ -45,13 +45,13 @@ export class AirdropController {
     type: ResAirdrop,
   })
   @Get("/:airdropType/:publicAddress/:id")
-  async getAirdropByType(
+  async getDetailAirdropByType(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Param("id") id: string,
     @Param("airdropType") airdropType: AirdropType,
     @Req() req: Request
   ) {
     await this.authService.verifyAddress(publicAddress, req);
-    return this.airdropService.getAirdropByType(id, airdropType);
+    return this.airdropService.getDetailAirdropByType(id, airdropType);
   }
 }

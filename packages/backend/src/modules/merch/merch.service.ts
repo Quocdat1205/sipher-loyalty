@@ -1,7 +1,9 @@
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { AirdropType, Item, Merchandise } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+
+import { UserData } from "@modules/auth/auth.types";
 
 import { LoggerService } from "../logger/logger.service";
 
@@ -78,6 +80,29 @@ export class MerchService {
     return merchandises;
   }
 
+  async getAllMerchByUserId(
+    userData: UserData
+  ): Promise<Array<Merchandise> | undefined> {
+    LoggerService.log(`Get all merch of userData: ${JSON.stringify(userData)}`);
+
+    const merchandises = await this.merchRepo.find({
+      relations: ["item", "item.imageUrls"],
+      where: [
+        {
+          publicAddress: In(userData.publicAddress),
+          item: {
+            type: AirdropType.MERCH,
+          },
+        },
+      ],
+    });
+
+    if (!merchandises) {
+      throw new HttpException("List merch not found", HttpStatus.NOT_FOUND);
+    }
+    return merchandises;
+  }
+
   async getOtherMerchByPublicAddress(
     publicAddress: string
   ): Promise<Array<Merchandise> | undefined> {
@@ -88,6 +113,29 @@ export class MerchService {
       where: [
         {
           publicAddress,
+          item: {
+            type: AirdropType.OTHER,
+          },
+        },
+      ],
+    });
+
+    if (!others) {
+      throw new HttpException("List other not found", HttpStatus.NOT_FOUND);
+    }
+    return others;
+  }
+
+  async getOtherMerchByUserId(
+    userData: UserData
+  ): Promise<Array<Merchandise> | undefined> {
+    LoggerService.log(`Get all other of userData: ${JSON.stringify(userData)}`);
+
+    const others = await this.merchRepo.find({
+      relations: ["item", "item.imageUrls"],
+      where: [
+        {
+          publicAddress: In(userData.publicAddress),
           item: {
             type: AirdropType.OTHER,
           },
