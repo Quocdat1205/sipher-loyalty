@@ -7,7 +7,7 @@ import { useDetailContext } from "../useDetail"
 
 import PropertyTag from "./PropertyTag"
 
-const soulBoundData = ["weapon", "hand", "head", "sub-race", "costume"]
+const soulBoundData = ["weapon", "hand", "head", "hat", "costume"]
 
 const PropertiesContainer = () => {
   const { tokenDetails } = useDetailContext()

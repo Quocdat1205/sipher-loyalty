@@ -1,5 +1,5 @@
 import React from "react"
-import { BsFillCaretDownFill, BsFillTriangleFill, BsTriangleFill } from "react-icons/bs"
+import { BsFillTriangleFill, BsTriangleFill } from "react-icons/bs"
 import { Box, chakra, Flex, Text } from "@sipher.dev/sipher-ui"
 
 import { currency } from "@utils"

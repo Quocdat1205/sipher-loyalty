@@ -4,6 +4,7 @@ import { sipherThemeExtensions } from "@sipher.dev/sipher-ui"
 export const theme = extendTheme({
   ...sipherThemeExtensions,
   components: {
+    ...sipherThemeExtensions.components,
     Skeleton: {
       defaultProps: {
         startColor: "neutral.600",

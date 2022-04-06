@@ -1,8 +1,9 @@
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { ImageUrl } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
+import { UserData } from "@modules/auth/auth.types";
 import { LoggerService } from "@modules/logger/logger.service";
 import { MerchService } from "@modules/merch/merch.service";
 import { currency, weiToEther } from "@utils/utils";
@@ -24,6 +25,14 @@ export class AirdropService {
     const nft = await this.getNFTAirdrops(publicAddress);
     const merchandise = await this.getMerchAirdrops(publicAddress);
     const other = await this.getOtherAirdrops(publicAddress);
+    return { token, nft, merchandise, other };
+  }
+
+  private async getAllAirdropsByUserId(userData: UserData) {
+    const token = await this.getTokenAirdropsByUserID(userData);
+    const nft = await this.getNFTAirdropsByUserId(userData);
+    const merchandise = await this.getMerchAirdropsByUserId(userData);
+    const other = await this.getOtherAirdropsByUserId(userData);
     return { token, nft, merchandise, other };
   }
 
@@ -51,6 +60,21 @@ export class AirdropService {
     return data;
   }
 
+  private async getTokenAirdropsByUserID(
+    userData: UserData
+  ): Promise<Array<ResAirdrop>> {
+    const data = await this.airdropRepo.find({
+      where: [
+        {
+          claimer: In(userData.publicAddress),
+          type: AirdropType.TOKEN,
+        },
+      ],
+      relations: ["imageUrls"],
+    });
+    return data;
+  }
+
   private async getMerchAirdrops(
     publicAddress: string
   ): Promise<Array<ResAirdrop>> {
@@ -68,7 +92,22 @@ export class AirdropService {
     }));
   }
 
-  private async getTokenNFTAirdrop(id: string): Promise<ResAirdrop> {
+  private async getMerchAirdropsByUserId(
+    userData: UserData
+  ): Promise<Array<ResAirdrop>> {
+    const merchandises = await this.merchService.getAllMerchByUserId(userData);
+    return merchandises.map((merch) => ({
+      id: merch.id,
+      name: merch.item.name,
+      shortDescription: merch.item.shortDescription,
+      description: merch.item.description,
+      imageUrls: merch.item.imageUrls,
+      quantity: merch.quantity,
+      type: merch.item.type,
+    }));
+  }
+
+  private async getDetailTokenNFTAirdrop(id: string): Promise<ResAirdrop> {
     const data = await this.airdropRepo.findOne({
       where: { id },
       relations: ["imageUrls"],
@@ -85,7 +124,7 @@ export class AirdropService {
     return data;
   }
 
-  private async getMerchAirdrop(id: string): Promise<ResAirdrop> {
+  private async getDetailMerchAirdrop(id: string): Promise<ResAirdrop> {
     const merch = await this.merchService.getOtherAndMerchById(id);
     return {
       id: merch.id,
@@ -116,11 +155,38 @@ export class AirdropService {
     }));
   }
 
+  private async getOtherAirdropsByUserId(userData: UserData) {
+    const others = await this.merchService.getOtherMerchByUserId(userData);
+
+    return others.map((merch) => ({
+      id: merch.id,
+      name: merch.item.name,
+      description: merch.item.description,
+      shortDescription: merch.item.shortDescription,
+      imageUrls: merch.item.imageUrls,
+      type: merch.item.type,
+      quantity: merch.quantity,
+    }));
+  }
+
   private async getNFTAirdrops(publicAddress: string) {
     const data = await this.airdropRepo.find({
       where: [
         {
           claimer: publicAddress.toLowerCase(),
+          type: AirdropType.NFT,
+        },
+      ],
+      relations: ["imageUrls"],
+    });
+    return data;
+  }
+
+  private async getNFTAirdropsByUserId(userData: UserData) {
+    const data = await this.airdropRepo.find({
+      where: [
+        {
+          claimer: In(userData.publicAddress),
           type: AirdropType.NFT,
         },
       ],
@@ -148,19 +214,38 @@ export class AirdropService {
     }
   }
 
-  async getAirdropByType(id: string, type: AirdropType) {
+  async getAirdropsByTypeAndUserId(userData: UserData, type: AirdropType) {
     switch (type) {
       case AirdropType.TOKEN:
-        return this.getTokenNFTAirdrop(id);
+        return this.getTokenAirdropsByUserID(userData);
 
       case AirdropType.NFT:
-        return this.getTokenNFTAirdrop(id);
+        return this.getNFTAirdropsByUserId(userData);
 
       case AirdropType.MERCH:
-        return this.getMerchAirdrop(id);
+        return this.getMerchAirdropsByUserId(userData);
 
       case AirdropType.OTHER:
-        return this.getMerchAirdrop(id);
+        return this.getOtherAirdropsByUserId(userData);
+
+      default:
+        return this.getAllAirdropsByUserId(userData);
+    }
+  }
+
+  async getDetailAirdropByType(id: string, type: AirdropType) {
+    switch (type) {
+      case AirdropType.TOKEN:
+        return this.getDetailTokenNFTAirdrop(id);
+
+      case AirdropType.NFT:
+        return this.getDetailTokenNFTAirdrop(id);
+
+      case AirdropType.MERCH:
+        return this.getDetailMerchAirdrop(id);
+
+      case AirdropType.OTHER:
+        return this.getDetailMerchAirdrop(id);
 
       default:
         return null;

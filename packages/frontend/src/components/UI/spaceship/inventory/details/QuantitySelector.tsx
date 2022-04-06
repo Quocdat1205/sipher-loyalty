@@ -10,17 +10,21 @@ interface QuantitySelectorProps {
   isDisabled?: boolean
 }
 
-const QuantitySelector = ({ onChange, value, maxValue, minValue = 1, isDisabled }: QuantitySelectorProps) => {
+const QuantitySelector = ({ onChange, value, maxValue = 0, minValue = 1, isDisabled }: QuantitySelectorProps) => {
   return (
     <Flex
       justify="space-between"
-      bg="neutral.600"
+      bg={maxValue === 0 ? "neutral.700" : "neutral.600"}
+      border={maxValue === 0 ? "1px" : "0px"}
+      borderColor="neutral.600"
+      opacity={maxValue === 0 ? 0.5 : 1}
       py={1}
       px={4}
       rounded="base"
       overflow="hidden"
       align="center"
       h="40px"
+      pointerEvents={maxValue === 0 ? "none" : "unset"}
     >
       <Flex flex={2} align="center" justify="space-between">
         <IconButton

@@ -17,6 +17,8 @@ import {
 } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal, CustomInput, EthereumIcon, Form } from "@components/shared"
+import { SpLayer } from "@components/shared/icons"
+import QuantitySelector from "@components/UI/spaceship/inventory/details/QuantitySelector"
 
 import { useDetailContext } from "../nft/details/useDetail"
 
@@ -26,8 +28,18 @@ interface TransferModalProps {
 }
 
 export function TransferModal({ isOpen, onClose }: TransferModalProps) {
-  const { tokenDetails, isFetched, collectionName, addressTo, setAddressTo, isLoadingTranfer, handleTransfer } =
-    useDetailContext()
+  const {
+    tokenDetails,
+    isFetched,
+    collectionName,
+    addressTo,
+    setAddressTo,
+    isLoadingTranfer,
+    handleTransfer,
+    slotTransfer,
+    setSlotTransfer,
+    minable,
+  } = useDetailContext()
   const [error, setError] = useState("")
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -41,6 +53,7 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
 
   useEffect(() => {
     setAddressTo("")
+    setSlotTransfer(1)
   }, [isOpen])
 
   return (
@@ -48,12 +61,24 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
       <Box px={6}>
         <Flex align="center" mb="6">
           <Skeleton isLoaded={isFetched}>
-            <Img rounded="lg" w="66px" h="80px" src={tokenDetails?.imageUrl} objectFit="cover" />
+            <Img rounded="lg" w="66px" h="80px" src={tokenDetails?.imageUrl} objectFit="contain" />
           </Skeleton>
           <Flex ml="6" direction="column">
-            <Text fontSize="16px" fontWeight="600" mb="1">
-              {tokenDetails?.name}
-            </Text>
+            <Flex mb="1">
+              <Text fontSize="16px" fontWeight="600">
+                {tokenDetails?.name}
+              </Text>
+              {tokenDetails?.collection.collectionType === "ERC1155" && (
+                <Box ml={4}>
+                  <Flex align="center" py={0.5} px={1.5} rounded="full" bg="white">
+                    <SpLayer />
+                    <Text ml={1} fontSize="xs" color="neutral.900" fontWeight={600}>
+                      {minable}
+                    </Text>
+                  </Flex>
+                </Box>
+              )}
+            </Flex>
             <Text fontWeight="400" color="#93959C" mb="1">
               {collectionName}
             </Text>
@@ -66,6 +91,12 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
           </Flex>
         </Flex>
         <Form>
+          {tokenDetails?.collection.collectionType === "ERC1155" && (
+            <FormControl as="fieldset" mb="6">
+              <FormLabel>Quantity</FormLabel>
+              <QuantitySelector value={slotTransfer} onChange={value => setSlotTransfer(value)} maxValue={minable} />
+            </FormControl>
+          )}
           <FormControl as="fieldset" mb="6">
             <FormLabel>
               Wallet address<chakra.span color="red.500"> *</chakra.span>

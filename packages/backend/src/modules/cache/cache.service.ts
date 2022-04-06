@@ -1,5 +1,11 @@
 import { Cache } from "cache-manager";
-import { CACHE_MANAGER, Inject, Injectable } from "@nestjs/common";
+import {
+  CACHE_MANAGER,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from "@nestjs/common";
 
 import { UserData } from "@modules/auth/auth.types";
 import { LoggerService } from "@modules/logger/logger.service";
@@ -9,6 +15,8 @@ export class CacheService {
   constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {}
 
   get = async (token: string) => {
+    if (!token)
+      throw new HttpException("undefinded token", HttpStatus.UNAUTHORIZED);
     try {
       const result = await this.cacheManager.get<UserData>(token);
       return result;
@@ -18,6 +26,8 @@ export class CacheService {
   };
 
   set = async (token: string, userData: UserData) => {
+    if (!token)
+      throw new HttpException("undefinded token", HttpStatus.UNAUTHORIZED);
     try {
       await this.cacheManager.set<UserData>(token, userData, { ttl: 3600 });
     } catch (err) {
