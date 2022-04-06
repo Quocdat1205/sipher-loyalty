@@ -53,7 +53,7 @@ const NewPasswordFormUI = ({ tempUser }: NewPasswordFormUIProps) => {
       <Heading fontSize={"lg"} fontWeight={600} mb={8} color="white" textAlign={"center"}>
         UPDATE NEW PASSWORD
       </Heading>
-      <Form onSubmit={handleSubmit(d => mutateUpdatePassword(d.password))}>
+      <Form onSubmit={handleSubmit(d => mutateUpdatePassword(d.password))} noValidate>
         <Text mb={4}>You need to update your password to continue.</Text>
         <StyledInput label="New password" type="password" {...register("password")} error={errors?.password?.message} />
         <Divider my={6} />
