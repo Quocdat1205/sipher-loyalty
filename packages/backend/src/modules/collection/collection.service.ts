@@ -25,6 +25,7 @@ import marketplaceClient from "../../api/marketplaceClient";
 import {
   CollectionStats,
   Portfolio,
+  PortfolioByCollectionAndUserIdQuery,
   PortfolioByCollectionQuery,
   PortfolioQuery,
   UserSocialInfo,
@@ -45,7 +46,7 @@ export class CollectionService {
 
   private openseaApiTestBaseUrl = "https://testnets-api.opensea.io/api/v1/";
 
-  /* Calling Opensea api to update collection stats*/
+  /* Calling Opensea api to update collection stats */
   @Cron(CronExpression.EVERY_HOUR)
   async handleCron() {
     await this.updateEveryCollectionStats();
@@ -80,11 +81,7 @@ export class CollectionService {
         },
       }
     );
-    return data.pipe(
-      map((res) => {
-        return toCamcelCase(res.data.stats);
-      })
-    );
+    return data.pipe(map((res) => toCamcelCase(res.data.stats)));
   }
 
   /**
@@ -183,6 +180,51 @@ export class CollectionService {
     };
   }
 
+  async getPortfolioByCollectionAndUserId(
+    query: PortfolioByCollectionAndUserIdQuery
+  ) {
+    const collection = await this.sipherCollectionRepo.findOne({
+      where: {
+        id: query.collectionId,
+      },
+    });
+    if (!collection) {
+      return {
+        collection: {},
+        items: [],
+        total: 0,
+      };
+    }
+    const result = {
+      collection: {},
+      items: [],
+      total: 0,
+    };
+    await query.userAddress.reduce(async (promise, publicAddress) => {
+      await promise;
+      const inventory = await this.nftService.search(
+        {
+          owner: publicAddress,
+          collections: [collection.id],
+        },
+        query.from,
+        query.size
+      );
+      // console.log("1", result.items);
+      result.items.push(...inventory);
+      // console.log("2", result.items);
+      result.total += await this.nftService.count({
+        owner: publicAddress,
+        collections: [collection.id],
+      });
+    }, Promise.resolve());
+    result.items.forEach((item) => delete item._relation);
+    return {
+      collection,
+      total: result.total,
+      items: await this.addUriToItem(result.items),
+    };
+  }
   /**
    *
    * @param {string} itemId erc721 or erc1155 id
@@ -406,6 +448,7 @@ export class CollectionService {
       return [];
     }
   }
+
   /**
    *
    * @param items erc1155 items
