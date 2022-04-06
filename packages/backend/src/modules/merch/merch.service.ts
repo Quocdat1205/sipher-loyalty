@@ -83,7 +83,7 @@ export class MerchService {
   async getAllMerchByUserId(
     userData: UserData
   ): Promise<Array<Merchandise> | undefined> {
-    LoggerService.log(`Get all merch of userData: ${JSON.stringify(userData)}`);
+    LoggerService.log(`Get all merch of user id: ${userData.userId}`);
 
     const merchandises = await this.merchRepo.find({
       relations: ["item", "item.imageUrls"],
@@ -129,7 +129,7 @@ export class MerchService {
   async getOtherMerchByUserId(
     userData: UserData
   ): Promise<Array<Merchandise> | undefined> {
-    LoggerService.log(`Get all other of userData: ${JSON.stringify(userData)}`);
+    LoggerService.log(`Get all other of user id: ${userData.userId}`);
 
     const others = await this.merchRepo.find({
       relations: ["item", "item.imageUrls"],

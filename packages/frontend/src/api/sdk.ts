@@ -1024,12 +1024,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags airdrop
      * @name AirdropControllerGetAirdropsByType
-     * @request GET:/api/sipher/loyalty/airdrop/{airdropType}/{publicAddress}
+     * @request GET:/api/sipher/loyalty/airdrop/by-public-address/{airdropType}/{publicAddress}
      * @secure
      */
     airdropControllerGetAirdropsByType: (publicAddress: string, airdropType: string, params: RequestParams = {}) =>
       this.request<ResAllAirdrop, any>({
-        path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}`,
+        path: `/api/sipher/loyalty/airdrop/by-public-address/${airdropType}/${publicAddress}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags airdrop
+     * @name AirdropControllerGetAirdropsByTypeAndUserId
+     * @request GET:/api/sipher/loyalty/airdrop/by-user-id/{type}
+     * @secure
+     */
+    airdropControllerGetAirdropsByTypeAndUserId: (type: string, params: RequestParams = {}) =>
+      this.request<ResAllAirdrop, any>({
+        path: `/api/sipher/loyalty/airdrop/by-user-id/${type}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -1041,12 +1058,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags airdrop
      * @name AirdropControllerGetDetailAirdropByType
-     * @request GET:/api/sipher/loyalty/airdrop/{airdropType}/{publicAddress}/{id}
+     * @request GET:/api/sipher/loyalty/airdrop/by-public-address/{airdropType}/{publicAddress}/{id}
      * @secure
      */
     airdropControllerGetDetailAirdropByType: (publicAddress: string, id: string, airdropType: string, params: RequestParams = {}) =>
       this.request<ResAirdrop, any>({
-        path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}/${id}`,
+        path: `/api/sipher/loyalty/airdrop/by-public-address/${airdropType}/${publicAddress}/${id}`,
         method: 'GET',
         secure: true,
         format: 'json',
