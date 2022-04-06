@@ -1,5 +1,6 @@
 export * from "./Airdrops"
 export * from "./ERC721"
+export * from "./ERC1155"
 export * from "./LPSipherWethKyber"
 export * from "./LPSipherWethUniswap"
 export * from "./SipherSpaceshipLootBox"

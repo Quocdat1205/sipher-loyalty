@@ -48,7 +48,7 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
       <Box px={6}>
         <Flex align="center" mb="6">
           <Skeleton isLoaded={isFetched}>
-            <Img rounded="lg" w="66px" h="80px" src={tokenDetails?.imageUrl} objectFit="cover" />
+            <Img rounded="lg" w="66px" h="80px" src={tokenDetails?.imageUrl} objectFit="contain" />
           </Skeleton>
           <Flex ml="6" direction="column">
             <Text fontSize="16px" fontWeight="600" mb="1">

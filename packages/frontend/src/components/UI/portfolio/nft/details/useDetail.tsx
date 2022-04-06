@@ -54,8 +54,32 @@ const useDetail = () => {
     qc.invalidateQueries(["detailNFT", wallet.account, id])
   }
 
-  const { mutate: mutateTransfer, isLoading: isLoadingTranfer } = useMutation(
+  const { mutate: mutateTransfer721, isLoading: isLoadingTranfer721 } = useMutation(
     () => wallet.scCaller.current!.DynamicERC721.transfer(tokenDetails!.collectionId, addressTo, tokenDetails!.tokenId),
+    {
+      onSuccess: () => {
+        toast({
+          status: "success",
+          title: "Transaction pending",
+          message: "Please review your wallet notifications.",
+          duration: 5000,
+        })
+        revalidate()
+      },
+      onError: (err: any) => {
+        toast({
+          status: "error",
+          title: "Transaction error",
+          message: err.message,
+          duration: 5000,
+        })
+      },
+    },
+  )
+
+  const { mutate: mutateTransfer1155, isLoading: isLoadingTranfer1155 } = useMutation(
+    () =>
+      wallet.scCaller.current!.DynamicERC1155.transfer(tokenDetails!.collectionId, addressTo, tokenDetails!.tokenId),
     {
       onSuccess: () => {
         toast({
@@ -118,10 +142,18 @@ const useDetail = () => {
   }
 
   const handleTransfer = () => {
-    if (wallet.chainId !== ETHEREUM_NETWORK) {
-      wallet.switchNetwork(ETHEREUM_NETWORK)
+    if (tokenDetails?.collection.collectionType === "ERC1155") {
+      if (wallet.chainId !== POLYGON_NETWORK) {
+        wallet.switchNetwork(POLYGON_NETWORK)
+      } else {
+        mutateTransfer1155()
+      }
     } else {
-      mutateTransfer()
+      if (wallet.chainId !== ETHEREUM_NETWORK) {
+        wallet.switchNetwork(ETHEREUM_NETWORK)
+      } else {
+        mutateTransfer721()
+      }
     }
   }
 
@@ -143,7 +175,7 @@ const useDetail = () => {
     handleMint,
     handleClick,
     handleLinkOpenSea,
-    isLoadingTranfer,
+    isLoadingTranfer: isLoadingTranfer721 || isLoadingTranfer1155,
     addressTo,
     setAddressTo,
     handleTransfer,
