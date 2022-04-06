@@ -40,7 +40,13 @@ const InfoNFT = ({ tokenDetails, isFetched }: InfoNFTProps) => {
       <Flex align="center" flex={1} minW={0}>
         {tokenDetails?.collection.collectionType === "ERC1155" ? (
           <Skeleton isLoaded={isFetched} rounded="full">
-            <Avatar src={tokenDetails?.allOwner[0].profileImage} bg="gray" />
+            <Avatar
+              src={
+                tokenDetails?.allOwner[0].profileImage ||
+                "https://marketplace-testnet.s3.us-west-2.amazonaws.com/users/001.jpg"
+              }
+              bg="gray"
+            />
           </Skeleton>
         ) : (
           <Skeleton isLoaded={isFetched} rounded="full">
