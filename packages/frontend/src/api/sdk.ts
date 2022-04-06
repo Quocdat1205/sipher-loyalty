@@ -1057,10 +1057,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags sculpture
-     * @name SculptureControllerGetUserOwnedCode
+     * @name SculptureControllerGetUserTransactions
      * @request GET:/api/sipher/loyalty/sculpture/transaction/{ownerAddress}
      */
-    sculptureControllerGetUserOwnedCode: (ownerAddress: string, params: RequestParams = {}) =>
+    sculptureControllerGetUserTransactions: (ownerAddress: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/sculpture/transaction/${ownerAddress}`,
         method: 'GET',
