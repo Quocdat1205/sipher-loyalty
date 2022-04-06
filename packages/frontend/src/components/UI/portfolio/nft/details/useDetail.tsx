@@ -21,6 +21,7 @@ const useDetail = () => {
   const [slot, setSlot] = useState(0)
   const [isFetch, setIsFetch] = useState(false)
   const [minable, setMinable] = useState(0)
+  const [slotTransfer, setSlotTransfer] = useState(1)
 
   const {
     data: tokenDetails,
@@ -45,7 +46,9 @@ const useDetail = () => {
     },
   )
 
-  const collectionName = NftContracts.find(contract => contract.address === tokenDetails?.collection.id)?.name ?? ""
+  const collectionName =
+    NftContracts.find(contract => contract.address.toLowerCase() === tokenDetails?.collection.id.toLowerCase())?.name ??
+    ""
 
   const isOwner = wallet.account === tokenDetails?.owner
 
@@ -64,7 +67,7 @@ const useDetail = () => {
           message: "Please review your wallet notifications.",
           duration: 5000,
         })
-        revalidate()
+        router.push("/")
       },
       onError: (err: any) => {
         toast({
@@ -79,7 +82,12 @@ const useDetail = () => {
 
   const { mutate: mutateTransfer1155, isLoading: isLoadingTranfer1155 } = useMutation(
     () =>
-      wallet.scCaller.current!.DynamicERC1155.transfer(tokenDetails!.collectionId, addressTo, tokenDetails!.tokenId),
+      wallet.scCaller.current!.DynamicERC1155.transfer({
+        contractAddress: tokenDetails!.collectionId,
+        addressTo: addressTo,
+        tokenId: tokenDetails!.tokenId,
+        amount: slotTransfer.toString(),
+      }),
     {
       onSuccess: () => {
         toast({
@@ -88,7 +96,7 @@ const useDetail = () => {
           message: "Please review your wallet notifications.",
           duration: 5000,
         })
-        revalidate()
+        setMinable(minable - slotTransfer)
       },
       onError: (err: any) => {
         toast({
@@ -166,6 +174,8 @@ const useDetail = () => {
   }
 
   return {
+    slotTransfer,
+    setSlotTransfer,
     minable,
     slot,
     setSlot,

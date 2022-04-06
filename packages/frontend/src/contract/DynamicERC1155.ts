@@ -2,6 +2,13 @@ import { ethers, providers } from "ethers"
 
 import { ERC1155_ABI } from "../constant"
 
+interface TransferType {
+  contractAddress: string
+  addressTo: string
+  tokenId: string
+  amount: string
+}
+
 class DynamicERC1155 {
   provider: providers.Web3Provider
 
@@ -17,11 +24,11 @@ class DynamicERC1155 {
     return await this.getContract(contractAddress).balanceOf(address)
   }
 
-  async transfer(contractAddress: string, addressTo: string, tokenId: string) {
+  async transfer({ contractAddress, addressTo, tokenId, amount }: TransferType) {
     const signer = this.provider.getSigner()
     const publicAddress = await signer.getAddress()
     const contract = this.getContract(contractAddress)
-    const tx = await contract.connect(signer).transferFrom(publicAddress, addressTo, tokenId)
+    const tx = await contract.connect(signer).safeTransferFrom(publicAddress, addressTo, tokenId, amount, "0x")
     await tx.wait()
   }
 }
