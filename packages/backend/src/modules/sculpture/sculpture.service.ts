@@ -13,7 +13,11 @@ export class SculptureService {
     @InjectRepository(SculptureTransaction)
     private sculptureTxRepo: Repository<SculptureTransaction>
   ) {}
-
+  /**
+   * Get transactions from an address
+   * @param {string} address ethereum address
+   * @returns transactions of the address
+   */
   async getAddressTx(address: string) {
     const transactions = await this.sculptureTxRepo.find({
       where: {
@@ -22,7 +26,11 @@ export class SculptureService {
     });
     return transactions;
   }
-
+  /**
+   * Save redeem transaction
+   * @param {RedeemTxDto} redeemShopifyCodeDto dto of a redeem transaction
+   * @returns newly saved redeem transaction
+   */
   async saveRedeemTransaction(redeemShopifyCodeDto: RedeemTxDto) {
     const { amount, tokenId, address, txHash } = redeemShopifyCodeDto;
     const existed = await this.sculptureTxRepo.findOne({
