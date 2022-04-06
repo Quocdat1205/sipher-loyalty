@@ -112,7 +112,11 @@ const useDetail = () => {
   }
 
   const handleLinkOpenSea = () => {
-    window.open(`https://opensea.io/assets/${tokenDetails?.collectionId}/${tokenDetails?.tokenId}`, "_blank")
+    if (tokenDetails?.collection.collectionType === "ERC1155") {
+      window.open(`https://opensea.io/assets/matic/${tokenDetails?.collectionId}/${tokenDetails?.tokenId}`, "_blank")
+    } else {
+      window.open(`https://opensea.io/assets/${tokenDetails?.collectionId}/${tokenDetails?.tokenId}`, "_blank")
+    }
   }
 
   return {

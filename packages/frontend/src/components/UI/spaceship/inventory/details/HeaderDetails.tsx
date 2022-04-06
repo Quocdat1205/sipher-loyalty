@@ -16,8 +16,8 @@ export const HeaderDetails = ({ details, isFetched }: HeaderDetailsProps) => {
       <Metadata
         title={
           isFetched
-            ? `${capitalize(details!.propertyLootbox.name.toLowerCase() || "")} | Sipher Dashboard`
-            : "Loading... | Sipher Dashboard"
+            ? `${capitalize(details!.propertyLootbox.name.toLowerCase() || "")} | Loyalty Dashboard`
+            : "Loading... | Loyalty Dashboard"
         }
         description=""
       />

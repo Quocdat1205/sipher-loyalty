@@ -66,7 +66,7 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
         title={
           isFetched
             ? `${capitalize(collectionData?.name?.toLowerCase() ?? "")} | Sipher Portfolio`
-            : "Loading... | Sipher Dashboard"
+            : "Loading... | Loyalty Dashboard"
         }
         description=""
       />

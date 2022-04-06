@@ -1,9 +1,8 @@
 import { Box, Flex, Link, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
-import { Banner, NotifyNetwork } from "@components/shared"
+import { Banner } from "@components/shared"
 import NoItemUI from "@components/shared/NoItemUI"
-import { ETHEREUM_NETWORK } from "@constant"
 
 import AirdropCard from "./AirdropCard"
 import { DetailsAirdrop } from "./DetailsAirdrop"
@@ -76,7 +75,6 @@ const AirdropUI = () => {
 
   return (
     <Flex pos="relative" flexDir="column" align="center" flex={1}>
-      <NotifyNetwork chainId={ETHEREUM_NETWORK} />
       <Banner
         srcBg="/images/airdrops/banner.png"
         title="Airdrops"

@@ -1,8 +1,8 @@
-import React from "react"
+import React, { useState } from "react"
 import { BiArrowBack } from "react-icons/bi"
 import InfiniteScroll from "react-infinite-scroll-component"
 import { useInfiniteQuery } from "react-query"
-import { AspectRatio, Box, Flex, Heading, Image, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
+import { AspectRatio, Box, Flex, Heading, Image, SimpleGrid, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import { Avatar, getAvailableAvatars } from "@api"
 import { ChakraModal } from "@components/shared"
@@ -19,8 +19,9 @@ const ChooseAvatarForm = ({ isOpen, onClose, onBack, onChangeAvatar }: ChooseAva
   const { bearerToken } = useAuth()
   const TAKE = 20
   const fetchAvatars = ({ pageParam = 0 }) => getAvailableAvatars(bearerToken, pageParam * TAKE, TAKE)
+  const [imageLoaded, setImageLoaded] = useState(false)
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery("available-avatars", fetchAvatars, {
+  const { data, fetchNextPage, hasNextPage, isFetched } = useInfiniteQuery("available-avatars", fetchAvatars, {
     getNextPageParam: (lastPage, pages) => (lastPage.data.length < TAKE ? undefined : pages.length),
     keepPreviousData: true,
     enabled: !!bearerToken,
@@ -60,9 +61,19 @@ const ChooseAvatarForm = ({ isOpen, onClose, onBack, onChangeAvatar }: ChooseAva
               .reduce<Avatar[]>((acc, curr) => [...acc, ...curr.data], [])
               .map(avatar => (
                 <AspectRatio key={avatar.id} ratio={1}>
-                  <Box border="4px" borderColor={"transparent"} _hover={{ borderColor: "accent.500" }} rounded="lg">
-                    <Image src={avatar.imageUrl} onClick={() => onChangeAvatar(avatar.id)} />
-                  </Box>
+                  <Skeleton
+                    isLoaded={isFetched && imageLoaded}
+                    border="4px"
+                    borderColor={"transparent"}
+                    _hover={{ borderColor: "accent.500" }}
+                    rounded="lg"
+                  >
+                    <Image
+                      onLoad={() => setImageLoaded(true)}
+                      src={avatar.imageUrl}
+                      onClick={() => onChangeAvatar(avatar.id)}
+                    />
+                  </Skeleton>
                 </AspectRatio>
               ))}
           </SimpleGrid>

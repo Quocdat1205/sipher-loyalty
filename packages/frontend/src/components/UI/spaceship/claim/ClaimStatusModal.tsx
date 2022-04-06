@@ -52,8 +52,15 @@ const ClaimStatusModal = ({ isOpen, onClose, status }: ClaimStatusModalProp) => 
           )}
         </Text>
         <Divider mb={4} borderColor="whiteAlpha.100" />
-        <Button w="10rem" onClick={onClose}>
-          DONE
+        <Button
+          variant="secondary"
+          colorScheme="cyan"
+          fontSize="md"
+          size="md"
+          py={5}
+          onClick={() => router.push({ query: { tab: "inventory" } })}
+        >
+          VIEW IN INVENTORY
         </Button>
       </Flex>
     </ChakraModal>
