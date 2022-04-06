@@ -68,7 +68,7 @@ const PropertiesContainer = () => {
               </Box>
             }
           >
-            <Text color="neutral.400">Separate properties can't be changed ingame.</Text>
+            <Text color="neutral.900">Separate properties can't be changed ingame.</Text>
           </CustomPopover>
         </Flex>
         <Wrap w="full" py={4} spacing={4}>

@@ -9,7 +9,7 @@ import { NextPageWithLayout } from "./_app"
 const HomePage: NextPageWithLayout = () => {
   return (
     <>
-      <Metadata title="Ather Labs | Loyalty Dashboard" description="Ather Labs Loyalty Dashboard is now live!" />
+      <Metadata title="Ather Labs Dashboard | Dashboard" description="Ather Labs Loyalty Dashboard is now live!" />
       <ContentHome />
     </>
   )
