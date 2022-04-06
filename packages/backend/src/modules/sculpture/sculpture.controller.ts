@@ -9,7 +9,7 @@ export class SculptureController {
   constructor(private sculptureService: SculptureService) {}
 
   @Get("transaction/:ownerAddress")
-  async getUserOwnedCode(@Param("ownerAddress") ownerAddress: string) {
+  async getUserTransactions(@Param("ownerAddress") ownerAddress: string) {
     const transactions = await this.sculptureService.getAddressTx(ownerAddress);
     return {
       transactions,

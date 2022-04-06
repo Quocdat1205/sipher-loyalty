@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import client from "@client"
 import { useWalletContext } from "@web3"
 
-import { ETHEREUM_NETWORK, SipherAirdropsAddress } from "@constant"
+import { SipherAirdropsAddress } from "@constant"
 import { useChakraToast } from "@hooks"
 import { AirdropType } from "@sdk"
 import { setBearerToken } from "@utils"
@@ -20,27 +20,11 @@ export const useAirdrops = () => {
   const router = useRouter()
   const currentTab = router.query.tab || AirdropType.ALL.toLowerCase()
   const { bearerToken } = useAuth()
-  const { account, scCaller, chainId } = useWalletContext()
+  const { account, scCaller } = useWalletContext()
   const [claimId, setClaimId] = useState<number | null>(null)
   const qc = useQueryClient()
   const toast = useChakraToast()
-  const [dataToken, setDataToken] = useState<{ totalAmount?: string; proof?: string[] } | undefined>()
   const [isLoadingAirdrops, setIsLoadingAirdrops] = useState(true)
-
-  const { data: claimableAmount, refetch } = useQuery(
-    ["token-claimable-amount", dataToken, account],
-    () => scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(dataToken!.totalAmount!, dataToken!.proof!),
-    {
-      enabled:
-        !!scCaller.current &&
-        !!dataToken &&
-        !!dataToken?.totalAmount &&
-        !!dataToken?.proof &&
-        !!account &&
-        chainId === ETHEREUM_NETWORK,
-      initialData: 0,
-    },
-  )
 
   const { data: airdropsData, isFetched } = useQuery(
     ["airdrops", account],
@@ -50,19 +34,7 @@ export const useAirdrops = () => {
         .then(res => res.data),
     {
       enabled: !!bearerToken && !!account,
-      onSuccess: data => {
-        if (data.token?.length > 0 && chainId === ETHEREUM_NETWORK) {
-          const item = data.token.find(
-            item => item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase(),
-          )
-          setDataToken({
-            totalAmount: item?.totalAmount,
-            proof: item?.proof,
-          })
-          refetch()
-        } else {
-          setDataToken(undefined)
-        }
+      onSuccess: () => {
         setIsLoadingAirdrops(false)
       },
       initialData: {
@@ -108,7 +80,7 @@ export const useAirdrops = () => {
     ? [
         ...airdropsData!.nft?.map(item => ({
           ...item,
-          buttonText: "Coming soon",
+          buttonText: "",
           isClaiming: claimId === item.id,
           isDisabled: true,
           onView: () => {
@@ -121,8 +93,7 @@ export const useAirdrops = () => {
         ...airdropsData!.token?.map(item => ({
           ...item,
           isClaiming: claimId === item.id,
-          isDisabled: item?.totalAmount === "0" || chainId !== ETHEREUM_NETWORK || claimableAmount === 0,
-          buttonText: "Claim",
+          buttonText: "",
           onView: () => {
             router.push({ query: { tab: currentTab, type: item.type, id: item.id } }, undefined, { scroll: false })
           },
@@ -147,7 +118,7 @@ export const useAirdrops = () => {
         })),
         ...airdropsData!.other?.map(item => ({
           ...item,
-          buttonText: "Coming soon",
+          buttonText: "",
           isClaiming: claimId === item.id,
           isDisabled: true,
           onView: () => {
@@ -159,6 +130,8 @@ export const useAirdrops = () => {
         })),
       ]
     : []
-  console.log(currentTab)
-  return { isLoadingAirdrops, currentTab, allAirdrops, isFetched }
+
+  const totalMerch = allAirdrops.filter(item => item.type === "MERCH").reduce((acc, curr) => acc + curr.quantity, 0)
+
+  return { totalMerch, isLoadingAirdrops, currentTab, allAirdrops, isFetched }
 }

@@ -3,8 +3,7 @@ import { useRouter } from "next/router"
 import { Box, Flex } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
-import { Banner, NotifyNetwork } from "@components/shared"
-import { POLYGON_NETWORK } from "@constant"
+import { Banner } from "@components/shared"
 
 import ClaimContainer from "./claim"
 import { InventoryContainer } from "./inventory"
@@ -40,7 +39,6 @@ const ContentSpaceship = () => {
 
   return (
     <Flex pos="relative" flexDir="column" align="center" flex={1}>
-      <NotifyNetwork chainId={POLYGON_NETWORK} />
       <Banner
         srcBg="/images/spaceship/banner.png"
         title="Spaceship"

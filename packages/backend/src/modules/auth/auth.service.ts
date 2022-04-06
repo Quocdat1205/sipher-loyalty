@@ -34,6 +34,7 @@ export class AuthService {
   fetchUserData = async (req: Request) => {
     try {
       const token = req.headers.authorization.trim().split(" ").pop();
+
       const dataAWSUser = await this.verifier.verify(token);
       const roles = dataAWSUser["cognito:groups"];
 
@@ -62,6 +63,8 @@ export class AuthService {
 
   async validateRequest(req: Request) {
     try {
+      // console.log(req);
+
       const currentUserData = await this.cacheService.get(
         req.headers.authorization
       );
@@ -73,7 +76,7 @@ export class AuthService {
       }
     } catch (err) {
       LoggerService.error(err);
-      throw new HttpException("validate failed", HttpStatus.UNAUTHORIZED);
+      throw new HttpException(err, HttpStatus.UNAUTHORIZED);
     }
     return true;
   }

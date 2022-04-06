@@ -70,7 +70,9 @@ const NFTCard = ({ data, isFetched, gridSize }: CardProps) => {
               pr={1}
             >
               <Flex align="center">
-                <Text fontSize="sm">{"View"}</Text>
+                <Text color="neutral.900" fontSize="sm">
+                  {"View"}
+                </Text>
                 <Box>
                   <BiChevronRight size="1.2rem" />
                 </Box>

@@ -7,7 +7,7 @@ import { useDetailContext } from "../useDetail"
 
 import PropertyTag from "./PropertyTag"
 
-const soulBoundData = ["weapon", "hand", "head", "sub-race", "costume"]
+const soulBoundData = ["weapon", "hand", "head", "hat", "costume"]
 
 const PropertiesContainer = () => {
   const { tokenDetails } = useDetailContext()
@@ -68,7 +68,7 @@ const PropertiesContainer = () => {
               </Box>
             }
           >
-            <Text color="neutral.400">Separate properties can't be changed ingame.</Text>
+            <Text color="neutral.900">Separate properties can't be changed ingame.</Text>
           </CustomPopover>
         </Flex>
         <Wrap w="full" py={4} spacing={4}>

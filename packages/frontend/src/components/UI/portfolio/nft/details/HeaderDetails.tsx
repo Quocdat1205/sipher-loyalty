@@ -20,8 +20,8 @@ const HeaderDetails = ({ tokenDetails, isFetched }: HeaderDetailsProps) => {
       <Metadata
         title={
           isFetched
-            ? `${capitalize(tokenDetails?.name.toLocaleLowerCase() || "")} | Loyalty Dashboard`
-            : "Loading... | Sipher Porfolio"
+            ? `Ather Labs Dashboard | ${capitalize(tokenDetails?.name.toLocaleLowerCase() || "")}`
+            : "Ather Labs Dashboard | Loading..."
         }
         description=""
       />

@@ -22,16 +22,8 @@ const SlideFrame = ({ title, description, srcBg, destination }: SlideFrameProps)
       w="full"
     >
       <Img objectFit="cover" src={srcBg} alt="slide1" w="full" h="full" minH="14rem" />
-      <Box pos="absolute" w="full" h="full" maxW="1440px">
-        <Flex
-          direction={"column"}
-          align="center"
-          px={[4, 4, 4, 0, 0]}
-          pos="absolute"
-          top="50%"
-          left="0%"
-          transform="translateY(-50%)"
-        >
+      <Box pos="absolute" w="full" h="full" maxW="1200px">
+        <Flex direction={"column"} px={[4, 4, 4, 0, 0]} pos="absolute" top="50%" left="0%" transform="translateY(-50%)">
           <Heading fontSize="5xl" fontWeight={600} mb={2} textTransform="uppercase">
             {title}
           </Heading>
@@ -42,7 +34,6 @@ const SlideFrame = ({ title, description, srcBg, destination }: SlideFrameProps)
             fontSize="lg"
             fontWeight={600}
             textTransform="uppercase"
-            textAlign={"center"}
           >
             {description}
           </Text>

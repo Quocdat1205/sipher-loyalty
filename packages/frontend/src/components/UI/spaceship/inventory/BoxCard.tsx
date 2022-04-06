@@ -111,8 +111,8 @@ export const BoxCard = ({ data, isFetched }: CardProps) => {
           <Text fontWeight={600}>{propertyLootbox?.name}</Text>
         </Skeleton>
         <Skeleton isLoaded={isFetched}>
-          <Text color="neutral.400" title={propertyLootbox?.description}>
-            {propertyLootbox?.description.slice(0, 45)}...
+          <Text noOfLines={2} color="neutral.400" title={propertyLootbox?.description}>
+            {propertyLootbox?.description}
           </Text>
         </Skeleton>
       </Stack>
