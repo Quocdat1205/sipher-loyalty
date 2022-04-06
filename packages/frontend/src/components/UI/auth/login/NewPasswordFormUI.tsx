@@ -6,16 +6,14 @@ import AtherIdAuth, { CognitoUser } from "@sipher.dev/ather-id"
 import { Box, Button, Divider, Heading, Text } from "@sipher.dev/sipher-ui"
 
 import { Form, StyledInput } from "@components/shared"
+import { passwordRegex } from "@constant"
 import { useChakraToast } from "@hooks"
 import { useAuth } from "src/providers/auth"
 
 const validationSchema = Yup.object().shape({
   password: Yup.string()
     .required("Password is required")
-    .matches(
-      /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/,
-      "Must contain at least 8 characters, one uppercase, one number and one special character",
-    ),
+    .matches(passwordRegex, "Must contain at least 8 characters, one uppercase, one number and one special character"),
 })
 
 interface NewPasswordFormUIProps {

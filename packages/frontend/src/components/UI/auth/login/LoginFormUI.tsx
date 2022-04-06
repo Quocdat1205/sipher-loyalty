@@ -34,7 +34,7 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
 
   const toast = useChakraToast()
   const wallet = useWalletContext()
-  const { setUser } = useAuth()
+  const { setUser, getUser } = useAuth()
 
   const [connectingMethod, setConnectingMethod] = useState<string | null>(null)
 
@@ -129,6 +129,10 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
     if (account) mutateSignIn({ emailOrWallet: account! })
   }
 
+  const handleSocialSignin = async (provider: SocialProvider) => {
+    await AtherIdAuth.signInWithSocial(provider)
+  }
+
   return (
     <Box>
       <Heading fontSize={"lg"} fontWeight={600} mb={8} color="white" textAlign={"center"}>
@@ -170,8 +174,8 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
           <Box flex={1} h="1px" bg="neutral.500" />
         </Flex>
         <SocialAccountSignIn
-          onGoogleSignIn={() => AtherIdAuth.signInWithSocial(SocialProvider.Google)}
-          onDiscordSignIn={() => AtherIdAuth.signInWithSocial(SocialProvider.Discord)}
+          onGoogleSignIn={() => handleSocialSignin(SocialProvider.Google)}
+          onDiscordSignIn={() => handleSocialSignin(SocialProvider.Discord)}
           displayLabel
           mb={4}
         />

@@ -1,6 +1,6 @@
 import { createContext, FC, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { useQuery } from "react-query"
-import { useRouter } from "next/router"
+import { Router, useRouter } from "next/router"
 import AtherIdAuth, {
   AtherIdEnviromment,
   CognitoUser,
@@ -23,6 +23,7 @@ const configPromise = configure({
 })
 
 const useAuthState = () => {
+  const router = useRouter()
   const userRef = useRef<CognitoUser>()
   const [cognitoUser, _setUser] = useState<CognitoUser>()
   const authenticated = useMemo(() => !!cognitoUser, [cognitoUser])
@@ -46,7 +47,7 @@ const useAuthState = () => {
 
   const getUser = async () => {
     const currentUser = await AtherIdAuth.currentAuthenticatedUser().catch(err => {
-      console.log("not authenticated", err)
+      console.log("AUTH ERROR:", err)
     })
     return currentUser
   }
@@ -120,7 +121,7 @@ const useAuthState = () => {
       // try to refresh token every 10 mins
       getSession().then(setSession)
     }, 10 * 60 * 1000)
-
+    console.log("PROMISE")
     Promise.resolve(configPromise).then(getUser).then(setUser).then(getSession).then(setSession)
 
     return () => {
@@ -144,6 +145,7 @@ const useAuthState = () => {
     ownedWallets: ownedWallets ? ownedWallets!.map(w => w.address) : [],
     bearerToken,
     refetchOwnedWallets,
+    getUser,
   }
 }
 
