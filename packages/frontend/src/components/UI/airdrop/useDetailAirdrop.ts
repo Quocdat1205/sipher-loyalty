@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
@@ -11,7 +12,7 @@ import { useAuth } from "src/providers/auth"
 export const useDetailAirdrop = () => {
   const router = useRouter()
   const { bearerToken } = useAuth()
-  const { account, scCaller, chainId } = useWalletContext()
+  const { account, scCaller, chainId, switchNetwork } = useWalletContext()
   const toast = useChakraToast()
   const qc = useQueryClient()
   const { tab, type, id: queryId } = router.query
@@ -26,7 +27,12 @@ export const useDetailAirdrop = () => {
     ["detailsAirdrops", queryId, account],
     () =>
       client.api
-        .airdropControllerGetAirdropByType(account!, queryId as string, type as string, setBearerToken(bearerToken))
+        .airdropControllerGetDetailAirdropByType(
+          account!,
+          queryId as string,
+          type as string,
+          setBearerToken(bearerToken),
+        )
         .then(res => res.data),
     {
       enabled: !!bearerToken && !!account,
@@ -78,8 +84,12 @@ export const useDetailAirdrop = () => {
   })
 
   const handleClaim = () => {
-    if (detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase()) {
-      claim({ totalAmount: detailAirdrop.totalAmount, proof: detailAirdrop.proof })
+    if (chainId === ETHEREUM_NETWORK) {
+      if (detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase()) {
+        claim({ totalAmount: detailAirdrop.totalAmount, proof: detailAirdrop.proof })
+      }
+    } else {
+      switchNetwork(ETHEREUM_NETWORK)
     }
   }
 
@@ -94,7 +104,12 @@ export const useDetailAirdrop = () => {
   const claimableAmount =
     detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase() ? initClaimableAmount : 0
 
+  useEffect(() => {
+    onClose()
+  }, [account])
+
   return {
+    chainId,
     detailAirdrop,
     router,
     isOpen,

@@ -30,7 +30,7 @@ export const useClaim = () => {
         setIsStatusModal("SUCCESS")
       },
       onSettled: () => {
-        query.invalidateQueries("claimableLootBox")
+        query.invalidateQueries(["claimableLootBox", account])
       },
       onError: () => {
         setIsStatusModal("FAILED")

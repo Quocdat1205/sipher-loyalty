@@ -1,9 +1,8 @@
 import React from "react"
 import { useRouter } from "next/router"
-import { Box, Button, Flex, Heading, Img, Text } from "@sipher.dev/sipher-ui"
+import { Box, Button, Flex, Heading, Text } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
-import { videos } from "@components/UI/portfolio/nft/NFTCard"
 
 import { spaceshipTabs } from ".."
 
@@ -66,16 +65,7 @@ export const SpaceshipContainer = () => {
               p={4}
               flex={2}
             >
-              {videos.includes(activeData.image.split(".")[1]) ? (
-                <video src={activeData.image} autoPlay loop muted datatype="video/mp4"></video>
-              ) : (
-                <Img
-                  objectFit="contain"
-                  h="full"
-                  src={activeData.image ?? "/images/spaceship/ship/1.png"}
-                  alt={activeData.title}
-                />
-              )}
+              <video src={activeData.image} autoPlay loop muted datatype="video/mp4"></video>
             </Flex>
           </Flex>
           <Box mt={16}>

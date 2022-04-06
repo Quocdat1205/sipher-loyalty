@@ -11,7 +11,7 @@ import useNFTs, { NFTItemProp } from "../nft/useNFTs"
 interface BringModalProps {
   isLoading: boolean
   status: string
-  handleMint: () => void
+  handleBurn: () => void
   dataMinted: NFTItemProp[]
   dataMint: ReturnType<typeof useNFTs>["nftsDataCheck"]
   isOpen: boolean
@@ -24,7 +24,7 @@ export const BringModal = ({
   isOpen,
   onClose,
   status,
-  handleMint,
+  handleBurn,
   isLoading,
 }: BringModalProps) => {
   const router = useRouter()
@@ -120,7 +120,7 @@ export const BringModal = ({
         <HStack justify="center">
           {status === "CONFIRM" ? (
             <>
-              <Button isLoading={isLoading} onClick={handleMint} fontSize="md" size="md" py={5}>
+              <Button isLoading={isLoading} onClick={handleBurn} fontSize="md" size="md" py={5}>
                 CONFIRM
               </Button>
               <Button

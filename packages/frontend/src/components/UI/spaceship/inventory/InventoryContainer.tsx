@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Button, Flex, SimpleGrid } from "@sipher.dev/sipher-ui"
+import { Box, Button, Flex, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
 import NoItemUI from "@components/shared/NoItemUI"
 
@@ -9,6 +9,7 @@ import { BoxCard, useInventory } from "."
 
 export const InventoryContainer = () => {
   const {
+    totalLootbox,
     isLoadingLootBox,
     isFetchedLootBox,
     dataMinted,
@@ -36,7 +37,7 @@ export const InventoryContainer = () => {
     }
     return (
       <SimpleGrid spacing={6} columns={[1, 3, 4, 4, 4]}>
-        {inventoryData!.map(i => (
+        {inventoryData?.map(i => (
           <BoxCard key={i.id} data={i} isFetched={isFetchedLootBox} />
         ))}
       </SimpleGrid>
@@ -46,6 +47,11 @@ export const InventoryContainer = () => {
   return (
     <Flex flexDir="column" align="center">
       <Box px={[4, 4, 4, 0, 0]} py={6} maxW="1200px" w="full">
+        <Box mb={4}>
+          <Text color="neutral.300" fontWeight={600}>
+            TOTAL: {totalLootbox} {totalLootbox > 0 ? "Items" : "Item"}
+          </Text>
+        </Box>
         {inventoryDataCheck?.length !== 0 && (
           <Button onClick={() => setIsStatusModal("MINT")} mb={4}>
             MINT NFT({inventoryDataCheck?.length})

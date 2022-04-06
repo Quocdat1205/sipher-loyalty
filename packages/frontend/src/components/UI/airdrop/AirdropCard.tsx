@@ -125,14 +125,8 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
           </Skeleton>
         </Box>
         <Skeleton isLoaded={isFetched}>
-          {data.type !== "OTHER" && (
-            <Button
-              textTransform="uppercase"
-              onClick={data.onClaim}
-              isLoading={data.isClaiming}
-              isDisabled={data.isDisabled}
-              w="full"
-            >
+          {data.buttonText !== "" && (
+            <Button textTransform="uppercase" onClick={data.onClaim} isLoading={data.isClaiming} isDisabled w="full">
               {data.buttonText}
             </Button>
           )}

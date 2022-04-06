@@ -47,6 +47,26 @@ export class PortfolioByCollectionQuery {
   size?: number;
 }
 
+export class PortfolioByCollectionAndUserIdQuery {
+  @ApiProperty()
+  @IsEthereumAddress()
+  userAddress: string[];
+
+  @ApiProperty()
+  @IsString()
+  collectionId: string;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  from?: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  size?: number;
+}
+
 export class PortfolioByCollectionResponse {
   @ApiProperty({ type: SipherCollection })
   collection: SipherCollection;

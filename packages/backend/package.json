@@ -28,9 +28,7 @@
     "migrate:config": "(rm ormconfig.json || :) && ts-node -r tsconfig-paths/register src/scripts/write-type-orm-config.ts",
     "migrate:generate": "ts-node -r tsconfig-paths/register -P ./tsconfig.json ../../node_modules/typeorm/cli.js migration:generate -n",
     "migrate:up": "ts-node -r tsconfig-paths/register -P ./tsconfig.json ../../node_modules/typeorm/cli.js migration:run",
-    "migrate:down": "ts-node -r tsconfig-paths/register -P ./tsconfig.json ../../node_modules/typeorm/cli.js migration:revert",
-    "seed-lootbox-test": "ts-node -r tsconfig-paths/register src/scripts/seed-lootbox-test.ts",
-    "seed-data": "ts-node -r tsconfig-paths/register src/scripts/seed-data.ts"
+    "migrate:down": "ts-node -r tsconfig-paths/register -P ./tsconfig.json ../../node_modules/typeorm/cli.js migration:revert"
   },
   "dependencies": {
     "@acuris/aws-es-connection": "^2.3.0",

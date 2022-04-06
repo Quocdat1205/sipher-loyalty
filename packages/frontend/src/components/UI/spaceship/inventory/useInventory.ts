@@ -74,6 +74,8 @@ export const useInventory = () => {
       },
     }))
 
+  const totalLootbox = inventoryData.reduce((acc, cur) => acc + cur.mintable, 0)
+
   useEffect(() => {
     setData(data?.map(item => ({ ...item, isChecked: false })))
   }, [account])
@@ -162,6 +164,7 @@ export const useInventory = () => {
   }
 
   return {
+    totalLootbox,
     isFetchedLootBox: isFetched,
     isLoadingLootBox,
     dataMinted,
