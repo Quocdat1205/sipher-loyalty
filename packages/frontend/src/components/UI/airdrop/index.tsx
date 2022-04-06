@@ -18,7 +18,7 @@ const tabs = [
 ]
 
 const AirdropUI = () => {
-  const { allAirdrops, currentTab, isFetched, isLoadingAirdrops } = useAirdrops()
+  const { totalMerch, allAirdrops, currentTab, isFetched, isLoadingAirdrops } = useAirdrops()
 
   const handleSendMail = () => {
     window.open("mailto:hello@sipher.xyz")
@@ -54,6 +54,13 @@ const AirdropUI = () => {
       const airdrops = allAirdrops.filter(airdrop => airdrop.type === currentTab.toString().toUpperCase())
       return airdrops.length > 0 ? (
         <>
+          {currentTab === "merch" && (
+            <Box mb={4}>
+              <Text color="neutral.300" fontWeight={600}>
+                TOTAL: {totalMerch} {totalMerch > 0 ? "Items" : "Item"}
+              </Text>
+            </Box>
+          )}
           <SimpleGrid spacing={4} columns={[1, 2, 4, 5, 5]}>
             {renderNFTs()}
           </SimpleGrid>

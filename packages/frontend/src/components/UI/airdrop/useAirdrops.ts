@@ -130,5 +130,8 @@ export const useAirdrops = () => {
         })),
       ]
     : []
-  return { isLoadingAirdrops, currentTab, allAirdrops, isFetched }
+
+  const totalMerch = allAirdrops.filter(item => item.type === "MERCH").reduce((acc, curr) => acc + curr.quantity, 0)
+
+  return { totalMerch, isLoadingAirdrops, currentTab, allAirdrops, isFetched }
 }

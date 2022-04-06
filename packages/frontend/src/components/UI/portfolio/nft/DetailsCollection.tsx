@@ -44,7 +44,7 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
     handleClick,
     modal,
     setModal,
-    handleBring,
+    handleBurn,
     dataMinted,
     isLoadingBurn,
   } = useNFTs(collectionId)
@@ -65,8 +65,8 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
       <Metadata
         title={
           isFetched
-            ? `${capitalize(collectionData?.name?.toLowerCase() ?? "")} | Sipher Portfolio`
-            : "Loading... | Loyalty Dashboard"
+            ? `Ather Labs Dashboard | ${capitalize(collectionData?.name?.toLowerCase() ?? "")}`
+            : "Ather Labs Dashboard | Loading..."
         }
         description=""
       />
@@ -127,11 +127,11 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
             </Skeleton>
           </Stack>
           <Flex mb={4} align="center" justify="space-between" w="full">
-            <Skeleton isLoaded={isFetched}>
+            <Box>
               <Text color="neutral.300" fontWeight={600}>
                 TOTAL: {total} {total > 0 ? "NFTs" : "NFT"}
               </Text>
-            </Skeleton>
+            </Box>
             <GridSelector />
           </Flex>
           <Flex>
@@ -168,7 +168,7 @@ const DetailsCollection = ({ collectionId }: DetailsCollectionProps) => {
         isLoading={isLoadingBurn}
         status={modal}
         dataMinted={dataMinted}
-        handleMint={handleBring}
+        handleBurn={handleBurn}
         dataMint={nftsDataCheck ?? []}
         isOpen={modal !== ""}
         onClose={() => setModal("")}

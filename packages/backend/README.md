@@ -10,8 +10,6 @@ https://github.com/nestjs/nest/tree/master/sample/11-swagger
 
 `docker-compose -f ./docker/docker-compose.yml -p sipher-loyalty up -d`
 
-- Run seeding commands in `packages.json` if necessary
-
 - Run `yarn dev`
 
 # migrate & seed db

@@ -1024,12 +1024,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags airdrop
      * @name AirdropControllerGetAirdropsByType
-     * @request GET:/api/sipher/loyalty/airdrop/{airdropType}/{publicAddress}
+     * @request GET:/api/sipher/loyalty/airdrop/by-public-address/{airdropType}/{publicAddress}
      * @secure
      */
     airdropControllerGetAirdropsByType: (publicAddress: string, airdropType: string, params: RequestParams = {}) =>
       this.request<ResAllAirdrop, any>({
-        path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}`,
+        path: `/api/sipher/loyalty/airdrop/by-public-address/${airdropType}/${publicAddress}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -1040,13 +1040,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags airdrop
-     * @name AirdropControllerGetAirdropByType
-     * @request GET:/api/sipher/loyalty/airdrop/{airdropType}/{publicAddress}/{id}
+     * @name AirdropControllerGetAirdropsByTypeAndUserId
+     * @request GET:/api/sipher/loyalty/airdrop/by-user-id/{type}
      * @secure
      */
-    airdropControllerGetAirdropByType: (publicAddress: string, id: string, airdropType: string, params: RequestParams = {}) =>
+    airdropControllerGetAirdropsByTypeAndUserId: (type: string, params: RequestParams = {}) =>
+      this.request<ResAllAirdrop, any>({
+        path: `/api/sipher/loyalty/airdrop/by-user-id/${type}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags airdrop
+     * @name AirdropControllerGetDetailAirdropByType
+     * @request GET:/api/sipher/loyalty/airdrop/by-public-address/{airdropType}/{publicAddress}/{id}
+     * @secure
+     */
+    airdropControllerGetDetailAirdropByType: (publicAddress: string, id: string, airdropType: string, params: RequestParams = {}) =>
       this.request<ResAirdrop, any>({
-        path: `/api/sipher/loyalty/airdrop/${airdropType}/${publicAddress}/${id}`,
+        path: `/api/sipher/loyalty/airdrop/by-public-address/${airdropType}/${publicAddress}/${id}`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -1057,10 +1074,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags sculpture
-     * @name SculptureControllerGetUserOwnedCode
+     * @name SculptureControllerGetUserTransactions
      * @request GET:/api/sipher/loyalty/sculpture/transaction/{ownerAddress}
      */
-    sculptureControllerGetUserOwnedCode: (ownerAddress: string, params: RequestParams = {}) =>
+    sculptureControllerGetUserTransactions: (ownerAddress: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/sipher/loyalty/sculpture/transaction/${ownerAddress}`,
         method: 'GET',

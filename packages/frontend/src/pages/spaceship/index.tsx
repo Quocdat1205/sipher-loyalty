@@ -10,7 +10,7 @@ const SpaceshipPage: NextPageWithLayout = () => {
   return (
     <>
       <Metadata
-        title="Spaceship | Loyalty Dashboard"
+        title="Ather Labs Dashboard | Spaceship"
         description="Transport yourself throughout the various dungeons and the World of Sipheria"
       />
       <ContentSpaceship />

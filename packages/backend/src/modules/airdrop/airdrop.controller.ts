@@ -1,3 +1,4 @@
+import { IsEnum } from "class-validator";
 import { Request } from "express";
 import { Controller, Get, Param, Req, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from "@nestjs/swagger";
@@ -29,7 +30,7 @@ export class AirdropController {
   @ApiOkResponse({
     type: ResAllAirdrop || ResNFTAirdrop || ResTokenAirdrop || ResMerchAirdrop,
   })
-  @Get("/:airdropType/:publicAddress")
+  @Get("/by-public-address/:airdropType/:publicAddress")
   async getAirdropsByType(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Param("airdropType") airdropType: AirdropType,
@@ -42,16 +43,29 @@ export class AirdropController {
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
   @ApiOkResponse({
+    type: ResAllAirdrop || ResNFTAirdrop || ResTokenAirdrop || ResMerchAirdrop,
+  })
+  @Get("/by-user-id/:type")
+  async getAirdropsByTypeAndUserId(
+    @Req() req: Request,
+    @Param("type") type: AirdropType
+  ) {
+    return this.airdropService.getAirdropsByTypeAndUserId(req.userData, type);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @ApiOkResponse({
     type: ResAirdrop,
   })
-  @Get("/:airdropType/:publicAddress/:id")
-  async getAirdropByType(
+  @Get("by-public-address/:airdropType/:publicAddress/:id")
+  async getDetailAirdropByType(
     @Param("publicAddress", ParseEthereumAddress) publicAddress: string,
     @Param("id") id: string,
     @Param("airdropType") airdropType: AirdropType,
     @Req() req: Request
   ) {
     await this.authService.verifyAddress(publicAddress, req);
-    return this.airdropService.getAirdropByType(id, airdropType);
+    return this.airdropService.getDetailAirdropByType(id, airdropType);
   }
 }
