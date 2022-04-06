@@ -6,6 +6,7 @@ import AtherIdAuth, { signInWithSocial, SocialProvider } from "@sipher.dev/ather
 import { Box, Button, Flex, Heading, Link, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { Form, SocialAccountSignIn, StyledInput } from "@components/shared"
+import { passwordRegex } from "@constant"
 import { useChakraToast } from "@hooks"
 
 import { SignUpStep } from "./SignUpUI"
@@ -14,10 +15,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().required("Email is required").email("Must be a valid email address"),
   password: Yup.string()
     .required("Password is required")
-    .matches(
-      /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*_])(?=.{8,})/,
-      "Must contain at least 8 characters, one uppercase, one number and one special character",
-    ),
+    .matches(passwordRegex, "Must contain at least 8 characters, one uppercase, one number and one special character"),
 })
 
 interface SignUpFormUIProps {

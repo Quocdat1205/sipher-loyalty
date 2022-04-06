@@ -6,6 +6,7 @@ import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, Button, chakra, Divider, Spinner, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { ChakraModal, Form, StyledInput } from "@components/shared"
+import { passwordRegex } from "@constant"
 import { useChakraToast } from "@hooks"
 
 interface VerifyNewPasswordProps {
@@ -17,10 +18,7 @@ interface VerifyNewPasswordProps {
 const validationSchema = Yup.object().shape({
   password: Yup.string()
     .required("Password is required")
-    .matches(
-      /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*_])(?=.{8,})/,
-      "Must contain at least 8 characters, one uppercase, one number and one special character",
-    ),
+    .matches(passwordRegex, "Must contain at least 8 characters, one uppercase, one number and one special character"),
   code: Yup.string().required("Code is required"),
 })
 
