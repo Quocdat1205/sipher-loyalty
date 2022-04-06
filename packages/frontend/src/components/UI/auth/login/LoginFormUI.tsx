@@ -93,6 +93,7 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
         setStep(LoginStep.Verify)
       } else if (e?.message === "Wallet is not connected with any account") {
         toast({
+          status: "error",
           title: "Wallet is not registered",
           message: "Please sign up to continue!",
         })
@@ -133,7 +134,7 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
       <Heading fontSize={"lg"} fontWeight={600} mb={8} color="white" textAlign={"center"}>
         SIGN IN
       </Heading>
-      <Form onSubmit={handleSubmit(d => mutateSignIn({ emailOrWallet: d.email, password: d.password }))}>
+      <Form onSubmit={handleSubmit(d => mutateSignIn({ emailOrWallet: d.email, password: d.password }))} noValidate>
         <Stack spacing={4}>
           <StyledInput
             label="Email"

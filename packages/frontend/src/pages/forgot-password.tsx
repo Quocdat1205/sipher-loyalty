@@ -8,7 +8,7 @@ import { NextPageWithLayout } from "src/pages/_app"
 const LoginPage: NextPageWithLayout = () => {
   return (
     <>
-      <Metadata title="Forgot Password | Loyalty Dashboard" description="" />
+      <Metadata title="Ather Labs Dashboard | Forgot Password" description="" />
       <ForgotPasswordUI />
     </>
   )

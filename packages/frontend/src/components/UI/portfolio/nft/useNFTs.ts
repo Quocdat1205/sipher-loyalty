@@ -134,7 +134,7 @@ const useNFTs = collectionId => {
     setModal("CONFIRM")
   }
 
-  const handleBring = () => {
+  const handleBurn = () => {
     if (chainId !== POLYGON_NETWORK) {
       switchNetwork(POLYGON_NETWORK)
     } else {
@@ -144,7 +144,7 @@ const useNFTs = collectionId => {
 
   return {
     gridSize,
-    handleBring,
+    handleBurn,
     isLoadingBurn,
     dataMinted,
     modal,

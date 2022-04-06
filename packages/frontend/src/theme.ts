@@ -3,6 +3,14 @@ import { sipherThemeExtensions } from "@sipher.dev/sipher-ui"
 
 export const theme = extendTheme({
   ...sipherThemeExtensions,
+  components: {
+    Skeleton: {
+      defaultProps: {
+        startColor: "neutral.600",
+        endColor: "neutral.500",
+      },
+    },
+  },
   styles: {
     global: {
       html: {

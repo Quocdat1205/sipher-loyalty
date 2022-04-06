@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from "react"
+import React, { MouseEvent, useEffect, useState } from "react"
 import { MdAccountBalanceWallet } from "react-icons/md"
 import {
   Box,
@@ -26,7 +26,7 @@ interface TransferModalProps {
 }
 
 export function TransferModal({ isOpen, onClose }: TransferModalProps) {
-  const { tokenDetails, isFetched, collectionName, addressTo, setAddressTo, isLoadingTranfer, mutateTransfer } =
+  const { tokenDetails, isFetched, collectionName, addressTo, setAddressTo, isLoadingTranfer, handleTransfer } =
     useDetailContext()
   const [error, setError] = useState("")
 
@@ -35,12 +35,16 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
     if (!addressTo) {
       setError("This field is required")
     } else {
-      mutateTransfer()
+      handleTransfer()
     }
   }
 
+  useEffect(() => {
+    setAddressTo("")
+  }, [isOpen])
+
   return (
-    <ChakraModal title={"SHIPPING INFO"} isOpen={isOpen} onClose={onClose} size="xl">
+    <ChakraModal title={"TRANSFER"} isOpen={isOpen} onClose={onClose} size="xl">
       <Box px={6}>
         <Flex align="center" mb="6">
           <Skeleton isLoaded={isFetched}>
@@ -66,16 +70,16 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
             <FormLabel>
               Wallet address<chakra.span color="red.500"> *</chakra.span>
             </FormLabel>
-            <InputGroup rounded="base" border={!!error ? "1px" : "none"} borderColor="red.500" size="md">
+            <InputGroup h="40px" rounded="base" border={!!error ? "1px" : "none"} borderColor="red.500">
               <CustomInput
-                pr="4rem"
+                pr="3.5rem"
                 value={addressTo}
                 onChange={e => {
                   setError(""), setAddressTo(e.target.value)
                 }}
               />
-              <InputRightElement color="neutral.400" width="4rem">
-                <MdAccountBalanceWallet />
+              <InputRightElement h="40px" color="neutral.400" width="3.5rem">
+                <MdAccountBalanceWallet fontSize="1.2rem" />
               </InputRightElement>
             </InputGroup>
             {!!error && (

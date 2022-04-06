@@ -55,41 +55,34 @@ const useDetail = () => {
   }
 
   const { mutate: mutateTransfer, isLoading: isLoadingTranfer } = useMutation(
-    async () => {
-      if (wallet.chainId !== ETHEREUM_NETWORK) {
-        await wallet.switchNetwork(ETHEREUM_NETWORK)
-      } else {
-        await wallet.scCaller.current!.DynamicERC721.transfer(
-          tokenDetails!.collectionId,
-          addressTo,
-          tokenDetails!.tokenId,
-        )
-      }
-    },
+    () => wallet.scCaller.current!.DynamicERC721.transfer(tokenDetails!.collectionId, addressTo, tokenDetails!.tokenId),
     {
       onSuccess: () => {
         toast({
           status: "success",
           title: "Transaction pending",
           message: "Please review your wallet notifications.",
-          duration: 10000,
+          duration: 5000,
         })
         revalidate()
+      },
+      onError: (err: any) => {
+        toast({
+          status: "error",
+          title: "Transaction error",
+          message: err.message,
+          duration: 5000,
+        })
       },
     },
   )
 
   const { mutate: mutameBurn, isLoading: isLoadingBurn } = useMutation(
-    async () => {
-      if (wallet.chainId !== POLYGON_NETWORK) {
-        await wallet.switchNetwork(POLYGON_NETWORK)
-      } else {
-        await wallet.scCaller.current!.SipherSpaceshipLootBox.burn({
-          batchID: parseInt(tokenDetails!.tokenId),
-          amount: slot,
-        })
-      }
-    },
+    async () =>
+      wallet.scCaller.current!.SipherSpaceshipLootBox.burn({
+        batchID: parseInt(tokenDetails!.tokenId),
+        amount: slot,
+      }),
     {
       onSuccess: () => {
         toast({
@@ -101,6 +94,15 @@ const useDetail = () => {
         setMinable(minable - slot)
         setModal("")
       },
+      onError: (err: any) => {
+        toast({
+          status: "error",
+          title: "Transaction error",
+          message: err.message,
+          duration: 5000,
+        })
+        setModal("ERROR")
+      },
     },
   )
 
@@ -108,7 +110,19 @@ const useDetail = () => {
     setModal("BRING")
   }
   const handleMint = () => {
-    mutameBurn()
+    if (wallet.chainId !== POLYGON_NETWORK) {
+      wallet.switchNetwork(POLYGON_NETWORK)
+    } else {
+      mutameBurn()
+    }
+  }
+
+  const handleTransfer = () => {
+    if (wallet.chainId !== ETHEREUM_NETWORK) {
+      wallet.switchNetwork(ETHEREUM_NETWORK)
+    } else {
+      mutateTransfer()
+    }
   }
 
   const handleLinkOpenSea = () => {
@@ -132,7 +146,7 @@ const useDetail = () => {
     isLoadingTranfer,
     addressTo,
     setAddressTo,
-    mutateTransfer,
+    handleTransfer,
     collectionName,
     router,
     isFetched,

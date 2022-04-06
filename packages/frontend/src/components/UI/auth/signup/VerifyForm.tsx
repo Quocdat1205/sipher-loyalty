@@ -18,6 +18,7 @@ interface VerifyFormProps {
 const VerifyForm = ({ email, password, setStep }: VerifyFormProps) => {
   const toast = useChakraToast()
   const [code, setCode] = useState("")
+  const [error, setError] = useState("")
   const { setUser } = useAuth()
 
   // Sign user in
@@ -58,6 +59,10 @@ const VerifyForm = ({ email, password, setStep }: VerifyFormProps) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (!code) {
+      setError("Passcode is required")
+      return
+    }
     mutateConfirmSignup()
   }
 
@@ -66,12 +71,20 @@ const VerifyForm = ({ email, password, setStep }: VerifyFormProps) => {
       <Heading fontSize={"lg"} fontWeight={600} mb={8} color="white" textAlign={"center"}>
         VERIFY YOUR ACCOUNT
       </Heading>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} noValidate>
         <Stack spacing={4}>
           <Text color="neutral.300">
             Please enter the passcode sent to <chakra.span fontWeight={600}>{email}</chakra.span>
           </Text>
-          <StyledInput label="Passcode" value={code} onChange={e => setCode(e.target.value)} />
+          <StyledInput
+            label="Passcode"
+            value={code}
+            onChange={e => {
+              setCode(e.target.value)
+              if (error) setError("")
+            }}
+            error={error}
+          />
           <Text color="neutral.400" textAlign="center">
             Haven't received code?{" "}
             <chakra.span textDecor="underline" cursor="pointer" color="cyan.600" onClick={() => mutateResendCode()}>

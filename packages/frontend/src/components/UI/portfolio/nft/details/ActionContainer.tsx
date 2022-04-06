@@ -43,7 +43,6 @@ const ActionContainer = ({ isFetched }: ActionContainerProps) => {
                 <Box ml={1}>
                   <SpOpensea size="1.2rem" viewBox="0 2.5 25 20" />
                 </Box>
-                <SpOpensea />
               </Button>
             </Skeleton>
           </Fragment>

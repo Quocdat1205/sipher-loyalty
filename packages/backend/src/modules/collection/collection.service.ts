@@ -46,11 +46,16 @@ export class CollectionService {
 
   private openseaApiTestBaseUrl = "https://testnets-api.opensea.io/api/v1/";
 
+  /* Calling Opensea api to update collection stats */
   @Cron(CronExpression.EVERY_HOUR)
   async handleCron() {
     await this.updateEveryCollectionStats();
   }
 
+  /**
+   *
+   * @returns all collection based on current evironment
+   */
   async getAllCollection() {
     const collections = await this.sipherCollectionRepo.find();
     if (constant.isProduction) {
@@ -59,6 +64,12 @@ export class CollectionService {
     return collections;
   }
 
+  /**
+   *
+   * @param {string} collectionSlug unique identifier string, either from opensea or from collection table
+   * @param {boolean} mainnet true to call mainnet opensea, and vice versa
+   * @returns {Observable<any>} observable stream of api response
+   */
   getCollectionStats(collectionSlug: string, mainnet = true): Observable<any> {
     const data = this.httpService.get(
       `${
@@ -73,6 +84,12 @@ export class CollectionService {
     return data.pipe(map((res) => toCamcelCase(res.data.stats)));
   }
 
+  /**
+   *
+   * @param {string} userAddress portfolio owner's address
+   * @param {PortfolioQuery} query query options to filter collection
+   * @returns {Portfolio[]} user's portfolio
+   */
   async getPortfolio(userAddress: string, query: PortfolioQuery) {
     /* Get user items */
     const inventory = await this.nftService.search(
@@ -125,6 +142,11 @@ export class CollectionService {
     );
   }
 
+  /**
+   *
+   * @param {PortfolioByCollectionQuery} query query options
+   * @returns portfolio of a collection
+   */
   async getPortfolioByCollection(query: PortfolioByCollectionQuery) {
     const collection = await this.sipherCollectionRepo.findOne({
       where: {
@@ -188,9 +210,9 @@ export class CollectionService {
         query.from,
         query.size
       );
-      console.log("1", result.items);
+      // console.log("1", result.items);
       result.items.push(...inventory);
-      console.log("2", result.items);
+      // console.log("2", result.items);
       result.total += await this.nftService.count({
         owner: publicAddress,
         collections: [collection.id],
@@ -203,6 +225,12 @@ export class CollectionService {
       items: await this.addUriToItem(result.items),
     };
   }
+  /**
+   *
+   * @param {string} itemId erc721 or erc1155 id
+   * @param {string} socialToken token from ather, needed to get info of related addressses
+   * @returns detail of an erc721 or erc1155
+   */
 
   async getItemById(itemId: string, socialToken?: string): Promise<any> {
     /* Getting the base item */
@@ -269,6 +297,11 @@ export class CollectionService {
     return itemWithUri;
   }
 
+  /**
+   *
+   * @param {string} collectionId collection id
+   * @param {CollectionStats} stats stats of a collection
+   */
   private async updateCollectionStats(
     collectionId: string,
     stats: CollectionStats
@@ -307,11 +340,22 @@ export class CollectionService {
     }
   }
 
+  /**
+   *
+   * @param {string} id id of an item, in format {contractAddress}:{tokenId} for erc721 and {contractAddress}:{tokenId}:{ownerAddress}
+   * @returns {boolean} whether It is an erc1155 id
+   */
   private isErc1155Id(id: string) {
     // Ghetto id check 💀
     return id.split(":").length === 3;
   }
 
+  /**
+   *
+   * @param {string} collectionId collection id
+   * @param {string} tokenId token id
+   * @returns
+   */
   private async getTotalErc1155Minted(collectionId: string, tokenId: string) {
     const totalMintedforCollection = await this.nftService.search(
       {
@@ -324,6 +368,12 @@ export class CollectionService {
     return totalMintedforCollection;
   }
 
+  /**
+   *
+   * @param {string} address ethereum address
+   * @param socialToken JWT token from ather
+   * @returns social info of the address, if not existed, will still return object with empty property
+   */
   private async getInfoFromAddress(address: string, socialToken: string) {
     const socialInfoArr = await this.getAvatarByAddresses(
       [address],
@@ -337,6 +387,12 @@ export class CollectionService {
     };
   }
 
+  /**
+   *
+   * @param items array of erc1155 items
+   * @param {string} socialToken JWT token from ather
+   * @returns array of social info
+   */
   private async getAllOwnerOfErc1155(items: any, socialToken?: string) {
     const socialInfo = socialToken
       ? await this.getAvatarByAddresses(
@@ -358,6 +414,12 @@ export class CollectionService {
     return ownerArray;
   }
 
+  /**
+   * Call ather-social api to get users names and avatars
+   * @param {string} addresses array of ethereum address
+   * @param socialToken JWT token from ather
+   * @returns empty array or array of social info from ather-social api
+   */
   private async getAvatarByAddresses(
     addresses: string[],
     socialToken: string
@@ -387,11 +449,21 @@ export class CollectionService {
     }
   }
 
+  /**
+   *
+   * @param items erc1155 items
+   * @returns total quantity of items
+   */
   private getErc1155Quantity(items: any) {
     const quantity = items.reduce((prev, curr) => prev + curr.value, 0);
     return quantity;
   }
 
+  /**
+   * Add uri to erc115 items
+   * @param items erc1155 items
+   * @returns erc1155 items with uri
+   */
   private async addUriToItem(items: any) {
     const newItems = [];
     for (const item of items) {
@@ -402,6 +474,11 @@ export class CollectionService {
   }
 
   // Best practice? Never heard of him 💀
+  /**
+   * Add uri to item if It is either lootbox or sculpture
+   * @param item erc1155 item
+   * @returns erc1155 item with uri
+   */
   private async addUriToSculptureOrLootbox(item: any) {
     const newItem = { ...item };
     let uriInfo;
@@ -427,6 +504,12 @@ export class CollectionService {
     return newItem;
   }
 
+  /**
+   * For administration usage
+   * @param skip
+   * @param take
+   * @returns
+   */
   async getDataCollectionTableForAdmin(skip: number, take: number) {
     const data = await this.sipherCollectionRepo.find({
       skip,
@@ -435,6 +518,11 @@ export class CollectionService {
     return { total: data.length, data };
   }
 
+  /**
+   * For administration usage
+   * @param collection
+   * @returns
+   */
   async updateDataCollectionTableForAdmin(collection: SipherCollection) {
     return this.sipherCollectionRepo.save(collection);
   }
