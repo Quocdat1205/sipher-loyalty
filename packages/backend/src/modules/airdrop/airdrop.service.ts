@@ -139,6 +139,27 @@ export class AirdropService {
     };
   }
 
+  private async getDetailMerchAirdropByUserId(
+    id: string,
+    userData: UserData
+  ): Promise<ResAirdrop> {
+    const merch = await this.merchService.getOtherAndMerchByIdAndUserId(
+      id,
+      userData
+    );
+    return {
+      id: merch.id,
+      name: merch.item.name,
+      shortDescription: merch.item.shortDescription,
+      description: merch.item.description,
+      imageUrls: merch.item.imageUrls,
+      type: merch.item.type,
+      size: merch.item.size,
+      color: merch.item.color,
+      quantity: merch.quantity,
+    };
+  }
+
   private async getOtherAirdrops(publicAddress: string) {
     const others = await this.merchService.getOtherMerchByPublicAddress(
       publicAddress.toLowerCase()
@@ -246,6 +267,29 @@ export class AirdropService {
 
       case AirdropType.OTHER:
         return this.getDetailMerchAirdrop(id);
+
+      default:
+        return null;
+    }
+  }
+
+  async getDetailAirdropByTypeAndUserId(
+    id: string,
+    userData: UserData,
+    type: AirdropType
+  ) {
+    switch (type) {
+      case AirdropType.TOKEN:
+        return this.getDetailTokenNFTAirdrop(id);
+
+      case AirdropType.NFT:
+        return this.getDetailTokenNFTAirdrop(id);
+
+      case AirdropType.MERCH:
+        return this.getDetailMerchAirdropByUserId(id, userData);
+
+      case AirdropType.OTHER:
+        return this.getDetailMerchAirdropByUserId(id, userData);
 
       default:
         return null;

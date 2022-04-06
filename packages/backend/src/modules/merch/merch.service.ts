@@ -1,5 +1,6 @@
+import _ from "lodash";
 import { In, Repository } from "typeorm";
-import { AirdropType, Item, Merchandise } from "@entity";
+import { AirdropType, Item, ItemType, Merchandise } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -96,11 +97,34 @@ export class MerchService {
         },
       ],
     });
-
-    if (!merchandises) {
+    if (!merchandises || merchandises.length < 1) {
       throw new HttpException("List merch not found", HttpStatus.NOT_FOUND);
     }
-    return merchandises;
+    const merchGrouped = _.groupBy(merchandises, "merchItem");
+
+    const merchs: Merchandise[] = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const itemType of Object.values(ItemType)) {
+      let quantity = 0;
+      let quantityShipped = 0;
+      if (merchGrouped[itemType]) {
+        quantity = merchGrouped[itemType].reduce(
+          (prev, curr) => prev + curr.quantity,
+          0
+        );
+        quantityShipped = merchGrouped[itemType].reduce(
+          (prev, curr) => prev + curr.quantityShipped,
+          0
+        );
+      }
+      if (merchGrouped[itemType] && merchGrouped[itemType].length > 0)
+        merchs.push({
+          ...merchGrouped[itemType][0],
+          quantity,
+          quantityShipped,
+        });
+    }
+    return merchs;
   }
 
   async getOtherMerchByPublicAddress(
@@ -161,5 +185,43 @@ export class MerchService {
       throw new HttpException("List other not found", HttpStatus.NOT_FOUND);
     }
     return other;
+  }
+
+  async getOtherAndMerchByIdAndUserId(
+    id: string,
+    userData: UserData
+  ): Promise<Merchandise> | undefined {
+    LoggerService.log(`Get merch id by UserData: ${userData.userId}`);
+
+    const other = await this.merchRepo.findOne({
+      relations: ["item", "item.imageUrls"],
+      where: { id },
+    });
+
+    const merchandises = await this.merchRepo.find({
+      relations: ["item", "item.imageUrls"],
+      where: [
+        {
+          publicAddress: In(userData.publicAddress),
+          item: {
+            type: AirdropType.MERCH,
+          },
+          merchItem: other.merchItem,
+        },
+      ],
+    });
+    const quantity = merchandises.reduce(
+      (prev, curr) => prev + curr.quantity,
+      0
+    );
+    const quantityShipped = merchandises.reduce(
+      (prev, curr) => prev + curr.quantityShipped,
+      0
+    );
+
+    if (!other) {
+      throw new HttpException("List other not found", HttpStatus.NOT_FOUND);
+    }
+    return { ...other, quantity, quantityShipped };
   }
 }

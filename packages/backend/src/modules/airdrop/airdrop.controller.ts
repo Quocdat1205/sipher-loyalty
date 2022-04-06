@@ -68,4 +68,22 @@ export class AirdropController {
     await this.authService.verifyAddress(publicAddress, req);
     return this.airdropService.getDetailAirdropByType(id, airdropType);
   }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @ApiOkResponse({
+    type: ResAirdrop,
+  })
+  @Get("by-user-id/:airdropType/:publicAddress/:id")
+  async getDetailAirdropByTypeAndUserId(
+    @Param("id") id: string,
+    @Param("airdropType") airdropType: AirdropType,
+    @Req() req: Request
+  ) {
+    return this.airdropService.getDetailAirdropByTypeAndUserId(
+      id,
+      req.userData,
+      airdropType
+    );
+  }
 }

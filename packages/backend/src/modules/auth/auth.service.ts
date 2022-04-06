@@ -46,12 +46,15 @@ export class AuthService {
           },
         }
       );
-
+      if (data.length < 1)
+        throw new HttpException(`invalid token`, HttpStatus.UNAUTHORIZED);
       const userData = {
         userId: data[0].userId,
         publicAddress: data.map((el: any) => el.address.toLowerCase()),
         roles,
       };
+      if (!userData.publicAddress[0])
+        throw new HttpException(`invalid token`, HttpStatus.UNAUTHORIZED);
       await this.cacheService.set(req.headers.authorization, userData);
       req.userData = userData;
 
