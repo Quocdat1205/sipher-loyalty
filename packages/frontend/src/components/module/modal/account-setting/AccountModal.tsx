@@ -18,6 +18,16 @@ export const AccountModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
   const [isChoosingAvatar, setIsChoosingAvatar] = useState(false)
   const [isChangingPassword, setIsChangingPassword] = useState(false)
 
+  const { userProfile } = useAuth()
+
+  const [tempAvatar, setTempAvatar] = useState<Record<"id" | "imageUrl", string> | null>(null)
+
+  useEffect(() => {
+    if (isOpen && userProfile) {
+      setTempAvatar({ id: userProfile.user.id, imageUrl: userProfile.user.avatarImage })
+    }
+  }, [isOpen])
+
   useEffect(() => {
     if (!isOpen) {
       setIsChoosingAvatar(false)
@@ -55,12 +65,13 @@ export const AccountModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
         onClose={onClose}
         onSetAvatar={() => setIsChoosingAvatar(true)}
         onChangePassword={() => setIsChangingPassword(true)}
+        tempAvatar={tempAvatar}
       />
       <ChooseAvatarForm
         isOpen={isChoosingAvatar}
         onClose={onClose}
         onBack={() => setIsChoosingAvatar(false)}
-        onChangeAvatar={mutateUpdateAvatar}
+        onChangeAvatar={setTempAvatar}
       />
       <ChangePasswordModal isOpen={isChangingPassword} onClose={onClose} onBack={() => setIsChangingPassword(false)} />
     </Fragment>

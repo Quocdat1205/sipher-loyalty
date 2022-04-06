@@ -11,7 +11,7 @@ import { useAuth } from "src/providers/auth"
 interface ChooseAvatarModalProps {
   isOpen: boolean
   onClose: () => void
-  onChangeAvatar: (avatarId: string) => void
+  onChangeAvatar: (avatar: Record<"id" | "imageUrl", string>) => void
   onBack: () => void
 }
 
@@ -71,7 +71,10 @@ const ChooseAvatarForm = ({ isOpen, onClose, onBack, onChangeAvatar }: ChooseAva
                     <Image
                       onLoad={() => setImageLoaded(true)}
                       src={avatar.imageUrl}
-                      onClick={() => onChangeAvatar(avatar.id)}
+                      onClick={() => {
+                        onChangeAvatar({ id: avatar.id, imageUrl: avatar.imageUrl })
+                        onBack()
+                      }}
                     />
                   </Skeleton>
                 </AspectRatio>

@@ -13,9 +13,10 @@ interface SettingAccountModalProps {
   onClose: () => void
   onSetAvatar: () => void
   onChangePassword: () => void
+  tempAvatar: Record<"id" | "imageUrl", string> | null
 }
 
-const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: SettingAccountModalProps) => {
+const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword, tempAvatar }: SettingAccountModalProps) => {
   const { values, setValue, errors, initForm } = useFormCoreWithError({ name: "", bio: "" })
 
   const { user, bearerToken } = useAuth()
@@ -34,7 +35,11 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
   }, [bearerToken])
 
   const { mutate: mutateUpdateProfile, isLoading } = useMutation(
-    () => updateProfile({ name: values.name, bio: values.bio }, bearerToken),
+    () =>
+      updateProfile(
+        { name: values.name, bio: values.bio, avatarImageId: tempAvatar ? tempAvatar.id : undefined },
+        bearerToken,
+      ),
     {
       onSuccess: () => {
         qc.invalidateQueries("profile")
@@ -62,7 +67,7 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
             <Avatar
               bg="gray"
               size="2xl"
-              src={userProfile?.user.avatarImage}
+              src={tempAvatar?.imageUrl}
               name={userProfile?.user.name}
               bgGradient="linear(to-l, #FCD11F, #DF6767, #200B9F)"
             />
@@ -118,7 +123,11 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword }: Setting
             size="md"
             onClick={() => mutateUpdateProfile()}
             w="6rem"
-            isDisabled={values.name === userProfile?.user.name && values.bio === userProfile?.user.bio}
+            isDisabled={
+              values.name === userProfile?.user.name &&
+              values.bio === userProfile?.user.bio &&
+              tempAvatar?.imageUrl === userProfile.user.avatarImage
+            }
             isLoading={isLoading}
           >
             SAVE
