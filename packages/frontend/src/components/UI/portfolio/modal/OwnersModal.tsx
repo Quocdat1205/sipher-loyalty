@@ -27,7 +27,10 @@ export function OwnersModal({ isOpen, onClose, ownersData }: OwnersModalProps) {
             key={item.publicAddress}
           >
             <Flex align="center">
-              <Avatar src={item.profileImage} bg="gray" />
+              <Avatar
+                src={item.profileImage || "https://marketplace-testnet.s3.us-west-2.amazonaws.com/users/001.jpg"}
+                bg="gray"
+              />
               <Box ml={4}>
                 <Text fontWeight={600}>{item.username}</Text>
                 <Text>{shortenAddress(item.publicAddress)}</Text>

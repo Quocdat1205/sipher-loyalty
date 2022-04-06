@@ -14,16 +14,22 @@ interface InfoNFTProps {
 }
 
 const InfoNFT = ({ tokenDetails, isFetched }: InfoNFTProps) => {
-  const collectionName = NftContracts.find(contract => contract.address === tokenDetails?.collection.id)?.name
+  const collectionName = NftContracts.find(
+    contract => contract.address.toLowerCase() === tokenDetails?.collection.id.toLowerCase(),
+  )?.name
   const [isModal, setIsModal] = useState(false)
   return (
     <HStack mb={8} spacing={8}>
       <Flex align="center" flex={1} minW={0}>
-        <Avatar src={"/images/general/creator.png"} bg="gray" />
+        <Skeleton rounded="full" isLoaded={isFetched}>
+          <Avatar src={"/images/general/creator.png"} bg="gray" />
+        </Skeleton>
         <Flex ml={2} flexDir="column" overflow="hidden" flex={1}>
-          <Text pb={1} fontWeight={600} color="neutral.400">
-            Creator
-          </Text>
+          <Skeleton isLoaded={isFetched}>
+            <Text pb={1} fontWeight={600} color="neutral.400">
+              Creator
+            </Text>
+          </Skeleton>
           <Skeleton isLoaded={isFetched}>
             <Text color="cyan.600" w="full" isTruncated>
               SIPHER
@@ -33,14 +39,26 @@ const InfoNFT = ({ tokenDetails, isFetched }: InfoNFTProps) => {
       </Flex>
       <Flex align="center" flex={1} minW={0}>
         {tokenDetails?.collection.collectionType === "ERC1155" ? (
-          <Avatar src={tokenDetails?.allOwner[0].profileImage} bg="gray" />
+          <Skeleton isLoaded={isFetched} rounded="full">
+            <Avatar
+              src={
+                tokenDetails?.allOwner[0].profileImage ||
+                "https://marketplace-testnet.s3.us-west-2.amazonaws.com/users/001.jpg"
+              }
+              bg="gray"
+            />
+          </Skeleton>
         ) : (
-          <Avatar src={tokenDetails?.ownerInfo.profileImage} bg="gray" />
+          <Skeleton isLoaded={isFetched} rounded="full">
+            <Avatar src={tokenDetails?.ownerInfo.profileImage} bg="gray" />
+          </Skeleton>
         )}
         <Flex ml={2} flexDir="column">
-          <Text pb={1} fontWeight={600} color="neutral.400">
-            {tokenDetails?.collection.collectionType === "ERC1155" ? "Owner(s)" : "Owner"}
-          </Text>
+          <Skeleton isLoaded={isFetched}>
+            <Text pb={1} fontWeight={600} color="neutral.400">
+              {tokenDetails?.collection.collectionType === "ERC1155" ? "Owner(s)" : "Owner"}
+            </Text>
+          </Skeleton>
           <Skeleton color="cyan.600" isLoaded={isFetched}>
             {tokenDetails?.collection.collectionType === "ERC1155" ? (
               <Text onClick={() => setIsModal(true)} cursor="pointer" textDecor="underline">
@@ -58,18 +76,22 @@ const InfoNFT = ({ tokenDetails, isFetched }: InfoNFTProps) => {
         <OwnersModal ownersData={tokenDetails?.allOwner ?? []} isOpen={isModal} onClose={() => setIsModal(false)} />
       </Flex>
       <Flex align="center" flex={1} minW={0}>
-        <Avatar
-          bg="gray"
-          sx={{ img: { rounded: "none" } }}
-          src={tokenDetails?.collection.logoImage}
-          overflow="hidden"
-          rounded="lg"
-          boxShadow="rgba(255, 255, 255, 0.1) 4px 3px, rgba(255, 255, 255, 0.05) 8px 6px"
-        />
+        <Skeleton rounded="full" isLoaded={isFetched}>
+          <Avatar
+            bg="gray"
+            sx={{ img: { rounded: "none" } }}
+            src={tokenDetails?.collection.logoImage}
+            overflow="hidden"
+            rounded="lg"
+            boxShadow="rgba(255, 255, 255, 0.1) 4px 3px, rgba(255, 255, 255, 0.05) 8px 6px"
+          />
+        </Skeleton>
         <Flex ml={4} flexDir="column">
-          <Text pb={1} fontWeight={600} color="neutral.400">
-            Collection
-          </Text>
+          <Skeleton isLoaded={isFetched}>
+            <Text pb={1} fontWeight={600} color="neutral.400">
+              Collection
+            </Text>
+          </Skeleton>
           <Skeleton isLoaded={isFetched}>
             <Text color="cyan.600" whiteSpace="nowrap">
               {collectionName}

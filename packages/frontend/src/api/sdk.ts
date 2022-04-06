@@ -1073,6 +1073,23 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
+     * @tags airdrop
+     * @name AirdropControllerGetDetailAirdropByTypeAndUserId
+     * @request GET:/api/sipher/loyalty/airdrop/by-user-id/{airdropType}/{publicAddress}/{id}
+     * @secure
+     */
+    airdropControllerGetDetailAirdropByTypeAndUserId: (id: string, airdropType: string, publicAddress: string, params: RequestParams = {}) =>
+      this.request<ResAirdrop, any>({
+        path: `/api/sipher/loyalty/airdrop/by-user-id/${airdropType}/${publicAddress}/${id}`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags sculpture
      * @name SculptureControllerGetUserTransactions
      * @request GET:/api/sipher/loyalty/sculpture/transaction/{ownerAddress}

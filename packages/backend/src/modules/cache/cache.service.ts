@@ -19,6 +19,8 @@ export class CacheService {
       throw new HttpException("undefinded token", HttpStatus.UNAUTHORIZED);
     try {
       const result = await this.cacheManager.get<UserData>(token);
+      if (!result.publicAddress[0])
+        throw new HttpException(`invalid token`, HttpStatus.UNAUTHORIZED);
       return result;
     } catch (err) {
       LoggerService.error(err);
@@ -29,6 +31,8 @@ export class CacheService {
     if (!token)
       throw new HttpException("undefinded token", HttpStatus.UNAUTHORIZED);
     try {
+      if (!userData.publicAddress[0])
+        throw new HttpException(`invalid token`, HttpStatus.UNAUTHORIZED);
       await this.cacheManager.set<UserData>(token, userData, { ttl: 3600 });
     } catch (err) {
       LoggerService.error(err);
