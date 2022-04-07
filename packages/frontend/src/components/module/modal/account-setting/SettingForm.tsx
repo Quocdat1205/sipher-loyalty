@@ -67,7 +67,7 @@ const SettingForm = ({ isOpen, onClose, onSetAvatar, onChangePassword, tempAvata
             <Avatar
               bg="gray"
               size="2xl"
-              src={tempAvatar?.imageUrl}
+              src={tempAvatar?.imageUrl || userProfile?.user.avatarImage}
               name={userProfile?.user.name}
               bgGradient="linear(to-l, #FCD11F, #DF6767, #200B9F)"
             />

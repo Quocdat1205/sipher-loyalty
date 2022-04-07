@@ -15,13 +15,11 @@ export const AccountModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
   const [isChoosingAvatar, setIsChoosingAvatar] = useState(false)
   const [isChangingPassword, setIsChangingPassword] = useState(false)
 
-  const { userProfile } = useAuth()
-
   const [tempAvatar, setTempAvatar] = useState<Record<"id" | "imageUrl", string> | null>(null)
 
   useEffect(() => {
-    if (isOpen && userProfile) {
-      setTempAvatar({ id: userProfile.user.id, imageUrl: userProfile.user.avatarImage })
+    if (isOpen) {
+      setTempAvatar(null)
     }
   }, [isOpen])
 
