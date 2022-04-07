@@ -1,5 +1,5 @@
-import React from "react"
-import { Box, Button, Flex, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
+import React, { Fragment } from "react"
+import { Box, Button, Flex, SimpleGrid, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import NoItemUI from "@components/shared/NoItemUI"
 
@@ -27,26 +27,23 @@ export const InventoryContainer = () => {
   const renderNFTs = () => {
     if (isLoadingLootBox) {
       return (
-        <SimpleGrid spacing={6} columns={[1, 3, 4, 4, 4]}>
-          {renderLoading()}
-        </SimpleGrid>
+        <Fragment>
+          <Skeleton maxW="5rem" mb={4}>
+            <Text color="neutral.300" fontWeight={600}>
+              TOTAL:
+            </Text>
+          </Skeleton>
+          <SimpleGrid spacing={6} columns={[1, 3, 4, 4, 4]}>
+            {renderLoading()}
+          </SimpleGrid>
+        </Fragment>
       )
     }
     if (inventoryData.length === 0) {
       return <NoItemUI />
     }
     return (
-      <SimpleGrid spacing={6} columns={[1, 3, 4, 4, 4]}>
-        {inventoryData?.map(i => (
-          <BoxCard key={i.id} data={i} isFetched={isFetchedLootBox} />
-        ))}
-      </SimpleGrid>
-    )
-  }
-
-  return (
-    <Flex flexDir="column" align="center">
-      <Box px={[4, 4, 4, 0, 0]} py={6} maxW="1200px" w="full">
+      <Fragment>
         <Box mb={4}>
           <Text color="neutral.300" fontWeight={600}>
             TOTAL: {totalLootbox} {totalLootbox > 0 ? "Items" : "Item"}
@@ -57,6 +54,18 @@ export const InventoryContainer = () => {
             MINT NFT({inventoryDataCheck?.length})
           </Button>
         )}
+        <SimpleGrid spacing={6} columns={[1, 3, 4, 4, 4]}>
+          {inventoryData?.map(i => (
+            <BoxCard key={i.id} data={i} isFetched={isFetchedLootBox} />
+          ))}
+        </SimpleGrid>
+      </Fragment>
+    )
+  }
+
+  return (
+    <Flex flexDir="column" align="center">
+      <Box px={[4, 4, 4, 0, 0]} py={6} maxW="1200px" w="full">
         {renderNFTs()}
       </Box>
       <MintModal

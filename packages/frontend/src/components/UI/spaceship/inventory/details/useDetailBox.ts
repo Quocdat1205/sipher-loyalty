@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
@@ -27,6 +27,7 @@ export const useDetailBox = id => {
   const [mintedData, setMintedData] = useState<DetailsBox>()
   const [isFetch, setIsFetch] = useState(false)
   const idError = useRef<number | null>()
+  const [oldAccount, setOldAccount] = useState<string | null>(null)
 
   const { data: details, isFetched } = useQuery(
     ["detailsLootBox", account, id],
@@ -112,6 +113,19 @@ export const useDetailBox = id => {
     }
     setStatus("MINT")
   }
+
+  //check account changed
+  useEffect(() => {
+    if (account) {
+      setOldAccount(account)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (oldAccount !== null && oldAccount !== account) {
+      router.push("/spaceship")
+    }
+  }, [oldAccount, account])
 
   return {
     router,
