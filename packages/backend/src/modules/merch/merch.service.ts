@@ -127,7 +127,7 @@ export class MerchService {
     return merchs;
   }
 
-  async getOtherMerchByPublicAddress(
+  async getAllOtherMerchByPublicAddress(
     publicAddress: string
   ): Promise<Array<Merchandise> | undefined> {
     LoggerService.log(`Get all other of publicAddress: ${publicAddress}`);
@@ -150,7 +150,7 @@ export class MerchService {
     return others;
   }
 
-  async getOtherMerchByUserId(
+  async getAllOtherMerchByUserId(
     userData: UserData
   ): Promise<Array<Merchandise> | undefined> {
     LoggerService.log(`Get all other of user id: ${userData.userId}`);
@@ -170,7 +170,19 @@ export class MerchService {
     if (!others) {
       throw new HttpException("List other not found", HttpStatus.NOT_FOUND);
     }
-    return others;
+
+    const othersGrouped = _.groupBy(others, "merchItem");
+
+    const othersResult: Merchandise[] = [];
+    for (const itemType of Object.values(ItemType)) {
+      if (othersGrouped[itemType] && othersGrouped[itemType].length > 0)
+        othersResult.push({
+          ...othersGrouped[itemType][0],
+          quantity: 1,
+          quantityShipped: 0,
+        });
+    }
+    return othersResult;
   }
 
   async getOtherAndMerchById(id: string): Promise<Merchandise> | undefined {
