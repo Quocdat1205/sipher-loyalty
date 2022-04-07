@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from "react"
+import { createContext, ReactNode, useContext, useEffect, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
@@ -22,7 +22,7 @@ const useDetail = () => {
   const [isFetch, setIsFetch] = useState(false)
   const [minable, setMinable] = useState(0)
   const [slotTransfer, setSlotTransfer] = useState(1)
-
+  const [oldAccount, setOldAccount] = useState<string | null>(null)
   const {
     data: tokenDetails,
     isLoading,
@@ -172,6 +172,19 @@ const useDetail = () => {
       window.open(`https://opensea.io/assets/${tokenDetails?.collectionId}/${tokenDetails?.tokenId}`, "_blank")
     }
   }
+
+  //check account changed
+  useEffect(() => {
+    if (wallet.account) {
+      setOldAccount(wallet.account)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (oldAccount !== null && oldAccount !== wallet.account) {
+      router.push("/portfolio")
+    }
+  }, [oldAccount, wallet.account])
 
   return {
     slotTransfer,

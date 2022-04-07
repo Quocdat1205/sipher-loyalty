@@ -21,6 +21,7 @@ import { SpLayer } from "@components/shared/icons"
 import QuantitySelector from "@components/UI/spaceship/inventory/details/QuantitySelector"
 
 import { useDetailContext } from "../nft/details/useDetail"
+import { videos } from "../nft/NFTCard"
 
 interface TransferModalProps {
   isOpen: boolean
@@ -41,6 +42,7 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
     minable,
   } = useDetailContext()
   const [error, setError] = useState("")
+  const extension = tokenDetails?.imageUrl?.split(".")[5]
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -60,8 +62,12 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
     <ChakraModal title={"TRANSFER"} isOpen={isOpen} onClose={onClose} size="xl">
       <Box px={6}>
         <Flex align="center" mb="6">
-          <Skeleton isLoaded={isFetched}>
-            <Img rounded="lg" w="66px" h="80px" src={tokenDetails?.imageUrl} objectFit="contain" />
+          <Skeleton h="80px" w="66px" isLoaded={isFetched}>
+            {videos.includes(extension || "") ? (
+              <video src={tokenDetails?.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
+            ) : (
+              <Img rounded="lg" src={tokenDetails?.imageUrl} objectFit="contain" />
+            )}
           </Skeleton>
           <Flex ml="6" direction="column">
             <Flex mb="1">
