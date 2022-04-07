@@ -161,7 +161,7 @@ export class AirdropService {
   }
 
   private async getOtherAirdrops(publicAddress: string) {
-    const others = await this.merchService.getOtherMerchByPublicAddress(
+    const others = await this.merchService.getAllOtherMerchByPublicAddress(
       publicAddress.toLowerCase()
     );
 
@@ -177,7 +177,7 @@ export class AirdropService {
   }
 
   private async getOtherAirdropsByUserId(userData: UserData) {
-    const others = await this.merchService.getOtherMerchByUserId(userData);
+    const others = await this.merchService.getAllOtherMerchByUserId(userData);
 
     return others.map((merch) => ({
       id: merch.id,
