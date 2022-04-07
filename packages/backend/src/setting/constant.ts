@@ -60,6 +60,8 @@ export class SystemConfigProvider {
 
   TOKEN = this.getSync("TOKEN");
 
+  ENABLE_METRICS = this.getSync("ENABLE_METRICS", "false");
+
   public async getPOSTGRES_URL() {
     return this.get("POSTGRES_URL");
   }
