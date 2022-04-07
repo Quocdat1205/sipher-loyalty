@@ -19,8 +19,6 @@ import {
 import { SpLayer } from "@components/shared/icons"
 import { videos } from "@components/UI/portfolio/nft/NFTCard"
 
-import CountDown from "../../CountDown"
-
 interface NftImageProps extends BoxProps {
   minable: number
   isFetching: boolean
@@ -77,7 +75,8 @@ export const NftImage = ({ minable, isFetching, src, alt, ...rest }: NftImagePro
             <Text color="neutral.400" fontWeight={600}>
               Reveal Date
             </Text>
-            <CountDown fontSize="2xl" fontWeight={600} deadline={1650024000000} />
+            <Text fontSize="2xl">Coming Soon</Text>
+            {/* <CountDown fontSize="2xl" fontWeight={600} deadline={1650024000000} /> */}
           </Box>
         </Skeleton>
       </Flex>

@@ -147,7 +147,7 @@ const ConnectToWallet = () => {
             </Flex>
           </Box>
         )}
-        <HStack w="full" justify="space-between" align="center" spacing={4} mt={4}>
+        <Box w="full" mb={4}>
           <WalletCard
             onClick={() => {
               handleConnectWallet("injected")
@@ -156,6 +156,17 @@ const ConnectToWallet = () => {
             src="/images/icons/wallets/metamask.svg"
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "injected"}
+          />
+        </Box>
+        <HStack w="full" justify="space-between" align="center" spacing={4} mt={4}>
+          <WalletCard
+            onClick={() => {
+              handleConnectWallet("coinbase")
+            }}
+            text={"Coinbase"}
+            src="/images/icons/wallets/coinbase.png"
+            colorScheme={"whiteAlpha"}
+            isLoading={connectingMethod === "coinbase"}
           />
           <WalletCard
             onClick={() => {

@@ -1,16 +1,16 @@
 export type metamask = {
-  Connect: any;
-  DisConnect: any;
-  active: boolean;
-  account: string | undefined | null;
-  library: any;
-};
+  Connect: any
+  DisConnect: any
+  active: boolean
+  account: string | undefined | null
+  library: any
+}
 
 export type publicAddress = {
-  publicAddress: string;
-};
+  publicAddress: string
+}
 
 export type signWallet = {
-  publicAddress: string;
-  signature: string;
-};
+  publicAddress: string
+  signature: string
+}

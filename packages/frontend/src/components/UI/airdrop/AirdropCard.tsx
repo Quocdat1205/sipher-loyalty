@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Box, Button, Flex, Img, Skeleton, Text } from "@sipher.dev/sipher-ui"
 
 import { SpLayer } from "@components/shared/icons"
+import { shortenAddress } from "@utils"
 
 import { videos } from "../portfolio/nft/NFTCard"
 
@@ -23,6 +24,8 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
       bg="neutral.700"
       rounded="lg"
       overflow="hidden"
+      pos="relative"
+      role="group"
       onClick={data.onView}
     >
       {data.type === "MERCH" ? (
@@ -110,6 +113,29 @@ const AirdropCard = ({ data, isFetched }: AirdropProps) => {
               objectFit="contain"
               maxH="18rem"
             />
+          )}
+          {!data?.isClaimer && (
+            <Box
+              transition=".35s opacity"
+              _groupHover={{ opacity: 1 }}
+              bg="white"
+              rounded="full"
+              px={4}
+              py={2}
+              zIndex={2}
+              pos="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%,-50%)"
+              opacity={0}
+            >
+              <Text textAlign="center" fontSize="sm" color="neutral.900" fontWeight={600}>
+                Owned by:
+              </Text>
+              <Text color="neutral.900" fontWeight={600}>
+                {shortenAddress(data?.claimer)}
+              </Text>
+            </Box>
           )}
         </Skeleton>
       )}

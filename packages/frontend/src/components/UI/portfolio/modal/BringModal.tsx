@@ -2,8 +2,7 @@ import React, { Fragment } from "react"
 import { useRouter } from "next/router"
 import { Box, Button, chakra, Divider, Flex, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 
-import { ChakraModal } from "@components/shared"
-import QuantitySelector from "@components/UI/spaceship/inventory/details/QuantitySelector"
+import { ChakraModal, QuantitySelector } from "@components/shared"
 import { padZero } from "@utils"
 
 import useNFTs, { NFTItemProp } from "../nft/useNFTs"

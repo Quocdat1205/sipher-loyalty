@@ -5,12 +5,12 @@ import { Flex, IconButton, Input, Text } from "@sipher.dev/sipher-ui"
 interface QuantitySelectorProps {
   onChange: (newValue: number) => void
   value: number
-  maxValue: number
+  maxValue?: number
   minValue?: number
   isDisabled?: boolean
 }
 
-const QuantitySelector = ({ onChange, value, maxValue = 0, minValue = 1, isDisabled }: QuantitySelectorProps) => {
+export const QuantitySelector = ({ onChange, value, maxValue, minValue = 1, isDisabled }: QuantitySelectorProps) => {
   return (
     <Flex
       justify="space-between"
@@ -70,13 +70,13 @@ const QuantitySelector = ({ onChange, value, maxValue = 0, minValue = 1, isDisab
           rounded="full"
         />
       </Flex>
-      <Flex justify="center" flex={1}>
-        <Text onClick={() => onChange(maxValue)} fontWeight={600} color="cyan.600" cursor="pointer">
-          Max
-        </Text>
-      </Flex>
+      {maxValue && (
+        <Flex justify="center" flex={1}>
+          <Text onClick={() => onChange(maxValue)} fontWeight={600} color="cyan.600" cursor="pointer">
+            Max
+          </Text>
+        </Flex>
+      )}
     </Flex>
   )
 }
-
-export default QuantitySelector

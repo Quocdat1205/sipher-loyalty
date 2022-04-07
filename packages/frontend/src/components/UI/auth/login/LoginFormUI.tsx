@@ -176,6 +176,7 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
           mb={4}
         />
         <WalletSignIn
+          onCoinbaseConnect={() => handleWalletSignin("coinbase")}
           onMetamaskConnect={() => handleWalletSignin("injected")}
           onWalletConnectConnect={() => handleWalletSignin("walletConnect")}
           connectingMethod={connectingMethod}

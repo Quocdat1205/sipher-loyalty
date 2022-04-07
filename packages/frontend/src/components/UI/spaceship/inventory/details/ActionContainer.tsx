@@ -2,10 +2,10 @@ import React from "react"
 import { ImPriceTag } from "react-icons/im"
 import { Box, Button, chakra, HStack, Skeleton } from "@sipher.dev/sipher-ui"
 
+import { QuantitySelector } from "@components/shared"
 import { Lootbox } from "@sdk"
 
 import { MintModal } from "./MintModal"
-import QuantitySelector from "./QuantitySelector"
 import { DetailsBox } from "./useDetailBox"
 
 interface ActionContainerProps {
