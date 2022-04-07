@@ -12,8 +12,12 @@ import constant from "@setting/constant";
 
 import { AppModule } from "./modules/app/app.module";
 import { LoggerService } from "./modules/logger/logger.service";
+import otelSDK from "@modules/metrics/metrics";
 
 async function bootstrap() {
+  if (constant.ENABLE_METRICS) {
+    await otelSDK.start();
+  }
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
   });
