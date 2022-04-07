@@ -1,8 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react"
-import { useMutation, useQueryClient } from "react-query"
 
-import { updateProfile } from "@api"
-import { useChakraToast } from "@hooks"
 import { useAuth } from "src/providers/auth"
 
 import ChangePasswordModal from "./ChangePasswordModal"
@@ -34,29 +31,6 @@ export const AccountModal = ({ isOpen, onClose }: SettingAccountModalProps) => {
       setIsChangingPassword(false)
     }
   }, [isOpen])
-
-  const { bearerToken } = useAuth()
-  const qc = useQueryClient()
-  const toast = useChakraToast()
-
-  const { mutate: mutateUpdateAvatar } = useMutation<unknown, unknown, string>(
-    avatarImageId => updateProfile({ avatarImageId }, bearerToken),
-    {
-      onMutate: () => {
-        setIsChoosingAvatar(false)
-      },
-      onSuccess: () => {
-        qc.invalidateQueries("profile")
-      },
-      onError: (e: any) => {
-        toast({
-          status: "error",
-          title: "Failed to update avatar!",
-          message: e?.message || "Please check your internet connection and try again!",
-        })
-      },
-    },
-  )
 
   return (
     <Fragment>

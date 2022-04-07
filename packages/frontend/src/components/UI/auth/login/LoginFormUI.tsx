@@ -34,7 +34,7 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
 
   const toast = useChakraToast()
   const wallet = useWalletContext()
-  const { setUser, getUser } = useAuth()
+  const { setUser } = useAuth()
 
   const [connectingMethod, setConnectingMethod] = useState<string | null>(null)
 
