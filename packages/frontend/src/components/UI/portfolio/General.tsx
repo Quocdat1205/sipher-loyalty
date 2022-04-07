@@ -1,6 +1,7 @@
 import React from "react"
 import { Image, SimpleGrid, Text } from "@sipher.dev/sipher-ui"
 
+import { useBalanceContext } from "@hooks"
 import { currency } from "@utils"
 
 import CardGeneral from "../home/CardGeneral"
@@ -10,16 +11,13 @@ interface GeneralProps {
   totalNFTs: number
   totalToken: number
   totalETHPrice: number
-  totalUsdPrice: number
 }
 
-const General = ({
-  totalCollectionPrice = 0,
-  totalNFTs = 0,
-  totalToken = 0,
-  totalETHPrice = 0,
-  totalUsdPrice = 0,
-}: GeneralProps) => {
+const General = ({ totalCollectionPrice, totalNFTs, totalToken, totalETHPrice }: GeneralProps) => {
+  const {
+    dataPrice: { ethereumPrice },
+  } = useBalanceContext()
+
   return (
     <SimpleGrid mb={8} columns={[2, 2, 4]} spacing={8}>
       <CardGeneral
@@ -28,7 +26,7 @@ const General = ({
         icon={<Image src="/images/icons/coin1.png" h="1.3rem" />}
         bottomChildren={
           <Text color="neutral.100">
-            {currency(totalCollectionPrice)} ETH (${currency(totalUsdPrice)})
+            {currency(totalCollectionPrice)} ETH (${currency(totalCollectionPrice * ethereumPrice.usd)})
           </Text>
         }
       />
@@ -38,7 +36,7 @@ const General = ({
         icon={<Image src="/images/icons/coin.png" h="1.3rem" />}
         bottomChildren={
           <Text color="neutral.100">
-            {currency(totalETHPrice)} ETH (${currency(totalUsdPrice)})
+            {currency(totalETHPrice)} ETH (${currency(totalETHPrice * ethereumPrice.usd)})
           </Text>
         }
       />

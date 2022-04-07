@@ -16,7 +16,6 @@ const tabs = [
 
 const ContentPortfolio = () => {
   const {
-    totalUsdPrice,
     totalETHPrice,
     totalCollectionPrice,
     tokensData,
@@ -60,7 +59,6 @@ const ContentPortfolio = () => {
           totalNFTs={totalNFTs}
           totalToken={totalToken}
           totalETHPrice={totalETHPrice}
-          totalUsdPrice={totalUsdPrice}
         />
         <TabPage tabs={tabs} />
         <Box py={6}>{renderTabs()}</Box>

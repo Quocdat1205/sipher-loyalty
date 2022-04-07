@@ -23,7 +23,6 @@ const configPromise = configure({
 })
 
 const useAuthState = () => {
-  const router = useRouter()
   const userRef = useRef<CognitoUser>()
   const [cognitoUser, _setUser] = useState<CognitoUser>()
   const authenticated = useMemo(() => !!cognitoUser, [cognitoUser])

@@ -49,7 +49,7 @@ const SipherPriceStatistics = ({ isOpen, onClose }: SipherPriceStatisticsProps) 
             "$",
           )})`}
           additionalValue={
-            <Flex color={sipherPrice.change < 0 ? "red.400" : "cyan.400"} align="center" justify={"flex-end"}>
+            <Flex color={sipherPrice.change < 0 ? "red.400" : "teal.400"} align="center" justify={"flex-end"}>
               <Box transform="auto" rotate={sipherPrice.change < 0 ? "180deg" : "0deg"}>
                 <BsFillTriangleFill size="0.65rem" />
               </Box>
@@ -66,7 +66,7 @@ const SipherPriceStatistics = ({ isOpen, onClose }: SipherPriceStatisticsProps) 
           name="Market Cap"
           value={currency(sipherPrice.marketcap, "$")}
           additionalValue={
-            <Flex color="red.400" align="center" justify={"flex-end"}>
+            <Flex color={sipherPrice.marketcapChange < 0 ? "red.400" : "teal.400"} align="center" justify={"flex-end"}>
               <Box transform="auto" rotate={sipherPrice.marketcapChange < 0 ? "180deg" : "0deg"}>
                 <BsFillTriangleFill size="0.65rem" />
               </Box>

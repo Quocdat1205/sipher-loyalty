@@ -14,10 +14,14 @@ const useBalance = () => {
   const [isFetched, setIsFetched] = useState(false)
   const qc = useQueryClient()
 
-  const { data: chainPrice } = useQuery(["chainPrice", account], () => scCaller.current!.getEtherBalance(account!), {
-    initialData: 0,
-    enabled: !!scCaller.current && !!account,
-  })
+  const { data: chainBalance } = useQuery(
+    ["chainBalance", account],
+    () => scCaller.current!.getEtherBalance(account!),
+    {
+      initialData: 0,
+      enabled: !!scCaller.current && !!account,
+    },
+  )
   const { data: sipher } = useQuery(["sipher", account], () => scCaller.current!.getSipherBalance(account!), {
     initialData: 0,
     enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK,
@@ -74,15 +78,16 @@ const useBalance = () => {
   )
 
   const refetch = () => {
-    qc.invalidateQueries(["chainPrice", account])
+    qc.invalidateQueries(["chainBalance", account])
     qc.invalidateQueries(["sipher", account])
     qc.invalidateQueries(["weth", account])
   }
 
   const totalETHPrice =
     (chainId === ETHEREUM_NETWORK
-      ? dataPrice!.ethereumPrice.eth * chainPrice! + dataPrice!.sipherPrice.eth * sipher!
+      ? dataPrice!.ethereumPrice.eth * chainBalance! + dataPrice!.sipherPrice.eth * sipher!
       : 0) ?? 0
+
   const totalUsdPrice = totalETHPrice * dataPrice!.ethereumPrice.usd ?? 0
 
   return {
@@ -90,7 +95,7 @@ const useBalance = () => {
     totalETHPrice,
     totalUsdPrice,
     balance: {
-      chainPrice: chainPrice ?? 0,
+      chainPrice: chainBalance ?? 0,
       sipher: sipher ?? 0,
       weth: weth ?? 0,
     },

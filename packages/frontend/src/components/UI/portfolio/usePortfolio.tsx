@@ -22,7 +22,7 @@ const usePortfolio = () => {
   const router = useRouter()
   const { bearerToken } = useAuth()
   const { account, chainId } = useWalletContext()
-  const { dataPrice, balance, totalETHPrice, totalUsdPrice } = useBalanceContext()
+  const { dataPrice, balance, totalETHPrice } = useBalanceContext()
   const [filter, setFilter] = useState("")
   const [isLoadingCollection, setIsLoadingCollection] = useState(true)
 
@@ -58,13 +58,6 @@ const usePortfolio = () => {
           change: dataPrice!.ethereumPrice.change,
           icon: <EthereumIcon size="1.4rem" />,
         },
-        // {
-        //   currency: "MATIC",
-        //   balance: chainId === POLYGON_NETWORK ? balance.chainPrice : 0,
-        //   value: chainId === POLYGON_NETWORK ? balance.chainPrice * dataPrice!.maticPrice.usd : 0,
-        //   change: dataPrice!.maticPrice.change * 100,
-        //   icon: <Img src="/images/icons/matic.png" alt="matic" h="1.4rem" />,
-        // },
         {
           currency: "SIPHER",
           balance: balance.sipher,
@@ -87,7 +80,6 @@ const usePortfolio = () => {
   const totalCollectionPrice = arrayCollectionPrice.reduce((acc, curr) => acc + curr, 0)
 
   return {
-    totalUsdPrice,
     totalCollectionPrice,
     totalETHPrice,
     tokensData,
