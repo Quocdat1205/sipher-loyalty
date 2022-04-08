@@ -22,6 +22,7 @@ import { MintModule } from "../mint/mint.module";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { MetricsModule } from "@modules/metrics/metrics.moule";
+import { HealthModule } from "@modules/health/health.module";
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { MetricsModule } from "@modules/metrics/metrics.moule";
     PriceModule,
     AdminModule,
     MetricsModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

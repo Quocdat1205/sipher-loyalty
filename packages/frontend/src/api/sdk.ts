@@ -1380,5 +1380,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         secure: true,
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @tags health
+     * @name HealthControllerServerCheck
+     * @request GET:/api/sipher/loyalty/health/server
+     */
+    healthControllerServerCheck: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/health/server`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags health
+     * @name HealthControllerCheck
+     * @request GET:/api/sipher/loyalty/health
+     */
+    healthControllerCheck: (params: RequestParams = {}) =>
+      this.request<
+        {
+          status?: string;
+          info?: Record<string, { status?: string }>;
+          error?: Record<string, { status?: string }>;
+          details?: Record<string, { status?: string }>;
+        },
+        {
+          status?: string;
+          info?: Record<string, { status?: string }>;
+          error?: Record<string, { status?: string }>;
+          details?: Record<string, { status?: string }>;
+        }
+      >({
+        path: `/api/sipher/loyalty/health`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
   };
 }

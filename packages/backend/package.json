@@ -44,6 +44,7 @@
     "@nestjs/platform-express": "^8.1.1",
     "@nestjs/schedule": "^1.0.2",
     "@nestjs/swagger": "^5.2.0",
+    "@nestjs/terminus": "^8.0.6",
     "@nestjs/typeorm": "^8.0.3",
     "@opentelemetry/auto-instrumentations-node": "^0.28.0",
     "@opentelemetry/exporter-prometheus": "^0.27.0",
