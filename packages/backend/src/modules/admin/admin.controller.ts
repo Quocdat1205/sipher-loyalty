@@ -223,4 +223,12 @@ export class AdminController {
   async refresh(@Req() req: Request) {
     return this.authService.fetchUserData(req);
   }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
+  @Get("get-nonce")
+  async getNonce(@Req() req: Request) {
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
+    return this.adminService.getNonce();
+  }
 }

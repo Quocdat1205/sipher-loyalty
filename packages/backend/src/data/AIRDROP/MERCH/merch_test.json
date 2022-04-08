@@ -94,5 +94,53 @@
     "name": "SIPHER Exclusive Bomber",
     "description": "merchandise for investor nft support Sipher team early",
     "shippable": true
+  },
+  {
+    "id": 5,
+    "publicAddress": "0xD6824e69Bc24889740fDfC6371Bf985A7ab7ac7f",
+    "tier": "Siver",
+    "merchItem": "Hoodie",
+    "quantity": 2,
+    "quantityShipped": "0",
+    "isShipped": false,
+    "name": "SIPHER Exclusive Hoodie",
+    "description": "merchandise for investor nft support Sipher team early",
+    "shippable": true
+  },
+  {
+    "id": 6,
+    "publicAddress": "0xD6824e69Bc24889740fDfC6371Bf985A7ab7ac7f",
+    "tier": "Gold",
+    "merchItem": "Tshirt",
+    "quantity": 3,
+    "quantityShipped": "0",
+    "isShipped": false,
+    "name": "SIPHER Exclusive T-shirt",
+    "description": "merchandise for investor nft support Sipher team early",
+    "shippable": true
+  },
+  {
+    "id": 7,
+    "publicAddress": "0xD6824e69Bc24889740fDfC6371Bf985A7ab7ac7f",
+    "tier": "Gold",
+    "merchItem": "Hat",
+    "quantity": 4,
+    "quantityShipped": "0",
+    "isShipped": false,
+    "name": "SIPHER Exclusive Hat",
+    "description": "merchandise for investor nft support Sipher team early",
+    "shippable": true
+  },
+  {
+    "id": 8,
+    "publicAddress": "0xD6824e69Bc24889740fDfC6371Bf985A7ab7ac7f",
+    "tier": "Diamond",
+    "merchItem": "Bomber",
+    "quantity": 1,
+    "quantityShipped": "0",
+    "isShipped": false,
+    "name": "SIPHER Exclusive Bomber",
+    "description": "merchandise for investor nft support Sipher team early",
+    "shippable": true
   }
 ]
