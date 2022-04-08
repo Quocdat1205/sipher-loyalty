@@ -89,6 +89,7 @@ const ShippingInfo = () => {
         sx={{
           ".chakra-checkbox__control": {
             borderRadius: "4px!important",
+            bg: "transparent",
           },
         }}
         mt={8}

@@ -47,7 +47,6 @@ export const BuySipherModal = ({ isOpen, onClose }: BuySipherModalProps) => {
           text="Kyber Network"
           src="/images/icons/kyper.png"
           colorScheme={"whiteAlpha"}
-          py={2}
         />
         <WalletCard
           onClick={() =>
@@ -59,7 +58,6 @@ export const BuySipherModal = ({ isOpen, onClose }: BuySipherModalProps) => {
           text="Uniswap"
           src="/images/icons/uniswap.png"
           colorScheme={"whiteAlpha"}
-          py={2}
         />
       </Stack>
     </ChakraModal>

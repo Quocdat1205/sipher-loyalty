@@ -105,7 +105,7 @@ const ConnectToWallet = () => {
   return (
     <ChakraModal
       title={isWalledUsed ? "WALLET ALREADY IN USE" : "CONNECT TO A WALLET"}
-      size="lg"
+      size="md"
       isOpen={flowState === "connectWallet"}
       hideCloseButton
     >

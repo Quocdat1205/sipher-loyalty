@@ -1,5 +1,4 @@
 import { FC } from "react"
-import Image from "next/image"
 import { Box, Flex, Img, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import MobileUI from "./MobileUI"
@@ -33,7 +32,7 @@ const content = [
 
 export const AuthLayout: FC = ({ children }) => {
   return (
-    <Flex w="full" h="100vh" pos="relative">
+    <Flex bg="url(/images/auth/background.png)" bgRepeat="no-repeat" bgSize="cover" w="full" h="100vh" pos="relative">
       <Flex w="full" display={["none", "none", "flex"]}>
         <Box bg="neutral.700" py={16} px={8} w="30rem" zIndex={2}>
           <Flex align="center" justify="center" w="full" mb={16}>
@@ -43,7 +42,6 @@ export const AuthLayout: FC = ({ children }) => {
           </Flex>
           {children}
         </Box>
-        <Image layout="fill" src="/images/auth/background.png" alt="background" />
         <Flex flex={1} py={24} px={[8, 16, 24]} pos="relative" justify="center">
           <Box
             sx={{
@@ -57,7 +55,7 @@ export const AuthLayout: FC = ({ children }) => {
             w="44rem"
             h="44rem"
           >
-            <Image src="/images/auth/neko_figure.svg" alt="neko" layout="fill" />
+            <Img src="/images/auth/neko_figure.svg" alt="neko" />
           </Box>
           <Box
             w="full"
