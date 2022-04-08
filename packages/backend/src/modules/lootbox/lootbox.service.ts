@@ -5,6 +5,7 @@ import {
   ERC1155Lootbox,
   Lootbox,
   MintStatus,
+  PendingMint,
 } from "@entity";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 // import { Cron } from "@nestjs/schedule";
@@ -164,11 +165,14 @@ export class LootBoxService {
     }
   };
 
-  private async updateQuantityFromCanceledOrder(
+  private async updateQuantityFromCanceledOrExpiredOrder(
     lootbox: Lootbox,
     amount: number
   ) {
-    lootbox.mintable += amount;
+    lootbox.mintable =
+      lootbox.quantity > lootbox.mintable + amount
+        ? lootbox.mintable + amount
+        : lootbox.quantity;
     return this.lootboxRepo.save(lootbox);
   }
 
@@ -686,7 +690,10 @@ export class LootBoxService {
           promises.push(this.cancelService.createCanceled(_canceled));
           for (let i = 0; i < tokenIds.length; i++) {
             promises.push(
-              this.updateQuantityFromCanceledOrder(lootboxs[i], amounts[i])
+              this.updateQuantityFromCanceledOrExpiredOrder(
+                lootboxs[i],
+                amounts[i]
+              )
             );
           }
           const result = await Promise.all(promises);
@@ -700,6 +707,70 @@ export class LootBoxService {
           );
         } else LoggerService.log("not recover lootbox cause lootbox minted");
       } else LoggerService.log("event resoved or in cancel database");
+    } catch (err) {
+      LoggerService.error(err);
+      throw new HttpException("something was wrong", HttpStatus.BAD_REQUEST);
+    }
+  };
+
+  updateLootboxFromTrackerExpiredOrder = async (pendingMint: PendingMint) => {
+    try {
+      // get expired tracked with signature
+
+      LoggerService.log(`recover expired of publicAddress: ${pendingMint.to}`);
+      if (
+        pendingMint &&
+        pendingMint.status !== MintStatus.Expired &&
+        pendingMint.status !== MintStatus.Minted &&
+        pendingMint.status !== MintStatus.Canceled
+      ) {
+        pendingMint.status = MintStatus.Expired;
+        await this.mintService.updatePendingMint(pendingMint);
+        const tokenIds =
+          pendingMint.batchIDs.length > 0
+            ? pendingMint.batchIDs
+            : [pendingMint.batchID];
+        const amounts =
+          pendingMint.batchIDs.length > 0
+            ? pendingMint.amounts
+            : [pendingMint.amount];
+        const lootboxs = await this.getLootboxFromWalletAndTokenIDs(
+          pendingMint.to,
+          tokenIds
+        );
+
+        // verify blocked lootbox
+        await this.verifyBlockingLootboxs(lootboxs);
+        await this.setBlockingLootboxs(lootboxs, true);
+
+        const promises = [];
+        for (let i = 0; i < tokenIds.length; i++) {
+          if (lootboxs[i]) {
+            promises.push(
+              this.updateQuantityFromCanceledOrExpiredOrder(
+                lootboxs[i],
+                amounts[i]
+              )
+            );
+          } else
+            throw new HttpException(
+              "can't find lootbox of pending mint expired ",
+              HttpStatus.BAD_REQUEST
+            );
+        }
+        const result = await Promise.all(promises);
+
+        this.setBlockingLootboxs(lootboxs, false);
+
+        LoggerService.log(
+          `update lootbox from tracker for wallet ${
+            pendingMint.to
+          } expired done :${JSON.stringify(result)}`
+        );
+      } else
+        LoggerService.log(
+          "not recover lootbox cause lootbox minted or canceled"
+        );
     } catch (err) {
       LoggerService.error(err);
       throw new HttpException("something was wrong", HttpStatus.BAD_REQUEST);

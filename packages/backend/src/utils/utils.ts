@@ -1,6 +1,6 @@
 import { BigNumber, ethers } from "ethers";
-import constant, { Chain } from "@setting/constant";
 import _ from "lodash";
+import constant, { Chain } from "@setting/constant";
 
 const randomSalt = () =>
   ethers.utils.formatBytes32String(
@@ -11,6 +11,8 @@ const getDeadline3Day = () =>
   Math.round(new Date().getTime() / 1000) + constant.PENDING_TIME_LOOTBOX_MINT;
 
 const getNow = () => Math.round(new Date().getTime() / 1000);
+
+const randomNonce = () => Math.floor(Math.random() * 10000000);
 
 const insertDetailStringToImage = (img_url: string) => {
   const re = /(.*)\.png$/;
@@ -78,8 +80,9 @@ export {
   insertDetailStringToImage,
   isLootboxContract,
   isSculptureContract,
+  randomNonce,
   randomSalt,
+  toCamcelCase,
   toTokenId,
   weiToEther,
-  toCamcelCase,
 };

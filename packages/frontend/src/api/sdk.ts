@@ -1384,42 +1384,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags health
-     * @name HealthControllerServerCheck
-     * @request GET:/api/sipher/loyalty/health/server
+     * @tags admin
+     * @name AdminControllerGetNonce
+     * @request GET:/api/sipher/loyalty/admin/get-nonce
+     * @secure
      */
-    healthControllerServerCheck: (params: RequestParams = {}) =>
+    adminControllerGetNonce: (params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/sipher/loyalty/health/server`,
+        path: `/api/sipher/loyalty/admin/get-nonce`,
         method: 'GET',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags health
-     * @name HealthControllerCheck
-     * @request GET:/api/sipher/loyalty/health
-     */
-    healthControllerCheck: (params: RequestParams = {}) =>
-      this.request<
-        {
-          status?: string;
-          info?: Record<string, { status?: string }>;
-          error?: Record<string, { status?: string }>;
-          details?: Record<string, { status?: string }>;
-        },
-        {
-          status?: string;
-          info?: Record<string, { status?: string }>;
-          error?: Record<string, { status?: string }>;
-          details?: Record<string, { status?: string }>;
-        }
-      >({
-        path: `/api/sipher/loyalty/health`,
-        method: 'GET',
-        format: 'json',
+        secure: true,
         ...params,
       }),
   };

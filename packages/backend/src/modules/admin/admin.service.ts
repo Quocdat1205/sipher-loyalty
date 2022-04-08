@@ -11,12 +11,15 @@ import { LootBoxService } from "@modules/lootbox/lootbox.service";
 import { MerchService } from "@modules/merch/merch.service";
 import { MintService } from "@modules/mint/mint.service";
 import { URIService } from "@modules/uri/uri.service";
+import { randomNonce } from "@utils/utils";
 
 import { UpdateImageUrlDto, UpdateItemDto } from "./admin.dto";
 import { BodyAdminUpdate, TableType } from "./admin.type";
 
 @Injectable()
 export class AdminService {
+  private nonce = 0;
+
   constructor(
     @InjectRepository(Item) private itemRepo: Repository<Item>,
     @InjectRepository(ImageUrl) private imageUrlRepo: Repository<ImageUrl>,
@@ -31,7 +34,9 @@ export class AdminService {
     private lootBoxService: LootBoxService,
     private collectionService: CollectionService,
     private uriService: URIService
-  ) {}
+  ) {
+    this.nonce = randomNonce();
+  }
 
   async updateItemById(itemId: number, updateItemDto: UpdateItemDto) {
     const item = await this.itemRepo.findOne(itemId);
@@ -170,5 +175,9 @@ export class AdminService {
     imageUrl.color = updateImageUrlDto.color;
 
     await this.imageUrlRepo.save(imageUrl);
+  }
+
+  async getNonce() {
+    return this.nonce;
   }
 }
