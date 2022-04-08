@@ -30,7 +30,7 @@ export const useAirdrops = () => {
     ["airdrops", account],
     () =>
       client.api
-        .airdropControllerGetAirdropsByType(account!, AirdropType.ALL, setBearerToken(bearerToken))
+        .airdropControllerGetAirdropsByTypeAndUserId(AirdropType.ALL, setBearerToken(bearerToken))
         .then(res => res.data),
     {
       enabled: !!bearerToken && !!account,
@@ -82,6 +82,7 @@ export const useAirdrops = () => {
           ...item,
           buttonText: "",
           isClaiming: claimId === item.id,
+          isClaimer: true,
           isDisabled: true,
           onView: () => {
             router.push({ query: { tab: currentTab, type: item.type, id: item.id } }, undefined, { scroll: false })
@@ -93,12 +94,14 @@ export const useAirdrops = () => {
         ...airdropsData!.token?.map(item => ({
           ...item,
           isClaiming: claimId === item.id,
+          isClaimer: account?.toLowerCase() === item.claimer.toLowerCase(),
           buttonText: "",
           onView: () => {
-            router.push({ query: { tab: currentTab, type: item.type, id: item.id } }, undefined, { scroll: false })
+            if (account === item.claimer) {
+              router.push({ query: { tab: currentTab, type: item.type, id: item.id } }, undefined, { scroll: false })
+            }
           },
-          onClaim: (e: MouseEvent<HTMLButtonElement>) => {
-            e.stopPropagation()
+          onClaim: () => {
             if (item.addressContract.toLocaleLowerCase() === SipherAirdropsAddress.toLocaleLowerCase()) {
               claim(item)
             }
@@ -108,6 +111,7 @@ export const useAirdrops = () => {
           ...item,
           isClaiming: claimId === item.id,
           isDisabled: true,
+          isClaimer: true,
           buttonText: "Coming soon",
           onView: () => {
             router.push({ query: { tab: currentTab, type: item.type, id: item.id } }, undefined, { scroll: false })
@@ -120,6 +124,7 @@ export const useAirdrops = () => {
           ...item,
           buttonText: "",
           isClaiming: claimId === item.id,
+          isClaimer: true,
           isDisabled: true,
           onView: () => {
             router.push({ query: { tab: currentTab, type: item.type, id: item.id } }, undefined, { scroll: false })

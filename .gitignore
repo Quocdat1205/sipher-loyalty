@@ -41,6 +41,8 @@ yarn-error.log*
 # Docker volumes
 docker/postgres
 docker/redis
+docker/grafana-storage
+docker/prometheus-data
 
 
 # Test coverage

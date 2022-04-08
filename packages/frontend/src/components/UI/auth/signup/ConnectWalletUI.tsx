@@ -94,7 +94,7 @@ const ConnectWalletUI = ({ setStep, setCurrentAddress }: ConnectWalletUIProps) =
         Please link your crypto-wallet in order to complete the sign up process. This will only be used to link to your
         account. Funds will not be withdrawn and no minimum balance required.
       </Text>
-      <HStack w="full" justify="space-between" align="center" spacing={4}>
+      <Box w="full" mb={4}>
         <WalletCard
           onClick={() => {
             handleConnectWallet("injected")
@@ -103,6 +103,17 @@ const ConnectWalletUI = ({ setStep, setCurrentAddress }: ConnectWalletUIProps) =
           src="/images/icons/wallets/metamask.svg"
           colorScheme={"whiteAlpha"}
           isLoading={connectingMethod === "injected"}
+        />
+      </Box>
+      <HStack w="full" justify="space-between" align="center" spacing={4}>
+        <WalletCard
+          onClick={() => {
+            handleConnectWallet("coinbase")
+          }}
+          text={"Coinbase"}
+          src="/images/icons/wallets/coinbase.png"
+          colorScheme={"whiteAlpha"}
+          isLoading={connectingMethod === "coinbase"}
         />
         <WalletCard
           onClick={() => {

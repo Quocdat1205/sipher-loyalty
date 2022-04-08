@@ -3,12 +3,13 @@ import { BiChevronLeft } from "react-icons/bi"
 import { useRouter } from "next/router"
 import { Box, Button, Divider, Flex, Text } from "@sipher.dev/sipher-ui"
 
+import OverviewPayment from "./OverviewPayment"
 import ShippingInfo from "./ShippingInfo"
 
 const ShippingUI = () => {
   const router = useRouter()
   return (
-    <Flex pos="relative" flex={1} w="full" flexDir="column" align="center">
+    <Flex bg="neutral.700" pos="relative" flex={1} w="full" flexDir="column" align="center">
       <Flex pos="fixed" top="4.5rem" left={0} zIndex={1} flexDir="column">
         <Box pt={8} px={8} w="full">
           <Button
@@ -37,10 +38,7 @@ const ShippingUI = () => {
             <ShippingInfo />
           </Box>
           <Box ml={24} flex={1}>
-            <Text fontSize="2xl" fontWeight={600}>
-              OVERVIEW & PAYMENT
-            </Text>
-            <Divider pt={10} borderColor="whiteAlpha.100" />
+            <OverviewPayment />
           </Box>
         </Flex>
       </Flex>

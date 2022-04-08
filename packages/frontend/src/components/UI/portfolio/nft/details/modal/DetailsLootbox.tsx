@@ -1,11 +1,11 @@
 import React from "react"
-import { Button, chakra, Flex, HStack, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
+import { Button, chakra, Flex, HStack, Img, Skeleton, Stack, Text } from "@sipher.dev/sipher-ui"
 
-import { ChakraModal } from "@components/shared"
+import { ChakraModal, QuantitySelector } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
-import QuantitySelector from "@components/UI/spaceship/inventory/details/QuantitySelector"
 import { capitalize } from "@utils"
 
+import { videos } from "../../NFTCard"
 import { useDetailContext } from "../useDetail"
 
 interface DetailLootboxProps {
@@ -15,7 +15,7 @@ interface DetailLootboxProps {
 
 export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
   const { tokenDetails, isFetched, isLoadingBurn, slot, setSlot, router, handleMint, minable } = useDetailContext()
-
+  const extension = tokenDetails?.imageUrl.split(".")[5] || ""
   return (
     <ChakraModal scrollBehavior="inside" title={""} isOpen={isOpen} onClose={onClose} size="5xl">
       <Flex pt={6} px={8} minH="28rem" h="full" align="flex-start">
@@ -23,8 +23,7 @@ export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
           <Flex
             sx={{
               video: {
-                width: 300,
-                height: 300,
+                minH: "26rem",
               },
             }}
             overflow="hidden"
@@ -36,6 +35,11 @@ export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
             pos="relative"
             role="group"
           >
+            {videos.includes(extension) ? (
+              <video src={tokenDetails?.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
+            ) : (
+              <Img src={tokenDetails?.imageUrl} maxH="26rem" objectFit="contain" />
+            )}
             <Flex
               boxShadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
               align="center"
@@ -52,19 +56,6 @@ export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
                 {tokenDetails?.value}
               </Text>
             </Flex>
-            <Skeleton
-              bg="black"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              pos="relative"
-              overflow="hidden"
-              h="14rem"
-              w="full"
-              isLoaded={isFetched}
-            >
-              <video src={tokenDetails?.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
-            </Skeleton>
           </Flex>
         </Skeleton>
         <Flex minH="26rem" flexDir="column" justify="space-between" flex={3} ml={6}>

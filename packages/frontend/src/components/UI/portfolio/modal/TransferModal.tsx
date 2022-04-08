@@ -16,9 +16,8 @@ import {
   Text,
 } from "@sipher.dev/sipher-ui"
 
-import { ChakraModal, CustomInput, EthereumIcon, Form } from "@components/shared"
+import { ChakraModal, CustomInput, EthereumIcon, Form, QuantitySelector } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
-import QuantitySelector from "@components/UI/spaceship/inventory/details/QuantitySelector"
 
 import { useDetailContext } from "../nft/details/useDetail"
 import { videos } from "../nft/NFTCard"

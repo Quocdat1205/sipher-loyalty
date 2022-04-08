@@ -2,11 +2,10 @@ import React, { Fragment } from "react"
 import { useRouter } from "next/router"
 import { Box, Button, chakra, Divider, Flex, HStack, Link, Text } from "@sipher.dev/sipher-ui"
 
-import { ChakraModal } from "@components/shared"
+import { ChakraModal, QuantitySelector } from "@components/shared"
 import { SipherLootBoxAddress } from "@constant"
 import { padZero } from "@utils"
 
-import QuantitySelector from "./details/QuantitySelector"
 import { InventoryProps, useInventory } from "./useInventory"
 
 interface MintModalProps {

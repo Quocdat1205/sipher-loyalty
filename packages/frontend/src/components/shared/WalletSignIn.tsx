@@ -6,7 +6,9 @@ import { CustomPopover, WalletCard } from "@components/shared"
 interface WalletSignInProps extends BoxProps {
   onMetamaskConnect: () => void
   onWalletConnectConnect: () => void
+  onCoinbaseConnect: () => void
   connectingMethod: string | null
+  coinbaseText?: string
   metamaskText?: string
   walletConnectText?: string
 }
@@ -14,7 +16,9 @@ interface WalletSignInProps extends BoxProps {
 export const WalletSignIn = ({
   onMetamaskConnect,
   onWalletConnectConnect,
+  onCoinbaseConnect,
   connectingMethod,
+  coinbaseText = "Coinbase",
   metamaskText = "Metamask",
   walletConnectText = "WalletConnect",
   ...rest
@@ -48,14 +52,25 @@ export const WalletSignIn = ({
           </Text>
         </CustomPopover>
       </Flex>
-      <HStack spacing={4}>
+      <Box w="full" mb={4}>
         <WalletCard
+          w="full"
           text={metamaskText}
           colorScheme={"whiteAlpha"}
           src="/images/icons/wallets/metamask.svg"
           onClick={onMetamaskConnect}
           isLoading={connectingMethod === "injected"}
         />
+      </Box>
+      <HStack spacing={4}>
+        <WalletCard
+          text={coinbaseText}
+          colorScheme={"whiteAlpha"}
+          src="/images/icons/wallets/coinbase.png"
+          onClick={onCoinbaseConnect}
+          isLoading={connectingMethod === "coinbase"}
+        />
+
         <WalletCard
           text={walletConnectText}
           colorScheme={"whiteAlpha"}

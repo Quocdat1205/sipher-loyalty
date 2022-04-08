@@ -123,7 +123,7 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
         </Text>
         <Box flex={1} h="1px" bg="neutral.500" />
       </Flex>
-      <HStack w="full" justify="space-between" align="center" spacing={4}>
+      <Box w="full" mb={4}>
         <WalletCard
           onClick={() => {
             handleConnectWallet("injected")
@@ -132,6 +132,17 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
           src="/images/icons/wallets/metamask.svg"
           colorScheme={"whiteAlpha"}
           isLoading={connectingMethod === "injected"}
+        />
+      </Box>
+      <HStack w="full" justify="space-between" align="center" spacing={4}>
+        <WalletCard
+          onClick={() => {
+            handleConnectWallet("coinbase")
+          }}
+          text={"Coinbase"}
+          src="/images/icons/wallets/coinbase.png"
+          colorScheme={"whiteAlpha"}
+          isLoading={connectingMethod === "coinbase"}
         />
         <WalletCard
           onClick={() => {
