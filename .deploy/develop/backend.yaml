@@ -60,7 +60,7 @@ sipher-chart:
   env:
     PORT: 5500
     NODE_ENV: "develop"
-    POSTGRES_URL: ssm:/atherlabs/dashboard/dev/POSTGRES_URL
+    POSTGRES_URL: "postgres://postgres:IVLzwObIL3@postgresql:5432/loyalty_sipher"
     POSTGRES_SYNCHRONIZE: true
     SESSION_URL: ssm:/atherlabs/dashboard/dev/SESSION_URL
     RPC_URL_ETHEREUM: ssm:/atherlabs/dashboard/dev/RPC_URL_ETHEREUM

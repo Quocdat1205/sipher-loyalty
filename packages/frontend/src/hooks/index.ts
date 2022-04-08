@@ -1,6 +1,7 @@
 export * from "./useBalance"
 export * from "./useChakraToast"
 export * from "./useDebounce"
+export * from "./useDetectScrollBottom"
 export * from "./useFormCoreWithError"
 export * from "./useGridSize"
 export * from "./useOwnedWallets"

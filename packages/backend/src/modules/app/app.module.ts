@@ -7,8 +7,10 @@ import { configService } from "@setting/config.typeorm";
 import { AdminModule } from "@modules/admin/admin.module";
 import { AirdropModule } from "@modules/airdrop/airdrop.module";
 import { CollectionModule } from "@modules/collection/collection.module";
+import { HealthModule } from "@modules/health/health.module";
 import { LoggerModule } from "@modules/logger/logger.module";
 import { MerchModule } from "@modules/merch/merch.module";
+import { MetricsModule } from "@modules/metrics/metrics.moule";
 import { NftItemModule } from "@modules/nft/nftItem.module";
 import { PriceModule } from "@modules/price/price.module";
 import { SculptureModule } from "@modules/sculpture/sculpture.module";
@@ -21,8 +23,6 @@ import { MintModule } from "../mint/mint.module";
 // import module
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { MetricsModule } from "@modules/metrics/metrics.moule";
-import { HealthModule } from "@modules/health/health.module";
 
 @Module({
   imports: [
