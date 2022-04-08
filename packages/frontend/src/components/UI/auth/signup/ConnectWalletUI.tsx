@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { ConnectWalletResponse } from "@sipher.dev/ather-id/lib/esm/api/sdk"
-import { Box, chakra, Divider, Heading, HStack, Text } from "@sipher.dev/sipher-ui"
+import { Box, chakra, Divider, Heading, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
 import { WalletCard } from "@components/shared"
@@ -94,7 +94,8 @@ const ConnectWalletUI = ({ setStep, setCurrentAddress }: ConnectWalletUIProps) =
         Please link your crypto-wallet in order to complete the sign up process. This will only be used to link to your
         account. Funds will not be withdrawn and no minimum balance required.
       </Text>
-      <Box w="full" mb={4}>
+
+      <Stack w="full" spacing={4}>
         <WalletCard
           onClick={() => {
             handleConnectWallet("injected")
@@ -104,14 +105,12 @@ const ConnectWalletUI = ({ setStep, setCurrentAddress }: ConnectWalletUIProps) =
           colorScheme={"whiteAlpha"}
           isLoading={connectingMethod === "injected"}
         />
-      </Box>
-      <HStack w="full" justify="space-between" align="center" spacing={4}>
         <WalletCard
           onClick={() => {
             handleConnectWallet("coinbase")
           }}
           text={"Coinbase"}
-          src="/images/icons/wallets/coinbase.png"
+          src="/images/icons/wallets/coinbase.svg"
           colorScheme={"whiteAlpha"}
           isLoading={connectingMethod === "coinbase"}
         />
@@ -124,7 +123,7 @@ const ConnectWalletUI = ({ setStep, setCurrentAddress }: ConnectWalletUIProps) =
           colorScheme={"whiteAlpha"}
           isLoading={connectingMethod === "walletConnect"}
         />
-      </HStack>
+      </Stack>
       <Divider my={6} />
       <Text color="neutral.400" textAlign="center">
         Don't have a Wallet?{" "}

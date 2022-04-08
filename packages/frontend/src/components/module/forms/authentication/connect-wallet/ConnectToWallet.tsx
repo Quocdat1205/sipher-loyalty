@@ -3,7 +3,7 @@ import { IoIosWarning } from "react-icons/io"
 import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { ConnectWalletResponse } from "@sipher.dev/ather-id/lib/esm/api/sdk"
-import { Box, chakra, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
+import { Box, chakra, Flex, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useAuthFlowStore } from "@store"
 import { useWalletContext } from "@web3"
 
@@ -147,7 +147,7 @@ const ConnectToWallet = () => {
             </Flex>
           </Box>
         )}
-        <Box w="full" mb={4}>
+        <Stack w="full" spacing={4} mt={4}>
           <WalletCard
             onClick={() => {
               handleConnectWallet("injected")
@@ -157,14 +157,12 @@ const ConnectToWallet = () => {
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "injected"}
           />
-        </Box>
-        <HStack w="full" justify="space-between" align="center" spacing={4} mt={4}>
           <WalletCard
             onClick={() => {
               handleConnectWallet("coinbase")
             }}
             text={"Coinbase"}
-            src="/images/icons/wallets/coinbase.png"
+            src="/images/icons/wallets/coinbase.svg"
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "coinbase"}
           />
@@ -177,7 +175,7 @@ const ConnectToWallet = () => {
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "walletConnect"}
           />
-        </HStack>
+        </Stack>
       </Box>
     </ChakraModal>
   )

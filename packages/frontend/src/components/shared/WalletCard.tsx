@@ -1,5 +1,5 @@
 import React from "react"
-import { Button, ButtonProps, Img, Text } from "@sipher.dev/sipher-ui"
+import { Button, ButtonProps, Flex, Img, Text } from "@sipher.dev/sipher-ui"
 
 interface WalletCardProps extends ButtonProps {
   src: string
@@ -23,12 +23,14 @@ export const WalletCard = ({ colorScheme, src, text, onClick, isLoading = false,
       isLoading={isLoading}
       {...rest}
     >
-      <Img boxSize="28px" src={src} alt={src.split("/")[1]} />
-      {text && (
-        <Text fontSize="sm" color="neutral.900" ml={2}>
-          {text}
-        </Text>
-      )}
+      <Flex py={2} align="center" w="full" justify={!text ? "center" : "space-between"}>
+        {text && (
+          <Text fontWeight={600} fontSize="sm" color="neutral.900" ml={2}>
+            {text}
+          </Text>
+        )}
+        <Img boxSize="28px" src={src} alt={src.split("/")[1]} />
+      </Flex>
     </Button>
   )
 }

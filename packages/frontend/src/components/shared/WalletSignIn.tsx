@@ -8,9 +8,6 @@ interface WalletSignInProps extends BoxProps {
   onWalletConnectConnect: () => void
   onCoinbaseConnect: () => void
   connectingMethod: string | null
-  coinbaseText?: string
-  metamaskText?: string
-  walletConnectText?: string
 }
 
 export const WalletSignIn = ({
@@ -18,9 +15,6 @@ export const WalletSignIn = ({
   onWalletConnectConnect,
   onCoinbaseConnect,
   connectingMethod,
-  coinbaseText = "Coinbase",
-  metamaskText = "Metamask",
-  walletConnectText = "WalletConnect",
   ...rest
 }: WalletSignInProps) => {
   return (
@@ -52,27 +46,22 @@ export const WalletSignIn = ({
           </Text>
         </CustomPopover>
       </Flex>
-      <Box w="full" mb={4}>
+      <HStack spacing={4}>
         <WalletCard
           w="full"
-          text={metamaskText}
           colorScheme={"whiteAlpha"}
           src="/images/icons/wallets/metamask.svg"
           onClick={onMetamaskConnect}
           isLoading={connectingMethod === "injected"}
         />
-      </Box>
-      <HStack spacing={4}>
         <WalletCard
-          text={coinbaseText}
           colorScheme={"whiteAlpha"}
-          src="/images/icons/wallets/coinbase.png"
+          src="/images/icons/wallets/coinbase.svg"
           onClick={onCoinbaseConnect}
           isLoading={connectingMethod === "coinbase"}
         />
 
         <WalletCard
-          text={walletConnectText}
           colorScheme={"whiteAlpha"}
           src="/images/icons/wallets/walletconnect.svg"
           onClick={onWalletConnectConnect}

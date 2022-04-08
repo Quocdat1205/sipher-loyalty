@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 
-import { CommonLayout } from "@components/module/layout"
+import { ShippingLayout } from "@components/module/layout"
 import { Metadata } from "@components/shared"
 import ShippingUI from "@components/UI/shipping"
 
@@ -15,6 +15,6 @@ const ShippingPage: NextPageWithLayout = () => {
   )
 }
 
-ShippingPage.getLayout = (page: ReactNode) => <CommonLayout>{page}</CommonLayout>
+ShippingPage.getLayout = (page: ReactNode) => <ShippingLayout>{page}</ShippingLayout>
 
 export default ShippingPage
