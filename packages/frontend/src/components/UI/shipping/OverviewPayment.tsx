@@ -4,7 +4,9 @@ import { Box, Divider, Flex, Img, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomCheckbox, QuantitySelector } from "@components/shared"
 
-const OrderCard = () => {
+import ListOrder from "./ListOrder"
+
+export const OrderCard = () => {
   return (
     <Flex align="center" justify="space-betweens">
       <Flex align="center" flex={1}>
@@ -25,7 +27,7 @@ const OrderCard = () => {
   )
 }
 
-const RedeemCard = () => {
+export const RedeemCard = () => {
   return (
     <Flex
       sx={{
@@ -62,11 +64,7 @@ const OverviewPayment = () => {
         <Text fontWeight={600}>YOUR ORDER No.: #AB321</Text>
         <Text fontWeight={600}>QTY:2</Text>
       </Flex>
-      <Stack overflow="auto" h="8rem" pr={1} spacing={4}>
-        <OrderCard />
-        <OrderCard />
-        <OrderCard />
-      </Stack>
+      <ListOrder />
       <Divider pt={6} mb={6} borderColor="whiteAlpha.100" />
       <Box mb={4}>
         <Text fontWeight={600}>REDEEM MORE ITEMS TO SAVE SHIPPING FEE</Text>

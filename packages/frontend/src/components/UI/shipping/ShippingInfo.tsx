@@ -105,10 +105,25 @@ const ShippingInfo = () => {
             holding the Sculpture NFT.
           </Text>
         </Flex>
-        <Flex mb={4} align="flex-start">
+        <Flex mb={8} align="flex-start">
           <CustomCheckbox pt={1} />
           <Text ml={2}>Save my Recipent Info & Shipping Address for future orders.</Text>
         </Flex>
+        <Text fontWeight={600} mb={4}>
+          DISCLAIMER
+        </Text>
+        <Text>
+          You are solely responsible for determining any tax payable by you or other regulatory obligations associated
+          with claiming, redeeming, and receiving the physical items and declaring, withholding, collecting, reporting,
+          and remitting the correct amount of tax to the appropriate tax authorities. You will be solely liable for all
+          penalties, claims, fines, punishments, or other liabilities arising from the non-fulfilment or non-performance
+          to any extent of any of your aforementioned obligations. To the maximum extent permitted by all applicable
+          laws and regulations, we hereby expressly disclaim our liability and shall in no case be liable to you or any
+          person for: - any loss, cost, expense, or tax associated with any secondary transfer in relation to the
+          physical items; - any prohibition, restriction, or regulation by any government or regulatory authority in any
+          jurisdiction of the functionality, usage, storage, transmission mechanisms, transferability, tradability, or
+          other material characteristics of the physical items.
+        </Text>
       </Box>
     </Fragment>
   )
