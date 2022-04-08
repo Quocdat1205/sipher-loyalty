@@ -5,10 +5,8 @@ import { Box } from "@sipher.dev/sipher-ui"
 
 import CollectionCard from "../portfolio/collection/CollectionCard"
 
-import usePortFolioHome from "./portfolio/usePortFolioHome"
-
 interface NFTsContainerProps {
-  collectionData: ReturnType<typeof usePortFolioHome>["collectionData"]
+  collectionData: any
   responsive: Record<string, any>
 }
 
