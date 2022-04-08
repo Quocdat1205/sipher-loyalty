@@ -1,44 +1,19 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment } from "react"
 import { Box, Divider, Flex, FormControl, FormLabel, HStack, Stack, Text } from "@sipher.dev/sipher-ui"
 
 import { CustomCheckbox, Select, StyledInput } from "@components/shared"
 
-interface SelectType {
-  state: Record<string, any> | null
-  city: Record<string, any> | null
-  country: Record<string, any> | null
-}
-
-const initSelectValue: SelectType = {
-  state: null,
-  city: null,
-  country: null,
-}
-
-const dataExample = [
-  {
-    code: "A",
-    name: "AB",
-  },
-  {
-    code: "B",
-    name: "ABC",
-  },
-  {
-    code: "C",
-    name: "ABCD",
-  },
-]
+import useShipping from "./useShipping"
 
 const ShippingInfo = () => {
-  const [selectValue, setSelectValue] = useState(initSelectValue)
+  const { state, city, country, selectValue, setSelectValue } = useShipping()
 
   return (
     <Fragment>
       <Text fontSize="xl" fontWeight={600}>
         SHIPPING INFO
       </Text>
-      <Divider pt={10} mb={6} borderColor="whiteAlpha.100" />
+      <Divider pt={8} mb={6} borderColor="whiteAlpha.100" />
       <FormControl>
         <FormLabel mb={6} fontWeight={600}>
           Recipent info
@@ -74,16 +49,20 @@ const ShippingInfo = () => {
           <HStack spacing={6} w="full">
             <Box flex={1}>
               <Select
-                name="Town/City"
-                selection={dataExample}
-                value={selectValue.city}
-                onSelect={newValue => setSelectValue({ ...selectValue, city: newValue })}
+                keyField="name"
+                searchable
+                name="Country/Region"
+                selection={country}
+                value={selectValue.country}
+                onSelect={newValue => setSelectValue({ ...selectValue, country: newValue })}
               />
             </Box>
             <Box flex={1}>
               <Select
+                keyField="name"
+                searchable
                 name="State"
-                selection={dataExample}
+                selection={state}
                 value={selectValue.state}
                 onSelect={newValue => setSelectValue({ ...selectValue, state: newValue })}
               />
@@ -92,10 +71,12 @@ const ShippingInfo = () => {
           <HStack spacing={6} w="full">
             <Box flex={1}>
               <Select
-                name="Country/Region"
-                selection={dataExample}
-                value={selectValue.country}
-                onSelect={newValue => setSelectValue({ ...selectValue, country: newValue })}
+                keyField="name"
+                searchable
+                name="Town/City"
+                selection={city}
+                value={selectValue.city}
+                onSelect={newValue => setSelectValue({ ...selectValue, city: newValue })}
               />
             </Box>
             <Box flex={1}>
@@ -108,6 +89,7 @@ const ShippingInfo = () => {
         sx={{
           ".chakra-checkbox__control": {
             borderRadius: "4px!important",
+            bg: "transparent",
           },
         }}
         mt={8}

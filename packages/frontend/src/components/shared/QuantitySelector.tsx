@@ -8,9 +8,19 @@ interface QuantitySelectorProps {
   maxValue?: number
   minValue?: number
   isDisabled?: boolean
+  isShowMax?: boolean
+  size?: "small" | "large"
 }
 
-export const QuantitySelector = ({ onChange, value, maxValue, minValue = 1, isDisabled }: QuantitySelectorProps) => {
+export const QuantitySelector = ({
+  onChange,
+  value,
+  maxValue,
+  minValue = 1,
+  isDisabled,
+  isShowMax = true,
+  size = "large",
+}: QuantitySelectorProps) => {
   return (
     <Flex
       justify="space-between"
@@ -19,7 +29,7 @@ export const QuantitySelector = ({ onChange, value, maxValue, minValue = 1, isDi
       borderColor="neutral.600"
       opacity={maxValue === 0 ? 0.5 : 1}
       py={1}
-      px={4}
+      px={size === "small" ? 2 : 4}
       rounded="base"
       overflow="hidden"
       align="center"
@@ -53,7 +63,7 @@ export const QuantitySelector = ({ onChange, value, maxValue, minValue = 1, isDi
           }}
           color="whiteAlpha.900"
           textAlign="center"
-          value={`${value}/${maxValue}`}
+          value={maxValue ? `${value}/${maxValue}` : value}
           isDisabled={isDisabled}
           px={0}
           letterSpacing="1px"
@@ -70,7 +80,7 @@ export const QuantitySelector = ({ onChange, value, maxValue, minValue = 1, isDi
           rounded="full"
         />
       </Flex>
-      {maxValue && (
+      {isShowMax && maxValue && (
         <Flex justify="center" flex={1}>
           <Text onClick={() => onChange(maxValue)} fontWeight={600} color="cyan.600" cursor="pointer">
             Max

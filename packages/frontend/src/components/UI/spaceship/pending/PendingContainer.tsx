@@ -86,8 +86,8 @@ export const PendingContainer = () => {
                         </Button>
                         <Button
                           onClick={item.onCancel}
-                          isLoading={item.status === "Minting" || item.isCancel}
-                          isDisabled={item.status === "Minting" || item.isCancel || item.isMinting}
+                          isLoading={item.isCancel}
+                          isDisabled={item.status === "Minting" || item.isDisabled}
                           colorScheme="neutral"
                           border="1px"
                           borderColor="whiteAlpha.100"

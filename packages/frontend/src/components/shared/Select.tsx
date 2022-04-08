@@ -1,7 +1,7 @@
 // Simpler version of ComboBox, no search, and only select 1 item
 import { FC, useEffect, useRef, useState } from "react"
 import { BiChevronDown, BiChevronUp } from "react-icons/bi"
-import { Box, Collapse, Flex, Input, Text, useDisclosure, useOutsideClick } from "@sipher.dev/sipher-ui"
+import { Box, chakra, Collapse, Flex, Input, Text, useDisclosure, useOutsideClick } from "@sipher.dev/sipher-ui"
 
 interface Option {
   code?: string | number
@@ -25,7 +25,7 @@ export const Select: FC<SelectProps> = ({
   value = null,
   onSelect = () => console.log(),
   displayField = "name",
-  keyField = "code",
+  keyField = "id",
   removable = false,
   readOnly = false,
   searchable = false,
@@ -82,8 +82,29 @@ export const Select: FC<SelectProps> = ({
         height="3rem"
       >
         <Box flex={1} userSelect="none">
-          <Text color={value ? "white" : "neutral.400"} isTruncated>
-            {value ? value[displayField] : name}
+          <chakra.label
+            color="neutral.400"
+            pos="absolute"
+            bottom={"0%"}
+            left={0}
+            w="full"
+            h="full"
+            pointerEvents={"none"}
+            translateY={isOpen || value ? "-8px" : "0px"}
+          >
+            <chakra.span
+              fontSize={isOpen || value ? "xs" : "md"}
+              pos="absolute"
+              left={"1rem"}
+              top="0.8rem"
+              transform={"auto"}
+              transition="all 0.25s ease-out"
+            >
+              {name}
+            </chakra.span>
+          </chakra.label>
+          <Text pt={3} color={value ? "white" : "neutral.400"} isTruncated>
+            {value && value[displayField]}
           </Text>
         </Box>
         {!readOnly && (

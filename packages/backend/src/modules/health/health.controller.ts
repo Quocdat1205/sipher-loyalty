@@ -30,7 +30,7 @@ class HealthController {
         this.http.pingCheck(
           "server",
           constant.isProduction
-            ? "https://api-loyalty.sipher.gg/api/sipher/loyalty/health/server"
+            ? "https://api-dashboard.sipher.gg/api/sipher/loyalty/health/server"
             : `http://localhost:${constant.PORT}/api/sipher/loyalty/health/server`
         ),
       () => this.db.pingCheck("database"),
