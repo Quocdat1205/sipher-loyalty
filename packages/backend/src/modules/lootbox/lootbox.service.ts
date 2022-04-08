@@ -745,12 +745,18 @@ export class LootBoxService {
 
         const promises = [];
         for (let i = 0; i < tokenIds.length; i++) {
-          promises.push(
-            this.updateQuantityFromCanceledOrExpiredOrder(
-              lootboxs[i],
-              amounts[i]
-            )
-          );
+          if (lootboxs[i]) {
+            promises.push(
+              this.updateQuantityFromCanceledOrExpiredOrder(
+                lootboxs[i],
+                amounts[i]
+              )
+            );
+          } else
+            throw new HttpException(
+              "can't find lootbox of pending mint expired ",
+              HttpStatus.BAD_REQUEST
+            );
         }
         const result = await Promise.all(promises);
 
