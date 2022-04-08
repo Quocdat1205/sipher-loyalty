@@ -1,7 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react"
 
-import { useAuth } from "src/providers/auth"
-
 import ChangePasswordModal from "./ChangePasswordModal"
 import ChooseAvatarForm from "./ChooseAvatarForm"
 import SettingForm from "./SettingForm"
