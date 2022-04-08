@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { ConnectWalletResponse } from "@sipher.dev/ather-id/lib/esm/api/sdk"
-import { Box, chakra, Flex, Heading, HStack, Text } from "@sipher.dev/sipher-ui"
+import { Box, chakra, Flex, Heading, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useWalletContext } from "@web3"
 
 import { WalletCard } from "@components/shared"
@@ -123,18 +123,8 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
         </Text>
         <Box flex={1} h="1px" bg="neutral.500" />
       </Flex>
-      <Box w="full" mb={4}>
-        <WalletCard
-          onClick={() => {
-            handleConnectWallet("injected")
-          }}
-          text={"MetaMask"}
-          src="/images/icons/wallets/metamask.svg"
-          colorScheme={"whiteAlpha"}
-          isLoading={connectingMethod === "injected"}
-        />
-      </Box>
-      <HStack w="full" justify="space-between" align="center" spacing={4}>
+
+      <Stack w="full" spacing={4}>
         <WalletCard
           onClick={() => {
             handleConnectWallet("coinbase")
@@ -146,6 +136,15 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
         />
         <WalletCard
           onClick={() => {
+            handleConnectWallet("injected")
+          }}
+          text={"MetaMask"}
+          src="/images/icons/wallets/metamask.svg"
+          colorScheme={"whiteAlpha"}
+          isLoading={connectingMethod === "injected"}
+        />
+        <WalletCard
+          onClick={() => {
             handleConnectWallet("walletConnect")
           }}
           text={"WalletConnect"}
@@ -153,7 +152,7 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
           colorScheme={"whiteAlpha"}
           isLoading={connectingMethod === "walletConnect"}
         />
-      </HStack>
+      </Stack>
     </Box>
   )
 }
