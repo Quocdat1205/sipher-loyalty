@@ -73,7 +73,7 @@ const HeaderDetails = ({ tokenDetails, isFetched }: HeaderDetailsProps) => {
                   </CustomPopover>
                 </Fragment>
               ) : (
-                <Text>{tokenDetails?.value}</Text>
+                <Text>{tokenDetails?.quantity}</Text>
               )}
             </Flex>
           </HStack>
