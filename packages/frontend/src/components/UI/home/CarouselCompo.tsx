@@ -3,8 +3,12 @@ import Carousel from "react-multi-carousel"
 import { DotProps } from "react-multi-carousel/lib/types"
 import { Box } from "@sipher.dev/sipher-ui"
 
+import CollectionCard from "../portfolio/collection/CollectionCard"
+
+import usePortFolioHome from "./portfolio/usePortFolioHome"
+
 interface NFTsContainerProps {
-  children: React.ReactNode
+  collectionData: ReturnType<typeof usePortFolioHome>["collectionData"]
   responsive: Record<string, any>
 }
 
@@ -24,7 +28,7 @@ const CustomDot = ({ onClick, active }: DotProps) => {
   )
 }
 
-const CarouselCompo = ({ children, responsive }: NFTsContainerProps) => {
+const CarouselCompo = ({ collectionData, responsive }: NFTsContainerProps) => {
   return (
     <Box>
       <Carousel
@@ -44,7 +48,9 @@ const CarouselCompo = ({ children, responsive }: NFTsContainerProps) => {
         renderDotsOutside={true}
         customDot={<CustomDot />}
       >
-        {children}
+        {collectionData.map(item => (
+          <CollectionCard key={item.id} data={item} isFetched={true} />
+        ))}
       </Carousel>
     </Box>
   )

@@ -1,8 +1,6 @@
 import React from "react"
 import { Box } from "@sipher.dev/sipher-ui"
 
-import CollectionCard from "@components/UI/portfolio/collection/CollectionCard"
-
 import CarouselCompo from "../CarouselCompo"
 
 import usePortFolioHome from "./usePortFolioHome"
@@ -42,11 +40,7 @@ const NFTsContainer = ({ collectionData }: NFTsContainerProps) => {
         },
       }}
     >
-      <CarouselCompo responsive={responsive}>
-        {collectionData.map(item => (
-          <CollectionCard key={item.id} data={item} isFetched={true} />
-        ))}
-      </CarouselCompo>
+      <CarouselCompo collectionData={collectionData} responsive={responsive} />
     </Box>
   )
 }
