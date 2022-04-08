@@ -30,7 +30,7 @@ export const useAirdrops = () => {
     ["airdrops", account],
     () =>
       client.api
-        .airdropControllerGetAirdropsByTypeAndUserId(AirdropType.ALL, setBearerToken(bearerToken))
+        .airdropControllerGetAirdropsByType(account!, AirdropType.ALL, setBearerToken(bearerToken))
         .then(res => res.data),
     {
       enabled: !!bearerToken && !!account,
