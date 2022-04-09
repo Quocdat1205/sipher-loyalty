@@ -118,7 +118,7 @@ export const MintModal = ({
         <HStack justify="center">
           {status === "MINT" ? (
             <>
-              <Button isLoading={isLoading} onClick={handleMint} fontSize="md" size="md" py={5}>
+              <Button isDisabled={slot === 0} isLoading={isLoading} onClick={handleMint} fontSize="md" size="md" py={5}>
                 CONFIRM
               </Button>
               <Button

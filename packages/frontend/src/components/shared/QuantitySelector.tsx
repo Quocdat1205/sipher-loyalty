@@ -15,7 +15,7 @@ interface QuantitySelectorProps {
 export const QuantitySelector = ({
   onChange,
   value,
-  maxValue,
+  maxValue = 0,
   minValue = 1,
   isDisabled,
   isShowMax = true,
@@ -63,7 +63,7 @@ export const QuantitySelector = ({
           }}
           color="whiteAlpha.900"
           textAlign="center"
-          value={maxValue ? `${value}/${maxValue}` : value}
+          value={maxValue !== 0 ? `${value}/${maxValue}` : value}
           isDisabled={isDisabled}
           px={0}
           letterSpacing="1px"
@@ -80,7 +80,7 @@ export const QuantitySelector = ({
           rounded="full"
         />
       </Flex>
-      {isShowMax && maxValue && (
+      {isShowMax && (
         <Flex justify="center" flex={1}>
           <Text onClick={() => onChange(maxValue)} fontWeight={600} color="cyan.600" cursor="pointer">
             Max

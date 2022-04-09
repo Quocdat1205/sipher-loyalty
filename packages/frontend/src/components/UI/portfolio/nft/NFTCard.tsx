@@ -35,6 +35,8 @@ const NFTCard = ({ data, isFetched, gridSize }: CardProps) => {
       cursor="pointer"
       bg="neutral.700"
       pos="relative"
+      pointerEvents={data?.type === "ERC1155" && data.minable == 0 ? "none" : "unset"}
+      opacity={data?.type === "ERC1155" && data.minable == 0 ? 0.5 : 1}
     >
       <Skeleton
         sx={{ video: { minH: gridSize === "small" ? "12rem" : "18rem" } }}
@@ -43,7 +45,7 @@ const NFTCard = ({ data, isFetched, gridSize }: CardProps) => {
         pos="relative"
         w="full"
       >
-        {data?.type === "ERC1155" && collectionName === "Sipher Lootbox" && (
+        {data?.type === "ERC1155" && data.minable !== 0 && collectionName === "Sipher Lootbox" && (
           <Flex
             justify={data?.type === "ERC1155" ? "space-between" : "flex-end"}
             align="center"
@@ -58,7 +60,12 @@ const NFTCard = ({ data, isFetched, gridSize }: CardProps) => {
             zIndex={1}
             opacity={data.isChecked ? 1 : 0}
           >
-            <CustomCheckbox onChange={e => data.onSelect(!e.target.checked)} isChecked={data.isChecked} />
+            <CustomCheckbox
+              onChange={e => {
+                data.onSelect(!e.target.checked)
+              }}
+              isChecked={data.isChecked}
+            />
             <Button
               onClick={e => {
                 e.stopPropagation()
