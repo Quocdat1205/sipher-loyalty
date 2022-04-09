@@ -60,10 +60,10 @@ export const AuthLayout: FC = ({ children }) => {
             pos="absolute"
             bottom={0}
             right={0}
-            w="40rem"
-            h="40rem"
+            w="44rem"
+            h="44rem"
           >
-            <Img src="/images/auth/neko_figure.svg" alt="neko" />
+            <Img src="/images/auth/neko_figure.svg" alt="neko" h="full" />
           </Box>
           <Box
             w="full"
