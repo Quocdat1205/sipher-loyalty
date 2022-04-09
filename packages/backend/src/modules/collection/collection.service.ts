@@ -172,7 +172,9 @@ export class CollectionService {
     const items = inventory
       .filter((el) => el.value > 0)
       .slice(query.from, query.from + query.size);
-    const total = items.reduce((prev, curr) => prev + curr.value, 0);
+    const total = inventory
+      .filter((el) => el.value > 0)
+      .reduce((prev, curr) => prev + curr.value, 0);
 
     return {
       collection,
