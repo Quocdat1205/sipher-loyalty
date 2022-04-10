@@ -135,9 +135,11 @@ describe("Collection unit test", () => {
   const creator = "0x";
   const item1 = {
     id: "1",
+    tokenId: "1",
     collectionId: characterCol.id,
     owner: "0x1",
     creator,
+    value: 1,
     type: TokenType.ERC721,
   };
   const item2 = {
@@ -249,6 +251,8 @@ describe("Collection unit test", () => {
         await collectionService.getPortfolioByCollection({
           collectionId: "0x",
           userAddress: "0x",
+          from: 0,
+          size: 20,
         })
       ).toEqual({
         collection: characterCol,
@@ -274,6 +278,8 @@ describe("Collection unit test", () => {
         await collectionService.getPortfolioByCollection({
           collectionId: "0x",
           userAddress: "0x",
+          from: 0,
+          size: 20,
         })
       ).toEqual({
         collection: lootboxCol,
@@ -286,7 +292,7 @@ describe("Collection unit test", () => {
             type: TokenType.ERC1155,
           },
         ],
-        total: 1,
+        total: item2.value,
       });
     });
     it("should return sculpture collection and its items", async () => {
@@ -307,6 +313,8 @@ describe("Collection unit test", () => {
         await collectionService.getPortfolioByCollection({
           collectionId: "0x",
           userAddress: "0x",
+          from: 0,
+          size: 20,
         })
       ).toEqual({
         collection: sculptureCol,
@@ -319,7 +327,7 @@ describe("Collection unit test", () => {
             type: TokenType.ERC1155,
           },
         ],
-        total: 1,
+        total: item3.value,
       });
     });
   });
@@ -392,6 +400,7 @@ describe("Collection unit test", () => {
       });
       expect(await collectionService.getItemById(item2.id, "xx")).toEqual({
         ...item2,
+        tokenId: item2.tokenId,
         collection: lootboxCol,
         allOwner: [{ ...attachedInfo, totalOwned: item2.value }],
         creatorInfo: { ...attachedInfo, publicAddress: creator },
