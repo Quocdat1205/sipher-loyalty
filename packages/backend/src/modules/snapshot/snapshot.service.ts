@@ -144,7 +144,7 @@ export class SnapshotService {
     await array.reduce(async (promise, num) => {
       await promise;
       const promises = [];
-      for (let i = num * 10 + 1; i <= num * 10 + 1000; i++)
+      for (let i = num * 1000 + 1; i <= num * 1000 + 1000; i++)
         promises.push(this.checkowner(contract, i));
       const inu = await Promise.all(promises);
       fs.writeFileSync(
@@ -156,27 +156,3 @@ export class SnapshotService {
     return result;
   }
 }
-
-// async checkowner(contract: Contract, i: number) {
-//   try {
-//     return contract.ownerOf(i);
-//   } catch (err) {
-//     console.log(` error at ${i}`);
-//     return "0x";
-//   }
-// }
-
-// async checkowners(contract: Contract) {
-//   const result = [];
-//   const array = [];
-//   for (let i = 1; i <= 10000; i++) {
-//     array.push(i);
-//   }
-//   await array.reduce(async (promise, num) => {
-//     await promise;
-//     console.log(num);
-//     result.push(await this.checkowner(contract, num));
-//   }, Promise.resolve());
-
-//   return result;
-// }
