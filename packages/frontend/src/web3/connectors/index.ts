@@ -5,7 +5,7 @@ import initWalletConnect from "./walletConnect"
 export const connectors = {
   injected: initInjected,
   walletConnect: initWalletConnect,
-  coinbase: initCoinbaseConnect,
+  // coinbase: initCoinbaseConnect,
 } as const
 
 export type ConnectorId = keyof typeof connectors

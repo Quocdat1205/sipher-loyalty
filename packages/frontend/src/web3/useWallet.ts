@@ -25,11 +25,9 @@ declare global {
 }
 
 const useWallet = () => {
-  const [isListened, setIsListened] = useState(false)
-  const [connectorName, setConnectorName] = useState<ConnectorId | null>(null)
   const web3React = useWeb3React()
   const { account, chainId, library: ethereum } = web3React
-  const activationId = useRef(0)
+  // const activationId = useRef(0)
   // Current chain id
   const chain = useMemo(() => (chainId ? getChainName(chainId) : null), [chainId])
   const scCaller = useRef<ContractCaller | null>(null)
@@ -37,6 +35,7 @@ const useWallet = () => {
   const router = useRouter()
   const reset = useCallback(() => {
     // eslint-disable-next-line @typescript-eslint/no-extra-semi
+    console.log("RESET")
     ;(connectors.walletConnect().web3ReactConnector as WalletConnectConnector).walletConnectProvider = undefined
     if (web3React.active) {
       web3React.deactivate()
@@ -46,7 +45,6 @@ const useWallet = () => {
     }
 
     clearLastActiveAccount()
-    setConnectorName(null)
   }, [web3React])
 
   const toast = useChakraToast()
@@ -56,21 +54,22 @@ const useWallet = () => {
       scCaller.current = new ContractCaller(web3React.library)
     }
   }, [web3React.library])
-
+  console.log("IS ACTIVE", web3React.active, account)
   const { authenticated, refetchOwnedWallets } = useAuth()
   // connect to wallet
   const connect = useCallback(
     async (connectorId: ConnectorId = "injected") => {
-      const id = ++activationId.current
+      console.log("Connect")
+
+      // const id = ++activationId.current
       reset()
 
-      if (id !== activationId.current) {
-        return
-      }
+      // if (id !== activationId.current) {
+      //   return
+      // }
 
       const connector = connectors[connectorId]()
       const { web3ReactConnector } = connector
-      setConnectorName(connectorId)
 
       try {
         await web3React.activate(web3ReactConnector, undefined, true)
@@ -85,11 +84,10 @@ const useWallet = () => {
           }
         }
         const account = await web3ReactConnector.getAccount()
-
+        console.log("AC", web3React.active)
         return account?.toLowerCase()
       } catch (err: any) {
-        if (id !== activationId.current) return
-        setConnectorName(null)
+        // if (id !== activationId.current) return
         if (err instanceof UnsupportedChainIdError) {
           toast({
             status: "error",
@@ -156,20 +154,23 @@ const useWallet = () => {
 
   // auto connect on refresh
   useEffect(() => {
-    const lastConnector = getLastConnector()
-    const lastActiveAccount = getLastActiveAccount()
-
-    if (lastActiveAccount && lastConnector === "injected" && !account) {
-      connect()
+    const autoConnect = async () => {
+      const lastConnector = getLastConnector()
+      const lastActiveAccount = getLastActiveAccount()
+      if (lastActiveAccount && lastConnector === "injected" && !account) {
+        console.log("AUTO CONNECT")
+        const acc = await connect()
+        console.log("ACC", acc)
+      }
     }
-  }, [connect, account])
+    autoConnect()
+  }, [account])
 
   const wallet = {
     chainId,
     web3React,
     account: account?.toLowerCase() || null,
     connect,
-    connector: connectorName,
     reset,
     chain,
     isActive: web3React.active,

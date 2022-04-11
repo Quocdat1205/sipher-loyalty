@@ -19,7 +19,7 @@ const ConnectToWallet = () => {
 
   const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
 
-  const { connect, scCaller, reset, account, connector } = useWalletContext()
+  const { connect, scCaller, reset, account } = useWalletContext()
 
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
 
@@ -157,7 +157,7 @@ const ConnectToWallet = () => {
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "injected"}
           />
-          <WalletCard
+          {/* <WalletCard
             onClick={() => {
               handleConnectWallet("coinbase")
             }}
@@ -165,12 +165,12 @@ const ConnectToWallet = () => {
             src="/images/icons/wallets/coinbase.svg"
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "coinbase"}
-          />
+          /> */}
           <WalletCard
             onClick={() => {
               handleConnectWallet("walletConnect")
             }}
-            text={account && connector === "walletConnect" ? shortenAddress(account) : "WalletConnect"}
+            text={"WalletConnect"}
             src="/images/icons/wallets/walletconnect.svg"
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "walletConnect"}

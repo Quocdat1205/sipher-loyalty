@@ -29,7 +29,7 @@ const ClaimStatusModal = ({ isOpen, onClose, status }: ClaimStatusModalProp) => 
             muted
             datatype="video/mp4"
             src={
-              "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/spaceship_lootbox_tokeID_0.mp4"
+              "https://sipherstorage.s3.ap-southeast-1.amazonaws.com/loyalty/erc1155/lootbox/spaceship_lootbox_tokenID_1.mp4"
             }
           />
         </Box>

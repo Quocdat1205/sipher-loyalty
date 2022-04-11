@@ -35,7 +35,7 @@ const SignInButton = () => {
           .then(data => data?.map(wallet => wallet.address))
         if (flowState === null && (!wallet.isActive || (!!ownedWallets && !ownedWallets.includes(wallet.account!)))) {
           setFlowState("connectWallet")
-        }
+        } else if (flowState === "connectWallet") setFlowState(null)
       }
     }
     checkConnection()

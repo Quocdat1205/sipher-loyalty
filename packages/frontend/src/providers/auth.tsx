@@ -120,7 +120,6 @@ const useAuthState = () => {
       // try to refresh token every 10 mins
       getSession().then(setSession)
     }, 10 * 60 * 1000)
-    console.log("PROMISE")
     Promise.resolve(configPromise).then(getUser).then(setUser).then(getSession).then(setSession)
 
     return () => {

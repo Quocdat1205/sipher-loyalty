@@ -135,7 +135,7 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
         />
       </Box>
       <HStack w="full" justify="space-between" align="center" spacing={4}>
-        <WalletCard
+        {/* <WalletCard
           onClick={() => {
             handleConnectWallet("coinbase")
           }}
@@ -143,7 +143,7 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
           src="/images/icons/wallets/coinbase.png"
           colorScheme={"whiteAlpha"}
           isLoading={connectingMethod === "coinbase"}
-        />
+        /> */}
         <WalletCard
           onClick={() => {
             handleConnectWallet("walletConnect")
