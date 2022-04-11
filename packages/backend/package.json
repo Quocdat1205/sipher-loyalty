@@ -23,6 +23,7 @@
     "start:tracker:sculpture": "node dist/scripts/sculpture-tracker.js",
     "dev:distribute:sculpture": "ts-node -r tsconfig-paths/register -P ./tsconfig.json src/scripts/distribute-sculpture.ts",
     "dev:blacklist:sculpture": "ts-node -r tsconfig-paths/register -P ./tsconfig.json src/scripts/blacklist-sculpture.ts",
+    "dev:snapshot:nft": "ts-node -r tsconfig-paths/register -P ./tsconfig.json src/scripts/snapshot-nft.ts",
     "dev:distribute:claimable-lootbox": "ts-node -r tsconfig-paths/register -P ./tsconfig.json src/scripts/distribute-claimable-lootbox.ts",
     "start:distribute:claimable-lootbox": "node dist/scripts/distribute-claimable-lootbox.js",
     "migrate:config": "(rm ormconfig.json || :) && ts-node -r tsconfig-paths/register src/scripts/write-type-orm-config.ts",

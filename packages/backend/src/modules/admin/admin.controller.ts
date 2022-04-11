@@ -172,6 +172,18 @@ export class AdminController {
 
   @UseGuards(AtherGuard)
   @ApiBearerAuth("JWT-auth")
+  @Put("erc1155-lootbox-img/:id/:image")
+  async updateImageERC1155Lootbox(
+    @Param("id") id: number,
+    @Param("image") image: string,
+    @Req() req: Request
+  ) {
+    await this.authService.verifyAdmin(req, UserRole.LOYALTY_ADMIN);
+    return this.uriService.updatImageERC1155Lootbox(id, image);
+  }
+
+  @UseGuards(AtherGuard)
+  @ApiBearerAuth("JWT-auth")
   @Post("erc1155-sculpture")
   async addERC1155Sculpture(
     @Body() body: ERC1155Sculpture,

@@ -80,6 +80,16 @@ export class URIService {
     }
   };
 
+  updatImageERC1155Lootbox = async (id: number, image: string) => {
+    try {
+      const erc1155 = await this.erc1155LootboxRepo.findOne({ id });
+      erc1155.image = image;
+      return this.erc1155LootboxRepo.save(erc1155);
+    } catch (err) {
+      LoggerService.error(err);
+    }
+  };
+
   private addERC1155LootboxAttribute = async (
     attribute: ERC1155LootboxAttribute
   ) => {
@@ -178,7 +188,7 @@ export class URIService {
 
   async getDataERC1155LootboxTableForAdmin(from: number, take: number) {
     const data = await this.erc1155LootboxRepo.find({
-      relations: ["attributes"],
+      relations: ["attributes", "lootboxs", "claimableLootboxs"],
       skip: from,
       take,
     });

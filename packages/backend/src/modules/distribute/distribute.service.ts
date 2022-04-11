@@ -266,7 +266,11 @@ export class DistributeService {
     await this.lootboxHolder.reduce(async (promise, data) => {
       await promise;
       data.publicAddress = data.publicAddress.toLowerCase();
-      result.push(await this.distributeForUser(data));
+      const res = await this.distributeForUser(data);
+      LoggerService.log(
+        `id: ${res.id} - ${res.publicAddress} - ${res.quantity}`
+      );
+      result.push(res);
     }, Promise.resolve());
     fs.writeFileSync(
       `./src/data/RESULT/LOOTBOX/${getNow()}.json`,
