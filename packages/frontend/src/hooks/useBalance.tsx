@@ -19,7 +19,7 @@ const useBalance = () => {
     () => scCaller.current!.getEtherBalance(account!),
     {
       initialData: 0,
-      enabled: !!scCaller.current && !!account,
+      enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK,
     },
   )
   const { data: sipher } = useQuery(["sipher", account], () => scCaller.current!.getSipherBalance(account!), {
@@ -84,9 +84,9 @@ const useBalance = () => {
   }
 
   const totalETHPrice =
-    (chainId === ETHEREUM_NETWORK
+    (chainId && chainId === ETHEREUM_NETWORK
       ? dataPrice!.ethereumPrice.eth * chainBalance! + dataPrice!.sipherPrice.eth * sipher!
-      : 0) ?? 0
+      : 0) || 0
 
   const totalUsdPrice = totalETHPrice * dataPrice!.ethereumPrice.usd ?? 0
 

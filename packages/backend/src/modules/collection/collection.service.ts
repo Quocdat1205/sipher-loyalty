@@ -165,18 +165,21 @@ export class CollectionService {
         owner: query.userAddress,
         collections: [collection.id],
       },
-      query.from,
-      query.size
+      0, // query.from,
+      10000 // query.size
     );
     inventory.forEach((item) => delete item._relation);
-    const total = await this.nftService.count({
-      owner: query.userAddress,
-      collections: [collection.id],
-    });
+    const items = inventory
+      .filter((el) => el.value > 0)
+      .slice(query.from, query.from + query.size);
+    const total = inventory
+      .filter((el) => el.value > 0)
+      .reduce((prev, curr) => prev + curr.value, 0);
+
     return {
       collection,
       total,
-      items: await this.addUriToItem(inventory),
+      items: await this.addUriToItem(items),
     };
   }
 
@@ -210,9 +213,7 @@ export class CollectionService {
         query.from,
         query.size
       );
-      // console.log("1", result.items);
       result.items.push(...inventory);
-      // console.log("2", result.items);
       result.total += await this.nftService.count({
         owner: publicAddress,
         collections: [collection.id],

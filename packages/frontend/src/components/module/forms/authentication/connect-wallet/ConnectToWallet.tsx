@@ -157,7 +157,7 @@ const ConnectToWallet = () => {
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "injected"}
           />
-          {/* <WalletCard
+          <WalletCard
             onClick={() => {
               handleConnectWallet("coinbase")
             }}
@@ -165,7 +165,7 @@ const ConnectToWallet = () => {
             src="/images/icons/wallets/coinbase.svg"
             colorScheme={"whiteAlpha"}
             isLoading={connectingMethod === "coinbase"}
-          /> */}
+          />
           <WalletCard
             onClick={() => {
               handleConnectWallet("walletConnect")

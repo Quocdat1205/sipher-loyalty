@@ -119,7 +119,14 @@ export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handl
         <HStack justify="center">
           {status === "MINT" ? (
             <>
-              <Button isLoading={isLoading} onClick={handleMint} fontSize="md" size="md" py={5}>
+              <Button
+                isDisabled={dataMint.reduce((acc, val) => acc + val.slot, 0) === 0}
+                isLoading={isLoading}
+                onClick={handleMint}
+                fontSize="md"
+                size="md"
+                py={5}
+              >
                 CONFIRM
               </Button>
               <Button

@@ -32,7 +32,15 @@ const content = [
 
 export const AuthLayout: FC = ({ children }) => {
   return (
-    <Flex bg="url(/images/auth/background.png)" bgRepeat="no-repeat" bgSize="cover" w="full" h="100vh" pos="relative">
+    <Flex
+      overflow="hidden"
+      bg="url(/images/auth/background.png)"
+      bgRepeat="no-repeat"
+      bgSize="cover"
+      w="full"
+      h="100vh"
+      pos="relative"
+    >
       <Flex w="full" display={["none", "none", "flex"]}>
         <Box bg="neutral.700" py={16} px={8} w="30rem" zIndex={2}>
           <Flex align="center" justify="center" w="full" mb={16}>
@@ -55,7 +63,7 @@ export const AuthLayout: FC = ({ children }) => {
             w="44rem"
             h="44rem"
           >
-            <Img src="/images/auth/neko_figure.svg" alt="neko" />
+            <Img src="/images/auth/neko_figure.svg" alt="neko" h="full" />
           </Box>
           <Box
             w="full"

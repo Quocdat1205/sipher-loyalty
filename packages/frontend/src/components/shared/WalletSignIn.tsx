@@ -6,14 +6,14 @@ import { CustomPopover, WalletCard } from "@components/shared"
 interface WalletSignInProps extends BoxProps {
   onMetamaskConnect: () => void
   onWalletConnectConnect: () => void
-  // onCoinbaseConnect: () => void
+  onCoinbaseConnect: () => void
   connectingMethod: string | null
 }
 
 export const WalletSignIn = ({
   onMetamaskConnect,
   onWalletConnectConnect,
-  // onCoinbaseConnect,
+  onCoinbaseConnect,
   connectingMethod,
   ...rest
 }: WalletSignInProps) => {
@@ -54,13 +54,12 @@ export const WalletSignIn = ({
           onClick={onMetamaskConnect}
           isLoading={connectingMethod === "injected"}
         />
-        {/* <WalletCard
+        <WalletCard
           colorScheme={"whiteAlpha"}
           src="/images/icons/wallets/coinbase.svg"
           onClick={onCoinbaseConnect}
           isLoading={connectingMethod === "coinbase"}
-        /> */}
-
+        />
         <WalletCard
           colorScheme={"whiteAlpha"}
           src="/images/icons/wallets/walletconnect.svg"

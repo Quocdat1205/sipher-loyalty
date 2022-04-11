@@ -132,7 +132,13 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
           </Link>
         </Text>
         <HStack justify="center">
-          <Button isLoading={isLoadingTranfer} onClick={handleClick} py={5} fontSize="md">
+          <Button
+            isDisabled={slotTransfer === 0 || minable === 0}
+            isLoading={isLoadingTranfer}
+            onClick={handleClick}
+            py={5}
+            fontSize="md"
+          >
             TRANSFER
           </Button>
           <Button

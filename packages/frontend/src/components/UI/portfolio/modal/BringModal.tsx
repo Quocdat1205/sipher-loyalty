@@ -119,7 +119,14 @@ export const BringModal = ({
         <HStack justify="center">
           {status === "CONFIRM" ? (
             <>
-              <Button isLoading={isLoading} onClick={handleBurn} fontSize="md" size="md" py={5}>
+              <Button
+                isDisabled={dataMint.reduce((acc, val) => acc + val.slot, 0) === 0}
+                isLoading={isLoading}
+                onClick={handleBurn}
+                fontSize="md"
+                size="md"
+                py={5}
+              >
                 CONFIRM
               </Button>
               <Button

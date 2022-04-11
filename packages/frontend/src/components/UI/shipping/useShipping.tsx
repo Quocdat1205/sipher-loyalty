@@ -28,7 +28,6 @@ const useShipping = () => {
   const state = State.getStatesOfCountry(selectValue.country?.isoCode) || []
   const city = City.getCitiesOfState(selectValue.country?.isoCode, selectValue.state?.isoCode) || []
 
-  console.log(city)
   return { state, city, country, selectValue, setSelectValue }
 }
 

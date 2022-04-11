@@ -27,10 +27,10 @@ export const useDetailAirdrop = () => {
     ["detailsAirdrops", queryId, account],
     () =>
       client.api
-        .airdropControllerGetDetailAirdropByTypeAndUserId(
+        .airdropControllerGetDetailAirdropByType(
+          account!,
           queryId as string,
           type as string,
-          account!,
           setBearerToken(bearerToken),
         )
         .then(res => res.data),
