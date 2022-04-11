@@ -1318,6 +1318,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags admin
+     * @name AdminControllerUpdateImageErc1155Lootbox
+     * @request PUT:/api/sipher/loyalty/admin/erc1155-lootbox-img/{id}/{image}
+     * @secure
+     */
+    adminControllerUpdateImageErc1155Lootbox: (id: number, image: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/sipher/loyalty/admin/erc1155-lootbox-img/${id}/${image}`,
+        method: 'PUT',
+        secure: true,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags admin
      * @name AdminControllerGetAll
      * @request GET:/api/sipher/loyalty/admin/get-all
      * @secure
