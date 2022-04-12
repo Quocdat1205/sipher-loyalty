@@ -66,29 +66,18 @@ export const useDetailBox = id => {
 
   const { mutate: mutateMint, isLoading } = useMutation(
     async () => {
-      if (chainId !== POLYGON_NETWORK) {
-        switchNetwork(POLYGON_NETWORK)
-      } else if (chainPrice > 0.1) {
-        const data = await client.api
-          .lootBoxControllerMintLootbox(
-            {
-              publicAddress: account!,
-              batchID: details!.tokenId,
-              amount: slot,
-            },
-            setBearerToken(bearerToken),
-          )
-          .then(res => res.data)
-        idError.current = data.id
-        await scCaller.current!.SipherSpaceshipLootBox.mint(data)
-      } else {
-        toast({
-          status: "error",
-          title: "Error",
-          message: "You have insufficient funds to create the transaction",
-          duration: 5000,
-        })
-      }
+      const data = await client.api
+        .lootBoxControllerMintLootbox(
+          {
+            publicAddress: account!,
+            batchID: details!.tokenId,
+            amount: slot,
+          },
+          setBearerToken(bearerToken),
+        )
+        .then(res => res.data)
+      idError.current = data.id
+      await scCaller.current!.SipherSpaceshipLootBox.mint(data)
     },
     {
       onMutate: () => {
@@ -127,6 +116,23 @@ export const useDetailBox = id => {
     setStatus("MINT")
   }
 
+  const handleMint = () => {
+    if (chainId !== POLYGON_NETWORK) {
+      switchNetwork(POLYGON_NETWORK)
+    } else {
+      if (chainPrice > 0.1) {
+        mutateMint()
+      } else {
+        toast({
+          status: "error",
+          title: "Error",
+          message: "You have insufficient funds to create the transaction",
+          duration: 5000,
+        })
+      }
+    }
+  }
+
   //check account changed
   useEffect(() => {
     if (account) {
@@ -144,7 +150,7 @@ export const useDetailBox = id => {
     router,
     isFetched,
     handleClick,
-    mutateMint,
+    handleMint,
     slot,
     setSlot,
     details,

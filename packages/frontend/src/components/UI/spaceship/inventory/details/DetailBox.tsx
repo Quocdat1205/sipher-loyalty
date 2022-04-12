@@ -20,7 +20,7 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
     details,
     slot,
     setSlot,
-    mutateMint,
+    handleMint,
     isLoading,
     router,
     status,
@@ -133,7 +133,7 @@ export const DetailBox = ({ id }: DetailBoxProps) => {
             details={details}
             slot={slot}
             setSlot={setSlot}
-            mutateMint={mutateMint}
+            mutateMint={handleMint}
             isLoading={isLoading}
           />
         </Flex>
