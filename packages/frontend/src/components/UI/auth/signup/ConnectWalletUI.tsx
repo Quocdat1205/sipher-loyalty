@@ -73,19 +73,8 @@ const ConnectWalletUI = ({ setStep, setCurrentAddress }: ConnectWalletUIProps) =
   // case 2: wallet is active but not linked to any account
   const handleConnectWallet = async (connectorId: ConnectorId) => {
     setConnectingMethod(connectorId)
-    if (!account) {
-      activate(connectorId)
-      willConnectWallet.current = true
-    } else {
-      const ownedWallets = await refetchOwnedWallets()
-        .then(res => res.data)
-        .then(data => data?.map(wallet => wallet.address))
-      // Try to add wallet to account if not linked yet
-      if (ownedWallets && !ownedWallets.includes(account.toLowerCase())) {
-        setCurrentAddress(account)
-        mutateConnectWallet(account)
-      } else setConnectingMethod(null)
-    }
+    activate(connectorId)
+    willConnectWallet.current = true
   }
 
   useEffect(() => {

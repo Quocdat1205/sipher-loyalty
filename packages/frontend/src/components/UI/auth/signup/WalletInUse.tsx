@@ -74,12 +74,8 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
   const willConnectWallet = useRef(false)
   const handleConnectWallet = async (connectorId: ConnectorId) => {
     setConnectingMethod(connectorId)
-    if (!account) {
-      activate(connectorId)
-    } else {
-      setConnectingWallet(account)
-      mutateConnectWallet(account)
-    }
+    activate(connectorId)
+    willConnectWallet.current = true
   }
 
   useEffect(() => {

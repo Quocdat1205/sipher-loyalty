@@ -72,13 +72,9 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
       if (TYPE === ChallengeType.Code) {
         return
       }
+    } else {
+      return setUser(user)
     }
-
-    toast({
-      status: "error",
-      title: "Unable to Sign In",
-      message: `Unknown challenge ${user.challengeParam?.challenge ?? user.challengeName}`,
-    })
   }
 
   const { mutate: mutateSignIn, isLoading } = useMutation<
@@ -123,12 +119,8 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
 
   const handleWalletSignin = async (connectorId: ConnectorId) => {
     setConnectingMethod(connectorId as string)
-    // if (!wallet.account) {
     wallet.activate(connectorId)
     willSignIn.current = true
-    // } else {
-    //   mutateSignIn({ emailOrWallet: wallet.account! })
-    // }
   }
 
   useEffect(() => {

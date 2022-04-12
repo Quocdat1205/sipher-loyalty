@@ -81,18 +81,8 @@ const ConnectToWallet = () => {
   const willAddWallet = useRef(false)
   const handleConnectWallet = async (connectorId: Parameters<typeof activate>["0"]) => {
     setConnectingMethod(connectorId)
-    if (!account) {
-      activate(connectorId)
-      willAddWallet.current = true
-    } else {
-      setCurrentAddress(account)
-      if (!ownedWallets.includes(account)) {
-        mutateConnectWallet(account)
-      } else {
-        setConnectingMethod(null)
-        setFlowState(null)
-      }
-    }
+    activate(connectorId)
+    willAddWallet.current = true
   }
 
   useEffect(() => {
