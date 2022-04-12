@@ -2,7 +2,7 @@ import { MouseEvent, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { SipherAirdropsAddress } from "@constant"
 import { useChakraToast } from "@hooks"
@@ -20,7 +20,7 @@ export const useAirdrops = () => {
   const router = useRouter()
   const currentTab = router.query.tab || AirdropType.ALL.toLowerCase()
   const { bearerToken } = useAuth()
-  const { account, scCaller } = useWalletContext()
+  const { account, contractCaller } = useWeb3Wallet()
   const [claimId, setClaimId] = useState<number | null>(null)
   const qc = useQueryClient()
   const toast = useChakraToast()
@@ -47,7 +47,7 @@ export const useAirdrops = () => {
   )
 
   const { mutate: claim } = useMutation<unknown, unknown, InputAirdrops>(
-    ({ totalAmount, proof }) => scCaller.current!.SipherAirdrops.claim(totalAmount, proof),
+    ({ totalAmount, proof }) => contractCaller.current!.SipherAirdrops.claim(totalAmount, proof),
     {
       onMutate: ({ id }) => {
         setClaimId(id)

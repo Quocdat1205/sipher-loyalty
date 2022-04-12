@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useQuery } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { EthereumIcon, SipherIcon } from "@components/shared"
 import { ETHEREUM_NETWORK } from "@constant"
@@ -21,7 +21,7 @@ export const categoriesSort = [
 const usePortfolio = () => {
   const router = useRouter()
   const { bearerToken } = useAuth()
-  const { account, chainId } = useWalletContext()
+  const { account, chain } = useWeb3Wallet()
   const { dataPrice, balance, totalETHPrice } = useBalanceContext()
   const [filter, setFilter] = useState("")
   const [isLoadingCollection, setIsLoadingCollection] = useState(true)
@@ -53,8 +53,8 @@ const usePortfolio = () => {
     ? [
         {
           currency: "ETH",
-          balance: chainId === ETHEREUM_NETWORK ? balance.chainPrice : 0,
-          value: chainId === ETHEREUM_NETWORK ? balance.chainPrice * dataPrice!.ethereumPrice.usd : 0,
+          balance: chain?.id === ETHEREUM_NETWORK ? balance.chainPrice : 0,
+          value: chain?.id === ETHEREUM_NETWORK ? balance.chainPrice * dataPrice!.ethereumPrice.usd : 0,
           change: dataPrice!.ethereumPrice.change,
           icon: <EthereumIcon size="1.4rem" />,
         },

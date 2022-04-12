@@ -22,9 +22,9 @@
       "@api": ["src/api"],
       "@sdk": ["src/api/sdk"],
       "@contract": ["src/contract"],
-      "@web3": ["src/web3"],
       "@client": ["src/api/client"],
-      "@@types": ["src/types"]
+      "@@types": ["src/types"],
+      "@web3-wallet": ["src/web3-wallet"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

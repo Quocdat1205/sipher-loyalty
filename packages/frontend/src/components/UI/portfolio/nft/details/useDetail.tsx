@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { ETHEREUM_NETWORK, NftContracts, POLYGON_NETWORK } from "@constant"
 import { useBalanceContext, useChakraToast } from "@hooks"
@@ -10,7 +10,7 @@ import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 const useDetail = () => {
-  const wallet = useWalletContext()
+  const { account, contractCaller, switchNetwork, chain } = useWeb3Wallet()
   const router = useRouter()
   const { bearerToken } = useAuth()
   const qc = useQueryClient()
@@ -32,13 +32,13 @@ const useDetail = () => {
     isFetched,
     refetch,
   } = useQuery(
-    ["detailNFT", wallet.account, id],
+    ["detailNFT", account, id],
     () =>
       client.api
-        .collectionControllerGetItemById(wallet.account!, id as string, setBearerToken(bearerToken))
+        .collectionControllerGetItemById(account!, id as string, setBearerToken(bearerToken))
         .then(res => res.data),
     {
-      enabled: !isFetch && router.isReady && !!bearerToken && !!wallet.account,
+      enabled: !isFetch && router.isReady && !!bearerToken && !!account,
       retry: false,
       refetchOnWindowFocus: false,
       onSuccess: data => {
@@ -56,15 +56,15 @@ const useDetail = () => {
     NftContracts.find(contract => contract.address.toLowerCase() === tokenDetails?.collection.id.toLowerCase())?.name ??
     ""
 
-  const isOwner = wallet.account === tokenDetails?.owner
+  const isOwner = account === tokenDetails?.owner
 
   const revalidate = () => {
     setIsFetch(false)
-    qc.invalidateQueries(["detailNFT", wallet.account, id])
+    qc.invalidateQueries(["detailNFT", account, id])
   }
 
   const { mutate: mutateTransfer721, isLoading: isLoadingTranfer721 } = useMutation(
-    () => wallet.scCaller.current!.DynamicERC721.transfer(tokenDetails!.collectionId, addressTo, tokenDetails!.tokenId),
+    () => contractCaller.current!.DynamicERC721.transfer(tokenDetails!.collectionId, addressTo, tokenDetails!.tokenId),
     {
       onSuccess: () => {
         toast({
@@ -88,7 +88,7 @@ const useDetail = () => {
 
   const { mutate: mutateTransfer1155, isLoading: isLoadingTranfer1155 } = useMutation(
     () =>
-      wallet.scCaller.current!.DynamicERC1155.transfer({
+      contractCaller.current!.DynamicERC1155.transfer({
         contractAddress: tokenDetails!.collectionId,
         addressTo: addressTo,
         tokenId: tokenDetails!.tokenId,
@@ -117,7 +117,7 @@ const useDetail = () => {
 
   const { mutate: mutameBurn, isLoading: isLoadingBurn } = useMutation(
     async () =>
-      wallet.scCaller.current!.SipherSpaceshipLootBox.burn({
+      contractCaller.current!.SipherSpaceshipLootBox.burn({
         batchID: parseInt(tokenDetails!.tokenId),
         amount: slot,
       }),
@@ -148,8 +148,8 @@ const useDetail = () => {
     setModal("BRING")
   }
   const handleMint = () => {
-    if (wallet.chainId !== POLYGON_NETWORK) {
-      wallet.switchNetwork(POLYGON_NETWORK)
+    if (chain?.id !== POLYGON_NETWORK) {
+      switchNetwork(POLYGON_NETWORK)
     } else {
       if (chainPrice > 0.1) {
         mutameBurn()
@@ -166,14 +166,14 @@ const useDetail = () => {
 
   const handleTransfer = () => {
     if (tokenDetails?.collection.collectionType === "ERC1155") {
-      if (wallet.chainId !== POLYGON_NETWORK) {
-        wallet.switchNetwork(POLYGON_NETWORK)
+      if (chain?.id !== POLYGON_NETWORK) {
+        switchNetwork(POLYGON_NETWORK)
       } else {
         mutateTransfer1155()
       }
     } else {
-      if (wallet.chainId !== ETHEREUM_NETWORK) {
-        wallet.switchNetwork(ETHEREUM_NETWORK)
+      if (chain?.id !== ETHEREUM_NETWORK) {
+        switchNetwork(ETHEREUM_NETWORK)
       } else {
         mutateTransfer721()
       }
@@ -190,16 +190,16 @@ const useDetail = () => {
 
   //check account changed
   useEffect(() => {
-    if (wallet.account) {
-      setOldAccount(wallet.account)
+    if (account) {
+      setOldAccount(account)
     }
   }, [])
 
   useEffect(() => {
-    if (oldAccount !== null && oldAccount !== wallet.account) {
+    if (oldAccount !== null && oldAccount !== account) {
       router.push("/portfolio")
     }
-  }, [oldAccount, wallet.account])
+  }, [oldAccount, account])
 
   return {
     slotTransfer,
@@ -223,7 +223,6 @@ const useDetail = () => {
     tokenDetails,
     isLoading,
     isOwner,
-    wallet,
     collectionId: collectionId as string,
     tokenId: id as string,
     refetch,

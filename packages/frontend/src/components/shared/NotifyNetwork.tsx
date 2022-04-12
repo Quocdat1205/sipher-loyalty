@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react"
 import { chakra, CloseButton, Flex, Text } from "@sipher.dev/sipher-ui"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 interface NotifyNetworkProps {
   chainId: number
@@ -27,13 +27,13 @@ const chainName = [
 
 export const NotifyNetwork = ({ chainId }: NotifyNetworkProps) => {
   const [changeId, setChangeId] = useState(chainId)
-  const { chainId: chainIdCurrent, switchNetwork, account } = useWalletContext()
+  const { chain, switchNetwork, account } = useWeb3Wallet()
   const [isOpen, setIsOpen] = useState(false)
   const title = chainName.find(i => i.id === chainId)?.name
   useEffect(() => {
     setChangeId(chainId)
-    if (chainIdCurrent && chainIdCurrent !== changeId && changeId) setIsOpen(true)
-  }, [account, chainIdCurrent, changeId])
+    if (chain?.id && chain.id !== changeId && changeId) setIsOpen(true)
+  }, [account, chain?.id, changeId])
 
   return (
     <Fragment>

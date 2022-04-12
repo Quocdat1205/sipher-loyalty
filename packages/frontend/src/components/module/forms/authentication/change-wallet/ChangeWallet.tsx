@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { Box, Button, Divider, Text } from "@sipher.dev/sipher-ui"
 import { useAuthFlowStore } from "@store"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { ChakraModal } from "@components/shared"
 import { useChakraToast } from "@hooks"
@@ -10,7 +10,7 @@ import { useAuth } from "src/providers/auth"
 
 const ChangeWallet = () => {
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
-  const { account, scCaller, reset } = useWalletContext()
+  const { account, contractCaller, deactivate } = useWeb3Wallet()
   const { ownedWallets, user } = useAuth()
   const toast = useChakraToast()
   const qc = useQueryClient()
@@ -22,7 +22,7 @@ const ChangeWallet = () => {
         return
       }
       const res = await AtherIdAuth.connectWallet(account!)
-      const signature = await scCaller.current?.sign(res.message)
+      const signature = await contractCaller.current?.sign(res.message)
       await AtherIdAuth.confirmConectWallet(res, signature!)
     },
     {
@@ -33,7 +33,7 @@ const ChangeWallet = () => {
       onError: async (e: any) => {
         if (e?.code === 4001) {
           await AtherIdAuth.signOut()
-          reset()
+          deactivate()
           setFlowState(null)
           toast({ status: "error", title: "Signature error", message: "User denied to sign the message" })
         } else {
@@ -49,7 +49,7 @@ const ChangeWallet = () => {
 
   const handleClose = async () => {
     setFlowState(null)
-    reset()
+    deactivate()
     await AtherIdAuth.signOut()
   }
 

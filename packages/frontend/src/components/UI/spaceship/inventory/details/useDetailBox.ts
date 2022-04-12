@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { POLYGON_NETWORK } from "@constant"
 import { useBalanceContext, useChakraToast } from "@hooks"
@@ -17,9 +17,8 @@ export interface DetailsBox extends Lootbox {
 
 export const useDetailBox = id => {
   const { bearerToken } = useAuth()
-  const { scCaller } = useWalletContext()
+  const { account, contractCaller, switchNetwork, chain } = useWeb3Wallet()
   const query = useQueryClient()
-  const { account, chainId, switchNetwork } = useWalletContext()
   const {
     balance: { chainPrice },
   } = useBalanceContext()
@@ -77,7 +76,7 @@ export const useDetailBox = id => {
         )
         .then(res => res.data)
       idError.current = data.id
-      await scCaller.current!.SipherSpaceshipLootBox.mint(data)
+      await contractCaller.current!.SipherSpaceshipLootBox.mint(data)
     },
     {
       onMutate: () => {
@@ -117,7 +116,7 @@ export const useDetailBox = id => {
   }
 
   const handleMint = () => {
-    if (chainId !== POLYGON_NETWORK) {
+    if (chain?.id !== POLYGON_NETWORK) {
       switchNetwork(POLYGON_NETWORK)
     } else {
       if (chainPrice > 0.1) {

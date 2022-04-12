@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { IoIosWarning } from "react-icons/io"
 import { useMutation, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { ConnectWalletResponse } from "@sipher.dev/ather-id/lib/esm/api/sdk"
 import { Box, chakra, Flex, Heading, Stack, Text } from "@sipher.dev/sipher-ui"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet, { ConnectorId } from "@web3-wallet"
 
 import { WalletCard } from "@components/shared"
 import { useChakraToast } from "@hooks"
@@ -17,15 +17,15 @@ interface WalletInUseUIProps {
 
 const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
   const toast = useChakraToast()
-  const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
-  const { connect, scCaller, reset, account } = useWalletContext()
+  const [connectingMethod, setConnectingMethod] = useState<ConnectorId | null>(null)
+  const { activate, contractCaller, deactivate, account } = useWeb3Wallet()
   const qc = useQueryClient()
   const router = useRouter()
   const [connectingWallet, setConnectingWallet] = useState("")
   // Initiate wallet connection => Sign the message to get signature => Confirm wallet connection
   const { mutate: mutateAddWallet } = useMutation<unknown, unknown, ConnectWalletResponse>(
     async res => {
-      const signature = await scCaller.current?.sign(res.message)
+      const signature = await contractCaller.current?.sign(res.message)
       await AtherIdAuth.confirmConectWallet(res, signature!)
     },
     {
@@ -34,7 +34,7 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
         router.push("/")
       },
       onError: async (e: any) => {
-        reset()
+        deactivate()
         if (e?.code === 4001) {
           await AtherIdAuth.signOut()
           toast({ status: "error", title: "Signature error", message: "User denied to sign the message" })
@@ -71,22 +71,23 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
     },
   )
 
-  const handleConnectWallet = async (connectorId: Parameters<typeof connect>["0"]) => {
+  const willConnectWallet = useRef(false)
+  const handleConnectWallet = async (connectorId: ConnectorId) => {
     setConnectingMethod(connectorId)
-    let currentAccount = account
-    if (!currentAccount) {
-      currentAccount = (await connect(connectorId))?.toLowerCase() || null
-    }
-
-    // Try to add wallet to account if not linked yet
-    if (currentAccount) {
-      setConnectingWallet(currentAccount)
-      mutateConnectWallet(currentAccount)
-    } else setConnectingMethod(null)
+    activate(connectorId)
+    willConnectWallet.current = true
   }
 
+  useEffect(() => {
+    if (account && willConnectWallet.current) {
+      willConnectWallet.current = false
+      setConnectingWallet(account)
+      mutateConnectWallet(account)
+    }
+  }, [account])
+
   const handleClose = async () => {
-    reset()
+    deactivate()
     await AtherIdAuth.signOut()
     router.push("/signin")
   }
@@ -127,21 +128,21 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
       <Stack w="full" spacing={4}>
         <WalletCard
           onClick={() => {
-            handleConnectWallet("coinbase")
-          }}
-          text={"Coinbase"}
-          src="/images/icons/wallets/coinbase.png"
-          colorScheme={"whiteAlpha"}
-          isLoading={connectingMethod === "coinbase"}
-        />
-        <WalletCard
-          onClick={() => {
-            handleConnectWallet("injected")
+            handleConnectWallet("metaMask")
           }}
           text={"MetaMask"}
           src="/images/icons/wallets/metamask.svg"
           colorScheme={"whiteAlpha"}
-          isLoading={connectingMethod === "injected"}
+          isLoading={connectingMethod === "metaMask"}
+        />
+        <WalletCard
+          onClick={() => {
+            handleConnectWallet("coinbaseWallet")
+          }}
+          text={"Coinbase"}
+          src="/images/icons/wallets/coinbase.svg"
+          colorScheme={"whiteAlpha"}
+          isLoading={connectingMethod === "coinbaseWallet"}
         />
         <WalletCard
           onClick={() => {

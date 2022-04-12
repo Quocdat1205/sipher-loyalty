@@ -16,7 +16,7 @@ import {
   Stack,
   Text,
 } from "@sipher.dev/sipher-ui"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { EthereumIcon, SipherIcon } from "@components/shared"
 import { ClipboardCopy } from "@components/shared/ClipboardCopy"
@@ -34,7 +34,7 @@ interface UserInfoDropdownProps {
 }
 
 export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherClick }: UserInfoDropdownProps) => {
-  const { account, reset } = useWalletContext()
+  const { account, deactivate } = useWeb3Wallet()
   const {
     dataPrice,
     balance: { chainPrice, sipher, weth },
@@ -45,7 +45,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
   const { mutate: mutateSignOut, isLoading } = useMutation(signOut, {
     onSuccess: () => {
       onClose()
-      reset()
+      deactivate()
     },
   })
 
@@ -98,7 +98,7 @@ export const UserInfoDropdown = ({ isOpen, onClose, onSettingClick, onBuySipherC
             </Text>
             <Flex>
               <Flex align="center" h="40px" rounded="base" border="1px" borderColor="neutral.600" px={2}>
-                <Text mr={4}>{shortenAddress(account)}</Text>
+                <Text mr={4}>{shortenAddress(account!)}</Text>
                 <ClipboardCopy color="#E7E7ED" text={account ?? ""} />
               </Flex>
               <IconButton
