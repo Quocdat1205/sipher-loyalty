@@ -25,9 +25,9 @@ prod              : set in .deploy/production/backend.yaml & config at packages/
 
 
 ## set varible frontend
-local             : set in .env.local file (packages/frontend/src/.env.local)
-dev               : set in .github/workflows/ci.yaml (top)
-prod              : set in .github/workflows/ci.yaml (bottom)
+local             : setup in .env.local file (packages/frontend/src/.env.local)
+dev               : setup in .github/workflows/ci.yaml (top)
+prod              : setup in .github/workflows/ci.yaml (bottom)
 
 ## Note
 phase 1:

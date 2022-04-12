@@ -12,6 +12,12 @@ https://github.com/nestjs/nest/tree/master/sample/11-swagger
 
 - Run `yarn dev`
 
+- insert file `~/.aws/credentials` with content (contact member to get key test):
+  [default]
+  aws_access_key_id = [...]
+  aws_secret_access_key = [...]
+  
+
 # migrate & seed db
 
 - Run `yarn migrate:config` to create `ormconfig.json`
