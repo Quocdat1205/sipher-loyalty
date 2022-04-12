@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from "react"
 import { Avatar, Box, Flex, Text, useOutsideClick } from "@sipher.dev/sipher-ui"
 import { useAuthFlowStore } from "@store"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import ChangeWallet from "@components/module/forms/authentication/change-wallet"
 import ConnectToWallet from "@components/module/forms/authentication/connect-wallet"
@@ -13,7 +13,7 @@ import { useAuth } from "src/providers/auth"
 import UserInfoDropdown from "./UserInfoDropdown"
 
 const SignInButton = () => {
-  const wallet = useWalletContext()
+  const wallet = useWeb3Wallet()
   const popRef = useRef<HTMLDivElement>(null)
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [modal, setModal] = useState("")
@@ -62,7 +62,7 @@ const SignInButton = () => {
                   {flowState === "connectWallet"
                     ? "Connecting wallet"
                     : wallet.isActive
-                    ? shortenAddress(wallet.account)
+                    ? shortenAddress(wallet.account!)
                     : "Wallet not connected"}
                 </Text>
               </Flex>

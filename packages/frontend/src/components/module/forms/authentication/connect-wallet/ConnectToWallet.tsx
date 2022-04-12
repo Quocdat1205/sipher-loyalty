@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { IoIosWarning } from "react-icons/io"
 import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
@@ -83,17 +83,30 @@ const ConnectToWallet = () => {
     setConnectingMethod(connectorId)
     if (!account) {
       activate(connectorId)
+      willAddWallet.current = true
     } else {
-      // Try to add wallet to account if not linked yet
-      setCurrentAddress(currentAccount)
-      if (!ownedWallets.includes(currentAccount)) {
-        mutateConnectWallet(currentAccount)
+      setCurrentAddress(account)
+      if (!ownedWallets.includes(account)) {
+        mutateConnectWallet(account)
       } else {
         setConnectingMethod(null)
         setFlowState(null)
       }
     }
   }
+
+  useEffect(() => {
+    if (account && willAddWallet.current) {
+      willAddWallet.current = false
+      setCurrentAddress(account)
+      if (!ownedWallets.includes(account)) {
+        mutateConnectWallet(account)
+      } else {
+        setConnectingMethod(null)
+        setFlowState(null)
+      }
+    }
+  }, [account])
 
   const handleSignout = async () => {
     await AtherIdAuth.signOut()
@@ -148,21 +161,21 @@ const ConnectToWallet = () => {
         <Stack w="full" spacing={4} mt={4}>
           <WalletCard
             onClick={() => {
-              handleConnectWallet("injected")
+              handleConnectWallet("metaMask")
             }}
             text={"MetaMask"}
             src="/images/icons/wallets/metamask.svg"
             colorScheme={"whiteAlpha"}
-            isLoading={connectingMethod === "injected"}
+            isLoading={connectingMethod === "metaMask"}
           />
           <WalletCard
             onClick={() => {
-              handleConnectWallet("coinbase")
+              handleConnectWallet("coinbaseWallet")
             }}
             text={"Coinbase"}
             src="/images/icons/wallets/coinbase.svg"
             colorScheme={"whiteAlpha"}
-            isLoading={connectingMethod === "coinbase"}
+            isLoading={connectingMethod === "coinbaseWallet"}
           />
           <WalletCard
             onClick={() => {
