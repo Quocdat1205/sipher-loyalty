@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useMutation } from "react-query"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import AtherIdAuth, { ChallengeType, CognitoUser, SocialProvider } from "@sipher.dev/ather-id"
 import { Box, Button, Flex, Heading, Link, Stack, Text } from "@sipher.dev/sipher-ui"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet, { ConnectorId } from "@web3-wallet"
 
 import { Form, SocialAccountSignIn, StyledInput, WalletSignIn } from "@components/shared"
 import { useChakraToast } from "@hooks"
@@ -33,15 +33,15 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
   } = useForm({ resolver: yupResolver(validationSchema) })
 
   const toast = useChakraToast()
-  const wallet = useWalletContext()
+  const wallet = useWeb3Wallet()
   const { setUser } = useAuth()
 
   const [connectingMethod, setConnectingMethod] = useState<string | null>(null)
 
   const handleWalletChallenge = async (cogitoUser: CognitoUser, message: string) => {
-    if (!wallet.scCaller.current) return
+    if (!wallet.contractCaller.current) return
 
-    const response = await wallet.scCaller.current.sign(message)
+    const response = await wallet.contractCaller.current.sign(message)
 
     if (!response) {
       toast({
@@ -120,14 +120,24 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
     onSettled: () => setConnectingMethod(null),
   })
 
-  const handleWalletSignin = async (connectorId: Parameters<typeof wallet["connect"]>["0"]) => {
+  const willSignIn = useRef(false)
+
+  const handleWalletSignin = async (connectorId: ConnectorId) => {
     setConnectingMethod(connectorId as string)
-    let account = wallet.account
-    if (!account) {
-      account = (await wallet.connect(connectorId)) as string
+    if (!wallet.account) {
+      wallet.activate(connectorId)
+      willSignIn.current = true
+    } else {
+      mutateSignIn({ emailOrWallet: wallet.account! })
     }
-    if (account) mutateSignIn({ emailOrWallet: account! })
   }
+
+  useEffect(() => {
+    if (wallet.account && willSignIn.current) {
+      willSignIn.current = false
+      mutateSignIn({ emailOrWallet: wallet.account! })
+    }
+  }, [wallet.account])
 
   const handleSocialSignin = async (provider: SocialProvider) => {
     await AtherIdAuth.signInWithSocial(provider)
@@ -180,8 +190,8 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
           mb={4}
         />
         <WalletSignIn
-          onCoinbaseConnect={() => handleWalletSignin("coinbase")}
-          onMetamaskConnect={() => handleWalletSignin("injected")}
+          onCoinbaseConnect={() => handleWalletSignin("coinbaseWallet")}
+          onMetamaskConnect={() => handleWalletSignin("metaMask")}
           onWalletConnectConnect={() => handleWalletSignin("walletConnect")}
           connectingMethod={connectingMethod}
         />
