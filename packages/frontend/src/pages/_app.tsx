@@ -45,10 +45,16 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
                 <BalanceProvider>
                   <Head>
                     <meta charSet="utf-8" />
-                    <link rel="icon" href="/favicon.svg" />
+                    <link
+                      rel="icon"
+                      href="https://sipherstorage.s3.ap-southeast-1.amazonaws.com/web_meta/atherlabs.xyz_icon.svg"
+                    />
                     <meta name="viewport" content="width=device-width, initial-scale=1" />
                     <meta name="theme-color" content="#000000" />
-                    <link rel="apple-touch-icon" href="/favicon.svg" />
+                    <link
+                      rel="apple-touch-icon"
+                      href="https://sipherstorage.s3.ap-southeast-1.amazonaws.com/web_meta/atherlabs.xyz_icon.svg"
+                    />
                     <meta
                       name="description"
                       content="Sipher is a blockchain PvP PvE MOBA game for all age group. All players assets and achievements are NFTs. Exclusive characters launch coming soon!"
