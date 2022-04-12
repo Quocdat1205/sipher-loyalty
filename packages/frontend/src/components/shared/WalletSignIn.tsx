@@ -52,13 +52,13 @@ export const WalletSignIn = ({
           colorScheme={"whiteAlpha"}
           src="/images/icons/wallets/metamask.svg"
           onClick={onMetamaskConnect}
-          isLoading={connectingMethod === "injected"}
+          isLoading={connectingMethod === "metaMask"}
         />
         <WalletCard
           colorScheme={"whiteAlpha"}
           src="/images/icons/wallets/coinbase.svg"
           onClick={onCoinbaseConnect}
-          isLoading={connectingMethod === "coinbase"}
+          isLoading={connectingMethod === "coinbaseWallet"}
         />
         <WalletCard
           colorScheme={"whiteAlpha"}

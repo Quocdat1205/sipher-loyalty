@@ -1,4 +1,4 @@
-import { BigNumber, providers } from "ethers"
+import { BigNumber, ethers, providers } from "ethers"
 
 import { SIPHER_TOKEN_ABI, SipherTokenAddress, WETH_ADDRESS } from "@constant"
 import { weiToEther } from "@utils"
@@ -31,8 +31,8 @@ export class ContractCaller {
   DynamicERC721: DynamicERC721
   DynamicERC1155: DynamicERC1155
 
-  constructor(provider: any) {
-    this.provider = new providers.Web3Provider(provider)
+  constructor(provider: providers.Web3Provider) {
+    this.provider = provider
     this.WETH = new WETH(this.provider, WETH_ADDRESS)
     this.View = new View(this.provider)
     this.LPSipherWethUniswap = new LPSipherWethUniswap(this.provider)
@@ -62,44 +62,7 @@ export class ContractCaller {
     return weiToEther(balance.toString())
   }
 
-  // public async getLpUniswapTVL() {
-  //   const lpBalance = await this.WETH.getBalance(LPSipherWethUniswapAddress)
-  //   const ethPrice = await getETHPrice()
-  //   const StakedLPPoolETH = lpBalance * ethPrice
-
-  //   const sipherBalance = await this.SipherToken.getBalance(LPSipherWethUniswapAddress)
-  //   const sipherPrice = await getSipherPrice()
-  //   const StakedLPPoolSipher = sipherBalance * sipherPrice
-
-  //   return StakedLPPoolETH + StakedLPPoolSipher
-  // }
-
-  // public async getLpKyberTVL() {
-  //   const lpBalance = await this.WETH.getBalance(LPSipherWethKyberAddress)
-  //   const ethPrice = await getETHPrice()
-  //   const StakedLPPoolETH = lpBalance * ethPrice
-
-  //   const sipherBalance = await this.SipherToken.getBalance(LPSipherWethKyberAddress)
-  //   const sipherPrice = await getSipherPrice()
-  //   const StakedLPPoolSipher = sipherBalance * sipherPrice
-
-  //   return StakedLPPoolETH + StakedLPPoolSipher
-  // }
-
-  // public async getLpUniswapPrice() {
-  //   const lpPoolTVL = await this.getLpUniswapTVL()
-
-  //   const totalSupply = await this.LPSipherWethUniswap.totalSupply()
-  //   return lpPoolTVL / totalSupply
-  // }
-
-  // public async getLpKyberPrice() {
-  //   const lpPoolTVL = await this.getLpKyberTVL()
-  //   const totalSupply = await this.LPSipherWethKyber.totalSupply()
-  //   return lpPoolTVL / totalSupply
-  // }
-
-  public async sign(message: any) {
+  public async sign(message: string | ethers.utils.Bytes) {
     const signer = this.provider.getSigner()
     const signature = await signer.signMessage(message)
     return signature

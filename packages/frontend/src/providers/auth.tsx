@@ -1,6 +1,6 @@
 import { createContext, FC, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { useQuery } from "react-query"
-import { Router, useRouter } from "next/router"
+import { useRouter } from "next/router"
 import AtherIdAuth, {
   AtherIdEnviromment,
   CognitoUser,

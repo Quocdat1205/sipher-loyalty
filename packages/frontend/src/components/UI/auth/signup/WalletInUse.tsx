@@ -132,21 +132,21 @@ const WalletInUseUI = ({ address, setCurrentAddress }: WalletInUseUIProps) => {
       <Stack w="full" spacing={4}>
         <WalletCard
           onClick={() => {
-            handleConnectWallet("coinbaseWallet")
-          }}
-          text={"Coinbase"}
-          src="/images/icons/wallets/coinbase.png"
-          colorScheme={"whiteAlpha"}
-          isLoading={connectingMethod === "coinbaseWallet"}
-        />
-        <WalletCard
-          onClick={() => {
             handleConnectWallet("metaMask")
           }}
           text={"MetaMask"}
           src="/images/icons/wallets/metamask.svg"
           colorScheme={"whiteAlpha"}
           isLoading={connectingMethod === "metaMask"}
+        />
+        <WalletCard
+          onClick={() => {
+            handleConnectWallet("coinbaseWallet")
+          }}
+          text={"Coinbase"}
+          src="/images/icons/wallets/coinbase.svg"
+          colorScheme={"whiteAlpha"}
+          isLoading={connectingMethod === "coinbaseWallet"}
         />
         <WalletCard
           onClick={() => {

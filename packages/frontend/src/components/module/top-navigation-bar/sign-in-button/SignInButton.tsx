@@ -33,6 +33,7 @@ const SignInButton = () => {
         const ownedWallets = await refetchOwnedWallets()
           .then(res => res.data)
           .then(data => data?.map(wallet => wallet.address))
+
         if (flowState === null && (!wallet.isActive || (!!ownedWallets && !ownedWallets.includes(wallet.account!)))) {
           setFlowState("connectWallet")
         } else if (flowState === "connectWallet") setFlowState(null)

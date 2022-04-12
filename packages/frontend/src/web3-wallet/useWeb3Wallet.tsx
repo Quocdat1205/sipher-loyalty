@@ -48,6 +48,7 @@ const useWeb3WalletState = (
 
   const activate = async (connectorId: ConnectorId, chainId?: number) => {
     const connector = connectorsData[connectorId].connector
+    connector.deactivate()
     connector instanceof WalletConnect
       ? await connector.activate(chainId)
       : await connector.activate(!chainId ? undefined : getAddChainParameters(chainId))
@@ -59,7 +60,7 @@ const useWeb3WalletState = (
 
   useEffect(() => {
     connector.connectEagerly && connector.connectEagerly()
-  }, [])
+  }, [connector])
 
   useEffect(() => {
     if (provider) {
@@ -89,7 +90,7 @@ const useWeb3WalletState = (
   }, [error?.message])
 
   return {
-    account,
+    account: account?.toLowerCase(),
     switchNetwork,
     chain: chainId ? { ...CHAINS[chainId], id: chainId } : undefined,
     activate,
@@ -131,7 +132,7 @@ export const Web3WalletProvider = ({ children, config }: Web3WalletProviderProps
   const [walletConnect, walletConnectHooks] = useMemo(
     () =>
       initializeConnector<WalletConnect>(
-        actions => new WalletConnect(actions, config.walletConnect, false, true),
+        actions => new WalletConnect(actions, config.walletConnect, false, false),
         [1, 4],
       ),
     [config.walletConnect],

@@ -40,7 +40,6 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
 
   const handleWalletChallenge = async (cogitoUser: CognitoUser, message: string) => {
     if (!wallet.contractCaller.current) return
-
     const response = await wallet.contractCaller.current.sign(message)
 
     if (!response) {
@@ -124,12 +123,12 @@ const LoginFormUI = ({ setStep, onChangeEmail, onChangePassword, setTempUser }: 
 
   const handleWalletSignin = async (connectorId: ConnectorId) => {
     setConnectingMethod(connectorId as string)
-    if (!wallet.account) {
-      wallet.activate(connectorId)
-      willSignIn.current = true
-    } else {
-      mutateSignIn({ emailOrWallet: wallet.account! })
-    }
+    // if (!wallet.account) {
+    wallet.activate(connectorId)
+    willSignIn.current = true
+    // } else {
+    //   mutateSignIn({ emailOrWallet: wallet.account! })
+    // }
   }
 
   useEffect(() => {
