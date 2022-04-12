@@ -12,7 +12,6 @@
     // options
     "module": "commonjs",
     "target": "es6",
-    "declaration": true,
     "noLib": false,
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,

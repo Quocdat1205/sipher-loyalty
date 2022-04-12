@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react"
 import { useQuery, useQueryClient } from "react-query"
 import client from "@client"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { ETHEREUM_NETWORK } from "@constant"
 import { PriceDatas } from "@sdk"
@@ -9,26 +9,26 @@ import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 const useBalance = () => {
-  const { scCaller, account, chainId } = useWalletContext()
+  const { contractCaller, account, chain } = useWeb3Wallet()
   const { bearerToken } = useAuth()
   const [isFetched, setIsFetched] = useState(false)
   const qc = useQueryClient()
 
   const { data: chainBalance } = useQuery(
     ["chainBalance", account],
-    () => scCaller.current!.getEtherBalance(account!),
+    () => contractCaller.current!.getEtherBalance(account!),
     {
       initialData: 0,
-      enabled: !!scCaller.current && !!account,
+      enabled: !!contractCaller.current && !!account,
     },
   )
-  const { data: sipher } = useQuery(["sipher", account], () => scCaller.current!.getSipherBalance(account!), {
+  const { data: sipher } = useQuery(["sipher", account], () => contractCaller.current!.getSipherBalance(account!), {
     initialData: 0,
-    enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK,
+    enabled: !!contractCaller.current && !!account && chain?.id === ETHEREUM_NETWORK,
   })
-  const { data: weth } = useQuery(["weth", account], () => scCaller.current!.getWETHBalance(account!), {
+  const { data: weth } = useQuery(["weth", account], () => contractCaller.current!.getWETHBalance(account!), {
     initialData: 0,
-    enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK,
+    enabled: !!contractCaller.current && !!account && chain?.id === ETHEREUM_NETWORK,
   })
 
   const { data: dataPrice } = useQuery(
@@ -84,7 +84,7 @@ const useBalance = () => {
   }
 
   const totalETHPrice =
-    (chainId && chainId === ETHEREUM_NETWORK
+    (chain && chain.id === ETHEREUM_NETWORK
       ? dataPrice!.ethereumPrice.eth * chainBalance! + dataPrice!.sipherPrice.eth * sipher!
       : 0) || 0
 

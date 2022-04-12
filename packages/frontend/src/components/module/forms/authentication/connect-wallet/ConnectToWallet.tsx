@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { IoIosWarning } from "react-icons/io"
 import { useMutation, useQueryClient } from "react-query"
 import AtherIdAuth from "@sipher.dev/ather-id"
 import { ConnectWalletResponse } from "@sipher.dev/ather-id/lib/esm/api/sdk"
 import { Box, chakra, Flex, Stack, Text } from "@sipher.dev/sipher-ui"
 import { useAuthFlowStore } from "@store"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { ChakraModal, WalletCard } from "@components/shared"
 import { useChakraToast } from "@hooks"
@@ -16,9 +16,9 @@ const ConnectToWallet = () => {
 
   const { ownedWallets, user } = useAuth()
 
-  const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof connect>["0"] | null>(null)
+  const [connectingMethod, setConnectingMethod] = useState<Parameters<typeof activate>["0"] | null>(null)
 
-  const { connect, scCaller, reset, account } = useWalletContext()
+  const { activate, deactivate, contractCaller, account } = useWeb3Wallet()
 
   const [flowState, setFlowState] = useAuthFlowStore(s => [s.state, s.setState])
 
@@ -31,7 +31,7 @@ const ConnectToWallet = () => {
   // Initiate wallet connection => Sign the message to get signature => Confirm wallet connection
   const { mutate: mutateAddWallet } = useMutation<unknown, unknown, ConnectWalletResponse>(
     async res => {
-      const signature = await scCaller.current?.sign(res.message)
+      const signature = await contractCaller.current?.sign(res.message)
       await AtherIdAuth.confirmConectWallet(res, signature!)
     },
     {
@@ -40,7 +40,7 @@ const ConnectToWallet = () => {
         setFlowState(null)
       },
       onError: async (e: any) => {
-        reset()
+        deactivate()
         if (e?.code === 4001) {
           toast({ status: "error", title: "Signature error", message: "User denied to sign the message" })
         }
@@ -57,7 +57,7 @@ const ConnectToWallet = () => {
       onSuccess: res => mutateAddWallet(res),
       onError: (e: any) => {
         setConnectingMethod(null)
-        reset()
+        deactivate()
         const status = e?.toJSON()?.status || 400
         if (status === 401) {
           toast({
@@ -78,14 +78,13 @@ const ConnectToWallet = () => {
     },
   )
 
-  const handleConnectWallet = async (connectorId: Parameters<typeof connect>["0"]) => {
+  const willAddWallet = useRef(false)
+  const handleConnectWallet = async (connectorId: Parameters<typeof activate>["0"]) => {
     setConnectingMethod(connectorId)
-    let currentAccount = account
-    if (!currentAccount) {
-      currentAccount = (await connect(connectorId))?.toLowerCase() || null
-    }
-    // Try to add wallet to account if not linked yet
-    if (currentAccount) {
+    if (!account) {
+      activate(connectorId)
+    } else {
+      // Try to add wallet to account if not linked yet
       setCurrentAddress(currentAccount)
       if (!ownedWallets.includes(currentAccount)) {
         mutateConnectWallet(currentAccount)
