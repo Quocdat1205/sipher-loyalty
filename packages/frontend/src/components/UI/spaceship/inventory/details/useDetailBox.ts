@@ -5,7 +5,7 @@ import client from "@client"
 import { useWalletContext } from "@web3"
 
 import { POLYGON_NETWORK } from "@constant"
-import { useChakraToast } from "@hooks"
+import { useBalanceContext, useChakraToast } from "@hooks"
 import { Lootbox, MintStatus } from "@sdk"
 import { setBearerToken, shortenAddress } from "@utils"
 import { useAuth } from "src/providers/auth"
@@ -20,6 +20,9 @@ export const useDetailBox = id => {
   const { scCaller } = useWalletContext()
   const query = useQueryClient()
   const { account, chainId, switchNetwork } = useWalletContext()
+  const {
+    balance: { chainPrice },
+  } = useBalanceContext()
   const [slot, setSlot] = useState(1)
   const toast = useChakraToast()
   const router = useRouter()
@@ -37,6 +40,9 @@ export const useDetailBox = id => {
       onSuccess: data => {
         setIsFetch(true)
         setSlot(data?.mintable > 0 ? 1 : 0)
+      },
+      onError: () => {
+        router.push("/spaceship")
       },
     },
   )
@@ -62,7 +68,7 @@ export const useDetailBox = id => {
     async () => {
       if (chainId !== POLYGON_NETWORK) {
         switchNetwork(POLYGON_NETWORK)
-      } else {
+      } else if (chainPrice > 0.1) {
         const data = await client.api
           .lootBoxControllerMintLootbox(
             {
@@ -75,6 +81,13 @@ export const useDetailBox = id => {
           .then(res => res.data)
         idError.current = data.id
         await scCaller.current!.SipherSpaceshipLootBox.mint(data)
+      } else {
+        toast({
+          status: "error",
+          title: "Error",
+          message: "You have insufficient funds to create the transaction",
+          duration: 5000,
+        })
       }
     },
     {
@@ -125,7 +138,7 @@ export const useDetailBox = id => {
     if (oldAccount !== null && oldAccount !== account) {
       router.push("/spaceship")
     }
-  }, [oldAccount, account])
+  }, [oldAccount])
 
   return {
     router,

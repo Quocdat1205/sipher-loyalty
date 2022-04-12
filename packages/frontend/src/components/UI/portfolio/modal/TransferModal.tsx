@@ -16,7 +16,7 @@ import {
   Text,
 } from "@sipher.dev/sipher-ui"
 
-import { ChakraModal, CustomInput, EthereumIcon, Form, QuantitySelector } from "@components/shared"
+import { ChakraModal, CustomInput, Form, QuantitySelector } from "@components/shared"
 import { SpLayer } from "@components/shared/icons"
 
 import { useDetailContext } from "../nft/details/useDetail"
@@ -65,7 +65,7 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
             {videos.includes(extension || "") ? (
               <video src={tokenDetails?.imageUrl} autoPlay loop muted datatype="video/mp4"></video>
             ) : (
-              <Img rounded="lg" src={tokenDetails?.imageUrl} objectFit="contain" />
+              <Img rounded="lg" src={tokenDetails?.imageUrl} objectFit="contain" h="full" />
             )}
           </Skeleton>
           <Flex ml="6" direction="column">
@@ -87,17 +87,17 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
             <Text fontWeight="400" color="#93959C" mb="1">
               {collectionName}
             </Text>
-            <Flex align="center" mb="1">
+            {/* <Flex align="center" mb="1">
               <EthereumIcon mr={1} />
               <Text fontWeight="500" color="white">
                 0.00 ETH
               </Text>
-            </Flex>
+            </Flex> */}
           </Flex>
         </Flex>
         <Form>
           {tokenDetails?.collection.collectionType === "ERC1155" && (
-            <FormControl as="fieldset" mb="6">
+            <FormControl w="50%" as="fieldset" mb="6">
               <FormLabel>Quantity</FormLabel>
               <QuantitySelector value={slotTransfer} onChange={value => setSlotTransfer(value)} maxValue={minable} />
             </FormControl>

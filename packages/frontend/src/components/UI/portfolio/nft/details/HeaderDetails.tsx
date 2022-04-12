@@ -20,7 +20,7 @@ const HeaderDetails = ({ tokenDetails, isFetched }: HeaderDetailsProps) => {
       <Metadata
         title={
           isFetched
-            ? `Ather Labs Dashboard | ${capitalize(tokenDetails?.name.toLocaleLowerCase() || "")}`
+            ? `Ather Labs Dashboard | ${capitalize(tokenDetails?.name?.toLowerCase() || "")}`
             : "Ather Labs Dashboard | Loading..."
         }
         description=""
@@ -28,7 +28,7 @@ const HeaderDetails = ({ tokenDetails, isFetched }: HeaderDetailsProps) => {
       <Flex pr={2} w="full" align="center" justify={"space-between"} mb={2}>
         <Skeleton isLoaded={isFetched}>
           <Text fontWeight={600} letterSpacing="1px" fontSize={"4xl"}>
-            {capitalize(tokenDetails?.name.toLowerCase() ?? "")}
+            {capitalize(tokenDetails?.name?.toLowerCase() ?? "")}
           </Text>
         </Skeleton>
         <Skeleton display={["none", "block"]} isLoaded={isFetched}>

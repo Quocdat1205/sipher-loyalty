@@ -78,7 +78,12 @@ export const MintModal = ({ dataMinted, dataMint, isOpen, onClose, status, handl
             <Text mb={4} color="neutral.400">
               Minting Lootbox(es) to NFT(s) will be processed on Polygon and require you to change Blockchain network.
               For more information, please check{" "}
-              <Link textDecor="underline" isExternal color="cyan.600">
+              <Link
+                href="https://autofarm.gitbook.io/autofarm-network/how-tos/polygon-chain-matic/metamask-add-polygon-matic-network"
+                textDecor="underline"
+                isExternal
+                color="cyan.600"
+              >
                 here.
               </Link>
             </Text>

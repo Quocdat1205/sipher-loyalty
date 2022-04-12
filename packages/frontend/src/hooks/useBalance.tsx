@@ -19,7 +19,7 @@ const useBalance = () => {
     () => scCaller.current!.getEtherBalance(account!),
     {
       initialData: 0,
-      enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK,
+      enabled: !!scCaller.current && !!account,
     },
   )
   const { data: sipher } = useQuery(["sipher", account], () => scCaller.current!.getSipherBalance(account!), {

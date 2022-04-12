@@ -4,7 +4,7 @@ import client from "@client"
 import { useWalletContext } from "@web3"
 
 import { POLYGON_NETWORK } from "@constant"
-import { useChakraToast } from "@hooks"
+import { useBalanceContext, useChakraToast } from "@hooks"
 import { Lootbox } from "@sdk"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
@@ -32,6 +32,9 @@ export const usePending = () => {
   const { account, scCaller, switchNetwork, chainId } = useWalletContext()
   const [mintId, setMintId] = useState<number | null>(null)
   const [cancelId, setCancelId] = useState<number | null>(null)
+  const {
+    balance: { chainPrice },
+  } = useBalanceContext()
 
   const toast = useChakraToast()
   const { data: dataInit } = useQuery(
@@ -63,6 +66,9 @@ export const usePending = () => {
         })
         query.invalidateQueries(["pending", account])
       },
+      onError: (err: any) => {
+        toast({ status: "error", title: "Error", message: err?.message })
+      },
     },
   )
 
@@ -89,6 +95,9 @@ export const usePending = () => {
         })
         query.invalidateQueries(["pending", account])
       },
+      onError: (err: any) => {
+        toast({ status: "error", title: "Error", message: err?.message })
+      },
     },
   )
 
@@ -109,6 +118,9 @@ export const usePending = () => {
         query.invalidateQueries("lootBoxs")
         query.invalidateQueries(["pending", account])
       },
+      onError: (err: any) => {
+        toast({ status: "error", title: "Error", message: err?.message })
+      },
     },
   )
 
@@ -125,31 +137,49 @@ export const usePending = () => {
       }
     },
     onMint: () => {
-      if (chainId === POLYGON_NETWORK) {
-        mutateMint({
-          id: item.id,
-          deadline: item.deadline,
-          batchID: item.batchID,
-          amount: item.amount,
-          salt: item.salt,
-          signature: item.signature,
-        })
-      } else {
+      if (chainId !== POLYGON_NETWORK) {
         switchNetwork(POLYGON_NETWORK)
+      } else {
+        if (chainPrice > 0.1) {
+          mutateMint({
+            id: item.id,
+            deadline: item.deadline,
+            batchID: item.batchID,
+            amount: item.amount,
+            salt: item.salt,
+            signature: item.signature,
+          })
+        } else {
+          toast({
+            status: "error",
+            title: "Error",
+            message: "You have insufficient funds to create the transaction",
+            duration: 5000,
+          })
+        }
       }
     },
     onMintBatch: () => {
-      if (chainId === POLYGON_NETWORK) {
-        mutateMintBatch({
-          id: item.id,
-          deadline: item.deadline,
-          batchIDs: item.batchIDs,
-          amounts: item.amounts,
-          salt: item.salt,
-          signature: item.signature,
-        })
-      } else {
+      if (chainId !== POLYGON_NETWORK) {
         switchNetwork(POLYGON_NETWORK)
+      } else {
+        if (chainPrice > 0.1) {
+          mutateMintBatch({
+            id: item.id,
+            deadline: item.deadline,
+            batchIDs: item.batchIDs,
+            amounts: item.amounts,
+            salt: item.salt,
+            signature: item.signature,
+          })
+        } else {
+          toast({
+            status: "error",
+            title: "Error",
+            message: "You have insufficient funds to create the transaction",
+            duration: 5000,
+          })
+        }
       }
     },
   }))

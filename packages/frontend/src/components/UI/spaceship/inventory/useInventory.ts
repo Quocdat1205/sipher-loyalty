@@ -5,7 +5,7 @@ import client from "@client"
 import { useWalletContext } from "@web3"
 
 import { POLYGON_NETWORK } from "@constant"
-import { useChakraToast } from "@hooks"
+import { useBalanceContext, useChakraToast } from "@hooks"
 import { Lootbox, MintStatus } from "@sdk"
 import { setBearerToken, shortenAddress } from "@utils"
 import { useAuth } from "src/providers/auth"
@@ -21,6 +21,9 @@ export const useInventory = () => {
   const [isStatusModal, setIsStatusModal] = useState("")
   const query = useQueryClient()
   const { account, scCaller, chainId, switchNetwork } = useWalletContext()
+  const {
+    balance: { chainPrice },
+  } = useBalanceContext()
   const router = useRouter()
   const [dataMinted, setDataMinted] = useState<InventoryProps[]>([])
   const [data, setData] = useState<InventoryProps[]>([])
@@ -159,7 +162,16 @@ export const useInventory = () => {
     if (chainId !== POLYGON_NETWORK) {
       switchNetwork(POLYGON_NETWORK)
     } else {
-      mutateMintBatch()
+      if (chainPrice > 0.1) {
+        mutateMintBatch()
+      } else {
+        toast({
+          status: "error",
+          title: "Error",
+          message: "You have insufficient funds to create the transaction",
+          duration: 5000,
+        })
+      }
     }
   }
 

@@ -5,7 +5,7 @@ import client from "@client"
 import { useWalletContext } from "@web3"
 
 import { ETHEREUM_NETWORK, NftContracts, POLYGON_NETWORK } from "@constant"
-import { useChakraToast } from "@hooks"
+import { useBalanceContext, useChakraToast } from "@hooks"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
@@ -14,6 +14,9 @@ const useDetail = () => {
   const router = useRouter()
   const { bearerToken } = useAuth()
   const qc = useQueryClient()
+  const {
+    balance: { chainPrice },
+  } = useBalanceContext()
   const { collectionId, id } = router.query
   const toast = useChakraToast()
   const [addressTo, setAddressTo] = useState("")
@@ -42,6 +45,9 @@ const useDetail = () => {
         setIsFetch(true)
         setMinable(data.value)
         setSlot(data?.value > 0 ? 1 : 0)
+      },
+      onError: () => {
+        router.push("/portfolio")
       },
     },
   )
@@ -145,7 +151,16 @@ const useDetail = () => {
     if (wallet.chainId !== POLYGON_NETWORK) {
       wallet.switchNetwork(POLYGON_NETWORK)
     } else {
-      mutameBurn()
+      if (chainPrice > 0.1) {
+        mutameBurn()
+      } else {
+        toast({
+          status: "error",
+          title: "Error",
+          message: "You have insufficient funds to create the transaction",
+          duration: 5000,
+        })
+      }
     }
   }
 

@@ -6,7 +6,7 @@ import { useStore } from "@store"
 import { useWalletContext } from "@web3"
 
 import { POLYGON_NETWORK } from "@constant"
-import { useChakraToast } from "@hooks"
+import { useBalanceContext, useChakraToast } from "@hooks"
 import { NftItem, PortfolioByCollectionResponse } from "@sdk"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
@@ -22,6 +22,9 @@ const useNFTs = collectionId => {
   const take = 30
   const { bearerToken } = useAuth()
   const { account, scCaller, switchNetwork, chainId } = useWalletContext()
+  const {
+    balance: { chainPrice },
+  } = useBalanceContext()
   const gridSize = useStore(state => state.gridSize)
   const columns = gridSize === "small" ? [2, 3, 5, 5, 6] : [1, 2, 4, 4, 4]
   const [data, setData] = useState<NFTItemProp[]>()
@@ -138,7 +141,16 @@ const useNFTs = collectionId => {
     if (chainId !== POLYGON_NETWORK) {
       switchNetwork(POLYGON_NETWORK)
     } else {
-      mutateBurnBatch()
+      if (chainPrice > 0.1) {
+        mutateBurnBatch()
+      } else {
+        toast({
+          status: "error",
+          title: "Error",
+          message: "You have insufficient funds to create the transaction",
+          duration: 5000,
+        })
+      }
     }
   }
 

@@ -15,7 +15,7 @@ interface DetailLootboxProps {
 
 export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
   const { tokenDetails, isFetched, isLoadingBurn, slot, setSlot, router, handleMint, minable } = useDetailContext()
-  const extension = tokenDetails?.imageUrl.split(".")[5] || ""
+  const extension = tokenDetails?.imageUrl?.split(".")[5] || ""
   return (
     <ChakraModal scrollBehavior="inside" title={""} isOpen={isOpen} onClose={onClose} size="5xl">
       <Flex pt={6} px={8} minH="28rem" h="full" align="flex-start">
@@ -62,7 +62,7 @@ export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
           <Stack spacing={4}>
             <Skeleton isLoaded={isFetched}>
               <Text fontWeight={600} fontSize="3xl">
-                {capitalize(tokenDetails?.name.toLowerCase() ?? "")}
+                {capitalize(tokenDetails?.name?.toLowerCase() ?? "")}
               </Text>
             </Skeleton>
             <Skeleton isLoaded={isFetched}>
@@ -70,7 +70,7 @@ export function DetailLootbox({ isOpen, onClose }: DetailLootboxProps) {
                 <Text color="neutral.400" fontWeight={600}>
                   You are having{" "}
                   <chakra.span color="white">
-                    {minable} {capitalize(tokenDetails?.name.toLowerCase() ?? "")} NFTs
+                    {minable} {capitalize(tokenDetails?.name?.toLowerCase() ?? "")} NFTs
                   </chakra.span>
                 </Text>
                 <Text color="neutral.400">

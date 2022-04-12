@@ -9,7 +9,6 @@ import { useWalletContext } from "@web3"
 
 import { ChakraModal, WalletCard } from "@components/shared"
 import { useChakraToast } from "@hooks"
-import { shortenAddress } from "@utils"
 import { useAuth } from "src/providers/auth"
 
 const ConnectToWallet = () => {

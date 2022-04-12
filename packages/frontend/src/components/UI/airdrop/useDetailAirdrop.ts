@@ -5,7 +5,7 @@ import client from "@client"
 import { useWalletContext } from "@web3"
 
 import { ETHEREUM_NETWORK, SipherAirdropsAddress } from "@constant"
-import { useChakraToast } from "@hooks"
+import { useBalanceContext, useChakraToast } from "@hooks"
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
 
@@ -13,6 +13,9 @@ export const useDetailAirdrop = () => {
   const router = useRouter()
   const { bearerToken } = useAuth()
   const { account, scCaller, chainId, switchNetwork } = useWalletContext()
+  const {
+    balance: { chainPrice },
+  } = useBalanceContext()
   const toast = useChakraToast()
   const qc = useQueryClient()
   const { tab, type, id: queryId } = router.query
@@ -84,12 +87,21 @@ export const useDetailAirdrop = () => {
   })
 
   const handleClaim = () => {
-    if (chainId === ETHEREUM_NETWORK) {
-      if (detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase()) {
-        claim({ totalAmount: detailAirdrop.totalAmount, proof: detailAirdrop.proof })
-      }
-    } else {
+    if (chainId !== ETHEREUM_NETWORK) {
       switchNetwork(ETHEREUM_NETWORK)
+    } else {
+      if (chainPrice > 0.1) {
+        if (detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase()) {
+          claim({ totalAmount: detailAirdrop.totalAmount, proof: detailAirdrop.proof })
+        }
+      } else {
+        toast({
+          status: "error",
+          title: "Error",
+          message: "You have insufficient funds to create the transaction",
+          duration: 5000,
+        })
+      }
     }
   }
 
