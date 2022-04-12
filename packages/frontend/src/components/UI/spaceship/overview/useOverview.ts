@@ -1,5 +1,11 @@
 import { useState } from "react"
+import { useQuery } from "react-query"
 import { differenceInSeconds } from "date-fns"
+import client from "@client"
+import { useWalletContext } from "@web3"
+
+import { setBearerToken } from "@utils"
+import { useAuth } from "src/providers/auth"
 
 export interface SpaceshipDataProps {
   id: string
@@ -81,6 +87,8 @@ const initData: SpaceshipDataProps[] = [
 ]
 
 const useOverview = () => {
+  const { account } = useWalletContext()
+  const { bearerToken } = useAuth()
   const [data] = useState(initData)
   const ONE_DAY = 60 * 60 * 24
   const startTime = 1649030400000
@@ -90,7 +98,21 @@ const useOverview = () => {
 
   const activeData = mappedData.find(item => item.isActive)!
 
-  return { mappedData, activeData }
+  const { data: claimData } = useQuery(
+    ["claimableLootBox", account],
+    () =>
+      client.api
+        .lootBoxControllerGetClaimableLootboxFromWallet(account!, setBearerToken(bearerToken))
+        .then(res => res.data),
+    {
+      enabled: !!bearerToken && !!account,
+      initialData: [],
+    },
+  )
+
+  const isClaim = (claimData && claimData?.length > 0) || false
+
+  return { mappedData, activeData, isClaim }
 }
 
 export default useOverview

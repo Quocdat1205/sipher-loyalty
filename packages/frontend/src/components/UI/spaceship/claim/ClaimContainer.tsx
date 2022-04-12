@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { Box, Button, chakra, Flex, HStack, Text } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
@@ -34,7 +34,7 @@ const ClaimContainer = () => {
         pb={8}
         px={[4, 4, 4, 0, 0]}
       >
-        <Box pt={12} w="full" maxW="1200px">
+        <Box pt={16} w="full" maxW="1200px">
           <TabPage tabs={spaceshipTabs} />
         </Box>
         <Flex flexDir="column" w="full" align="center" justify="space-between">
@@ -44,11 +44,17 @@ const ClaimContainer = () => {
             justify="center"
           >
             <Box w="full" py={4} px={6} textAlign="center" borderRadius="0px 0px 16px 16px">
-              <Text color="neutral.400">
-                You have{" "}
-                <chakra.span color="white" fontWeight={600}>
-                  {totalQuantity} {totalQuantity > 1 ? "Lootboxes" : "Lootbox"}
-                </chakra.span>
+              <Text color={totalQuantity === 0 ? "whiteAlpha.800" : "neutral.400"}>
+                {totalQuantity === 0 ? (
+                  "You have no lootbox to claim, return next week to earn more!"
+                ) : (
+                  <Fragment>
+                    You have{" "}
+                    <chakra.span color="white" fontWeight={600}>
+                      {totalQuantity} {totalQuantity > 1 ? "Lootboxes" : "Lootbox"}
+                    </chakra.span>
+                  </Fragment>
+                )}
               </Text>
             </Box>
           </Flex>

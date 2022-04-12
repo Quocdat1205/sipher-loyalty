@@ -1,4 +1,5 @@
 export * from "./SpCalendar"
+export * from "./SpCloseArrowLeft"
 export * from "./SpCopy"
 export * from "./SpLayer"
 export * from "./SpOpensea"

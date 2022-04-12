@@ -1,9 +1,9 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { useRouter } from "next/router"
 import { Box, Flex } from "@sipher.dev/sipher-ui"
 
 import TabPage from "@components/module/TabPage"
-import { Banner } from "@components/shared"
+import { Banner, WarningUI } from "@components/shared"
 
 import ClaimContainer from "./claim"
 import { InventoryContainer } from "./inventory"
@@ -46,6 +46,8 @@ const ContentSpaceship = () => {
       />
       <Flex
         flexDir="column"
+        overflow="hidden"
+        pos="relative"
         align="center"
         flex={1}
         bgGradient={
@@ -56,10 +58,14 @@ const ContentSpaceship = () => {
         w="full"
       >
         {currentTab !== "overview" && currentTab !== "claim" && (
-          <Box px={[4, 4, 4, 0, 0]} pt={12} w="full" maxW="1200px">
-            <TabPage tabs={spaceshipTabs} />
-          </Box>
+          <Fragment>
+            <WarningUI />
+            <Box px={[4, 4, 4, 0, 0]} pt={16} w="full" maxW="1200px">
+              <TabPage tabs={spaceshipTabs} />
+            </Box>
+          </Fragment>
         )}
+
         <Flex flexDir="column" flex={1} w="full">
           {renderTabs()}
         </Flex>

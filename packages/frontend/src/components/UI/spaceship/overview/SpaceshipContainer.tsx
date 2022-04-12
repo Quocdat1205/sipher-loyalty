@@ -11,7 +11,7 @@ import { TutorialSpaceship } from "./TutorialSpaceship"
 import useOverview from "./useOverview"
 
 export const SpaceshipContainer = () => {
-  const { mappedData, activeData } = useOverview()
+  const { mappedData, activeData, isClaim } = useOverview()
   const router = useRouter()
 
   return (
@@ -24,7 +24,7 @@ export const SpaceshipContainer = () => {
         w="full"
         pos="relative"
       >
-        <Box pt={12} w="full" maxW="1200px">
+        <Box pt={16} w="full" maxW="1200px">
           <TabPage tabs={spaceshipTabs} />
         </Box>
         <Box maxW="1200px" w="full">
@@ -51,8 +51,17 @@ export const SpaceshipContainer = () => {
               <Text color="neutral.100" mb={16} fontSize="lg" maxW={"36rem"}>
                 {activeData.additionalDescription}
               </Text>
-              <Button onClick={() => router.push({ query: { tab: "claim" } })} size="lg" letterSpacing="1px">
-                CLAIM LOOTBOX
+              <Button
+                pointerEvents={isClaim ? "unset" : "none"}
+                isDisabled={!isClaim}
+                onClick={() => router.push({ query: { tab: "claim" } })}
+                size="lg"
+                letterSpacing="1px"
+                bg={isClaim ? "accent.500" : "neutral.700"}
+                opacity="1!important"
+                color={isClaim ? "neutral.900" : "neutral.600"}
+              >
+                {isClaim ? "CLAIM LOOTBOX" : "ALREADY CLAIMED"}
               </Button>
             </Box>
             <Flex
