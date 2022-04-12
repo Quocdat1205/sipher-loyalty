@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import client from "@client"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { POLYGON_NETWORK } from "@constant"
 import { useBalanceContext, useChakraToast } from "@hooks"
@@ -29,7 +29,7 @@ export interface InputLootBoxProp {
 export const usePending = () => {
   const { bearerToken } = useAuth()
   const query = useQueryClient()
-  const { account, scCaller, switchNetwork, chainId } = useWalletContext()
+  const { account, contractCaller, switchNetwork, chain } = useWeb3Wallet()
   const [mintId, setMintId] = useState<number | null>(null)
   const [cancelId, setCancelId] = useState<number | null>(null)
   const {
@@ -45,7 +45,7 @@ export const usePending = () => {
 
   const { mutate: mutateMintBatch, isLoading: isLoadingMintBacth } = useMutation<unknown, unknown, InputLootBoxProp>(
     ({ deadline, batchIDs, amounts, salt, signature }) =>
-      scCaller.current!.SipherSpaceshipLootBox.mintBatch({
+      contractCaller.current!.SipherSpaceshipLootBox.mintBatch({
         deadline: deadline,
         batchIDs: batchIDs!,
         amounts: amounts!,
@@ -74,7 +74,7 @@ export const usePending = () => {
 
   const { mutate: mutateMint, isLoading: isLoadingMint } = useMutation<unknown, unknown, InputLootBoxProp>(
     ({ deadline, batchID, amount, salt, signature }) =>
-      scCaller.current!.SipherSpaceshipLootBox.mint({
+      contractCaller.current!.SipherSpaceshipLootBox.mint({
         deadline: deadline,
         batchID: batchID!,
         amount: amount!,
@@ -102,7 +102,7 @@ export const usePending = () => {
   )
 
   const { mutate: mutateCancel } = useMutation<unknown, unknown, { id: number; signature: string }>(
-    ({ signature }) => scCaller.current!.SipherSpaceshipLootBox.cancelOrder(signature),
+    ({ signature }) => contractCaller.current!.SipherSpaceshipLootBox.cancelOrder(signature),
     {
       onMutate: ({ id }) => {
         setCancelId(id)
@@ -130,14 +130,14 @@ export const usePending = () => {
     isCancel: cancelId === item.id,
     isDisabled: isLoadingMintBacth || isLoadingMint,
     onCancel: () => {
-      if (chainId === POLYGON_NETWORK) {
+      if (chain?.id === POLYGON_NETWORK) {
         mutateCancel({ id: item.id, signature: item.signature })
       } else {
         switchNetwork(POLYGON_NETWORK)
       }
     },
     onMint: () => {
-      if (chainId !== POLYGON_NETWORK) {
+      if (chain?.id !== POLYGON_NETWORK) {
         switchNetwork(POLYGON_NETWORK)
       } else {
         if (chainPrice > 0.1) {
@@ -160,7 +160,7 @@ export const usePending = () => {
       }
     },
     onMintBatch: () => {
-      if (chainId !== POLYGON_NETWORK) {
+      if (chain?.id !== POLYGON_NETWORK) {
         switchNetwork(POLYGON_NETWORK)
       } else {
         if (chainPrice > 0.1) {

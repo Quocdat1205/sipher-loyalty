@@ -44,7 +44,6 @@ const useWeb3WalletState = (
   connectorsData: Record<ConnectorId, { id: ConnectorId; name: string; connector: Connector }>,
 ) => {
   const { connector, account, chainId, isActive, error, provider } = useWeb3React()
-
   const contractCaller = useRef<ContractCaller | null>(null)
 
   const activate = async (connectorId: ConnectorId, chainId?: number) => {
@@ -77,8 +76,21 @@ const useWeb3WalletState = (
     },
   )
 
+  const switchNetwork = async (chainId: number) => {
+    activate(getConnectorInfo(connector).id, chainId)
+  }
+
+  useEffect(() => {
+    if (error) {
+      if (error.message.includes("Disconnected from chain")) {
+        activate(getConnectorInfo(connector).id)
+      }
+    }
+  }, [error?.message])
+
   return {
     account,
+    switchNetwork,
     chain: chainId ? { ...CHAINS[chainId], id: chainId } : undefined,
     activate,
     deactivate,

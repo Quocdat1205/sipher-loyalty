@@ -3,7 +3,7 @@ import { useInfiniteQuery, useMutation, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
 import { useStore } from "@store"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { POLYGON_NETWORK } from "@constant"
 import { useBalanceContext, useChakraToast } from "@hooks"
@@ -21,7 +21,7 @@ const useNFTs = collectionId => {
   const router = useRouter()
   const take = 30
   const { bearerToken } = useAuth()
-  const { account, scCaller, switchNetwork, chainId } = useWalletContext()
+  const { account, contractCaller, switchNetwork, chain } = useWeb3Wallet()
   const {
     balance: { chainPrice },
   } = useBalanceContext()
@@ -104,12 +104,12 @@ const useNFTs = collectionId => {
   const { mutate: mutateBurnBatch, isLoading: isLoadingBurn } = useMutation(
     async () => {
       if (nftsDataCheck.length > 1) {
-        await scCaller.current!.SipherSpaceshipLootBox.burnBatch({
+        await contractCaller.current!.SipherSpaceshipLootBox.burnBatch({
           batchIDs: nftsDataCheck.map(i => parseInt(i.tokenId)),
           amounts: nftsDataCheck.map(i => i.slot),
         })
       } else {
-        await scCaller.current!.SipherSpaceshipLootBox.burn({
+        await contractCaller.current!.SipherSpaceshipLootBox.burn({
           batchID: parseInt(nftsDataCheck[0].tokenId),
           amount: nftsDataCheck[0].slot,
         })
@@ -138,7 +138,7 @@ const useNFTs = collectionId => {
   }
 
   const handleBurn = () => {
-    if (chainId !== POLYGON_NETWORK) {
+    if (chain?.id !== POLYGON_NETWORK) {
       switchNetwork(POLYGON_NETWORK)
     } else {
       if (chainPrice > 0.1) {

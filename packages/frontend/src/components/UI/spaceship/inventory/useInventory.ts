@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { POLYGON_NETWORK } from "@constant"
 import { useBalanceContext, useChakraToast } from "@hooks"
@@ -20,7 +20,7 @@ export const useInventory = () => {
   const { bearerToken } = useAuth()
   const [isStatusModal, setIsStatusModal] = useState("")
   const query = useQueryClient()
-  const { account, scCaller, chainId, switchNetwork } = useWalletContext()
+  const { account, contractCaller, switchNetwork, chain } = useWeb3Wallet()
   const {
     balance: { chainPrice },
   } = useBalanceContext()
@@ -114,7 +114,7 @@ export const useInventory = () => {
           )
           .then(res => res.data)
         idError.current = data.id
-        await scCaller.current!.SipherSpaceshipLootBox.mintBatch(data)
+        await contractCaller.current!.SipherSpaceshipLootBox.mintBatch(data)
       } else {
         const data = await client.api
           .lootBoxControllerMintLootbox(
@@ -127,7 +127,7 @@ export const useInventory = () => {
           )
           .then(res => res.data)
         idError.current = data.id
-        await scCaller.current!.SipherSpaceshipLootBox.mint(data)
+        await contractCaller.current!.SipherSpaceshipLootBox.mint(data)
       }
     },
     {
@@ -159,7 +159,7 @@ export const useInventory = () => {
   }, [isStatusModal])
 
   const handleMint = () => {
-    if (chainId !== POLYGON_NETWORK) {
+    if (chain?.id !== POLYGON_NETWORK) {
       switchNetwork(POLYGON_NETWORK)
     } else {
       if (chainPrice > 0.1) {

@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useRouter } from "next/router"
 import client from "@client"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { ETHEREUM_NETWORK, SipherAirdropsAddress } from "@constant"
 import { useBalanceContext, useChakraToast } from "@hooks"
@@ -12,7 +12,7 @@ import { useAuth } from "src/providers/auth"
 export const useDetailAirdrop = () => {
   const router = useRouter()
   const { bearerToken } = useAuth()
-  const { account, scCaller, chainId, switchNetwork } = useWalletContext()
+  const { account, contractCaller, chain, switchNetwork } = useWeb3Wallet()
   const {
     balance: { chainPrice },
   } = useBalanceContext()
@@ -45,28 +45,36 @@ export const useDetailAirdrop = () => {
   const { data: initClaimableAmount } = useQuery(
     ["token-claimable-amount", detailAirdrop],
     () =>
-      scCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(detailAirdrop!.totalAmount, detailAirdrop!.proof),
+      contractCaller.current!.SipherAirdrops.getClaimableAmountAtTimestamp(
+        detailAirdrop!.totalAmount,
+        detailAirdrop!.proof,
+      ),
     {
       enabled:
-        !!scCaller.current &&
+        !!contractCaller.current &&
         !!account &&
-        chainId === ETHEREUM_NETWORK &&
+        chain?.id === ETHEREUM_NETWORK &&
         !!detailAirdrop &&
         !!detailAirdrop?.totalAmount,
       initialData: 0,
     },
   )
 
-  const { data: claimedInit } = useQuery(["token-claimed", account], () => scCaller.current!.SipherAirdrops.claimed(), {
-    enabled: !!scCaller.current && !!account && chainId === ETHEREUM_NETWORK && detailAirdrop?.totalAmount !== "0",
-    initialData: 0,
-  })
+  const { data: claimedInit } = useQuery(
+    ["token-claimed", account],
+    () => contractCaller.current!.SipherAirdrops.claimed(),
+    {
+      enabled:
+        !!contractCaller.current && !!account && chain?.id === ETHEREUM_NETWORK && detailAirdrop?.totalAmount !== "0",
+      initialData: 0,
+    },
+  )
 
   const { mutate: claim, isLoading: isLoadingClaim } = useMutation<
     unknown,
     unknown,
     { totalAmount: string; proof: string[] }
-  >(({ totalAmount, proof }) => scCaller.current!.SipherAirdrops.claim(totalAmount, proof), {
+  >(({ totalAmount, proof }) => contractCaller.current!.SipherAirdrops.claim(totalAmount, proof), {
     onSuccess: () => {
       toast({
         status: "success",
@@ -87,7 +95,7 @@ export const useDetailAirdrop = () => {
   })
 
   const handleClaim = () => {
-    if (chainId !== ETHEREUM_NETWORK) {
+    if (chain?.id !== ETHEREUM_NETWORK) {
       switchNetwork(ETHEREUM_NETWORK)
     } else {
       if (chainPrice > 0.1) {
@@ -107,7 +115,7 @@ export const useDetailAirdrop = () => {
 
   const isDisabled =
     detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase()
-      ? detailAirdrop?.totalAmount === "0" || chainId !== ETHEREUM_NETWORK || initClaimableAmount === 0
+      ? detailAirdrop?.totalAmount === "0" || chain?.id !== ETHEREUM_NETWORK || initClaimableAmount === 0
       : true
   const buttonText =
     detailAirdrop?.addressContract?.toLowerCase() === SipherAirdropsAddress.toLowerCase() ? "CLAIM" : "COMING SOON"
@@ -121,7 +129,7 @@ export const useDetailAirdrop = () => {
   }, [account])
 
   return {
-    chainId,
+    chainId: chain?.id,
     detailAirdrop,
     router,
     isOpen,

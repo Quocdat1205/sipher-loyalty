@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import client from "@client"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
@@ -10,7 +10,7 @@ export const useClaim = () => {
   const { bearerToken } = useAuth()
   const [isStatusModal, setIsStatusModal] = useState("")
   const query = useQueryClient()
-  const { account } = useWalletContext()
+  const { account } = useWeb3Wallet()
 
   const { data, isFetched } = useQuery(
     ["claimableLootBox", account],
