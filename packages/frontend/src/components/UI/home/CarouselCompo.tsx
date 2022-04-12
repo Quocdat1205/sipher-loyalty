@@ -5,8 +5,10 @@ import { Box } from "@sipher.dev/sipher-ui"
 
 import CollectionCard from "../portfolio/collection/CollectionCard"
 
+import usePortFolioHome from "./portfolio/usePortFolioHome"
+
 interface NFTsContainerProps {
-  collectionData: any
+  collectionData: ReturnType<typeof usePortFolioHome>["collectionData"][number]
 }
 
 const CarouselCompo = ({ collectionData }: NFTsContainerProps) => {
@@ -16,6 +18,11 @@ const CarouselCompo = ({ collectionData }: NFTsContainerProps) => {
         overflow="hidden"
         pos="relative"
         sx={{
+          ".swiper": {
+            display: "flex",
+            flexDir: "column",
+          },
+          ".swiper-pagination": { pos: "relative", order: 2, pt: 6 },
           ".swiper-pagination-bullet": {
             mx: "8px!important",
             bg: "whiteAlpha.500",
@@ -45,8 +52,8 @@ const CarouselCompo = ({ collectionData }: NFTsContainerProps) => {
           className="mySwiper"
         >
           {collectionData.map(item => (
-            <SwiperSlide key={item.title}>
-              <CollectionCard key={item.id} data={item} isFetched={true} />
+            <SwiperSlide key={item.id}>
+              <CollectionCard data={item} isFetched={true} />
             </SwiperSlide>
           ))}
         </Swiper>
