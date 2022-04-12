@@ -21,3 +21,8 @@ https://github.com/nestjs/nest/tree/master/sample/11-swagger
 - Run `yarn migrate:up` to run migrate code
 
 - Run `yarn seed-data` to seed data default for project
+
+### Run tracker backend
+
+- Run `yarn dev:tracker:lootbox` to run tracker lootbox at local ( already run at dev web to track event and update pg cloud, should run at local when use pg local)
+- Run `yarn dev:tracker:sculpture` to run tracker sculpture at local ( already run at dev web to track event and update pg cloud, should run at local when use pg local)

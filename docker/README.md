@@ -6,7 +6,7 @@ docker-compose -f ./docker/docker-compose.yml -p sipher-loyalty-db up -d
 
 docker build --file=docker/Dockerfile.backend -t loyalty-backend .
 
-### Run docker backend
+### Run tracker backend
 
 docker run -p 5500:5500 --env-file packages/backend/.env loyalty-backend
 docker run -p 5501:5501 --env-file packages/backend/.env lootbox-tracker-loyalty
