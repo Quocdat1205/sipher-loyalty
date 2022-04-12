@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useQuery } from "react-query"
 import { differenceInSeconds } from "date-fns"
 import client from "@client"
-import { useWalletContext } from "@web3"
+import useWeb3Wallet from "@web3-wallet"
 
 import { setBearerToken } from "@utils"
 import { useAuth } from "src/providers/auth"
@@ -87,7 +87,7 @@ const initData: SpaceshipDataProps[] = [
 ]
 
 const useOverview = () => {
-  const { account } = useWalletContext()
+  const { account } = useWeb3Wallet()
   const { bearerToken } = useAuth()
   const [data] = useState(initData)
   const ONE_DAY = 60 * 60 * 24
